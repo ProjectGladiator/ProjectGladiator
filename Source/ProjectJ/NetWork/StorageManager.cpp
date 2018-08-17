@@ -88,9 +88,7 @@ bool StorageManager::GetFront(PacketData *& data)
 // void 형 데이터 실제 데이터로 변환
 void StorageManager::ChangeData(void* data, bool& type)
 {
-	bool ok;
-	ok = (bool)data;
-	type = ok;
+	type = *(bool*)data;
 }
 
 // Front 삭제
