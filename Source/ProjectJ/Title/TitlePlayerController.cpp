@@ -5,6 +5,9 @@
 #include "Title/Widget/TitleWidgetUserIn.h"
 #include "ErrorWidget/WidgetCancel.h"
 #include "ErrorWidget/WidgetOk.h"
+#include "Title/Widget/TitleCharacterCreateWidget.h"
+#include "Title/Widget/TitleCharacterSelectWidget.h"
+
 #include "NetWork/NetworkManager.h"
 
 void ATitlePlayerController::BeginPlay()
@@ -12,7 +15,7 @@ void ATitlePlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	//에디터 상에 있는 블루프린트를 읽어서 TitleUserInWidgetClass에 저장한다.
-	FStringClassReference TitleUserInWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/Widget/W_UserIn.W_UserIn_C'"));
+	FStringClassReference TitleUserInWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/Login/Widget/W_UserIn.W_UserIn_C'"));
 
 	//앞에서 읽어 들인 TitleUserInWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = TitleUserInWidgetClass.TryLoadClass<UUserWidget>())
@@ -25,7 +28,7 @@ void ATitlePlayerController::BeginPlay()
 	}
 
 	//에디터 상에 있는 블루프린트를 읽어서 TitleLoginWidgetClass에 저장한다.
-	FStringClassReference TitleLoginWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/Widget/W_Login.W_Login_C'"));
+	FStringClassReference TitleLoginWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/Login/Widget/W_Login.W_Login_C'"));
 
 	//앞에서 읽어 들인 TitleLoginWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = TitleLoginWidgetClass.TryLoadClass<UUserWidget>())
@@ -39,10 +42,10 @@ void ATitlePlayerController::BeginPlay()
 	
 	FStringClassReference CancelWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Error/W_Cancel.W_Cancel_C'"));
 
-	//앞에서 읽어 들인 TitleLoginWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
+	//앞에서 읽어 들인 CancelWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = CancelWidgetClass.TryLoadClass<UUserWidget>())
 	{
-		//MyWidgetClass를 토대로 TitleWidgetLogin을 생성한다.
+		//MyWidgetClass를 토대로 CancelWidget을 생성한다.
 		CancelWidget = Cast<UWidgetCancel>(CreateWidget<UUserWidget>(this, MyWidgetClass));
 
 		CancelWidget->AddToViewport(); //화면에 붙인다.
@@ -51,14 +54,38 @@ void ATitlePlayerController::BeginPlay()
 
 	FStringClassReference OkWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Error/W_ok.W_Ok_C'"));
 
-	//앞에서 읽어 들인 TitleLoginWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
+	//앞에서 읽어 들인 OkWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = OkWidgetClass.TryLoadClass<UUserWidget>())
 	{
-		//MyWidgetClass를 토대로 TitleWidgetLogin을 생성한다.
+		//MyWidgetClass를 토대로 OkWidget을 생성한다.
 		OkWidget = Cast<UWidgetOk>(CreateWidget<UUserWidget>(this, MyWidgetClass));
 
 		OkWidget->AddToViewport(); //화면에 붙인다.
 		OkWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+	}
+
+	FStringClassReference CharacterSelectWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterSelect.W_CharacterSelect_C'"));
+
+	//앞에서 읽어 들인 CharacterSelectWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
+	if (UClass* MyWidgetClass = CharacterSelectWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		//MyWidgetClass를 토대로 CharacterSelectWidget을 생성한다.
+		CharacterSelectWidget = Cast<UTitleCharacterSelectWidget>(CreateWidget<UUserWidget>(this, MyWidgetClass));
+
+		CharacterSelectWidget->AddToViewport(); //화면에 붙인다.
+		CharacterSelectWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+	}
+
+	FStringClassReference ChracterCreateWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterCreate.W_CharacterCreate_C'"));
+
+	//앞에서 읽어 들인 ChracterCreateWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
+	if (UClass* MyWidgetClass = ChracterCreateWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		//MyWidgetClass를 토대로 ChracterCreateWidget을 생성한다.
+		ChracterCreateWidget = Cast<UTitleCharacterCreateWidget>(CreateWidget<UUserWidget>(this, MyWidgetClass));
+
+		ChracterCreateWidget->AddToViewport(); //화면에 붙인다.
+		ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
 	bShowMouseCursor = true; //마우스 커서가 화면에 보이게 해준다.
@@ -130,5 +157,35 @@ void ATitlePlayerController::OkWidgetToggle(const FText& Message)
 		OkWidget->SetErrorMessage(Message);
 		//확인 위젯을 보여준다.
 		OkWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void ATitlePlayerController::CharacterSelectWidgetToggle()
+{
+	if (CharacterSelectWidget)
+	{
+		if (CharacterSelectWidget->GetVisibility() == ESlateVisibility::Hidden)
+		{
+			CharacterSelectWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			CharacterSelectWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+}
+
+void ATitlePlayerController::CharacterCreateWidgetToggle()
+{
+	if (ChracterCreateWidget)
+	{
+		if (ChracterCreateWidget->GetVisibility() == ESlateVisibility::Hidden)
+		{
+			ChracterCreateWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
 	}
 }

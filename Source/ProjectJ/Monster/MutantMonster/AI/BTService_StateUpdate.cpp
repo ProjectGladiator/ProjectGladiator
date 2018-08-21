@@ -1,11 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTService_StateUpdate.h"
-#include "Monster/MutantMonster/MutantAIController.h"
-#include "Monster/MutantMonster/MutantMonster.h"
-#include "BehaviorTree/BlackboardComponent.h"
-
-#include "GameFramework/CharacterMovementComponent.h"
+#include "Header/MutantAIHeader.h"
 
 void UBTService_StateUpdate::InitializeFromAsset(UBehaviorTree & Asset)
 {
@@ -52,11 +48,11 @@ void UBTService_StateUpdate::TickNode(UBehaviorTreeComponent & OwnerComp, uint8 
 							Mutant->JumpRunCheckFlag = false;
 						}
 					}
-					else if (Distance <= 1200.0f) //Ä³¸¯ÅÍ¿ÍÀÇ °Å¸®°¡ 12MÀÌÇÏÀÎµ¥
+					else if (Distance <= 1200.0f) //ìºë¦­í„°ì™€ì˜ ê±°ë¦¬ê°€ 12Mì´í•˜ì¸ë°
 					{
-						if (Mutant->CurrentAnimState == EMonsterAnimState::JumpAttack) //Ä³¸¯ÅÍ°¡ Á¡ÇÁ»óÅÂ¶ó¸é
+						if (Mutant->CurrentAnimState == EMonsterAnimState::JumpAttack) //ìºë¦­í„°ê°€ ì í”„ìƒíƒœë¼ë©´
 						{
-							if (Mutant->JumpEndFlag == true) //Á¡ÇÁ°¡ ³¡³­ »óÅÂ¶ó¸é
+							if (Mutant->JumpEndFlag == true) //ì í”„ê°€ ëë‚œ ìƒíƒœë¼ë©´
 							{
 								Mutant->JumpEndFlag = false;
 								Mutant->CurrentAnimState = EMonsterAnimState::Run;

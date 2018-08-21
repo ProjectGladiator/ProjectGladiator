@@ -63,7 +63,6 @@ void UTitleWidgetLogin::Login()
 {
 	if (PC)
 	{
-
 		// 아이디, 패스워드 에디트박스에서 Text 뽑아서 FString 으로 변환
 		FString id = IDInputBox->Text.ToString();
 		FString pw = PWInputBox->Text.ToString();
@@ -73,12 +72,13 @@ void UTitleWidgetLogin::Login()
 		// 패킷 전송 - Send , 서버 응답 대기 - Wait
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
 		NetworkClient_main::NetworkManager::GetInstance()->Wait();
+		
 
 		// 로그인체크
 		if (LoginManager::GetInstance()->isLogin())
 		{
-			PC->SetInputMode(FInputModeGameOnly());
-			UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainStage")); //타이틀 맵으로 이동
+			PC->LoginWidgetToggle();
+			PC->CharacterSelectWidgetToggle();			
 		}
 		else
 		{

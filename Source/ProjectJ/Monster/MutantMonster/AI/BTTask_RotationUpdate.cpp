@@ -1,12 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTTask_RotationUpdate.h"
-#include "Monster/MutantMonster/MutantAIController.h"
-#include "Monster/MutantMonster/MutantMonster.h"
-
-#include "BehaviorTree/BlackboardComponent.h"
-#include "MyCharacter/Warrior/MyCharacter.h"
-#include "Kismet/KismetMathLibrary.h"
+#include "Header/MutantAIHeader.h"
 
 void UBTTask_RotationUpdate::InitializeFromAsset(UBehaviorTree & Asset)
 {

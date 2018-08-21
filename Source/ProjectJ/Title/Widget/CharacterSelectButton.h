@@ -4,32 +4,38 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "TitleCharacterSelectWidget.generated.h"
+#include "CharacterSelectButton.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTJ_API UTitleCharacterSelectWidget : public UUserWidget
+class PROJECTJ_API UCharacterSelectButton : public UUserWidget
 {
 	GENERATED_BODY()
 public:
+	//UPROPERTY(VisibleAnywhere,BleurpintReadWrite,Category = "CharacerInfo")
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UButton* GameStartButton;
+		class UButton* CharacterSelectButton;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UButton* CharacterDelete;
+		class UTextBlock* CharacterNickName;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UCharacterSelectButton* CharacterButtonOne;
+		class UTextBlock* CharacterLevel;	
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UCharacterSelectButton* CharacterButtonTwo;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UCharacterSelectButton* CharacterButtonThree;
+		class UTextBlock* ClassName;
 
 	class ATitlePlayerController* PC;
+
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void CharacterSelect();
+
+	void CharacterNickNameInput(const FText& Message);
+
+	void CharacterLevelInput(const FText& Message);
 	
-	UFUNCTION()
-	void GameStart();
-	UFUNCTION()
-	void MyCharacterDelete();
+	void CharacterClassNameInput(const FText& Message);
+	
 };

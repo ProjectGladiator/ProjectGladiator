@@ -1,9 +1,9 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "AnimNotifyState_ParryingAttack.h"
-
+#include "Header/MutantAIHeader.h"
 #include "Components/SkeletalMeshComponent.h"
-#include "Monster/MutantMonster/MutantMonster.h"
+
 
 void UAnimNotifyState_ParryingAttack::NotifyBegin(USkeletalMeshComponent * MeshComp, UAnimSequenceBase * Animation, float TotalDuration)
 {

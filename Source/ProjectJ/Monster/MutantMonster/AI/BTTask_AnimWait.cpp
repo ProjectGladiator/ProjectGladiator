@@ -1,8 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTTask_AnimWait.h"
-#include "Monster/MutantMonster/MutantAIController.h"
-#include "Monster/MutantMonster/MutantMonster.h"
+#include "Header/MutantAIHeader.h"
 
 EBTNodeResult::Type UBTTask_AnimWait::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {

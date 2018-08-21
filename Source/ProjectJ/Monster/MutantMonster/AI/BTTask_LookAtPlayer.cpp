@@ -1,14 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTTask_LookAtPlayer.h"
-
-#include "Monster/MutantMonster/MutantAIController.h"
-#include "Monster/MutantMonster/MutantMonster.h"
-
-#include "BehaviorTree/BlackboardComponent.h"
-
-#include "MyCharacter/Warrior/MyCharacter.h"
-#include "Kismet/KismetMathLibrary.h"
+#include "Header/MutantAIHeader.h"
 
 EBTNodeResult::Type UBTTask_LookAtPlayer::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {

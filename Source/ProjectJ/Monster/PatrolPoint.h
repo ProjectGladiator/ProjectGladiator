@@ -12,9 +12,5 @@
 UCLASS()
 class PROJECTJ_API APatrolPoint : public ATargetPoint
 {
-	GENERATED_BODY()
-	
-	
-	
-	
+	GENERATED_BODY()	
 };

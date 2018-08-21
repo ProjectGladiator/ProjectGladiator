@@ -1,14 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTTask_AttackReadyState.h"
-
-#include "Monster/MutantMonster/MutantAIController.h"
-#include "Monster/MutantMonster/MutantMonster.h"
-
-#include "Engine/World.h"
-#include "TimerManager.h"
-
-#include "UObject/ConstructorHelpers.h"
+#include "Header/MutantAIHeader.h"
 
 EBTNodeResult::Type UBTTask_AttackReadyState::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {
@@ -22,7 +15,7 @@ EBTNodeResult::Type UBTTask_AttackReadyState::ExecuteTask(UBehaviorTreeComponent
 		{
 			int RandomAttack = FMath::RandRange(1, 10);
 
-			//attack1 (ÆĞ¸µ °ø°İ °¡´ÉÇÑ ±â´É) attack2   attack3 (µ¹¸ç °ø°İÇÏ´Â °ø°İ¸ğ¼Ç µ¹¶§ ÆĞ¸µÀÌ °¡´É)
+			//attack1 (íŒ¨ë§ ê³µê²© ê°€ëŠ¥í•œ ê¸°ëŠ¥) attack2   attack3 (ëŒë©° ê³µê²©í•˜ëŠ” ê³µê²©ëª¨ì…˜ ëŒë•Œ íŒ¨ë§ì´ ê°€ëŠ¥)
 			//40%							  30%       30%
 
 			if (RandomAttack <= 4)

@@ -1,19 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTTask_WalkState.h"
+#include "Header/MutantAIHeader.h"
 
-#include "Monster/MutantMonster/MutantAIController.h"
-#include "Monster/MutantMonster/MutantMonster.h"
 
-#include "BehaviorTree/BlackboardComponent.h"
-
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Components/BoxComponent.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "Kismet/KismetMathLibrary.h"
-
-#include "MyCharacter/Warrior/MyCharacter.h"
-#include "Monster/PatrolPoint.h"
 
 void UBTTask_WalkState::InitializeFromAsset(UBehaviorTree & Asset)
 {

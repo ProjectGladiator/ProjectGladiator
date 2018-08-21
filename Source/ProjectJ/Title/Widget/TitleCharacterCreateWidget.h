@@ -4,32 +4,32 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "TitleCharacterSelectWidget.generated.h"
+#include "TitleCharacterCreateWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTJ_API UTitleCharacterSelectWidget : public UUserWidget
+class PROJECTJ_API UTitleCharacterCreateWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UButton* GameStartButton;
+		class UEditableTextBox* NickNameInputBox;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UButton* CharacterDelete;
+		class UButton* NickNameOverlapCheckButton;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UCharacterSelectButton* CharacterButtonOne;
+		class UButton* ChracterCreateButton;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UCharacterSelectButton* CharacterButtonTwo;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UCharacterSelectButton* CharacterButtonThree;
+		class UButton* CancelButton;
 
 	class ATitlePlayerController* PC;
 	virtual void NativeConstruct() override;
-	
+
 	UFUNCTION()
-	void GameStart();
+	void ChracterCreate();
 	UFUNCTION()
-	void MyCharacterDelete();
+	void NickNameOverlap();
+	UFUNCTION()
+	void Cancel();
 };

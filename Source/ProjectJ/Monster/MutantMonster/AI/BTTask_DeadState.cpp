@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTTask_DeadState.h"
-#include "Monster/MutantMonster/MutantAIController.h"
+#include "Header/MutantAIHeader.h"
 
 EBTNodeResult::Type UBTTask_DeadState::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {

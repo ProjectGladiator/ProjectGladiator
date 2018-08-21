@@ -1,18 +1,8 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTTask_JumpAttackState.h"
-#include "Kismet/KismetMathLibrary.h"
-
-#include "Monster/MutantMonster/MutantAIController.h"
-#include "Monster/MutantMonster/MutantMonster.h"
-
-#include "BehaviorTree/BlackboardComponent.h"
-
-#include "GameFramework/CharacterMovementComponent.h"
+#include "Header/MutantAIHeader.h"
 #include "Components/CapsuleComponent.h"
-
-#include "Engine/World.h"
-#include "TimerManager.h"
 
 void UBTTask_JumpAttackState::InitializeFromAsset(UBehaviorTree & Asset)
 {

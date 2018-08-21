@@ -1,13 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTTask_JumpReadyState.h"
-#include "Monster/MutantMonster/MutantAIController.h"
-#include "Monster/MutantMonster/MutantMonster.h"
-
-#include "BehaviorTree/BlackboardComponent.h"
-
-#include "Engine/World.h"
-#include "TimerManager.h"
+#include "Header/MutantAIHeader.h"
 
 EBTNodeResult::Type UBTTask_JumpReadyState::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {
