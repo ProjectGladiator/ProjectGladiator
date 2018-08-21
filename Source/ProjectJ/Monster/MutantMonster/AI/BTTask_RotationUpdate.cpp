@@ -5,7 +5,7 @@
 #include "Monster/MutantMonster/MutantMonster.h"
 
 #include "BehaviorTree/BlackboardComponent.h"
-#include "MyCharacter/MyCharacter.h"
+#include "MyCharacter/Warrior/MyCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 
 void UBTTask_RotationUpdate::InitializeFromAsset(UBehaviorTree & Asset)

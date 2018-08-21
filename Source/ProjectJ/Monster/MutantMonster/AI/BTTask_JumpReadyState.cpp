@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BTTask_JumpReadyState.h"
 #include "Monster/MutantMonster/MutantAIController.h"
@@ -28,8 +28,8 @@ EBTNodeResult::Type UBTTask_JumpReadyState::ExecuteTask(UBehaviorTreeComponent &
 			}
 			else
 			{
-				//Á¡ÇÁ ¾Ö´Ï¸ŞÀÌ¼Ç µµÁß¿¡ Á¡ÇÁ ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ´Ù½Ã ÆÇº°µÇ¼­ 
-				//Á¡ÇÁ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ½ÇÇàÇÏ³ª Á¡ÇÁ ¾Øµå°¡ È£ÃâÀÌ ¾ÈµÇ¾î¼­ ´Ù½Ã ÆÇ´ÜÀÌ ¾ÈµÊ.
+				//ì í”„ ì• ë‹ˆë©”ì´ì…˜ ë„ì¤‘ì— ì í”„ ì• ë‹ˆë©”ì´ì…˜ì´ ë‹¤ì‹œ íŒë³„ë˜ì„œ 
+				//ì í”„ ì• ë‹ˆë©”ì´ì…˜ì„ ì‹¤í–‰í•˜ë‚˜ ì í”„ ì•¤ë“œê°€ í˜¸ì¶œì´ ì•ˆë˜ì–´ì„œ ë‹¤ì‹œ íŒë‹¨ì´ ì•ˆë¨.
 				int JumpRunValue = FMath::RandRange(1, 10);
 
 				if (JumpRunValue <= 3)

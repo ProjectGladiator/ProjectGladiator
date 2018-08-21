@@ -9,7 +9,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 
 #include "Monster/MutantMonster/MutantAIController.h"
-#include "MyCharacter/MyCharacter.h"
+#include "MyCharacter/Warrior/MyCharacter.h"
 
 #include "Components/BoxComponent.h"
 
@@ -103,6 +103,7 @@ void AMutantMonster::Tick(float DeltaTime)
 
 	AMutantAIController* AI = Cast<AMutantAIController>(GetController());
 
+	GLog->Log(FString::Printf(TEXT("%f"), GetCharacterMovement()->Velocity.Size()));
 	if (AI)
 	{
 		AI->BBComponent->SetValueAsEnum("CurrentState", (uint8)CurrentState);
@@ -112,7 +113,7 @@ void AMutantMonster::Tick(float DeltaTime)
 		CurrentFalling = GetCharacterMovement()->IsFalling();
 		AI->BBComponent->SetValueAsBool("CurrentFalling", CurrentFalling);
 		AI->BBComponent->SetValueAsEnum("CurrentAttackState", (uint8)CurrentAttackState);
-		UE_LOG(LogClass, Warning, TEXT("%d"), JumpRunCheckFlag);
+		//UE_LOG(LogClass, Warning, TEXT("%d"), JumpRunCheckFlag);
 		//UE_LOG(LogClass, Warning, TEXT("HP : %0.1f"), CurrentHP);
 		//UE_LOG(LogClass, Warning, TEXT("ParryingFlag : %d"), ParryingFlag);
 		//UE_LOG(LogClass,Warning,TEXT("%f"), GetCharacterMovement()->Velocity.Size());

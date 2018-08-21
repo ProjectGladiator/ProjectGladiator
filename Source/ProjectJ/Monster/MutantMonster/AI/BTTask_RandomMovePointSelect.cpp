@@ -6,7 +6,7 @@
 
 #include "Monster/PatrolPoint.h"
 
-#include "MyCharacter/MyCharacter.h"
+#include "MyCharacter/Warrior/MyCharacter.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 EBTNodeResult::Type UBTTask_RandomMovePointSelect::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)

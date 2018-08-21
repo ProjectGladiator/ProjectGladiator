@@ -12,7 +12,7 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/KismetMathLibrary.h"
 
-#include "MyCharacter/MyCharacter.h"
+#include "MyCharacter/Warrior/MyCharacter.h"
 #include "Monster/PatrolPoint.h"
 
 void UBTTask_WalkState::InitializeFromAsset(UBehaviorTree & Asset)

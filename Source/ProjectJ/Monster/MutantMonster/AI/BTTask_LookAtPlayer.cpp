@@ -7,7 +7,7 @@
 
 #include "BehaviorTree/BlackboardComponent.h"
 
-#include "MyCharacter/MyCharacter.h"
+#include "MyCharacter/Warrior/MyCharacter.h"
 #include "Kismet/KismetMathLibrary.h"
 
 EBTNodeResult::Type UBTTask_LookAtPlayer::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
