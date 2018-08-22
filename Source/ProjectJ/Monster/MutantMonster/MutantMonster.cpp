@@ -9,7 +9,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 
 #include "Monster/MutantMonster/MutantAIController.h"
-#include "MyCharacter/Warrior/MyCharacter.h"
+#include "MyCharacter/MyCharacter.h"
 
 #include "Components/BoxComponent.h"
 

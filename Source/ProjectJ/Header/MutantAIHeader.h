@@ -11,5 +11,5 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "TimerManager.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "MyCharacter/Warrior/MyCharacter.h"
+#include "MyCharacter/MyCharacter.h"
 #include "Monster/PatrolPoint.h"
