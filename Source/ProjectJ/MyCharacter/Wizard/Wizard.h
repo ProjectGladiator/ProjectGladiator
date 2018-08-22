@@ -13,8 +13,8 @@ UCLASS()
 class PROJECTJ_API AWizard : public AMyCharacter
 {
 	GENERATED_BODY()
-	
-	
+
+		AWizard();
 	
 	
 };

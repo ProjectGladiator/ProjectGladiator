@@ -13,8 +13,9 @@ UCLASS()
 class PROJECTJ_API ATanker : public AMyCharacter
 {
 	GENERATED_BODY()
-	
-	
+
+
+	ATanker();
 	
 	
 };
