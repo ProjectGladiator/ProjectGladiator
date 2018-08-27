@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Inventory/Structure/SInventorySlot.h"
+#include "Item/DataTable/ItemDataTable.h"
 #include "Inventory.generated.h"
 
 
@@ -23,7 +25,14 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
 	
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Slots")
+		TArray<FSInventorySlot> Slots;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Slots")
+		int InventoryMaxCount;
+
+	bool IsSlotEmpty(int Index);
+	void GetItemInfo(int Index, FItemDataTable& ItemInfo, bool& IsEmpty);
+	void SearchEmptySlot(bool& Success, int& EmptySlotIndex);
 };
