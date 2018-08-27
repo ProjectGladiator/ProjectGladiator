@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "InventorySlot.h"
+#include "InventorySlotWidget.h"
 #include "Components/Border.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
@@ -11,7 +11,7 @@
 #include "Engine/StreamableManager.h"
 #include "Engine/Texture2D.h"
 
-void UInventorySlot::NativeConstruct()
+void UInventorySlotWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
@@ -20,9 +20,9 @@ void UInventorySlot::NativeConstruct()
 	ItemAmount = Cast<UTextBlock>(GetWidgetFromName(TEXT("ItemAmount")));
 }
 
-void UInventorySlot::UpdateInventorySlot(FSInventorySlot SlotInfo)
+void UInventorySlotWidget::UpdateInventorySlot(FSInventorySlot SlotInfo)
 {
-	
+
 	if (UKismetSystemLibrary::IsValidClass(SlotInfo.ItemClass->StaticClass()))
 	{
 		InventorySlotButton->SetIsEnabled(true);
@@ -32,7 +32,7 @@ void UInventorySlot::UpdateInventorySlot(FSInventorySlot SlotInfo)
 		{
 			FStreamableManager AssetLoader;
 
-			ItemImage->SetBrushFromTexture(AssetLoader.LoadSynchronous<UTexture2D>(InventorySlotInfo.ItemClass->ItemInfo.ItemThumbnail)); 
+			ItemImage->SetBrushFromTexture(AssetLoader.LoadSynchronous<UTexture2D>(InventorySlotInfo.ItemClass->ItemInfo.ItemThumbnail));
 			ItemAmount->SetText(FText::FromString(FString::FromInt(InventorySlotInfo.Amount)));
 		}
 	}
@@ -42,3 +42,7 @@ void UInventorySlot::UpdateInventorySlot(FSInventorySlot SlotInfo)
 		ItemImage->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
+
+
+
+

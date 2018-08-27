@@ -35,4 +35,5 @@ public:
 	bool IsSlotEmpty(int Index);
 	void GetItemInfo(int Index, FItemDataTable& ItemInfo, bool& IsEmpty);
 	void SearchEmptySlot(bool& Success, int& EmptySlotIndex);
+
 };

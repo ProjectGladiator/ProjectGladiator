@@ -5,13 +5,13 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Inventory/Structure/SInventorySlot.h"
-#include "InventorySlot.generated.h"
+#include "InventorySlotWidget.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTJ_API UInventorySlot : public UUserWidget
+class PROJECTJ_API UInventorySlotWidget : public UUserWidget
 {
 	GENERATED_BODY()
 public:
@@ -20,12 +20,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
 		class UImage* ItemImage;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
-		class UTextBlock* ItemAmount;	
+		class UTextBlock* ItemAmount;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ItemInfo")
 		FSInventorySlot InventorySlotInfo;
-	 
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
+		class UInventory* Inventory;
+
 	virtual void NativeConstruct() override;
 
 	void UpdateInventorySlot(FSInventorySlot SlotInfo);
+	
+	
+	
 };

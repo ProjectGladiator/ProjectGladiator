@@ -69,6 +69,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class UCameraComponent* Camera;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		class UInventory* Inventory;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ViewRightClick")
 		bool RightClickFlag;

@@ -3,13 +3,13 @@
 #include "MyCharacter.h"
 #include "GameFramework/SpringArmComponent.h" //스프링암 컴포넌트 헤더파일
 #include "Camera/CameraComponent.h" //카메라 컴포넌트 헤더파일
-#include "UObject/ConstructorHelpers.h"
-#include "Components/SkeletalMeshComponent.h"
+#include "Inventory/Inventory.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Animation/AnimBlueprint.h"
 #include "Particles/ParticleSystem.h"
 #include "TimerManager.h"
 #include "Monster/PatrolPoint.h"
+#include "Engine/World.h"
 
 #include "Title/TitlePlayerController.h"
 
@@ -36,6 +36,8 @@ AMyCharacter::AMyCharacter()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+
+	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 	RightClickFlag = false;
