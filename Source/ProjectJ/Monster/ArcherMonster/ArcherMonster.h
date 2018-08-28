@@ -27,5 +27,28 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// State
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
+		EArcherState CurrentState;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "State")
+		EArcherAnimState CurrentAnimState;
 	
+	// AI
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "AI")
+		class UPawnSensingComponent* PawnSensing;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
+		class UBehaviorTree* BehaviorTree;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
+		class AActor* Target;
+	UFUNCTION()
+		void OnSeeCharacter(APawn * Pawn);
+
+	// etc
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
+		float MaxHP;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
+		float CurrentHP;
+	UFUNCTION()
+		virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
 };
