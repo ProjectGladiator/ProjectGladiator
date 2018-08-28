@@ -36,15 +36,20 @@ AArcherMonster::AArcherMonster()
 		GetMesh()->SetAnimInstanceClass(Archer_AnimBlueprint.Object->GeneratedClass);
 	}
 
-	PawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));
+	PawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));			// 감각 컴포넌트
 
-	AIControllerClass = AArcherAIController::StaticClass();
+	AIControllerClass = AArcherAIController::StaticClass();		// 클래스 설정
 
+	// 메시 위치 변환
+	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
+	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+
+	// PawnSensing 세팅
 	PawnSensing->bHearNoises = false;
 	PawnSensing->bSeePawns = true;
-	PawnSensing->SetPeripheralVisionAngle(40.0f);
-	PawnSensing->SightRadius = 1500.0f;
-	PawnSensing->SensingInterval = 0.1f;
+	PawnSensing->SetPeripheralVisionAngle(45.0f);	// 감지 각도
+	PawnSensing->SightRadius = 2000.0f;				// 감지 거리
+	PawnSensing->SensingInterval = 0.1f;				// 감지 간격
 
 }
 

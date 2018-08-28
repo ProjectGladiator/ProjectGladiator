@@ -14,24 +14,25 @@ UCLASS()
 class PROJECTJ_API UArcherAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
-	
-	//// State
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
-	//	EArcherState CurrentState;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
-	//	EArcherAnimState CurrentAnimState;
-	//
-	//// Data
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	//	float Direction;
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-	//	FRotator LookAtRotator;
+public:
 
-	//// etc
-	//UFUNCTION(BlueprintCallable)
-	//	virtual void NativeInitializeAnimation() override;
-	//UFUNCTION(BlueprintCallable)
-	//	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+	// State
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	EArcherState CurrentState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "State")
+	EArcherAnimState CurrentAnimState;
+		
+	// Data
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	float Direction;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+	FRotator LookAtRotator;
+
+	// etc
+	UFUNCTION(BlueprintCallable)
+		virtual void NativeInitializeAnimation() override;
+	UFUNCTION(BlueprintCallable)
+		virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 	
 };

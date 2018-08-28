@@ -14,7 +14,14 @@ class PROJECTJ_API AArcherAIController : public AAIController
 {
 	GENERATED_BODY()
 	
-	
-	
-	
+public:
+	AArcherAIController();
+
+	// AI
+	UFUNCTION()
+		virtual void Possess(APawn* InPawn) override;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "AI")
+		class UBlackboardComponent* BBComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "AI")
+		class UBehaviorTreeComponent* BTComponent;
 };
