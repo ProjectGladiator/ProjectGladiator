@@ -16,6 +16,8 @@ class PROJECTJ_API UInventorySlotWidget : public UUserWidget
 	GENERATED_BODY()
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
+		int SlotIndex;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
 		class UButton* InventorySlotButton;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data")
 		class UImage* ItemImage;
@@ -32,6 +34,7 @@ public:
 
 	void UpdateInventorySlot(FSInventorySlot SlotInfo);
 	
+	void SlotIndexInit(int Index);
 	
 	
 };

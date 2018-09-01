@@ -43,6 +43,11 @@ void UInventorySlotWidget::UpdateInventorySlot(FSInventorySlot SlotInfo)
 	}
 }
 
+void UInventorySlotWidget::SlotIndexInit(int Index)
+{
+	SlotIndex = Index;
+}
+
 
 
 

@@ -13,7 +13,17 @@ UCLASS()
 class PROJECTJ_API UInventoryWidget : public UUserWidget
 {
 	GENERATED_BODY()
-	
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Inventory")
+		class UInventory* Inventory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		class UUniformGridPanel* InventoryGrid;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		TArray<class UInventorySlotWidget*> InventorySlots;
+	float RowColumnValue;
+	virtual void NativeConstruct() override;
+
+	void CreateInventorySlots();
 	
 	
 	
