@@ -10,7 +10,7 @@ namespace DataProtocol {
 	};
 	// 캐릭터 프로토콜
 	enum PCHARACTERDATA {
-		
+		PCHARACTERDATA_INFO = 0	// 이동 정보
 	};
 	// 인게임 프로토콜
 	enum PGAMEDATA {
