@@ -25,7 +25,7 @@ namespace NetworkClient_main
 		User* GetUser() { return user; };
 
 		void Recvprocess();
-		bool Send();
+		bool Send();										// 패킷 전송
 		bool Initialize();									// Wsa 초기화 // 이벤트 생성
 		bool InitializeSocket();							// 소켓만들기
 		bool Connect();										// Connect
