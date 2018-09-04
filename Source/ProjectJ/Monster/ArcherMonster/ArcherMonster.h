@@ -37,17 +37,27 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "AI")
 		class UPawnSensingComponent* PawnSensing;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
-		class UBehaviorTree* BehaviorTree;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "AI")
 		class AActor* Target;
 	UFUNCTION()
 		void OnSeeCharacter(APawn * Pawn);
 
 	// etc
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
-		float MaxHP;
+		float MaxHP;		// 최대 체력
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
-		float CurrentHP;
+		float CurrentHP;	// 현재 체력
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
+		float Speed;		// 속도
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
+		float STR;		// 공격력
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
+		float DEF;		// 방어력
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DistanceInfo")
+		float DistanceForAttack;			// 공격사거리
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "DistanceInfo")
+		float DistanceForPlayer;			// 타겟과의 거리
+
+
 	UFUNCTION()
 		virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 

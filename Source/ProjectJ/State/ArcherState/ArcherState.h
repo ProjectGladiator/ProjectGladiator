@@ -22,6 +22,7 @@ enum class EArcherAnimState : uint8
 	Walk = 1 UMETA(DisplayName = "Walk"),
 	Run = 2 UMETA(DisplayName = "Run"),
 	Beaten = 3 UMETA(DisplayName = "Beaten"),
-	Attack = 4 UMETA(DisplayName = "Attack")
+	Attack = 4 UMETA(DisplayName = "Attack"),
+	Death = 5 UMETA(DisplayName = "Death")
 };
 
