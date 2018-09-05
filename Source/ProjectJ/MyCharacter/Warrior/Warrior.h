@@ -13,7 +13,8 @@ UCLASS()
 class PROJECTJ_API AWarrior : public AMyCharacter
 {
 	GENERATED_BODY()
-	
+public:
+	AWarrior();
 	
 	
 	

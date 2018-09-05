@@ -1,31 +1,31 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tanker.h"
 
-#include "Components/SkeletalMeshComponent.h"		// ¸Ş½Ã
-#include "UObject/ConstructorHelpers.h"					// °æ·Î Å½»ö
-#include "Animation/AnimBlueprint.h"						// ¾Ö´Ô ºí·çÇÁ¸°Æ®
+#include "Components/SkeletalMeshComponent.h"		// ë©”ì‹œ
+#include "UObject/ConstructorHelpers.h"					// ê²½ë¡œ íƒìƒ‰
+#include "Animation/AnimBlueprint.h"						// ì• ë‹˜ ë¸”ë£¨í”„ë¦°íŠ¸
 
 ATanker::ATanker()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	// ½ºÄÌ·¹Å» ¸Ş½ÃÃ£¾Æ ¸Ş½¬¿¡ ¼¼ÆÃ
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SM_Mesh(TEXT("SkeletalMesh'/Game/Assets/Character/Tanker/dreyar_m_aure.dreyar_m_aure'"));	
+	// ìŠ¤ì¼ˆë ˆíƒˆ ë©”ì‹œì°¾ì•„ ë©”ì‰¬ì— ì„¸íŒ…
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SM_Mesh(TEXT("SkeletalMesh'/Game/Assets/Character/User/Tanker/Mesh/dreyar_m_aure.dreyar_m_aure'"));	
 	if (SM_Mesh.Succeeded()) 
 	{
 		GetMesh()->SetSkeletalMesh(SM_Mesh.Object); 
 	}
 
-	// ¾Ö´Ôºí·çÇÁ¸°Æ® Ã£¾Æ ¸Ş½¬¿¡ ¼¼ÆÃ
-	static ConstructorHelpers::FObjectFinder<UAnimBlueprint>Tanker_AnimBlueprint(TEXT("AnimBlueprint'/Game/Blueprints/MyCharacter/Tanker/Blueprints/TankerAnimBlueprint.TankerAnimBlueprint'"));
+	// ì• ë‹˜ë¸”ë£¨í”„ë¦°íŠ¸ ì°¾ì•„ ë©”ì‰¬ì— ì„¸íŒ…
+	static ConstructorHelpers::FObjectFinder<UAnimBlueprint>Tanker_AnimBlueprint(TEXT("AnimBlueprint'/Game/Blueprints/MyCharacter/User/Tanker/Blueprints/TankerAnimBlueprint.TankerAnimBlueprint'"));
 	if (Tanker_AnimBlueprint.Succeeded())
 	{
 		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 		GetMesh()->SetAnimInstanceClass(Tanker_AnimBlueprint.Object->GeneratedClass);
 	}
 
-	// ¸Ş½ÃÀÇ À§Ä¡, Å©±â, °¢µµ ¼³Á¤
+	// ë©”ì‹œì˜ ìœ„ì¹˜, í¬ê¸°, ê°ë„ ì„¤ì •
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeScale3D(FVector(0.1f, 0.1f, 0.1f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));

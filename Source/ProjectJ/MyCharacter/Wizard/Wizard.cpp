@@ -1,31 +1,31 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Wizard.h"
 
-#include "Components/SkeletalMeshComponent.h"		// ¸Ş½Ã
-#include "UObject/ConstructorHelpers.h"					// °æ·Î Å½»ö
-#include "Animation/AnimBlueprint.h"						// ¾Ö´Ô ºí·çÇÁ¸°Æ®
+#include "Components/SkeletalMeshComponent.h"		// ë©”ì‹œ
+#include "UObject/ConstructorHelpers.h"					// ê²½ë¡œ íƒìƒ‰
+#include "Animation/AnimBlueprint.h"						// ì• ë‹˜ ë¸”ë£¨í”„ë¦°íŠ¸
 
 AWizard::AWizard()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	// ½ºÄÌ·¹Å» ¸Ş½ÃÃ£¾Æ ¸Ş½¬¿¡ ¼¼ÆÃ
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SM_Mesh(TEXT("SkeletalMesh'/Game/Assets/Character/Wizard/pirate_p_konstantinov.pirate_p_konstantinov'"));
+	// ìŠ¤ì¼ˆë ˆíƒˆ ë©”ì‹œì°¾ì•„ ë©”ì‰¬ì— ì„¸íŒ…
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SM_Mesh(TEXT("SkeletalMesh'/Game/Assets/Character/User/Wizard/Mesh/pirate_p_konstantinov.pirate_p_konstantinov'"));
 	if (SM_Mesh.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(SM_Mesh.Object);
 	}
 
-	// ¾Ö´Ôºí·çÇÁ¸°Æ® Ã£¾Æ ¸Ş½¬¿¡ ¼¼ÆÃ
-	static ConstructorHelpers::FObjectFinder<UAnimBlueprint>Wizard_AnimBlueprint(TEXT("AnimBlueprint'/Game/Blueprints/MyCharacter/Wizard/Blueprints/WizardAnimBlueprint.WizardAnimBlueprint'"));
+	// ì• ë‹˜ë¸”ë£¨í”„ë¦°íŠ¸ ì°¾ì•„ ë©”ì‰¬ì— ì„¸íŒ…
+	static ConstructorHelpers::FObjectFinder<UAnimBlueprint>Wizard_AnimBlueprint(TEXT("AnimBlueprint'/Game/Blueprints/MyCharacter/User/Wizard/Blueprints/WizardAnimBlueprint.WizardAnimBlueprint'"));
 	if (Wizard_AnimBlueprint.Succeeded())
 	{
 		GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
 		GetMesh()->SetAnimInstanceClass(Wizard_AnimBlueprint.Object->GeneratedClass);
 	}
 
-	// ¸Ş½ÃÀÇ À§Ä¡, Å©±â, °¢µµ ¼³Á¤
+	// ë©”ì‹œì˜ ìœ„ì¹˜, í¬ê¸°, ê°ë„ ì„¤ì •
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeScale3D(FVector(2.5f, 2.5f, 2.5f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
