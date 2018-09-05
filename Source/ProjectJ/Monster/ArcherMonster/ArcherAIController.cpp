@@ -8,15 +8,15 @@
 
 AArcherAIController::AArcherAIController()
 {
-	BBComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard"));
-	BTComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorTree"));
+	/*BBComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("Blackboard"));
+	BTComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorTree"));*/
 }
 
 void AArcherAIController::Possess(APawn * InPawn)
 {
 	Super::Possess(InPawn);
 
-	AArcherMonster* Archer = Cast<AArcherMonster>(InPawn);
+	/*AArcherMonster* Archer = Cast<AArcherMonster>(InPawn);
 
 	if (Archer)
 	{
@@ -28,5 +28,5 @@ void AArcherAIController::Possess(APawn * InPawn)
 				BTComponent->StartTree(*(Archer->BehaviorTree));
 			}
 		}
-	}
+	}*/
 }

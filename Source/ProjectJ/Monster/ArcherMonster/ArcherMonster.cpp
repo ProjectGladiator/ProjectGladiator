@@ -21,12 +21,12 @@ AArcherMonster::AArcherMonster()
 		GetMesh()->SetSkeletalMesh(ArcherMonster_SkeletalMesh.Object);
 	}
 
-	// 비헤이비어트리
-	static ConstructorHelpers::FObjectFinder<UBehaviorTree>ArcherMonster_BehaviorTree(TEXT("BehaviorTree'/Game/Blueprints/Monster/Archer/Bluepirnts/AI/ArcherBehaviorTree.ArcherBehaviorTree'"));
-	if (ArcherMonster_BehaviorTree.Succeeded())
-	{
-		BehaviorTree = ArcherMonster_BehaviorTree.Object;
-	}
+	//// 비헤이비어트리
+	//static ConstructorHelpers::FObjectFinder<UBehaviorTree>ArcherMonster_BehaviorTree(TEXT("BehaviorTree'/Game/Blueprints/Monster/Archer/Bluepirnts/AI/ArcherBehaviorTree.ArcherBehaviorTree'"));
+	//if (ArcherMonster_BehaviorTree.Succeeded())
+	//{
+	//	BehaviorTree = ArcherMonster_BehaviorTree.Object;
+	//}
 
 	// 애님블루프린트
 	static ConstructorHelpers::FObjectFinder<UAnimBlueprint>Archer_AnimBlueprint(TEXT("AnimBlueprint'/Game/Blueprints/Monster/Mutant/Blueprints/ABP_MutantAnim.ABP_MutantAnim'"));
@@ -51,13 +51,19 @@ AArcherMonster::AArcherMonster()
 	PawnSensing->SightRadius = 2000.0f;				// 감지 거리
 	PawnSensing->SensingInterval = 0.1f;				// 감지 간격
 
+	// MaxHP = 서버로부터 체력 받아옴
+	// CurrentHP = MaxHP;
+	// Speed = 서버로부터 스피드를 받아옴
+	// 공격력 = 서버로부터 공격력을 받아옴
+	// 방어력 = 서버로부터 방어력을 받아옴
+	// DistanceForAttack = 공격사거리 설정
+	// DistanceForPlayer = 0.0f;				// 타겟과의 거리
 }
 
 // Called when the game starts or when spawned
 void AArcherMonster::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
@@ -65,6 +71,60 @@ void AArcherMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// 서버로부터 위치정보 / 회전정보를 받아옴 - 받아오는 위치는 ①, ②
+	// SetActorLocation
+	// SetActorRelativeRotation
+
+	// CurrentHP = 서버로부터 HP를 받아옴
+	// if(CurrentHP <= 0.0f)			CurrentState = EArcherState::Death;
+
+	// DistanceForPlayer = 타겟과의 거리를 구함
+
+	switch (CurrentState)
+	{
+	case EArcherState::Patrol:		// 순찰 상태
+		if (Target)
+		{
+			CurrentState = EArcherState::Chase;					// 추적상태
+			// 속도 설정 - 서버로부터 받아오는것이 아니라면 임의의 수로 설정
+			// 타겟을 바라봄
+		}
+		else
+		{
+			CurrentAnimState = EArcherAnimState::Walk;
+			// 랜덤 위치 구함 --------- ①
+			// 서버로 위치정보 보냄
+		}
+		break;
+	case EArcherState::Chase:		// 추적 상태
+		if (DistanceForPlayer < DistanceForAttack)			// 공격가능 범위에 존재
+		{
+			CurrentState = EArcherState::Battle;				// 전투 상태로 변경
+			Speed = 0.0f;			// 속도 0
+		}
+		else				// 공격가능 범위가 아님
+		{
+			CurrentAnimState = EArcherAnimState::Run;		// 달리기
+			// 타겟의 위치를 보냄 ------ ②
+			// 타겟을 바라봄 
+		}
+		break;
+	case EArcherState::Battle:		// 전투 상태
+		if (DistanceForPlayer > DistanceForAttack)			// 공격가능 범위가 아님
+		{
+			CurrentState = EArcherState::Chase;				// 추적 상태로 변경
+			// 속도 설정 - 서버로부터 받아오는것이 아니라면 임의의 수로 설정
+		}
+		else				// 공격가능 범위에 존재
+		{
+			CurrentAnimState = EArcherAnimState::Attack;		// 공격
+			Speed = 0.0f;			// 속도 0
+		}
+		break;
+	case EArcherState::Dead:		// 죽음 상태
+		CurrentAnimState = EArcherAnimState::Death;
+		break;
+	}
 }
 
 // Called to bind functionality to input
