@@ -4,6 +4,7 @@
 #include "Packet.h"
 #include "UserState.h"
 #include "LoginState.h"
+#include "CharacterState.h"
 
 class User : public Packet
 {
@@ -16,6 +17,7 @@ private:
 	UserState* state;
 
 	LoginState* loginstate;
+	CharacterState* characterstate;
 
 public:
 	User();
@@ -23,6 +25,8 @@ public:
 	~User();
 	UserState* getState();
 	LoginState* getLoginState();
+	CharacterState* getCharacterState();
+
 	void SetState(UserState* _state);
 	void setID(char *id);
 	const char* getID();
