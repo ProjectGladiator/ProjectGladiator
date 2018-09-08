@@ -8,7 +8,7 @@ User::User()
 	ZeroMemory(nickname, IDSIZE);
 
 	money = 100000;
-
+	
 	state = nullptr;
 	login = false;
 }
@@ -38,6 +38,11 @@ UserState* User::getState()
 LoginState * User::getLoginState()
 {
 	return loginstate;
+}
+
+CharacterState * User::getCharacterState()
+{
+	return characterstate;
 }
 
 void User::SetState(UserState * _state)

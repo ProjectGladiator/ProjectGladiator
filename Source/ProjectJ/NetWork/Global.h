@@ -21,8 +21,26 @@ enum PROTOCOL {
 	SERVER_LOGIN,							// 로그인 메뉴 선택				[프로토콜]
 	CLIENT_REQ_LOGIN,						// 로그인 요청					[프로토콜][int][char *][int][char *]
 	SERVER_LOGIN_SUCCESS,					// 로그인 성공 여부				[프로토콜][bool]
-	SERVER_LEAVE,							// 회원탈퇴 결과 메세지
-	SERVER_LOGOUT,							// 로그아웃 결과 메세지
+
+	CLIENT_REQ_CHARACTER_SLOT,				// 클라 케릭터 슬롯 요청		[프로토콜]
+	CLIENT_CHARACTER_ENTER,					// 클라 케릭터 접속				[프로토콜][int]
+	CLIENT_CHARACTER_DELETE,				// 클라 케릭터 삭제				[프로토콜][int]
+	CLIENT_NEW_CHARACTER_MENU,				// 클라 케릭터생성 메뉴			[프로토콜]
+	//CLIENT_REQ_NICK_OVERLAP_CHECK,		// 클라 닉네임 중복				[프로토콜][int][char*]
+	CLIENT_REQ_CHARACTER,					// 클라 케릭터 생성 요청		[프로토콜][int][char*][int] : [nicknamesize][nickname][charactercode]
+	CLIENT_CHARACTER_EXIT,					// 클라 케릭터 생성 취소		[프로토콜]
+	CLIENT_LOGOUT,							// 클라 로그아웃				[프로토콜]
+	CLIENT_LEAVE,							// 클라 회원탈퇴				[프로토콜]
+
+	SERVER_CHARACTER_SLOT_RESULT,			// 서버 케릭터 슬롯 전송		[프로토콜]...
+	SERVER_CHARACTER_ENTER_RESULT,			// 서버 케릭터 접속결과			[프로토콜][bool]
+	SERVER_CHARACTER_DELETE_RESULT,			// 서버 케릭터 삭제 결과		[프로토콜][bool]
+	SERVER_CHARACTER_MENU,					// 서버 케릭터 메뉴 결과		[프로토콜]
+	//SERVER_NICK_OVERLAP_CHECK,			// 서버 닉네임 중복 결과		[프로토콜][bool]
+	SERVER_CHARACTER_RESULT,				// 서버 케릭터 생성 확인 결과	[프로토콜][bool]
+	SERVER_CHARACTER_EXIT_RESULT,			// 서버 케릭터 생성 취소 결과	[프로토콜[
+	SERVER_LEAVE,							// 서버 회원탈퇴 결과			[프로토콜][bool]
+	SERVER_LOGOUT,							// 서버 로그아웃 결과			[프로토콜][bool]
 
 	SERVER_TENDER,							// 입찰 선택
 	CLIENT_TENDER_MENU_CHOICE,				// 입찰메뉴 선택 확인
@@ -83,6 +101,14 @@ enum STATE {
 	RECV_REQ_TENDER_PARTICIPATE, //입찰 요청
 	SEND_TENDER_PARTICIPATE_RESULT, //입찰 요청 결과
 	SEND_TENDER_END_RESULT //입찰 종료 결과 [프로토콜][char* 메세지]
+};
+
+// 직업코드
+enum CHARACTER_JOB
+{
+	TANKER = 1000,
+	WARRIOR = 2000,
+	MAGICIAN = 3000
 };
 
 enum RESULT { 
