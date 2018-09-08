@@ -33,5 +33,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		FItemDataTable ItemInfo;
 
-	
+	UFUNCTION()
+		void OnUse();
 };

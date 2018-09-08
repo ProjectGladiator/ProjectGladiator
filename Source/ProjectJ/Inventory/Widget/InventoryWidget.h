@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -23,7 +23,7 @@ public:
 	float RowColumnValue;
 	virtual void NativeConstruct() override;
 
-	void CreateInventorySlots();
+	void CreateInventorySlots(); //인벤토리 슬롯위젯을 생성해주는 함수
 	
 	
 	

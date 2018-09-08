@@ -13,8 +13,12 @@ UCLASS()
 class PROJECTJ_API APotion : public AMasterItem
 {
 	GENERATED_BODY()
-	
-	
+private:
+
+public:
+	APotion();
+
+	virtual void BeginPlay() override;
 	
 	
 };

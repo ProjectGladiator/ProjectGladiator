@@ -42,7 +42,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int ItemIndex;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString ItemName;
+		FText ItemName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		EItemType ItemType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -60,7 +60,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int Damage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TAssetPtr<class UTexture2D> ItemThumbnail;
+		class UTexture2D* ItemThumbnail;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		TAssetPtr<class UStaticMesh> ItemMesh;
+		class UStaticMesh* ItemMesh;
 };

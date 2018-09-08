@@ -9,6 +9,7 @@
 #include "Inventory/Widget/InventorySlotWidget.h"
 #include "kismet/KismetMathLibrary.h"
 #include "Components/UniformGridSlot.h"
+#include "Inventory/Structure/SInventorySlot.h"
 
 void UInventoryWidget::NativeConstruct()
 {
@@ -33,7 +34,8 @@ void UInventoryWidget::CreateInventorySlots()
 		InventoryGrid->ClearChildren();
 		InventorySlots.Empty();
 		
-		for (int i = 0; i < Inventory->InventoryMaxCount; i++)
+		float Column;
+		for (float i = 0; i < Inventory->InventoryMaxCount; i=i+1.0f)
 		{
 			FStringClassReference InventorySlotWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Inventory/Widget/W_InventorySlot.W_InventorySlot_C'"));
 
@@ -49,8 +51,11 @@ void UInventoryWidget::CreateInventorySlots()
 
 					if (InputGridSlot)
 					{
-					/*	UKismetMathLibrary::Trun
-						i/RowColumnValue*/
+
+						InputGridSlot->SetRow(UKismetMathLibrary::FTrunc(i / RowColumnValue));
+						UKismetMathLibrary::FMod(i, RowColumnValue, Column);
+						InputGridSlot->SetColumn(UKismetMathLibrary::FTrunc(Column));
+						//InventorySlot->UpdateInventorySlot();
 					}
 				}
 			}

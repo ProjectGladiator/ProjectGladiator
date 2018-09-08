@@ -32,7 +32,7 @@ void UInventorySlotWidget::UpdateInventorySlot(FSInventorySlot SlotInfo)
 		{
 			FStreamableManager AssetLoader;
 
-			ItemImage->SetBrushFromTexture(AssetLoader.LoadSynchronous<UTexture2D>(InventorySlotInfo.ItemClass->ItemInfo.ItemThumbnail));
+			ItemImage->SetBrushFromTexture(Cast<UTexture2D>(InventorySlotInfo.ItemClass->ItemInfo.ItemThumbnail));
 			ItemAmount->SetText(FText::FromString(FString::FromInt(InventorySlotInfo.Amount)));
 		}
 	}

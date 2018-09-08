@@ -4,6 +4,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Components/SphereComponent.h"
 #include "Item/DataTable/DataTableComponent.h"
+#include "UObject/ConstructorHelpers.h"
 
 // Sets default values
 AMasterItem::AMasterItem()
@@ -18,6 +19,7 @@ AMasterItem::AMasterItem()
 	Sphere->SetupAttachment(Mesh);
 
 	DTComponent = CreateAbstractDefaultSubobject<UDataTableComponent>(TEXT("DataTableComponent"));
+	
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +33,11 @@ void AMasterItem::BeginPlay()
 void AMasterItem::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+}
+
+void AMasterItem::OnUse()
+{
 
 }
 
