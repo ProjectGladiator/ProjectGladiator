@@ -124,7 +124,19 @@ enum RESULT {
 	RT_JOIN, 					   // 회원가입 성공일때
 	RT_JOIN_FAIL, 				   // 회원가입 실패일때
 	RT_LOGIN, 					   // 로그인 성공일때
-	RT_LOGINFAIL				   // 로그인 실패일때
+	RT_LOGINFAIL,				   // 로그인 실패일때
+
+	// 캐릭터매니저 결과
+	RT_CHARACTER_SLOTRESULT = 200,		// 캐릭터 슬롯결과
+	RT_CHARACTER_ENTERGAME_SUCCESS,		// 게임 접속 성공
+	RT_CHARACTER_ENTERGAME_FAIL,		// 게임 접속 실패
+	RT_CHARACTER_DELETE,				// 캐릭터 삭제
+	RT_CHARACTER_ENTERCREATE, 			// 캐릭터 생성 화면으로 이동
+	RT_CHARACTER_CREATE,				// 캐릭터 생성 
+	RT_CHARACTER_CREATE_SUCCESS,		// 캐릭터 생성 성공
+	RT_CHARACTER_CREATE_FAIL,			// 캐릭터 생성 실패
+	RT_CHARACTER_NICKOVERLAP_TRUE,		// 닉네임 중복
+	RT_CHARACTER_EXIT					// 생성 취소
 };
 
 #define USERCOUNT 200
