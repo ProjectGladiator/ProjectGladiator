@@ -86,6 +86,9 @@ void CharacterManager::Character_Recv_Slot(char * _buf)
 	char* nick;
 	int level;
 
+	memset(jobname, 0, sizeof(jobname));
+	memset(nick, 0, sizeof(nick));
+
 	int size;
 
 	bool check = true;

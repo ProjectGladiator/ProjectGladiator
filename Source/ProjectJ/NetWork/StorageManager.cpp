@@ -99,8 +99,6 @@ void StorageManager::ChangeData(void * data, bool& _type, int& _count, Character
 	char* ptr = (char*)data;
 
 	int* slot_level;
-	char* slot_jobname;
-	char* slot_nick;
 
 	int joblen;
 	char* jobname;
