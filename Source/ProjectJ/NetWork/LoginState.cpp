@@ -61,7 +61,7 @@ bool LoginState::Write(User* _user)
 		break;
 	//case LoginState::TENDER_SEND:
 	//	state = LOGIN_RECV;		// Àü ´Ü°è
-		break;
+	//	break;
 	case LoginState::LEAVE_SEND:
 		state = INIT_RECV;
 		break;
