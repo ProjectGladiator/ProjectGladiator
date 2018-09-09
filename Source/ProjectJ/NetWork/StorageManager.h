@@ -4,6 +4,7 @@
 #include "global.h"
 #include "DataProtocol.h"
 #include <queue>
+
 using namespace std;
 using namespace DataProtocol;
 
@@ -16,6 +17,18 @@ struct PacketData
 	~PacketData()
 	{
 		delete[] data;
+	}
+};
+
+struct CharacterSlot
+{
+	char* name;
+	int* level;
+	char* nick;
+
+	~CharacterSlot()
+	{
+
 	}
 };
 
@@ -42,6 +55,7 @@ public:
 	void PushData(PROTOCOL p, void* data, int data_size);
 	bool GetFront(PacketData*& data);
 	void ChangeData(void* data, bool& type);
+	void ChangeData(void* data, bool& _type,int& _count, CharacterSlot* _slot);
 	bool PopData();
 	
 	// ¼öÁ¤ ÈÄ Æó±â

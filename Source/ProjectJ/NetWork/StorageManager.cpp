@@ -25,6 +25,9 @@ int StorageManager::NProtocoltoDProtocol(int _networkprotocol)
 		return PLOGIN_JOIN_RESULT;
 	case SERVER_LOGIN_SUCCESS:
 		return PLOGIN_LOGIN_RESULT;
+
+	case SERVER_CHARACTER_SLOT_RESULT:
+		return PCHARACTERDATA_SLOT_INFO;
 	}
 
 	return -1;
@@ -89,6 +92,57 @@ bool StorageManager::GetFront(PacketData *& data)
 void StorageManager::ChangeData(void* data, bool& type)
 {
 	type = *(bool*)data;
+}
+
+void StorageManager::ChangeData(void * data, bool& _type, int& _count, CharacterSlot* _slot)
+{
+	char* ptr = (char*)data;
+
+	int* slot_level;
+	char* slot_jobname;
+	char* slot_nick;
+
+	int joblen;
+	char* jobname;
+	int level;
+	int nicklen;
+	char* nick;
+
+	_type = *(bool*)ptr;
+	ptr += sizeof(bool);
+
+	_count = *(int*)ptr;
+	ptr += sizeof(int);
+	
+	CharacterSlot* characterslot = new CharacterSlot[_count];
+
+	for (int i = 0; i < _count; i++)
+	{
+		joblen = *(int*)ptr;
+		ptr += sizeof(int);
+
+		jobname = (char*)ptr;
+		ptr += joblen;
+
+		level = *(int*)ptr;
+		ptr += sizeof(int);
+
+		nicklen = *(int*)ptr;
+		ptr += sizeof(int);
+
+		nick = (char*)ptr;
+		ptr += nicklen;
+
+		slot_level = new int(level);
+
+		memcpy(characterslot[i].name, jobname, joblen);
+		characterslot[i].level = slot_level;
+		memcpy(characterslot[i].nick, nick, nicklen);
+
+	}
+
+	_slot = characterslot;
+
 }
 
 // Front »èÁ¦
