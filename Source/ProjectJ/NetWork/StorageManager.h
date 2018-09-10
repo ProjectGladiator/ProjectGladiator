@@ -10,7 +10,7 @@ using namespace DataProtocol;
 
 struct PacketData
 {
-	int protocol;
+	int protoocl;
 	char* data;
 	int datasize;
 

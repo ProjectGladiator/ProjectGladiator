@@ -77,7 +77,7 @@ void UTitleWidgetLogin::Login()
 		// 로그인체크
 		if (LoginManager::GetInstance()->isLogin())
 		{
-
+			CharacterManager::GetInstance()->Character_Req_Slot();
 			PC->LoginWidgetToggle();
 			PC->CharacterSelectWidgetToggle();			
 		}

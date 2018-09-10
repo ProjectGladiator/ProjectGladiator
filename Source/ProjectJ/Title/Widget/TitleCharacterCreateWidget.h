@@ -17,8 +17,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UEditableTextBox* NickNameInputBox;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UButton* NickNameOverlapCheckButton;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UButton* ChracterCreateButton;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UButton* CancelButton;
@@ -28,8 +26,6 @@ public:
 
 	UFUNCTION()
 	void ChracterCreate();
-	UFUNCTION()
-	void NickNameOverlap();
 	UFUNCTION()
 	void Cancel();
 };

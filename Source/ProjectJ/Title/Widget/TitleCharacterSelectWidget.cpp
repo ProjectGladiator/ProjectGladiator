@@ -5,6 +5,7 @@
 #include "Title/Widget/CharacterSelectButton.h"
 #include "Kismet/GameplayStatics.h"
 #include "Title/TitlePlayerController.h"
+#include "NetWork/StorageManager.h"
 
 void UTitleCharacterSelectWidget::NativeConstruct()
 {
@@ -16,7 +17,6 @@ void UTitleCharacterSelectWidget::NativeConstruct()
 	CharacterButtonOne = Cast<UCharacterSelectButton>(GetWidgetFromName(TEXT("CharacterSelectButtonOne")));
 	CharacterButtonTwo = Cast<UCharacterSelectButton>(GetWidgetFromName(TEXT("CharacterSelectButtonTwo")));
 	CharacterButtonThree = Cast<UCharacterSelectButton>(GetWidgetFromName(TEXT("CharacterSelectButtonThree")));
-	
 	
 	if (GameStartButton)
 	{
@@ -53,4 +53,31 @@ void UTitleCharacterSelectWidget::MyCharacterDelete()
 void UTitleCharacterSelectWidget::MyCharacterCreate()
 {
 
+}
+
+void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
+{
+	bool EmptySlot;
+	int SlotCount;
+	PacketData* Data;
+	CharacterSlot* CharacterSlotInfo;
+
+	if (StorageManager::GetInstance()->GetFront(Data))
+	{
+		if (Data->protoocl == SERVER_CHARACTER_SLOT_RESULT)
+		{
+			StorageManager::GetInstance()->ChangeData(Data->data, EmptySlot, SlotCount,CharacterSlotInfo);
+
+			if (EmptySlot)
+			{
+				CharacterButtonOne->SetVisibility(ESlateVisibility::Hidden);
+				CharacterButtonTwo->SetVisibility(ESlateVisibility::Hidden);
+				CharacterButtonThree->SetVisibility(ESlateVisibility::Hidden);
+			}
+			else
+			{
+
+			}
+		}
+	}
 }

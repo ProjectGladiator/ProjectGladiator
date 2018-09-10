@@ -35,5 +35,6 @@ public:
 	UFUNCTION()
 	void MyCharacterDelete();
 	UFUNCTION()
-		void MyCharacterCreate();
+	void MyCharacterCreate();
+	void MyCharacterSlotUpdate();
 };

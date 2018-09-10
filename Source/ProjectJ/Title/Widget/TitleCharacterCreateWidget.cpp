@@ -11,8 +11,6 @@ void UTitleCharacterCreateWidget::NativeConstruct()
 {
 	NickNameInputBox = Cast<UEditableTextBox>(GetWidgetFromName(TEXT("NickNameInputBox")));
 
-	NickNameOverlapCheckButton = Cast<UButton>(GetWidgetFromName(TEXT("NickNameOverlapCheckButton")));
-
 	ChracterCreateButton = Cast<UButton>(GetWidgetFromName(TEXT("ChracterCreateButton")));
 
 	CancelButton = Cast<UButton>(GetWidgetFromName(TEXT("CancelButton")));
@@ -20,11 +18,6 @@ void UTitleCharacterCreateWidget::NativeConstruct()
 	if (ChracterCreateButton)
 	{
 		ChracterCreateButton->OnClicked.AddDynamic(this, &UTitleCharacterCreateWidget::ChracterCreate);
-	}
-
-	if (NickNameOverlapCheckButton)
-	{
-		NickNameOverlapCheckButton->OnClicked.AddDynamic(this, &UTitleCharacterCreateWidget::NickNameOverlap);
 	}
 
 	if (CancelButton)
@@ -42,14 +35,8 @@ void UTitleCharacterCreateWidget::ChracterCreate()
 		PC->CharacterSelectWidgetToggle();
 		PC->CharacterCreateWidgetToggle();
 	}
-
-	CharacterManager::GetInstance()->Character_Req_Slot();
 }
 
-void UTitleCharacterCreateWidget::NickNameOverlap()
-{
-
-}
 
 void UTitleCharacterCreateWidget::Cancel()
 {
