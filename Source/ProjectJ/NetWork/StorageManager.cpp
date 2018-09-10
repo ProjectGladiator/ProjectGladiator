@@ -28,6 +28,8 @@ int StorageManager::NProtocoltoDProtocol(int _networkprotocol)
 
 	case SERVER_CHARACTER_SLOT_RESULT:
 		return PCHARACTERDATA_SLOT_INFO;
+	case SERVER_CHARACTER_RESULT:
+		return PCHARACTERDATA_CREATE_RESULT;
 	}
 
 	return -1;

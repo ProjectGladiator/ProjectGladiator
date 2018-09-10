@@ -251,6 +251,7 @@ RESULT CharacterManager::CharacterInirRecvResult()
 		}
 		else
 		{
+			StorageManager::GetInstance()->PushData(protocol, (void*)check, sizeof(bool));
 			result = RT_CHARACTER_SLOTRESULT;
 		}
 		
@@ -294,6 +295,7 @@ RESULT CharacterManager::CharacterNewRecvResult()
 	{
 	case SERVER_CHARACTER_RESULT:
 		check = Character_Recv_Create(buf);
+		StorageManager::GetInstance()->PushData(protocol, (void*)check, sizeof(bool));
 		if (check == true)
 		{
 			result = RT_CHARACTER_CREATE_SUCCESS;
