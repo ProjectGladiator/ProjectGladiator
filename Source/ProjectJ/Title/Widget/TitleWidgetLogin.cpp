@@ -10,6 +10,7 @@
 
 #include "NetWork/NetworkManager.h"
 #include "NetWork/LoginManager.h"
+#include "NetWork/CharacterManager.h"
 
 void UTitleWidgetLogin::NativeConstruct()
 {
@@ -73,10 +74,10 @@ void UTitleWidgetLogin::Login()
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
 		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 		
-
 		// 로그인체크
 		if (LoginManager::GetInstance()->isLogin())
 		{
+
 			PC->LoginWidgetToggle();
 			PC->CharacterSelectWidgetToggle();			
 		}

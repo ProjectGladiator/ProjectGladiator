@@ -19,6 +19,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UButton* CharacterDelete;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+		class UButton* CharacterCreate;
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UCharacterSelectButton* CharacterButtonOne;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UCharacterSelectButton* CharacterButtonTwo;
@@ -32,4 +34,6 @@ public:
 	void GameStart();
 	UFUNCTION()
 	void MyCharacterDelete();
+	UFUNCTION()
+		void MyCharacterCreate();
 };

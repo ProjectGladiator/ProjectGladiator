@@ -5,6 +5,7 @@
 #include "Components/EditableTextBox.h"
 #include "Kismet/GameplayStatics.h"
 #include "Title/TitlePlayerController.h"
+#include "NetWork/CharacterManager.h"
 
 void UTitleCharacterCreateWidget::NativeConstruct()
 {
@@ -36,7 +37,13 @@ void UTitleCharacterCreateWidget::NativeConstruct()
 
 void UTitleCharacterCreateWidget::ChracterCreate()
 {
+	if (ChracterCreateButton)
+	{
+		PC->CharacterSelectWidgetToggle();
+		PC->CharacterCreateWidgetToggle();
+	}
 
+	CharacterManager::GetInstance()->Character_Req_Slot();
 }
 
 void UTitleCharacterCreateWidget::NickNameOverlap()

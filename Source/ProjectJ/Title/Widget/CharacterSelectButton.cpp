@@ -35,27 +35,13 @@ void UCharacterSelectButton::CharacterSelect()
 	}
 }
 
-void UCharacterSelectButton::CharacterNickNameInput(const FText & Message)
+void UCharacterSelectButton::CharacterInfoInput(const FText & NickName, const FText & Level, const FText & JobName)
 {
-	if (CharacterNickName)
+	if (CharacterNickName && CharacterLevel && ClassName)
 	{
-		CharacterNickName->SetText(Message);
-	}
-}
-
-void UCharacterSelectButton::CharacterLevelInput(const FText & Message)
-{
-	if (CharacterLevel)
-	{
-		CharacterLevel->SetText(Message);
-	}
-}
-
-void UCharacterSelectButton::CharacterClassNameInput(const FText & Message)
-{
-	if (ClassName)
-	{
-		ClassName->SetText(Message);
+		CharacterNickName->SetText(NickName);
+		CharacterLevel->SetText(Level);
+		ClassName->SetText(JobName);
 	}
 }
 

@@ -32,10 +32,5 @@ public:
 	UFUNCTION()
 	void CharacterSelect();
 
-	void CharacterNickNameInput(const FText& Message);
-
-	void CharacterLevelInput(const FText& Message);
-	
-	void CharacterClassNameInput(const FText& Message);
-	
+	void CharacterInfoInput(const FText& NickName, const FText& Level, const FText& JobName);	
 };
