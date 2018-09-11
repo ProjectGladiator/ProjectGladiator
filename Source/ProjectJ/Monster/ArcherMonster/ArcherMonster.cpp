@@ -21,13 +21,6 @@ AArcherMonster::AArcherMonster()
 		GetMesh()->SetSkeletalMesh(ArcherMonster_SkeletalMesh.Object);
 	}
 
-	//// 비헤이비어트리
-	//static ConstructorHelpers::FObjectFinder<UBehaviorTree>ArcherMonster_BehaviorTree(TEXT("BehaviorTree'/Game/Blueprints/Monster/Archer/Bluepirnts/AI/ArcherBehaviorTree.ArcherBehaviorTree'"));
-	//if (ArcherMonster_BehaviorTree.Succeeded())
-	//{
-	//	BehaviorTree = ArcherMonster_BehaviorTree.Object;
-	//}
-
 	// 애님블루프린트
 	static ConstructorHelpers::FObjectFinder<UAnimBlueprint>Archer_AnimBlueprint(TEXT("AnimBlueprint'/Game/Blueprints/Monster/Mutant/Blueprints/ABP_MutantAnim.ABP_MutantAnim'"));
 	if (Archer_AnimBlueprint.Succeeded())
@@ -71,29 +64,55 @@ void AArcherMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// 서버로부터 위치정보 / 회전정보를 받아옴 - 받아오는 위치는 ①, ②
-	// SetActorLocation
-	// SetActorRelativeRotation
+	// 서버로부터 현재 상태를 받는다
 
-	// CurrentHP = 서버로부터 HP를 받아옴
-	// if(CurrentHP <= 0.0f)			CurrentState = EArcherState::Death;
+	// 타겟이 존재할 때, 타겟과의 거리를 구함
+	if(Target)	
+		DistanceForPlayer = FVector::Distance(GetActorLocation(), Target->GetActorLocation());
 
-	// DistanceForPlayer = 타겟과의 거리를 구함
 
 	switch (CurrentState)
 	{
-	case EArcherState::Patrol:		// 순찰 상태
+	case EArcherState::Idle:			// 아이들상태
+
+		// 시간을 랜덤으로 구해서 서버로 전달
+		// 시간만큼 타이머로 대기
+
 		if (Target)
+		{
+			// 서버로 사실 전달
+			// 서버로 상태 전달
+			// 타이머 중단
+			// 전투 상태로 변환
+		}
+		else
+		{
+			// 서버로 상태 전달
+			// 순찰 상태로 변환
+		}
+
+		break;
+	case EArcherState::Patrol:		// 순찰 상태
+		if (Target)			// 타겟 발견
 		{
 			CurrentState = EArcherState::Chase;					// 추적상태
 			// 속도 설정 - 서버로부터 받아오는것이 아니라면 임의의 수로 설정
 			// 타겟을 바라봄
 		}
-		else
+		else					// 타겟 미발견(순찰)
 		{
 			CurrentAnimState = EArcherAnimState::Walk;
-			// 랜덤 위치 구함 --------- ①
-			// 서버로 위치정보 보냄
+
+			// 랜덤위치가 없으면
+			// { 랜덤위치 구함 } 
+
+			// 서버로 현재 위치정보 보냄
+
+			// 랜덤위치로 이동
+
+			// 랜덤위치에 도달하면
+			// { 랜덤위치 없음
+			// 아이들상태로 변환 }
 		}
 		break;
 	case EArcherState::Chase:		// 추적 상태
@@ -105,8 +124,13 @@ void AArcherMonster::Tick(float DeltaTime)
 		else				// 공격가능 범위가 아님
 		{
 			CurrentAnimState = EArcherAnimState::Run;		// 달리기
-			// 타겟의 위치를 보냄 ------ ②
+
+			// 서버로 타겟의 위치를 보냄
+			// 서버로 현재 위치를 보냄
+
 			// 타겟을 바라봄 
+
+			// 타겟으로 이동
 		}
 		break;
 	case EArcherState::Battle:		// 전투 상태
@@ -123,6 +147,11 @@ void AArcherMonster::Tick(float DeltaTime)
 		break;
 	case EArcherState::Dead:		// 죽음 상태
 		CurrentAnimState = EArcherAnimState::Death;
+
+		// Death 애니메이션으로 변환
+		// 임의의 수만큼 타이머로 대기
+		// 삭제
+
 		break;
 	}
 }
@@ -136,6 +165,7 @@ void AArcherMonster::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AArcherMonster::OnSeeCharacter(APawn * Pawn)
 {
+	// 발견된 폰을 Target으로 지정
 }
 
 float AArcherMonster::TakeDamage(float Damage, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
