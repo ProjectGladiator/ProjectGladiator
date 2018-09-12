@@ -4,17 +4,16 @@ UserManager* UserManager::Instance = nullptr;
 
 UserManager::UserManager()
 {
-	count = 0;
-}
 
+}
 UserManager::~UserManager()
 {
-	for (int idx = 0; idx < count; idx++)
+	User* target = nullptr;
+
+	for (std::list<User*>::iterator i = ConnectUserlist.begin(); i != ConnectUserlist.end(); ++i)
 	{
-		if (list[idx] != nullptr)
-		{
-			delete list[idx];
-		}
+		target = (*i);
+		delete target;
 	}
 }
 
@@ -48,83 +47,79 @@ void UserManager::EndManager()
 
 }
 
-User* UserManager::addUser(SOCKET sock)
+
+
+User* UserManager::addUser(SOCKET _sock)
 {
 	User* newUser = nullptr;
 
-	if (count < CLIENTCOUNT &&
-		sock != SOCKET_ERROR)
+	if (ConnectUserlist.size() < CLIENTCOUNT &&
+		_sock != SOCKET_ERROR)
 	{
 		SOCKADDR_IN addr;
 		int addrlen = sizeof(addr);
 
-		getpeername(sock, (SOCKADDR*)&addr, &addrlen);
+		getpeername(_sock, (SOCKADDR*)&addr, &addrlen);
 
-		newUser = new User(sock, addr);
-		list[count++] = newUser;
+		newUser = new User(_sock, addr);
+		ConnectUserlist.push_back(newUser);
 	}
 	return newUser;
 }
 
-void UserManager::removeUser(User* user)
+void UserManager::removeUser(User* _user)
 {
-	int idx = 0;
-	//search and delete
-	while (idx < count)
-	{
-		if (list[idx] == user)
-		{
-			delete list[idx];
-			list[idx] = nullptr;
-			count--;
-
-			//shift
-			while (idx < count)
-			{
-				list[idx] = list[idx + 1];
-				idx++;
-			}
-
-			list[idx] = nullptr;
-
-			break;
-		}
-
-		idx++;
-	}
-	
+	// 유저 찾아서 삭제
+	ConnectUserlist.remove(_user);
 }
 
-User* UserManager::getUser(SOCKET sock)
-{
-	User* target = nullptr;
-	
-	//search
-	for (int idx = 0; idx < count; idx++)
-	{
-		if (list[idx]->getSocket() == sock)
-		{
-			target = list[idx];
-			break;
-		}
-	}
-
-	return target;
-}
-
-User* UserManager::getUser(char* id)
+User* UserManager::getUser(SOCKET _sock)
 {
 	User* target = nullptr;
 
-	//search
-	for (int idx = 0; idx < count; idx++)
+	for (std::list<User*>::iterator i = ConnectUserlist.begin(); i != ConnectUserlist.end(); ++i)
 	{
-		if (!strcmp(list[idx]->getID(), id))
+		target = (*i);
+		if (target->getSocket() == _sock)
 		{
-			target = list[idx];
 			break;
 		}
 	}
-
 	return target;
+}
+
+User* UserManager::getUser(char* _id)
+{
+	User* target = nullptr;
+
+	for (std::list<User*>::iterator i = ConnectUserlist.begin(); i != ConnectUserlist.end(); ++i)
+	{
+		target = (*i);
+		if (target->getID() == _id)
+		{
+			break;
+		}
+	}
+	return target;
+}
+
+void UserManager::startSearch()
+{
+	// 리스트 시작부 세팅
+	save = ConnectUserlist.begin();
+}
+
+bool UserManager::searchData(User *& _user)
+{
+	// 유저 하나씩 꺼내서 save에 넣음
+	if (save != ConnectUserlist.end())
+	{
+		_user = *save;
+		++save;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
