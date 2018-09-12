@@ -5,6 +5,8 @@
 #include "Title/Widget/CharacterSelectButton.h"
 #include "Kismet/GameplayStatics.h"
 #include "Title/TitlePlayerController.h"
+#include "NetWork/NetworkManager.h"
+#include "NetWork/CharacterManager.h"
 #include "NetWork/StorageManager.h"
 
 void UTitleCharacterSelectWidget::NativeConstruct()
@@ -34,6 +36,7 @@ void UTitleCharacterSelectWidget::NativeConstruct()
 	}
 	
 	PC = Cast<ATitlePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
 }	
 
 void UTitleCharacterSelectWidget::GameStart()
@@ -52,7 +55,12 @@ void UTitleCharacterSelectWidget::MyCharacterDelete()
 
 void UTitleCharacterSelectWidget::MyCharacterCreate()
 {
+	CharacterManager::GetInstance()->Character_Req_New_Character();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+	NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
+	PC->CharacterCreateWidgetToggle();
+	PC->CharacterSelectWidgetToggle();
 }
 
 void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
@@ -60,15 +68,15 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 	bool EmptySlot;
 	int SlotCount;
 	PacketData* Data;
-	CharacterSlot* CharacterSlotInfo;
+	CharacterSlot* CharacterSlotInfo = nullptr;
 
 	if (StorageManager::GetInstance()->GetFront(Data))
 	{
-		if (Data->protoocl == SERVER_CHARACTER_SLOT_RESULT)
+		if (Data->protocol == PCHARACTERDATA_SLOT_INFO)
 		{
 			StorageManager::GetInstance()->ChangeData(Data->data, EmptySlot, SlotCount,CharacterSlotInfo);
 
-			if (EmptySlot)
+			if (!EmptySlot)
 			{
 				CharacterButtonOne->SetVisibility(ESlateVisibility::Hidden);
 				CharacterButtonTwo->SetVisibility(ESlateVisibility::Hidden);

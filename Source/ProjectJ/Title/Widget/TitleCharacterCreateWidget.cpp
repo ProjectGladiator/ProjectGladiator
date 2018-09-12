@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Title/TitlePlayerController.h"
 #include "NetWork/CharacterManager.h"
+#include "NetWork/NetworkManager.h"
 
 void UTitleCharacterCreateWidget::NativeConstruct()
 {
@@ -42,6 +43,10 @@ void UTitleCharacterCreateWidget::Cancel()
 {
 	if (PC)
 	{
+		CharacterManager::GetInstance()->Character_Req_New_Character();
+		NetworkClient_main::NetworkManager::GetInstance()->Send();
+		NetworkClient_main::NetworkManager::GetInstance()->Wait();
+
 		PC->CharacterCreateWidgetToggle();
 		PC->CharacterSelectWidgetToggle();
 	}
