@@ -104,14 +104,6 @@ enum STATE {
 	SEND_TENDER_END_RESULT //입찰 종료 결과 [프로토콜][char* 메세지]
 };
 
-// 직업코드
-enum CHARACTER_JOB
-{
-	TANKER = 1000,
-	WARRIOR = 2000,
-	MAGICIAN = 3000
-};
-
 enum RESULT { 
 	// 로그인매니저 결과
 	RT_LOGINMENU = 100, 		   // 로그인 매뉴
@@ -148,6 +140,7 @@ enum RESULT {
 #define NICKNAMESIZE 20
 #define PRODUCT_NAMESIZE 50
 #define ENCRYPT_KEY 951324896
-#define SERVERIP "14.36.166.64"
+#define SERVERIP "127.0.0.1"
+//#define SERVERIP "14.36.166.64"
 
 #endif

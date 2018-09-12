@@ -180,10 +180,19 @@ void CharacterManager::Character_Req_Character(char * _nick, int _code)
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_REQ_CHARACTER, buf, size);
 }
 
-//void CharacterManager::Character_Choice(int _select)
-//{
-//
-//}
+void CharacterManager::Character_Choice(int _select)
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+	char* ptr = buf;
+
+	int size = sizeof(int);
+
+	memcpy(ptr, &_select, sizeof(int));
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_CHARACTER_EXIT, buf, 0);
+
+}
 
 void CharacterManager::Character_Exit()
 {
@@ -251,7 +260,7 @@ RESULT CharacterManager::CharacterInirRecvResult()
 		}
 		else
 		{
-			StorageManager::GetInstance()->PushData(protocol, (void*)check, sizeof(bool));
+			StorageManager::GetInstance()->PushData(protocol, (void*)&check, sizeof(bool));
 			result = RT_CHARACTER_SLOTRESULT;
 		}
 		

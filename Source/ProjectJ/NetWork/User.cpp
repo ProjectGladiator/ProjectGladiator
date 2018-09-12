@@ -93,5 +93,6 @@ void User::setmoney(int money)
 void User::InitState()
 {
 	loginstate = new LoginState();
+	characterstate = new CharacterState();
 	state = loginstate;
 }

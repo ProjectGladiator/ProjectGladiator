@@ -111,6 +111,11 @@ void StorageManager::ChangeData(void * data, bool& _type, int& _count, Character
 	_type = *(bool*)ptr;
 	ptr += sizeof(bool);
 
+	if (_type == false)
+	{
+		return;
+	}
+
 	_count = *(int*)ptr;
 	ptr += sizeof(int);
 	

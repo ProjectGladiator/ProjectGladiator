@@ -31,6 +31,8 @@ bool CharacterState::Read(User * _user)
 		{
 			state = CHARACTER_REQ_RECV;
 		}
+		break;
+
 	case CharacterState::CHARACTER_REQ_RECV:
 		result = charactermanager->CharacterNewRecvResult();
 		if (result == RT_CHARACTER_CREATE_SUCCESS)
@@ -45,6 +47,7 @@ bool CharacterState::Read(User * _user)
 		{
 			state = CHARACTER_INIT_RECV;
 		}
+		break;
 	}
 	return true;
 }

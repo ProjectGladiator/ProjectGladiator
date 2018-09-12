@@ -14,6 +14,8 @@ bool LoginState::Read(User* _user)
 		result = loginmanager->InitRecvResult();
 		if (result == RT_LOGIN)
 		{
+			state = INIT_RECV;
+			_user->SetState(_user->getCharacterState());
 			// 로그인 성공
 		}
 		else if(result == RT_LOGINFAIL)
