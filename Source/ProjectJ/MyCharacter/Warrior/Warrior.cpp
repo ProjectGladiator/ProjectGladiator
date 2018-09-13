@@ -1,8 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Warrior.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Animation/AnimBlueprint.h"
+#include "Components/CapsuleComponent.h"
 
 AWarrior::AWarrior()
 {
@@ -12,6 +14,34 @@ AWarrior::AWarrior()
 	{
 		GetMesh()->SetSkeletalMesh(Warrior_SK_Mesh.Object);
 	}
+		
+	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
+	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+
+	static ConstructorHelpers::FObjectFinder<UClass>ABP_Warrior(TEXT("AnimBlueprint'/Game/Blueprints/MyCharacter/User/Warrior/Blueprints/ABP_Warrior.ABP_Warrior_C'"));
+
+	if (ABP_Warrior.Succeeded()) 
+	{
+		UClass* WarriorAnimBlueprint = ABP_Warrior.Object;
+
+		if (WarriorAnimBlueprint)
+		{
+			
+			GetMesh()->SetAnimationMode(EAnimationMode::AnimationBlueprint);
+			GetMesh()->SetAnimInstanceClass(WarriorAnimBlueprint); 
+		}
+	}
+}
+
+void AWarrior::BeginPlay()
+{
+	Super::BeginPlay();
+	OnClicked.AddDynamic(this, &AWarrior::WarriorMouseClicked);
+}
+
+void AWarrior::WarriorMouseClicked(AActor* TouchedActor, FKey ButtonPressed)
+{
+	GLog->Log(FString::Printf(TEXT("마우스 클릭")));
 }
 
 

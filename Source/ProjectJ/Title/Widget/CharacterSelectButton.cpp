@@ -4,7 +4,7 @@
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
-#include "Title/TitlePlayerController.h"
+#include "ChracterCreateSelect/ChracterCreateSelectPC.h"
 
 void UCharacterSelectButton::NativeConstruct()
 {
@@ -23,7 +23,7 @@ void UCharacterSelectButton::NativeConstruct()
 		CharacterSelectButton->OnClicked.AddDynamic(this, &UCharacterSelectButton::CharacterSelect);
 	}
 
-	PC = Cast<ATitlePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
 void UCharacterSelectButton::CharacterSelect()

@@ -21,7 +21,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UButton* CancelButton;
 
-	class ATitlePlayerController* PC;
+	class AChracterCreateSelectPC* PC;
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()

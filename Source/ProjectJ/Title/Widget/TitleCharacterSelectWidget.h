@@ -27,7 +27,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UCharacterSelectButton* CharacterButtonThree;
 
-	class ATitlePlayerController* PC;
+	class AChracterCreateSelectPC* PC;
 	virtual void NativeConstruct() override;
 	
 	UFUNCTION()

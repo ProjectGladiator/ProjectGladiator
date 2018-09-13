@@ -64,30 +64,6 @@ void ATitlePlayerController::BeginPlay()
 		OkWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
-	FStringClassReference CharacterSelectWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterSelect.W_CharacterSelect_C'"));
-
-	//앞에서 읽어 들인 CharacterSelectWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
-	if (UClass* MyWidgetClass = CharacterSelectWidgetClass.TryLoadClass<UUserWidget>())
-	{
-		//MyWidgetClass를 토대로 CharacterSelectWidget을 생성한다.
-		CharacterSelectWidget = Cast<UTitleCharacterSelectWidget>(CreateWidget<UUserWidget>(this, MyWidgetClass));
-
-		CharacterSelectWidget->AddToViewport(); //화면에 붙인다.
-		CharacterSelectWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
-	}
-
-	FStringClassReference ChracterCreateWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterCreate.W_CharacterCreate_C'"));
-
-	//앞에서 읽어 들인 ChracterCreateWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
-	if (UClass* MyWidgetClass = ChracterCreateWidgetClass.TryLoadClass<UUserWidget>())
-	{
-		//MyWidgetClass를 토대로 ChracterCreateWidget을 생성한다.
-		ChracterCreateWidget = Cast<UTitleCharacterCreateWidget>(CreateWidget<UUserWidget>(this, MyWidgetClass));
-
-		ChracterCreateWidget->AddToViewport(); //화면에 붙인다.
-		ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
-	}
-
 	bShowMouseCursor = true; //마우스 커서가 화면에 보이게 해준다.
 	SetInputMode(FInputModeUIOnly()); //게임의 모드를 UIOnly로 설정한다.
 
@@ -157,36 +133,5 @@ void ATitlePlayerController::OkWidgetToggle(const FText& Message)
 		OkWidget->SetErrorMessage(Message);
 		//확인 위젯을 보여준다.
 		OkWidget->SetVisibility(ESlateVisibility::Visible);
-	}
-}
-
-void ATitlePlayerController::CharacterSelectWidgetToggle()
-{
-	if (CharacterSelectWidget)
-	{
-		if (CharacterSelectWidget->GetVisibility() == ESlateVisibility::Hidden)
-		{
-			CharacterSelectWidget->MyCharacterSlotUpdate();
-			CharacterSelectWidget->SetVisibility(ESlateVisibility::Visible);
-		}
-		else
-		{
-			CharacterSelectWidget->SetVisibility(ESlateVisibility::Hidden);
-		}
-	}
-}
-
-void ATitlePlayerController::CharacterCreateWidgetToggle()
-{
-	if (ChracterCreateWidget)
-	{
-		if (ChracterCreateWidget->GetVisibility() == ESlateVisibility::Hidden)
-		{
-			ChracterCreateWidget->SetVisibility(ESlateVisibility::Visible);
-		}
-		else
-		{
-			ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden);
-		}
 	}
 }

@@ -22,18 +22,11 @@ public:
 		class UWidgetCancel* CancelWidget; //에러 다시시도,취소 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
 		class UWidgetOk* OkWidget; //에러 확인 위젯
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
-		class UTitleCharacterSelectWidget* CharacterSelectWidget;//캐릭터 선택 위젯
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
-		class UTitleCharacterCreateWidget* ChracterCreateWidget; //캐릭터 생성 위젯
 	
-
 	virtual void BeginPlay() override;
 
 	void UserInWidgetToggle(); //회원가입 위젯 보여주기,끄기
 	void LoginWidgetToggle(); //로그인 위젯 보여주기,끄기
 	void CancelWidgetToggle(const FText& Message); //에러 다시시도,취소 위젯 보여주기
 	void OkWidgetToggle(const FText& Message); //에러 확인 위젯 보여주기
-	void CharacterSelectWidgetToggle();
-	void CharacterCreateWidgetToggle();
 };

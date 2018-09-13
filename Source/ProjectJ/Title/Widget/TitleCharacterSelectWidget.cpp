@@ -4,7 +4,7 @@
 #include "Components/Button.h"
 #include "Title/Widget/CharacterSelectButton.h"
 #include "Kismet/GameplayStatics.h"
-#include "Title/TitlePlayerController.h"
+#include "ChracterCreateSelect/ChracterCreateSelectPC.h"
 #include "NetWork/NetworkManager.h"
 #include "NetWork/CharacterManager.h"
 #include "NetWork/StorageManager.h"
@@ -35,7 +35,7 @@ void UTitleCharacterSelectWidget::NativeConstruct()
 		CharacterCreate->OnClicked.AddDynamic(this, &UTitleCharacterSelectWidget::MyCharacterCreate);
 	}
 	
-	PC = Cast<ATitlePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
 }	
 
@@ -55,12 +55,13 @@ void UTitleCharacterSelectWidget::MyCharacterDelete()
 
 void UTitleCharacterSelectWidget::MyCharacterCreate()
 {
-	CharacterManager::GetInstance()->Character_Req_New_Character();
-	NetworkClient_main::NetworkManager::GetInstance()->Send();
-	NetworkClient_main::NetworkManager::GetInstance()->Wait();
+	//CharacterManager::GetInstance()->Character_Req_New_Character();
+	//NetworkClient_main::NetworkManager::GetInstance()->Send();
+	//NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
 	PC->CharacterCreateWidgetToggle();
 	PC->CharacterSelectWidgetToggle();
+	PC->ToCharacterCreate();
 }
 
 void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()

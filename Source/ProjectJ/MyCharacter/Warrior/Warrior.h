@@ -16,6 +16,10 @@ class PROJECTJ_API AWarrior : public AMyCharacter
 public:
 	AWarrior();
 	
+	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void WarriorMouseClicked(AActor * TouchedActor, FKey ButtonPressed);
 	
 	
 };

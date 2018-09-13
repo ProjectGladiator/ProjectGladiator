@@ -25,7 +25,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UTextBlock* ClassName;
 
-	class ATitlePlayerController* PC;
+	class AChracterCreateSelectPC* PC;
 
 	virtual void NativeConstruct() override;
 
