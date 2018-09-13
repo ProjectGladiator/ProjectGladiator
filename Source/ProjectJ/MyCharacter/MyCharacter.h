@@ -62,6 +62,9 @@ public:
 	UFUNCTION()
 	void JumpStart();
 
+	UFUNCTION()
+	void LeftClick();
+
 	void AttackPointSet();
 
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
@@ -87,4 +90,8 @@ public:
 		float CurrentHP;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttackPoint")
 		TArray<class APatrolPoint*> AttackPoints;
+
+	class AChracterCreateSelectPC* CharacterCreateSelectPC;
+
+	int Level;
 };

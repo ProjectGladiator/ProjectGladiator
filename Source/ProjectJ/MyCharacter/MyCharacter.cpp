@@ -10,8 +10,13 @@
 #include "TimerManager.h"
 #include "Monster/PatrolPoint.h"
 #include "Engine/World.h"
+#include "kismet/GameplayStatics.h"
 
+#include "ChracterCreateSelect/ChracterCreateSelectPC.h"
 #include "Title/TitlePlayerController.h"
+#include "Warrior/Warrior.h"
+#include "Tanker/Tanker.h"
+#include "Wizard/Wizard.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -45,6 +50,8 @@ AMyCharacter::AMyCharacter()
 	
 	MaxHP = 100.0f;
 	CurrentHP = MaxHP;
+	Level = 0;
+
 	Tags.Add(TEXT("Character"));
 }
 
@@ -54,6 +61,8 @@ void AMyCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	AttackPointSet();
+
+	CharacterCreateSelectPC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
 // Called every frame
@@ -86,7 +95,7 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("ToRun"), IE_Pressed, this, &AMyCharacter::ToRun);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AMyCharacter::JumpStart);
-	
+	PlayerInputComponent->BindAction(TEXT("LeftClick"), IE_Pressed, this, &AMyCharacter::LeftClick);
 }
 
 void AMyCharacter::MoveForward(float Value)
@@ -176,6 +185,48 @@ void AMyCharacter::ToRun()
 void AMyCharacter::JumpStart()
 {
 	Jump();
+}
+
+void AMyCharacter::LeftClick()
+{
+	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+	FHitResult HitResult;
+	ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery3); //Pawn타입으로 결정
+
+	if (CharacterCreateSelectPC)
+	{
+		if (CharacterCreateSelectPC->GetHitResultUnderCursorForObjects(ObjectTypes, true, HitResult))
+		{
+			AWarrior* Character = Cast<AWarrior>(HitResult.Actor);
+
+			if (Character)
+			{
+				GLog->Log(FString::Printf(TEXT("Warrior LeftClick")));
+			}
+			else
+			{
+				ATanker* Character = Cast<ATanker>(HitResult.Actor);
+
+				if (Character)
+				{
+					GLog->Log(FString::Printf(TEXT("Tanker LeftClick")));
+				}
+				else
+				{
+					AWizard* Character = Cast<AWizard>(HitResult.Actor);
+
+					if (Character)
+					{
+						GLog->Log(FString::Printf(TEXT("Wizard LeftClick")));
+					}
+					else
+					{
+						GLog->Log(FString::Printf(TEXT("캐릭터 클릭하지 않음")));
+					}
+				}
+			}
+		}	
+	}	
 }
 
 void AMyCharacter::AttackPointSet()

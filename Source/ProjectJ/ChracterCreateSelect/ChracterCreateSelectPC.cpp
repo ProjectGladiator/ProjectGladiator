@@ -64,7 +64,8 @@ void AChracterCreateSelectPC::BeginPlay()
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
 	ClickEventKeys.Add(EKeys::LeftMouseButton); 
-	ClickEventKeys.Add(EKeys::RightMouseButton);
+	DefaultClickTraceChannel = ECollisionChannel::ECC_Pawn;
+
 	//SetInputMode(FInputModeGameAndUI());
 	SetViewTargetWithBlend(CharacterSelectCamera, 0, EViewTargetBlendFunction::VTBlend_Linear, 0, false);
 }

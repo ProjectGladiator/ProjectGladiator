@@ -36,12 +36,20 @@ AWarrior::AWarrior()
 void AWarrior::BeginPlay()
 {
 	Super::BeginPlay();
+	GLog->Log(FString::Printf(TEXT("WarriorClick")));
 	OnClicked.AddDynamic(this, &AWarrior::WarriorMouseClicked);
 }
 
 void AWarrior::WarriorMouseClicked(AActor* TouchedActor, FKey ButtonPressed)
 {
-	GLog->Log(FString::Printf(TEXT("마우스 클릭")));
+	if (ButtonPressed == EKeys::LeftMouseButton)
+	{
+		GLog->Log(FString::Printf(TEXT("마우스 클릭")));
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("클릭")));
+	}
 }
 
 
