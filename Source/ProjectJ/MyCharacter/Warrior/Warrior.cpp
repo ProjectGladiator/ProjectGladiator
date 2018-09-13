@@ -41,7 +41,7 @@ void AWarrior::BeginPlay()
 }
 
 void AWarrior::WarriorMouseClicked(AActor* TouchedActor, FKey ButtonPressed)
-{
+{	
 	if (ButtonPressed == EKeys::LeftMouseButton)
 	{
 		GLog->Log(FString::Printf(TEXT("마우스 클릭")));
