@@ -224,7 +224,7 @@ RESULT LoginManager::JoinRecvResult()
 		break;
 	case SERVER_JOIN_SUCCESS:
 		result = Join(buf);
-		StorageManager::GetInstance()->PushData(protocol, (void*)result, sizeof(bool));
+		StorageManager::GetInstance()->PushData(protocol, (void*)&result, sizeof(bool));
 		if (result == true)
 		{
 			// 회원가입 성공일때
