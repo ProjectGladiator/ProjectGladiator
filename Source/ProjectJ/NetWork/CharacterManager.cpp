@@ -154,7 +154,7 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 
 	}
 	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&data, size);
-
+	return true;
 }
 
 void CharacterManager::Character_Req_New_Character()
