@@ -96,7 +96,7 @@ void StorageManager::ChangeData(void* data, bool& type)
 	type = *(bool*)data;
 }
 
-void StorageManager::ChangeData(void * data, bool& _type, int& _count, CharacterSlot* _slot)
+void StorageManager::ChangeData(void * data, bool& _type, int& _count, CharacterSlot*& _slot)
 {
 	char* ptr = (char*)data;
 
@@ -121,6 +121,8 @@ void StorageManager::ChangeData(void * data, bool& _type, int& _count, Character
 	
 	CharacterSlot* characterslot = new CharacterSlot[_count];
 
+	memset(characterslot, 0, sizeof(characterslot));
+
 	for (int i = 0; i < _count; i++)
 	{
 		joblen = *(int*)ptr;
@@ -138,16 +140,23 @@ void StorageManager::ChangeData(void * data, bool& _type, int& _count, Character
 		nick = (char*)ptr;
 		ptr += nicklen;
 
-		slot_level = new int(level);
+	    slot_level = new int(level);
 
-		memcpy(characterslot[i].name, jobname, joblen);
+		char* name = new char[joblen];
+		memcpy(name, jobname, joblen);
+		characterslot[i].name = name;
+
+		char* nickname = new char[nicklen];
+		memcpy(nickname, nick, nicklen);
+		characterslot[i].nick = nickname;
+
+		// memcpy(characterslot[i].name, jobname, joblen);
 		characterslot[i].level = slot_level;
-		memcpy(characterslot[i].nick, nick, nicklen);
-
+		// memcpy(characterslot[i].nick, nick, nicklen);
 	}
 
-	_slot = characterslot;
 
+	_slot = characterslot;
 }
 
 // Front »èÁ¦

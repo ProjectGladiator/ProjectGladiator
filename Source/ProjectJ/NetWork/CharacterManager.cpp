@@ -132,25 +132,25 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 
 		// data에 넣는 작업
 
-		//memcpy(ptr, &joblen, sizeof(int));
-		//ptr += sizeof(int);
-		//size += sizeof(int);
+		memcpy(ptr, &joblen, sizeof(int));
+		ptr += sizeof(int);
+		size += sizeof(int);
 
-		//memcpy(ptr, jobname, joblen);
-		//ptr += joblen;
-		//size += joblen;
+		memcpy(ptr, jobname, joblen);
+		ptr += joblen;
+		size += joblen;
 
-		//memcpy(ptr, &level, sizeof(int));
-		//ptr += sizeof(int);
-		//size += sizeof(int);
+		memcpy(ptr, &level, sizeof(int));
+		ptr += sizeof(int);
+		size += sizeof(int);
 
-		//memcpy(ptr, &nicklen, sizeof(int));
-		//ptr += sizeof(int);
-		//size += sizeof(int);
+		memcpy(ptr, &nicklen, sizeof(int));
+		ptr += sizeof(int);
+		size += sizeof(int);
 
-		//memcpy(ptr, nick, nicklen);
-		//ptr += nicklen;
-		//size += nicklen;
+		memcpy(ptr, nick, nicklen);
+		ptr += nicklen;
+		size += nicklen;
 
 	}
 	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&data, size);
@@ -259,10 +259,10 @@ RESULT CharacterManager::CharacterInirRecvResult()
 	switch (protocol)
 	{
 	case SERVER_CHARACTER_SLOT_RESULT:
-		// check = Character_Recv_Slot(buf);
-		if (Character_Recv_Slot(buf) == true)
+		check = Character_Slot(buf);
+		if (check == true)
 		{
-			// Character_Recv_Slot(buf);
+			Character_Recv_Slot(buf);
 			result = RT_CHARACTER_SLOTRESULT;
 		}
 		else
