@@ -16,7 +16,7 @@ namespace DataProtocol {
 	};
 	// 인게임 프로토콜
 	enum PGAMEDATA {
-	
+		PGAMEDATA_PLAYER_MOVE_INFO = 0
 	};
 	// 공통 프로토콜
 	enum PGLOBAL { 

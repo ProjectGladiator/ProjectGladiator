@@ -85,7 +85,11 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 			}
 			else
 			{
-
+				
+				FString name = CharacterSlotInfo->name;
+				FString level = FString::FromInt(*CharacterSlotInfo->level);
+				FString nick = CharacterSlotInfo->nick;
+				CharacterButtonOne->CharacterInfoInput(FText::FromString(name), FText::FromString(level), FText::FromString(nick));
 			}
 		}
 	}
