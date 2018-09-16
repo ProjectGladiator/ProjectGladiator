@@ -26,7 +26,7 @@ public:
 	void Character_Exit();									// 캐릭터 생성 취소
 
 	bool Character_Slot(char* _buf);						// 슬롯에 캐릭터 있는지 확인
-	void Character_Recv_Slot(char* _buf);					// 슬롯에 캐릭터가 있으면 캐릭터를 반환한다
+	bool Character_Recv_Slot(char* _buf);					// 슬롯에 캐릭터가 있으면 캐릭터를 반환한다
 	bool Character_Recv_Create(char* _buf);					// 캐릭터 생성 결과
 	bool Character_Recv_Enter(char* _buf);					// 캐릭터 접속 결과
 
