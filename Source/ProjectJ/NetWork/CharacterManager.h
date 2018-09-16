@@ -11,8 +11,6 @@ private:
 
 	CharacterManager();
 	~CharacterManager();
-
-
 public:
 	static void CreateInstance();
 	static CharacterManager* GetInstance();
