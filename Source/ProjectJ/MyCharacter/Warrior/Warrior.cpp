@@ -51,6 +51,3 @@ void AWarrior::WarriorMouseClicked(AActor* TouchedActor, FKey ButtonPressed)
 		GLog->Log(FString::Printf(TEXT("클릭")));
 	}
 }
-
-
-

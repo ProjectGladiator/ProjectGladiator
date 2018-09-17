@@ -84,8 +84,7 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 				CharacterButtonThree->SetVisibility(ESlateVisibility::Hidden);
 			}
 			else
-			{
-				
+			{				
 				FString name = CharacterSlotInfo->name;
 				FString level = FString::FromInt(*CharacterSlotInfo->level);
 				FString nick = CharacterSlotInfo->nick;
