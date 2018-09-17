@@ -10,8 +10,8 @@ bool InGameState::Read(User * _user)
 	switch (state)
 	{
 	case InGameState::INGAME_INIT_RECV:
-		/*result = charactermanager->
-		break;*/
+		// result = charactermanager->
+		break;
 	}
 	return true;
 }
