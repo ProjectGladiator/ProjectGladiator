@@ -85,6 +85,8 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 			}
 			else
 			{
+				CharacterSlot* characterslot = new CharacterSlot[SlotCount];
+
 				for (int i = 0; i < SlotCount; i++)
 				{
 					FString name = CharacterSlotInfo[i].name;
@@ -94,16 +96,18 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 					if (i == 0)
 					{
 						CharacterButtonOne->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
+						CharacterButtonOne->SetVisibility(ESlateVisibility::Visible);
 					}
 					else if (i == 1)
 					{
 						CharacterButtonTwo->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
+						CharacterButtonTwo->SetVisibility(ESlateVisibility::Visible);
 					}
 					else if (i == 2)
 					{
 						CharacterButtonThree->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
-					}
-					
+						CharacterButtonThree->SetVisibility(ESlateVisibility::Visible);
+					}					
 				}
 			}
 		}
