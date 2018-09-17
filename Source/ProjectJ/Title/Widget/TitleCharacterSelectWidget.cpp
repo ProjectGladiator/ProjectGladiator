@@ -55,9 +55,9 @@ void UTitleCharacterSelectWidget::MyCharacterDelete()
 
 void UTitleCharacterSelectWidget::MyCharacterCreate()
 {
-	//CharacterManager::GetInstance()->Character_Req_New_Character();
-	//NetworkClient_main::NetworkManager::GetInstance()->Send();
-	//NetworkClient_main::NetworkManager::GetInstance()->Wait();
+	CharacterManager::GetInstance()->Character_Req_New_Character();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+	NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
 	PC->CharacterCreateWidgetToggle();
 	PC->CharacterSelectWidgetToggle();
@@ -84,11 +84,27 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 				CharacterButtonThree->SetVisibility(ESlateVisibility::Hidden);
 			}
 			else
-			{				
-				FString name = CharacterSlotInfo->name;
-				FString level = FString::FromInt(*CharacterSlotInfo->level);
-				FString nick = CharacterSlotInfo->nick;
-				CharacterButtonOne->CharacterInfoInput(FText::FromString(name), FText::FromString(level), FText::FromString(nick));
+			{
+				for (int i = 0; i < SlotCount; i++)
+				{
+					FString name = CharacterSlotInfo[i].name;
+					FString level = FString::FromInt(*CharacterSlotInfo[i].level);
+					FString nick = CharacterSlotInfo[i].nick;
+					
+					if (i == 0)
+					{
+						CharacterButtonOne->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
+					}
+					else if (i == 1)
+					{
+						CharacterButtonTwo->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
+					}
+					else if (i == 2)
+					{
+						CharacterButtonThree->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
+					}
+					
+				}
 			}
 		}
 	}
