@@ -41,6 +41,10 @@ public:
 	UFUNCTION()
 		void OnSeeCharacter(APawn * Pawn);
 
+	// Data
+	FVector PatrolGoalPosition;
+
+
 	// etc
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
 		float MaxHP;		// 최대 체력
