@@ -4,14 +4,14 @@
 #include "UObject/ConstructorHelpers.h"				
 #include "Components/SkeletalMeshComponent.h"		// For GetMesh
 #include "Perception/PawnSensingComponent.h"		// For PawnSensingComponent
+#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "Animation/AnimBlueprint.h"
 
-#include "Monster/ArcherMonster/ArcherAIController.h"		// connect class
-#include "BehaviorTree/BehaviorTree.h"				// connect BehaviorTree
-#include "Animation/AnimBlueprint.h"				// connect AnimationBlueprint
 // Sets default values
 AArcherMonster::AArcherMonster()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	// 스켈레탈메시 
@@ -31,9 +31,9 @@ AArcherMonster::AArcherMonster()
 
 	PawnSensing = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensing"));			// 감각 컴포넌트
 
-	AIControllerClass = AArcherAIController::StaticClass();		// 클래스 설정
+																								//AIControllerClass = AArcherAIController::StaticClass();		// 클래스 설정
 
-	// 메시 위치 변환
+																								// 메시 위치 변환
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
@@ -43,6 +43,9 @@ AArcherMonster::AArcherMonster()
 	PawnSensing->SetPeripheralVisionAngle(45.0f);	// 감지 각도
 	PawnSensing->SightRadius = 2000.0f;				// 감지 거리
 	PawnSensing->SensingInterval = 0.1f;				// 감지 간격
+
+														// Data 세팅
+	PatrolGoalPosition = FVector::ZeroVector;
 
 	// MaxHP = 서버로부터 체력 받아옴
 	// CurrentHP = MaxHP;
@@ -67,91 +70,121 @@ void AArcherMonster::Tick(float DeltaTime)
 	// 서버로부터 현재 상태를 받는다
 
 	// 타겟이 존재할 때, 타겟과의 거리를 구함
-	if(Target)	
+	if (Target)
 		DistanceForPlayer = FVector::Distance(GetActorLocation(), Target->GetActorLocation());
 
 
 	switch (CurrentState)
 	{
 	case EArcherState::Idle:			// 아이들상태
-
 		// 시간을 랜덤으로 구해서 서버로 전달
 		// 시간만큼 타이머로 대기
 
+		#pragma region 아이들 중에 타겟을 발견했을 때
 		if (Target)
 		{
 			// 서버로 사실 전달
+
 			// 서버로 상태 전달
 			// 타이머 중단
+
 			// 전투 상태로 변환
+			CurrentState = EArcherState::Battle;
 		}
+		#pragma endregion
+		#pragma region 타겟 미발견
 		else
 		{
 			// 서버로 상태 전달
-			// 순찰 상태로 변환
-		}
 
+			// 순찰 상태로 변환
+			CurrentState = EArcherState::Patrol;
+		}
+		#pragma endregion
 		break;
 	case EArcherState::Patrol:		// 순찰 상태
-		if (Target)			// 타겟 발견
+		#pragma region 순찰 중에 타겟을 발견했을 때
+		if (Target)
 		{
 			CurrentState = EArcherState::Chase;					// 추적상태
 			// 속도 설정 - 서버로부터 받아오는것이 아니라면 임의의 수로 설정
+
 			// 타겟을 바라봄
+			FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
+			SetActorRotation(LookRotation);
 		}
-		else					// 타겟 미발견(순찰)
+		#pragma endregion
+		#pragma region 타겟 미발견
+		else
 		{
 			CurrentAnimState = EArcherAnimState::Walk;
 
-			// 랜덤위치가 없으면
-			// { 랜덤위치 구함 } 
+			// 제로 벡터면 랜덤위치 구함
+			if(PatrolGoalPosition.IsZero())
+				PatrolGoalPosition = UKismetMathLibrary::RandomPointInBoundingBox(GetActorLocation(), FVector(300.0f, 300.0f, 0.0f));			// 예시
 
 			// 서버로 현재 위치정보 보냄
 
-			// 랜덤위치로 이동
+			// 랜덤위치로 이동(테스트 요함)
+			// UKismetSystemLibrary::MoveComponentTo(GetMesh(), PatrolGoalPosition, FRotator(0.0f, 0.0f, 0.0f), false, false, 0.2f, false,
 
 			// 랜덤위치에 도달하면
-			// { 랜덤위치 없음
-			// 아이들상태로 변환 }
+			//{
+			//	PatrolGoalPosition = FVector::ZeroVector;			// 랜덤위치 초기화
+			//	CurrentState = EArcherState::Idle;
+			//}
 		}
+		#pragma endregion
 		break;
 	case EArcherState::Chase:		// 추적 상태
-		if (DistanceForPlayer < DistanceForAttack)			// 공격가능 범위에 존재
+		#pragma region 추적 상태 중에 타겟과의 거리가 공격가능 내 범위면
+		if (DistanceForPlayer < DistanceForAttack)
 		{
 			CurrentState = EArcherState::Battle;				// 전투 상태로 변경
 			Speed = 0.0f;			// 속도 0
 		}
-		else				// 공격가능 범위가 아님
+		#pragma endregion
+		#pragma region 공격가능 범위가 아니면
+		else
 		{
 			CurrentAnimState = EArcherAnimState::Run;		// 달리기
 
 			// 서버로 타겟의 위치를 보냄
 			// 서버로 현재 위치를 보냄
 
-			// 타겟을 바라봄 
+			// 타겟을 바라봄
+			FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
+			SetActorRotation(LookRotation);
 
-			// 타겟으로 이동
+			// 타겟으로 이동(테스트 요함)
+			// UKismetSystemLibrary::MoveComponentTo(GetMesh(), Target->GetActorLocation(), FRotator(0.0f, 0.0f, 0.0f), false, false, 0.2f, false,
 		}
+		#pragma endregion
 		break;
 	case EArcherState::Battle:		// 전투 상태
-		if (DistanceForPlayer > DistanceForAttack)			// 공격가능 범위가 아님
+		#pragma region 전투 상태 중에 공격가능 범위가 아니면(사정거리 밖이면)
+		if (DistanceForPlayer > DistanceForAttack)
 		{
 			CurrentState = EArcherState::Chase;				// 추적 상태로 변경
 			// 속도 설정 - 서버로부터 받아오는것이 아니라면 임의의 수로 설정
 		}
-		else				// 공격가능 범위에 존재
+		#pragma endregion
+		#pragma region 사정거리 이내면
+		else
 		{
 			CurrentAnimState = EArcherAnimState::Attack;		// 공격
 			Speed = 0.0f;			// 속도 0
 		}
+		#pragma endregion
 		break;
 	case EArcherState::Dead:		// 죽음 상태
+		#pragma region 으앙 듀금ㅡㅜ
 		CurrentAnimState = EArcherAnimState::Death;
 
 		// Death 애니메이션으로 변환
 		// 임의의 수만큼 타이머로 대기
 		// 삭제
-
+		#pragma endregion
 		break;
 	}
 }
@@ -165,7 +198,15 @@ void AArcherMonster::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AArcherMonster::OnSeeCharacter(APawn * Pawn)
 {
-	// 발견된 폰을 Target으로 지정
+	if (Pawn->ActorHasTag("Character"))
+	{
+		if (!Target)
+		{
+			Target = Pawn;
+			CurrentState = EArcherState::Chase;
+			CurrentAnimState = EArcherAnimState::Run;
+		}
+	}
 }
 
 float AArcherMonster::TakeDamage(float Damage, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
