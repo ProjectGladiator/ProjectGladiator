@@ -73,27 +73,34 @@ bool CharacterManager::Character_Slot(char* _buf)
 	}
 }
 
-void CharacterManager::Character_Recv_Slot(char * _buf)
+bool CharacterManager::Character_Recv_Slot(char * _buf)
 {
 	char data[BUFSIZE];
 
 	memset(data, 0, sizeof(data));
 
-	int count;
-	int joblen;
-	char* jobname = nullptr;
-	int nicklen;
-	char* nick = nullptr;
-	int level;
+	char* ptr = data;
 
-	memset(jobname, 0, sizeof(jobname));
-	memset(nick, 0, sizeof(nick));
+	int count = 0;
+	int joblen = 0;
+	char jobname[IDSIZE];
+	int nicklen = 0;
+	char nick[IDSIZE];
+	int level = 0;
+
+	//memset(jobname, 0, sizeof(jobname));
+	//memset(nick, 0, sizeof(nick));
 
 	int size;
-
 	bool check = true;
 
-	char* ptr = data;
+	memcpy(&check, _buf, sizeof(bool));
+	_buf += sizeof(bool);
+
+	if (check == false)
+	{
+		return false;
+	}
 
 	memcpy(&count, _buf, sizeof(int));
 	_buf += sizeof(int);
@@ -146,8 +153,8 @@ void CharacterManager::Character_Recv_Slot(char * _buf)
 		size += nicklen;
 
 	}
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)data, size);
-
+	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&data, size);
+	return true;
 }
 
 void CharacterManager::Character_Req_New_Character()
@@ -245,7 +252,7 @@ RESULT CharacterManager::CharacterInirRecvResult()
 	char buf[BUFSIZE];
 
 	RESULT result;
-	bool check;
+	bool check = true;
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->unPack(&protocol, buf);
 
@@ -253,13 +260,14 @@ RESULT CharacterManager::CharacterInirRecvResult()
 	{
 	case SERVER_CHARACTER_SLOT_RESULT:
 		check = Character_Slot(buf);
-		if (check)
+		if (check == true)
 		{
 			Character_Recv_Slot(buf);
 			result = RT_CHARACTER_SLOTRESULT;
 		}
 		else
 		{
+			check = false;
 			StorageManager::GetInstance()->PushData(protocol, (void*)&check, sizeof(bool));
 			result = RT_CHARACTER_SLOTRESULT;
 		}
@@ -304,7 +312,7 @@ RESULT CharacterManager::CharacterNewRecvResult()
 	{
 	case SERVER_CHARACTER_RESULT:
 		check = Character_Recv_Create(buf);
-		StorageManager::GetInstance()->PushData(protocol, (void*)check, sizeof(bool));
+		StorageManager::GetInstance()->PushData(protocol, (void*)&check, sizeof(bool));
 		if (check == true)
 		{
 			result = RT_CHARACTER_CREATE_SUCCESS;

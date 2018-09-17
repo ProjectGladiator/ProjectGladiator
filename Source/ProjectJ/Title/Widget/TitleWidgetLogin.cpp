@@ -80,7 +80,10 @@ void UTitleWidgetLogin::Login()
 			CharacterManager::GetInstance()->Character_Req_Slot();
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
 			NetworkClient_main::NetworkManager::GetInstance()->Wait();
-			PC->LoginWidgetToggle();		
+			PC->LoginWidgetToggle();	
+
+			UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));
+
 		}
 		else
 		{

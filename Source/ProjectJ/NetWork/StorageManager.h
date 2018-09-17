@@ -55,7 +55,7 @@ public:
 	void PushData(PROTOCOL p, void* data, int data_size);
 	bool GetFront(PacketData*& data);
 	void ChangeData(void* data, bool& type);
-	void ChangeData(void* data, bool& _type,int& _count, CharacterSlot* _slot);
+	void ChangeData(void* data, bool& _type,int& _count, CharacterSlot*& _slot);
 	bool PopData();
 	
 	// 수정 후 폐기
