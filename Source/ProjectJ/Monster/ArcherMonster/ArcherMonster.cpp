@@ -80,7 +80,7 @@ void AArcherMonster::Tick(float DeltaTime)
 		// 시간을 랜덤으로 구해서 서버로 전달
 		// 시간만큼 타이머로 대기
 
-		#pragma region 아이들 중에 타겟을 발견했을 때
+		#pragma region Find target for Idle State
 		if (Target)
 		{
 			// 서버로 사실 전달
@@ -92,7 +92,7 @@ void AArcherMonster::Tick(float DeltaTime)
 			CurrentState = EArcherState::Battle;
 		}
 		#pragma endregion
-		#pragma region 타겟 미발견
+		#pragma region Taget Not Find
 		else
 		{
 			// 서버로 상태 전달
@@ -103,7 +103,7 @@ void AArcherMonster::Tick(float DeltaTime)
 		#pragma endregion
 		break;
 	case EArcherState::Patrol:		// 순찰 상태
-		#pragma region 순찰 중에 타겟을 발견했을 때
+		#pragma region Find target for Battle State
 		if (Target)
 		{
 			CurrentState = EArcherState::Chase;					// 추적상태
@@ -114,7 +114,7 @@ void AArcherMonster::Tick(float DeltaTime)
 			SetActorRotation(LookRotation);
 		}
 		#pragma endregion
-		#pragma region 타겟 미발견
+		#pragma region Taget Not Find
 		else
 		{
 			CurrentAnimState = EArcherAnimState::Walk;
@@ -137,14 +137,14 @@ void AArcherMonster::Tick(float DeltaTime)
 		#pragma endregion
 		break;
 	case EArcherState::Chase:		// 추적 상태
-		#pragma region 추적 상태 중에 타겟과의 거리가 공격가능 내 범위면
+		#pragma region If Monster can Attack to Target for Patrol State (Player in Monster's Attackable Area)
 		if (DistanceForPlayer < DistanceForAttack)
 		{
 			CurrentState = EArcherState::Battle;				// 전투 상태로 변경
 			Speed = 0.0f;			// 속도 0
 		}
 		#pragma endregion
-		#pragma region 공격가능 범위가 아니면
+		#pragma region If not
 		else
 		{
 			CurrentAnimState = EArcherAnimState::Run;		// 달리기
@@ -162,14 +162,14 @@ void AArcherMonster::Tick(float DeltaTime)
 		#pragma endregion
 		break;
 	case EArcherState::Battle:		// 전투 상태
-		#pragma region 전투 상태 중에 공격가능 범위가 아니면(사정거리 밖이면)
+		#pragma region If Monster can't Attack to Target for Battle State (Player outside Monster's Attackable Area)
 		if (DistanceForPlayer > DistanceForAttack)
 		{
 			CurrentState = EArcherState::Chase;				// 추적 상태로 변경
 			// 속도 설정 - 서버로부터 받아오는것이 아니라면 임의의 수로 설정
 		}
 		#pragma endregion
-		#pragma region 사정거리 이내면
+		#pragma region If not
 		else
 		{
 			CurrentAnimState = EArcherAnimState::Attack;		// 공격
@@ -178,7 +178,7 @@ void AArcherMonster::Tick(float DeltaTime)
 		#pragma endregion
 		break;
 	case EArcherState::Dead:		// 죽음 상태
-		#pragma region 으앙 듀금ㅡㅜ
+		#pragma region God bless Monster
 		CurrentAnimState = EArcherAnimState::Death;
 
 		// Death 애니메이션으로 변환
