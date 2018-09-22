@@ -80,7 +80,7 @@ void AArcherMonster::Tick(float DeltaTime)
 		// 시간을 랜덤으로 구해서 서버로 전달
 		// 시간만큼 타이머로 대기
 
-		#pragma region Find target for Idle State
+		// 아이들 상태동안 타겟발견
 		if (Target)
 		{
 			// 서버로 사실 전달
@@ -91,8 +91,7 @@ void AArcherMonster::Tick(float DeltaTime)
 			// 전투 상태로 변환
 			CurrentState = EArcherState::Battle;
 		}
-		#pragma endregion
-		#pragma region Taget Not Find
+		// 타겟 미발견
 		else
 		{
 			// 서버로 상태 전달
@@ -100,10 +99,9 @@ void AArcherMonster::Tick(float DeltaTime)
 			// 순찰 상태로 변환
 			CurrentState = EArcherState::Patrol;
 		}
-		#pragma endregion
 		break;
 	case EArcherState::Patrol:		// 순찰 상태
-		#pragma region Find target for Battle State
+		// 순찰 상태일때 타겟 발견
 		if (Target)
 		{
 			CurrentState = EArcherState::Chase;					// 추적상태
@@ -113,8 +111,7 @@ void AArcherMonster::Tick(float DeltaTime)
 			FRotator LookRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
 			SetActorRotation(LookRotation);
 		}
-		#pragma endregion
-		#pragma region Taget Not Find
+		// 타겟 미발견
 		else
 		{
 			CurrentAnimState = EArcherAnimState::Walk;
@@ -134,17 +131,15 @@ void AArcherMonster::Tick(float DeltaTime)
 			//	CurrentState = EArcherState::Idle;
 			//}
 		}
-		#pragma endregion
 		break;
 	case EArcherState::Chase:		// 추적 상태
-		//#pragma region If Monster can Attack to Target for Patrol State (Player in Monster's Attackable Area)
+		// 공격 가능 범위에 진입
 		if (DistanceForPlayer < DistanceForAttack)
 		{
 			CurrentState = EArcherState::Battle;				// 전투 상태로 변경
 			Speed = 0.0f;			// 속도 0
 		}
-		#pragma endregion
-		#pragma region If not
+		// 미진입
 		else
 		{
 			CurrentAnimState = EArcherAnimState::Run;		// 달리기
@@ -159,32 +154,28 @@ void AArcherMonster::Tick(float DeltaTime)
 			// 타겟으로 이동(테스트 요함)
 			// UKismetSystemLibrary::MoveComponentTo(GetMesh(), Target->GetActorLocation(), FRotator(0.0f, 0.0f, 0.0f), false, false, 0.2f, false,
 		}
-		#pragma endregion
 		break;
 	case EArcherState::Battle:		// 전투 상태
-		//#pragma region If Monster can't Attack to Target for Battle State (Player outside Monster's Attackable Area)
+		// 공격 가능 범위 벗어남
 		if (DistanceForPlayer > DistanceForAttack)
 		{
 			CurrentState = EArcherState::Chase;				// 추적 상태로 변경
 			// 속도 설정 - 서버로부터 받아오는것이 아니라면 임의의 수로 설정
 		}
-		#pragma endregion
-		#pragma region If not
+		// 공격 가능 범위
 		else
 		{
 			CurrentAnimState = EArcherAnimState::Attack;		// 공격
 			Speed = 0.0f;			// 속도 0
 		}
-		#pragma endregion
 		break;
 	case EArcherState::Dead:		// 죽음 상태
-		#pragma region God bless Monster
+		// 듁음
 		CurrentAnimState = EArcherAnimState::Death;
 
 		// Death 애니메이션으로 변환
 		// 임의의 수만큼 타이머로 대기
 		// 삭제
-		#pragma endregion
 		break;
 	}
 }
