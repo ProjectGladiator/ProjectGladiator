@@ -137,7 +137,7 @@ void AArcherMonster::Tick(float DeltaTime)
 		#pragma endregion
 		break;
 	case EArcherState::Chase:		// 추적 상태
-		#pragma region If Monster can Attack to Target for Patrol State (Player in Monster's Attackable Area)
+		//#pragma region If Monster can Attack to Target for Patrol State (Player in Monster's Attackable Area)
 		if (DistanceForPlayer < DistanceForAttack)
 		{
 			CurrentState = EArcherState::Battle;				// 전투 상태로 변경
@@ -162,7 +162,7 @@ void AArcherMonster::Tick(float DeltaTime)
 		#pragma endregion
 		break;
 	case EArcherState::Battle:		// 전투 상태
-		#pragma region If Monster can't Attack to Target for Battle State (Player outside Monster's Attackable Area)
+		//#pragma region If Monster can't Attack to Target for Battle State (Player outside Monster's Attackable Area)
 		if (DistanceForPlayer > DistanceForAttack)
 		{
 			CurrentState = EArcherState::Chase;				// 추적 상태로 변경
