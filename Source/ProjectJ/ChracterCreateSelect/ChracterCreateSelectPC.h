@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "Network/StorageManager.h"
+//#include "Network/StorageManager.h"
 #include "ChracterCreateSelectPC.generated.h"
 
 /**
@@ -27,5 +27,5 @@ public:
 	void CharacterSelectWidgetToggle();
 	void CharacterCreateWidgetToggle();
 	
-	CharacterSlot* CharacterSlotInfo;
+	//CharacterSlot* CharacterSlotInfo;
 };

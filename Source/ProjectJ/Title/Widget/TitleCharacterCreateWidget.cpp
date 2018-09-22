@@ -43,7 +43,7 @@ void UTitleCharacterCreateWidget::Cancel()
 {
 	if (PC)
 	{
-		CharacterManager::GetInstance()->Character_Req_New_Character();
+		CharacterManager::GetInstance()->Character_Exit();
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
 		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 

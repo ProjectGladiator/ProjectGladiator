@@ -6,6 +6,8 @@
 #include "Engine/World.h"
 #include "ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
 #include "NetWork/CharacterManager.h"
+#include "NetWork/NetworkManager.h"
+
 
 ACharacterCreateSelectGameMode::ACharacterCreateSelectGameMode()
 {
@@ -19,5 +21,7 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AChracterCreateCamera::StaticClass(), Cameras);
 
 	CharacterManager::GetInstance()->Character_Req_Slot();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+	NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
 }

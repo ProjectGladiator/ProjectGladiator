@@ -90,7 +90,7 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 				for (int i = 0; i < SlotCount; i++)
 				{
 					FString name = CharacterSlotInfo[i].name;
-					FString level = FString::FromInt(*CharacterSlotInfo[i].level);
+					FString level = FString::FromInt(CharacterSlotInfo[i].level);
 					FString nick = CharacterSlotInfo[i].nick;
 					
 					if (i == 0)
