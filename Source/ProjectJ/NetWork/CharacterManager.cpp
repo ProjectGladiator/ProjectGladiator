@@ -76,24 +76,10 @@ bool CharacterManager::Character_Slot(char* _buf)
 bool CharacterManager::Character_Recv_Slot(char * _buf)
 {
 	char data[BUFSIZE];
-
 	memset(data, 0, sizeof(data));
-
 	char* ptr = data;
 
-	int count = 0;
-	int joblen = 0;
-	char jobname[IDSIZE];
-	int nicklen = 0;
-	char nick[IDSIZE];
-	int level = 0;
-
-	//memset(jobname, 0, sizeof(jobname));
-	//memset(nick, 0, sizeof(nick));
-
-	int size;
 	bool check = true;
-
 	memcpy(&check, _buf, sizeof(bool));
 	_buf += sizeof(bool);
 
@@ -101,6 +87,16 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 	{
 		return false;
 	}
+
+	int count = 0;
+	int joblen = 0;
+	char* jobname;
+	memset(jobname, 0, sizeof(jobname));
+	int nicklen = 0;
+	char* nick;
+	memset(nick, 0, sizeof(nick));
+	int level = 0;
+	int datasize = 0;
 
 	memcpy(&count, _buf, sizeof(int));
 	_buf += sizeof(int);
@@ -111,7 +107,7 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 	memcpy(ptr, &count, sizeof(int));
 	ptr += sizeof(int);
 
-	size = sizeof(bool) + sizeof(int);
+	datasize = sizeof(bool) + sizeof(int);
 
 	for (int i = 0; i < count; i++)
 	{
@@ -131,29 +127,28 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		_buf += nicklen;
 
 		// data에 넣는 작업
-
 		memcpy(ptr, &joblen, sizeof(int));
 		ptr += sizeof(int);
-		size += sizeof(int);
+		datasize += sizeof(int);
 
 		memcpy(ptr, jobname, joblen);
 		ptr += joblen;
-		size += joblen;
+		datasize += joblen;
 
 		memcpy(ptr, &level, sizeof(int));
 		ptr += sizeof(int);
-		size += sizeof(int);
+		datasize += sizeof(int);
 
 		memcpy(ptr, &nicklen, sizeof(int));
 		ptr += sizeof(int);
-		size += sizeof(int);
+		datasize += sizeof(int);
 
 		memcpy(ptr, nick, nicklen);
 		ptr += nicklen;
-		size += nicklen;
-
+		datasize += nicklen;
 	}
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&data, size);
+	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&data, datasize);
+
 	return true;
 }
 
@@ -197,7 +192,7 @@ void CharacterManager::Character_Choice(int _select)
 
 	memcpy(ptr, &_select, sizeof(int));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_CHARACTER_EXIT, buf, 0);
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_CHARACTER_ENTER, buf, 0);
 
 }
 
@@ -252,17 +247,17 @@ RESULT CharacterManager::CharacterInirRecvResult()
 	char buf[BUFSIZE];
 
 	RESULT result;
-	bool check = true;
+	bool check = false;
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->unPack(&protocol, buf);
 
 	switch (protocol)
 	{
 	case SERVER_CHARACTER_SLOT_RESULT:
-		check = Character_Slot(buf);
+		check = Character_Recv_Slot(buf);
 		if (check == true)
 		{
-			Character_Recv_Slot(buf);
+			// Character_Recv_Slot(buf);
 			result = RT_CHARACTER_SLOTRESULT;
 		}
 		else
@@ -271,7 +266,7 @@ RESULT CharacterManager::CharacterInirRecvResult()
 			StorageManager::GetInstance()->PushData(protocol, (void*)&check, sizeof(bool));
 			result = RT_CHARACTER_SLOTRESULT;
 		}
-		
+
 		break;
 	case SERVER_CHARACTER_ENTER_RESULT:
 		check = Character_Recv_Enter(buf);

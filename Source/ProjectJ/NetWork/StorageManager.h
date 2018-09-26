@@ -23,7 +23,7 @@ struct PacketData
 struct CharacterSlot
 {
 	char* name;
-	int* level;
+	int level;
 	char* nick;
 
 	~CharacterSlot()
