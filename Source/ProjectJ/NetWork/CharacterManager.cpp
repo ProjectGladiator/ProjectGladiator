@@ -90,11 +90,9 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 
 	int count = 0;
 	int joblen = 0;
-	char* jobname;
-	memset(jobname, 0, sizeof(jobname));
+	char* jobname = nullptr;
 	int nicklen = 0;
-	char* nick;
-	memset(nick, 0, sizeof(nick));
+	char* nick = nullptr;
 	int level = 0;
 	int datasize = 0;
 

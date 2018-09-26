@@ -117,7 +117,7 @@ void StorageManager::ChangeData(void * data, bool& _type, int& _count, Character
 	_count = *(int*)ptr;
 	ptr += sizeof(int);
 	
-	CharacterSlot* characterslot;
+	CharacterSlot* characterslot = nullptr;
 
 	memset(characterslot, 0, sizeof(characterslot));
 
