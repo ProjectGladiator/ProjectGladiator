@@ -1,24 +1,24 @@
-#ifndef _DATA_PROTOCOL_H_
+ï»¿#ifndef _DATA_PROTOCOL_H_
 #define _DATA_PROTOCOL_H_
 
 namespace DataProtocol {
-	// ·Î±×ÀÎ ÇÁ·ÎÅäÄÝ
+	// ë¡œê·¸ì¸ í”„ë¡œí† ì½œ
 	enum PLOGINDATA { 
-		PLOGIN_LOGIN_RESULT = 0, 	   // ·Î±×ÀÎ °á°ú
-		PLOGIN_IDOVERLAP_RESULT,	   // ¾ÆÀÌµðÁßº¹Ã¼Å© °á°ú
-		PLOGIN_JOIN_RESULT			   // È¸¿ø°¡ÀÔ °á°ú
+		PLOGIN_LOGIN_RESULT = 0, 	   // ë¡œê·¸ì¸ ê²°ê³¼
+		PLOGIN_IDOVERLAP_RESULT,	   // ì•„ì´ë””ì¤‘ë³µì²´í¬ ê²°ê³¼
+		PLOGIN_JOIN_RESULT			   // íšŒì›ê°€ìž… ê²°ê³¼
 	};
-	// Ä³¸¯ÅÍ ÇÁ·ÎÅäÄÝ
+	// ìºë¦­í„° í”„ë¡œí† ì½œ
 	enum PCHARACTERDATA {
-		PCHARACTERDATA_INFO = 0,		// ÀÌµ¿ Á¤º¸
-		PCHARACTERDATA_SLOT_INFO,		// ½½·Ô °á°ú
-		PCHARACTERDATA_CREATE_RESULT	// Ä³¸¯ÅÍ »ý¼º °á°ú
+		PCHARACTERDATA_INFO = 0,		// ì´ë™ ì •ë³´
+		PCHARACTERDATA_SLOT_INFO,		// ìŠ¬ë¡¯ ê²°ê³¼
+		PCHARACTERDATA_CREATE_RESULT	// ìºë¦­í„° ìƒì„± ê²°ê³¼
 	};
-	// ÀÎ°ÔÀÓ ÇÁ·ÎÅäÄÝ
+	// ì¸ê²Œìž„ í”„ë¡œí† ì½œ
 	enum PGAMEDATA {
 		PGAMEDATA_PLAYER_MOVE_INFO = 0
 	};
-	// °øÅë ÇÁ·ÎÅäÄÝ
+	// ê³µí†µ í”„ë¡œí† ì½œ
 	enum PGLOBAL { 
 		CONFIRM = 0 
 	};
