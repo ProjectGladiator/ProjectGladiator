@@ -69,13 +69,14 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 	bool EmptySlot;
 	int SlotCount;
 	PacketData* Data;
-	CharacterSlot* CharacterSlotInfo = nullptr;
 
 	if (StorageManager::GetInstance()->GetFront(Data))
 	{
 		if (Data->protocol == PCHARACTERDATA_SLOT_INFO)
 		{
-			StorageManager::GetInstance()->ChangeData(Data->data, EmptySlot, SlotCount,CharacterSlotInfo);
+			CharacterSlot* characterslot = new CharacterSlot[3];
+
+			StorageManager::GetInstance()->ChangeData(Data->data, EmptySlot, SlotCount, characterslot);
 
 			if (!EmptySlot)
 			{
@@ -85,13 +86,12 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 			}
 			else
 			{
-				CharacterSlot* characterslot = new CharacterSlot[SlotCount];
 
 				for (int i = 0; i < SlotCount; i++)
 				{
-					FString name = CharacterSlotInfo[i].name;
-					FString level = FString::FromInt(CharacterSlotInfo[i].level);
-					FString nick = CharacterSlotInfo[i].nick;
+					FString name = characterslot[i].name;
+					FString level = FString::FromInt(characterslot[i].level);
+					FString nick = characterslot[i].nick;
 					
 					if (i == 0)
 					{
