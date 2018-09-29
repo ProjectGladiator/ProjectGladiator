@@ -79,6 +79,9 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 	memset(data, 0, sizeof(data));
 	char* ptr = data;
 
+	// _buf 길이
+	int datasize = strlen(_buf);
+
 	bool check = true;
 	memcpy(&check, _buf, sizeof(bool));
 	_buf += sizeof(bool);
@@ -88,13 +91,14 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		return false;
 	}
 
+	ptr = new char[datasize];
+
 	int count = 0;
 	int joblen = 0;
-	char* jobname = nullptr;
+	char jobname[255];
 	int nicklen = 0;
-	char* nick = nullptr;
-	int level = 0;
-	int datasize = 0;
+	char nick[255];
+	int level;
 
 	memcpy(&count, _buf, sizeof(int));
 	_buf += sizeof(int);
@@ -105,11 +109,9 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 	memcpy(ptr, &count, sizeof(int));
 	ptr += sizeof(int);
 
-	datasize = sizeof(bool) + sizeof(int);
-
 	for (int i = 0; i < count; i++)
 	{
-		memcpy(&joblen, _buf, sizeof(int));
+		memcpy(&joblen,_buf, sizeof(int));
 		_buf += sizeof(int);
 
 		memcpy(jobname, _buf, joblen);
@@ -127,25 +129,21 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		// data에 넣는 작업
 		memcpy(ptr, &joblen, sizeof(int));
 		ptr += sizeof(int);
-		datasize += sizeof(int);
 
 		memcpy(ptr, jobname, joblen);
 		ptr += joblen;
-		datasize += joblen;
 
 		memcpy(ptr, &level, sizeof(int));
 		ptr += sizeof(int);
-		datasize += sizeof(int);
 
 		memcpy(ptr, &nicklen, sizeof(int));
 		ptr += sizeof(int);
-		datasize += sizeof(int);
 
 		memcpy(ptr, nick, nicklen);
 		ptr += nicklen;
-		datasize += nicklen;
 	}
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&data, datasize);
+
+	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptr, datasize);
 
 	return true;
 }
@@ -245,17 +243,18 @@ RESULT CharacterManager::CharacterInirRecvResult()
 	char buf[BUFSIZE];
 
 	RESULT result;
-	bool check = false;
+	bool check;
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->unPack(&protocol, buf);
 
 	switch (protocol)
 	{
 	case SERVER_CHARACTER_SLOT_RESULT:
-		check = Character_Recv_Slot(buf);
+		check = Character_Slot(buf);
 		if (check == true)
 		{
-			// Character_Recv_Slot(buf);
+			int size = strlen(buf);
+			check = Character_Recv_Slot(buf);
 			result = RT_CHARACTER_SLOTRESULT;
 		}
 		else
@@ -264,7 +263,6 @@ RESULT CharacterManager::CharacterInirRecvResult()
 			StorageManager::GetInstance()->PushData(protocol, (void*)&check, sizeof(bool));
 			result = RT_CHARACTER_SLOTRESULT;
 		}
-
 		break;
 	case SERVER_CHARACTER_ENTER_RESULT:
 		check = Character_Recv_Enter(buf);

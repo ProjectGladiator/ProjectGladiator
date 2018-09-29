@@ -96,17 +96,21 @@ void StorageManager::ChangeData(void* data, bool& type)
 	type = *(bool*)data;
 }
 
-void StorageManager::ChangeData(void * data, bool& _type, int& _count, CharacterSlot*& _slot)
+// ¼öÁ¤Áß
+void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot)
 {
 	char* ptr = (char*)data;
 	
 	int joblen;
-	char* jobname;
+	char jobname[255];
 	int level;
 	int nicklen;
-	char* nick;
+	char nick[255];
 
-	_type = *(bool*)ptr;
+	//_type = *(bool*)ptr;
+	//ptr += sizeof(bool);
+
+	memcpy(&_type, ptr, sizeof(bool));
 	ptr += sizeof(bool);
 
 	if (_type == false)
@@ -114,7 +118,9 @@ void StorageManager::ChangeData(void * data, bool& _type, int& _count, Character
 		return;
 	}
 
-	_count = *(int*)ptr;
+	//_count = *(int*)ptr;
+	//ptr += sizeof(int);
+	memcpy(&_count, ptr, sizeof(bool));
 	ptr += sizeof(int);
 	
 	CharacterSlot* characterslot = nullptr;
@@ -123,28 +129,44 @@ void StorageManager::ChangeData(void * data, bool& _type, int& _count, Character
 
 	for (int i = 0; i < _count; i++)
 	{
-		joblen = *(int*)ptr;
+		//joblen = *(int*)ptr;
+		//ptr += sizeof(int);
+
+		//jobname = (char*)ptr;
+		//ptr += joblen;
+
+		//level = *(int*)ptr;
+		//ptr += sizeof(int);
+
+		//nicklen = *(int*)ptr;
+		//ptr += sizeof(int);
+
+		//nick = (char*)ptr;
+		//ptr += nicklen;
+
+		memcpy(&joblen, ptr, sizeof(int));
 		ptr += sizeof(int);
 
-		jobname = (char*)ptr;
+		memcpy(jobname, ptr, joblen);
 		ptr += joblen;
 
-		level = *(int*)ptr;
+		memcpy(&level, ptr, sizeof(int));
 		ptr += sizeof(int);
 
-		nicklen = *(int*)ptr;
+		memcpy(&nicklen, ptr, sizeof(int));
 		ptr += sizeof(int);
 
-		nick = (char*)ptr;
+		memcpy(nick, ptr, nicklen);
 		ptr += nicklen;
 
-		characterslot[i].name = jobname;
+		strcpy(_slot[i].name, jobname);
+		strcpy(_slot[i].nick, nick);
+		_slot[i].level = level;
 
-		characterslot[i].nick = nick;
-
-		characterslot[i].level = level;
+		//characterslot[i].name = jobname;
+		//characterslot[i].nick = nick;
+		//characterslot[i].level = level;
 	}
-
 
 	_slot = characterslot;
 }
