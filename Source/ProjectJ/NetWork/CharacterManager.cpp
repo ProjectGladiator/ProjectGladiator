@@ -75,23 +75,23 @@ bool CharacterManager::Character_Slot(char* _buf)
 
 bool CharacterManager::Character_Recv_Slot(char * _buf)
 {
-	char data[BUFSIZE];
-	memset(data, 0, sizeof(data));
-	char* ptr = data;
+	char* ptrdata = nullptr;
+	char* ptrbuf = _buf;
 
 	// _buf 길이
 	int datasize = strlen(_buf);
 
 	bool check = true;
-	memcpy(&check, _buf, sizeof(bool));
-	_buf += sizeof(bool);
+	memcpy(&check, ptrbuf, sizeof(bool));
+	ptrbuf += sizeof(bool);
 
 	if (check == false)
 	{
 		return false;
 	}
 
-	ptr = new char[datasize];
+	ptrdata = new char[datasize];
+	char* ptr_packetdata = ptrdata;
 
 	int count = 0;
 	int joblen = 0;
@@ -100,50 +100,50 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 	char nick[255];
 	int level;
 
-	memcpy(&count, _buf, sizeof(int));
-	_buf += sizeof(int);
+	memcpy(&count, ptrbuf, sizeof(int));
+	ptrbuf += sizeof(int);
 
-	memcpy(ptr, &check, sizeof(bool));
-	ptr += sizeof(bool);
+	memcpy(ptr_packetdata, &check, sizeof(bool));
+	ptr_packetdata += sizeof(bool);
 
-	memcpy(ptr, &count, sizeof(int));
-	ptr += sizeof(int);
+	memcpy(ptr_packetdata, &count, sizeof(int));
+	ptr_packetdata += sizeof(int);
 
 	for (int i = 0; i < count; i++)
 	{
-		memcpy(&joblen,_buf, sizeof(int));
-		_buf += sizeof(int);
+		memcpy(&joblen, ptrbuf, sizeof(int));
+		ptrbuf += sizeof(int);
 
-		memcpy(jobname, _buf, joblen);
-		_buf += joblen;
+		memcpy(jobname, ptrbuf, joblen);
+		ptrbuf += joblen;
 
-		memcpy(&level, _buf, sizeof(int));
-		_buf += sizeof(int);
+		memcpy(&level, ptrbuf, sizeof(int));
+		ptrbuf += sizeof(int);
 
-		memcpy(&nicklen, _buf, sizeof(int));
-		_buf += sizeof(int);
+		memcpy(&nicklen, ptrbuf, sizeof(int));
+		ptrbuf += sizeof(int);
 
-		memcpy(nick, _buf, nicklen);
-		_buf += nicklen;
+		memcpy(nick, ptrbuf, nicklen);
+		ptrbuf += nicklen;
 
 		// data에 넣는 작업
-		memcpy(ptr, &joblen, sizeof(int));
-		ptr += sizeof(int);
+		memcpy(ptr_packetdata, &joblen, sizeof(int));
+		ptr_packetdata += sizeof(int);
 
-		memcpy(ptr, jobname, joblen);
-		ptr += joblen;
+		memcpy(ptr_packetdata, jobname, joblen);
+		ptr_packetdata += joblen;
 
-		memcpy(ptr, &level, sizeof(int));
-		ptr += sizeof(int);
+		memcpy(ptr_packetdata, &level, sizeof(int));
+		ptr_packetdata += sizeof(int);
 
-		memcpy(ptr, &nicklen, sizeof(int));
-		ptr += sizeof(int);
+		memcpy(ptr_packetdata, &nicklen, sizeof(int));
+		ptr_packetdata += sizeof(int);
 
-		memcpy(ptr, nick, nicklen);
-		ptr += nicklen;
+		memcpy(ptr_packetdata, nick, nicklen);
+		ptr_packetdata += nicklen;
 	}
 
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptr, datasize);
+	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptr_packetdata, datasize);
 
 	return true;
 }
