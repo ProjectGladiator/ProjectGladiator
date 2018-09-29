@@ -77,9 +77,10 @@ void UTitleWidgetLogin::Login()
 		// 로그인체크
 		if (LoginManager::GetInstance()->isLogin())
 		{
-			CharacterManager::GetInstance()->Character_Req_Slot();
-			NetworkClient_main::NetworkManager::GetInstance()->Send();
-			NetworkClient_main::NetworkManager::GetInstance()->Wait();
+			// 이부분 지워주세요. BeginPlay에서도 호출하기때문에 사용안합니다.
+			//CharacterManager::GetInstance()->Character_Req_Slot();
+			//NetworkClient_main::NetworkManager::GetInstance()->Send();
+			//NetworkClient_main::NetworkManager::GetInstance()->Wait();
 			PC->LoginWidgetToggle();	
 
 			UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));
