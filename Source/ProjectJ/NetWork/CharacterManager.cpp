@@ -78,30 +78,59 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 	char* ptrdata = nullptr;
 	char* ptrbuf = _buf;
 
+	struct SlotTemp
+	{
+		int temp_joblen;
+		char temp_jobname[255];
+		int temp_nicklen;
+		char temp_nick[255];
+		int temp_level;
+	}slottemp[3];
+
 	// _buf 길이
-	int datasize = strlen(_buf);
+	int datasize = 0;
 
 	bool check = true;
+	int count = 0;
+
 	memcpy(&check, ptrbuf, sizeof(bool));
 	ptrbuf += sizeof(bool);
+	datasize += sizeof(bool);
 
 	if (check == false)
 	{
 		return false;
 	}
 
-	ptrdata = new char[datasize];
-	char* ptr_packetdata = ptrdata;
-
-	int count = 0;
-	int joblen = 0;
-	char jobname[255];
-	int nicklen = 0;
-	char nick[255];
-	int level;
-
 	memcpy(&count, ptrbuf, sizeof(int));
 	ptrbuf += sizeof(int);
+	datasize += sizeof(int);
+
+	for (int i = 0; i < count; i++)
+	{
+		memcpy(&slottemp[i].temp_joblen, ptrbuf, sizeof(int));
+		ptrbuf += sizeof(int);
+		datasize += sizeof(int);
+
+		memcpy(slottemp[i].temp_jobname, ptrbuf, slottemp[i].temp_joblen);
+		ptrbuf += slottemp[i].temp_joblen;
+		datasize += sizeof(int);
+
+		memcpy(&slottemp[i].temp_level, ptrbuf, sizeof(int));
+		ptrbuf += sizeof(int);
+		datasize += sizeof(int);
+
+		memcpy(&slottemp[i].temp_nicklen, ptrbuf, sizeof(int));
+		ptrbuf += sizeof(int);
+		datasize += sizeof(int);
+
+		memcpy(slottemp[i].temp_nick, ptrbuf, slottemp[i].temp_nicklen);
+		ptrbuf += slottemp[i].temp_nicklen;
+		datasize += sizeof(int);
+	}
+
+	ptrdata = new char[datasize];
+	char* ptr_packetdata = ptrdata;
 
 	memcpy(ptr_packetdata, &check, sizeof(bool));
 	ptr_packetdata += sizeof(bool);
@@ -111,36 +140,21 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 
 	for (int i = 0; i < count; i++)
 	{
-		memcpy(&joblen, ptrbuf, sizeof(int));
-		ptrbuf += sizeof(int);
-
-		memcpy(jobname, ptrbuf, joblen);
-		ptrbuf += joblen;
-
-		memcpy(&level, ptrbuf, sizeof(int));
-		ptrbuf += sizeof(int);
-
-		memcpy(&nicklen, ptrbuf, sizeof(int));
-		ptrbuf += sizeof(int);
-
-		memcpy(nick, ptrbuf, nicklen);
-		ptrbuf += nicklen;
-
 		// data에 넣는 작업
-		memcpy(ptr_packetdata, &joblen, sizeof(int));
+		memcpy(ptr_packetdata, &slottemp[i].temp_joblen, sizeof(int));
 		ptr_packetdata += sizeof(int);
 
-		memcpy(ptr_packetdata, jobname, joblen);
-		ptr_packetdata += joblen;
+		memcpy(ptr_packetdata, slottemp[i].temp_jobname, slottemp[i].temp_joblen);
+		ptr_packetdata += slottemp[i].temp_joblen;
 
-		memcpy(ptr_packetdata, &level, sizeof(int));
+		memcpy(ptr_packetdata, &slottemp[i].temp_level, sizeof(int));
 		ptr_packetdata += sizeof(int);
 
-		memcpy(ptr_packetdata, &nicklen, sizeof(int));
+		memcpy(ptr_packetdata, &slottemp[i].temp_nicklen, sizeof(int));
 		ptr_packetdata += sizeof(int);
 
-		memcpy(ptr_packetdata, nick, nicklen);
-		ptr_packetdata += nicklen;
+		memcpy(ptr_packetdata, slottemp[i].temp_nick, slottemp[i].temp_nicklen);
+		ptr_packetdata += slottemp[i].temp_nicklen;
 	}
 
 	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptrdata, datasize);
