@@ -140,7 +140,7 @@ enum RESULT {
 #define NICKNAMESIZE 20
 #define PRODUCT_NAMESIZE 50
 #define ENCRYPT_KEY 951324896
-#define SERVERIP "127.0.0.1"
+#define SERVERIP "192.168.219.100"
 //#define SERVERIP "14.36.166.64"
 
 #endif

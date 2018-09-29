@@ -143,7 +143,7 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		ptr_packetdata += nicklen;
 	}
 
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptr_packetdata, datasize);
+	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptrdata, datasize);
 
 	return true;
 }
