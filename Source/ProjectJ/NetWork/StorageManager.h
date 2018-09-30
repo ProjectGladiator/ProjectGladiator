@@ -22,9 +22,9 @@ struct PacketData
 
 struct CharacterSlot
 {
-	char* name;
+	char name[255];
 	int level;
-	char* nick;
+	char nick[255];
 
 	~CharacterSlot()
 	{

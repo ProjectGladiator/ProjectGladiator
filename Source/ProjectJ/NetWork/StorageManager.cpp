@@ -99,16 +99,13 @@ void StorageManager::ChangeData(void* data, bool& type)
 // 수정중
 void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot)
 {
-	char* ptr = (char*)data;
+ 	char* ptr = *(char**)data;
 	
 	int joblen;
 	char jobname[255];
 	int level;
 	int nicklen;
 	char nick[255];
-
-	//_type = *(bool*)ptr;
-	//ptr += sizeof(bool);
 
 	memcpy(&_type, ptr, sizeof(bool));
 	ptr += sizeof(bool);
@@ -118,32 +115,11 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 		return;
 	}
 
-	//_count = *(int*)ptr;
-	//ptr += sizeof(int);
 	memcpy(&_count, ptr, sizeof(bool));
 	ptr += sizeof(int);
-	
-	CharacterSlot* characterslot = nullptr;
-
-	memset(characterslot, 0, sizeof(characterslot));
 
 	for (int i = 0; i < _count; i++)
 	{
-		//joblen = *(int*)ptr;
-		//ptr += sizeof(int);
-
-		//jobname = (char*)ptr;
-		//ptr += joblen;
-
-		//level = *(int*)ptr;
-		//ptr += sizeof(int);
-
-		//nicklen = *(int*)ptr;
-		//ptr += sizeof(int);
-
-		//nick = (char*)ptr;
-		//ptr += nicklen;
-
 		memcpy(&joblen, ptr, sizeof(int));
 		ptr += sizeof(int);
 
@@ -159,16 +135,12 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 		memcpy(nick, ptr, nicklen);
 		ptr += nicklen;
 
-		strcpy(_slot[i].name, jobname);
-		strcpy(_slot[i].nick, nick);
+		memset(_slot[i].nick, 0, sizeof(_slot[i].nick));
+
+		memcpy(_slot[i].name, jobname, joblen);
+		memcpy(_slot[i].nick, nick, nicklen);
 		_slot[i].level = level;
-
-		//characterslot[i].name = jobname;
-		//characterslot[i].nick = nick;
-		//characterslot[i].level = level;
 	}
-
-	_slot = characterslot;
 }
 
 // Front 삭제
