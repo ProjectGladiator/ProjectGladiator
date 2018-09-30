@@ -161,9 +161,9 @@ HANDLE NetworkManager::CreatRecvThread()
 bool NetworkManager::MangerInitialize()
 {
 	LogManager::GetInstance()->InitializeManager();
+	ErrorManager::GetInstance()->InitializeManager();
 	ThreadManager::GetInstance()->InitializeManager();
 	LoginManager::GetInstance()->InitializeManager();
-	ErrorManager::GetInstance()->InitializeManager();
 	EncryptManager::GetInstance()->InitializeManager();
 
 	return true;
@@ -178,8 +178,8 @@ void NetworkManager::EndManager()
 	LoginManager::GetInstance()->EndManager();
 	EncryptManager::GetInstance()->EndManager();
 	ThreadManager::GetInstance()->EndManager();
-	LogManager::GetInstance()->EndManager();
 	ErrorManager::GetInstance()->EndManager();
+	LogManager::GetInstance()->EndManager();
 
 	// 윈속 종료
 	WSACleanup();	// 소켓 DLL 메모리 해제

@@ -5,6 +5,7 @@
 #include "UserState.h"
 #include "LoginState.h"
 #include "CharacterState.h"
+#include "InGameState.h"
 
 class User : public Packet
 {
@@ -18,14 +19,16 @@ private:
 
 	LoginState* loginstate;
 	CharacterState* characterstate;
+	InGameState* ingamestate;
 
 public:
 	User();
 	User(SOCKET _sock, SOCKADDR_IN _addr);
 	~User();
-	UserState* getState();
-	LoginState* getLoginState();
-	CharacterState* getCharacterState();
+	UserState* getState() { return state; }
+	LoginState* getLoginState() { return loginstate; }
+	CharacterState* getCharacterState() { return characterstate; }
+	InGameState* getIngameState() { return ingamestate; }
 
 	void SetState(UserState* _state);
 	void setID(char *id);

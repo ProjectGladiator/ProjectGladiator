@@ -30,21 +30,6 @@ User::~User()
 	delete loginstate;
 }
 
-UserState* User::getState()
-{
-	return state;
-}
-
-LoginState * User::getLoginState()
-{
-	return loginstate;
-}
-
-CharacterState * User::getCharacterState()
-{
-	return characterstate;
-}
-
 void User::SetState(UserState * _state)
 {
 	state = _state;
@@ -94,5 +79,6 @@ void User::InitState()
 {
 	loginstate = new LoginState();
 	characterstate = new CharacterState();
+	ingamestate = new InGameState();
 	state = loginstate;
 }
