@@ -49,23 +49,22 @@ void LogManager::SetTime()
 void LogManager::LogWrite(char* _msg)
 {
 
-	ofstream w_log;
+	ofstream w_log("Log.txt");
 
+	//w_log.open("Log.txt", ofstream::app);
 	if (w_log.is_open())
 	{
-		w_log.open("Log.txt", ofstream::out);
+		SetTime();
+		char buf[12];
+		sprintf(buf, "[%d:%d:%d]", time.wHour, time.wMinute, time.wSecond);
+		w_log << buf << ":" << _msg << endl;
+
+		w_log.close();
 	}
 	else
 	{
-		w_log.open("Log.txt", ofstream::app);
+		//w_log.open("Log.txt", ofstream::app);
 	}
-	
-	SetTime();
-	char buf[12];
-	sprintf(buf, "[%d:%d:%d]", time.wHour, time.wMinute, time.wSecond);
-	w_log << buf << ":" << _msg << endl;
-	
-	w_log.close();
 }
 
 void LogManager::LogRead()
