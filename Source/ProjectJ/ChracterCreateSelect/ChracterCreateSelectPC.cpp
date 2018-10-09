@@ -9,6 +9,7 @@
 
 #include "Title/Widget/TitleCharacterCreateWidget.h"
 #include "Title/Widget/TitleCharacterSelectWidget.h"
+#include "Network/StorageManager.h"
 
 void AChracterCreateSelectPC::BeginPlay()
 {
@@ -44,7 +45,6 @@ void AChracterCreateSelectPC::BeginPlay()
 	{
 		//MyWidgetClass를 토대로 CharacterSelectWidget을 생성한다.
 		CharacterSelectWidget = Cast<UTitleCharacterSelectWidget>(CreateWidget<UUserWidget>(this, MyWidgetClass));
-
 		CharacterSelectWidget->AddToViewport(); //화면에 붙인다.
 	}
 
