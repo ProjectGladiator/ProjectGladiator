@@ -25,7 +25,7 @@ struct CharacterSlot
 	char name[255];
 	int level;
 	char nick[255];
-
+	int charavercode;
 	~CharacterSlot()
 	{
 

@@ -106,6 +106,7 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 	int level;
 	int nicklen;
 	char nick[255];
+	int charactercode;
 
 	memcpy(&_type, ptr, sizeof(bool));
 	ptr += sizeof(bool);
@@ -135,11 +136,13 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 		memcpy(nick, ptr, nicklen);
 		ptr += nicklen;
 
-		memset(_slot[i].nick, 0, sizeof(_slot[i].nick));
+		memcpy(&charactercode, ptr, sizeof(int));
+		ptr += sizeof(int);
 
 		memcpy(_slot[i].name, jobname, joblen);
 		memcpy(_slot[i].nick, nick, nicklen);
 		_slot[i].level = level;
+		_slot[i].charavercode = charactercode;
 	}
 }
 
