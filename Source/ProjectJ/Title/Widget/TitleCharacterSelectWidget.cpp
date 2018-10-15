@@ -17,8 +17,11 @@ void UTitleCharacterSelectWidget::NativeConstruct()
 	CharacterDelete = Cast<UButton>(GetWidgetFromName(TEXT("CharacterDelete")));
 	CharacterCreate = Cast<UButton>(GetWidgetFromName(TEXT("CharacterCreate")));
 	CharacterButtonOne = Cast<UCharacterSelectButton>(GetWidgetFromName(TEXT("CharacterSelectButtonOne")));
+	CharacterButtonOne->SetVisibility(ESlateVisibility::Hidden);
 	CharacterButtonTwo = Cast<UCharacterSelectButton>(GetWidgetFromName(TEXT("CharacterSelectButtonTwo")));
+	CharacterButtonTwo->SetVisibility(ESlateVisibility::Hidden);
 	CharacterButtonThree = Cast<UCharacterSelectButton>(GetWidgetFromName(TEXT("CharacterSelectButtonThree")));
+	CharacterButtonThree->SetVisibility(ESlateVisibility::Hidden);
 	
 	if (GameStartButton)
 	{
@@ -35,8 +38,7 @@ void UTitleCharacterSelectWidget::NativeConstruct()
 		CharacterCreate->OnClicked.AddDynamic(this, &UTitleCharacterSelectWidget::MyCharacterCreate);
 	}
 	
-	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
+	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));	
 }	
 
 void UTitleCharacterSelectWidget::GameStart()
