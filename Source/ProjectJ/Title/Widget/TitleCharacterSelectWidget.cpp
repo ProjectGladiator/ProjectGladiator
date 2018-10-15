@@ -76,6 +76,8 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 		{
 			CharacterSlot* characterslot = new CharacterSlot[3];
 
+			memset(characterslot, 0, sizeof(CharacterSlot[3]));
+
 			StorageManager::GetInstance()->ChangeData(Data->data, EmptySlot, SlotCount, characterslot);
 
 			if (!EmptySlot)
@@ -86,7 +88,6 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 			}
 			else
 			{
-
 				for (int i = 0; i < SlotCount; i++)
 				{
 					FString name = characterslot[i].name;
