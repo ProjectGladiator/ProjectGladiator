@@ -45,6 +45,7 @@ void AChracterCreateSelectPC::BeginPlay()
 	{
 		//MyWidgetClass를 토대로 CharacterSelectWidget을 생성한다.
 		CharacterSelectWidget = Cast<UTitleCharacterSelectWidget>(CreateWidget<UUserWidget>(this, MyWidgetClass));
+		CharacterSelectWidget->SetVisibility(ESlateVisibility::Hidden);		
 		CharacterSelectWidget->AddToViewport(); //화면에 붙인다.
 	}
 
@@ -66,6 +67,7 @@ void AChracterCreateSelectPC::BeginPlay()
 	ClickEventKeys.Add(EKeys::LeftMouseButton); 
 	DefaultClickTraceChannel = ECollisionChannel::ECC_Pawn;
 
+	CharacterSelectWidgetToggle();
 	//SetInputMode(FInputModeGameAndUI());
 	SetViewTargetWithBlend(CharacterSelectCamera, 0, EViewTargetBlendFunction::VTBlend_Linear, 0, false);
 }
@@ -86,7 +88,7 @@ void AChracterCreateSelectPC::CharacterSelectWidgetToggle()
 	{
 		if (CharacterSelectWidget->GetVisibility() == ESlateVisibility::Hidden)
 		{
-			CharacterSelectWidget->MyCharacterSlotUpdate();
+			//CharacterSelectWidget->MyCharacterSlotUpdate();
 			CharacterSelectWidget->SetVisibility(ESlateVisibility::Visible);
 		}
 		else
