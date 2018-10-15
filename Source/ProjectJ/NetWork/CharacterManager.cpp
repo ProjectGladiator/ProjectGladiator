@@ -85,6 +85,7 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		int temp_nicklen;
 		char temp_nick[255];
 		int temp_level;
+		int temp_job_code;
 	}slottemp[3];
 
 	// _buf ±æÀÌ
@@ -127,6 +128,10 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		memcpy(slottemp[i].temp_nick, ptrbuf, slottemp[i].temp_nicklen);
 		ptrbuf += slottemp[i].temp_nicklen;
 		datasize += sizeof(int);
+
+		memcpy(&slottemp[i].temp_job_code, ptrbuf, sizeof(int));
+		ptrbuf += sizeof(int);
+		datasize += sizeof(int);
 	}
 
 	ptrdata = new char[datasize];
@@ -155,6 +160,9 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 
 		memcpy(ptr_packetdata, slottemp[i].temp_nick, slottemp[i].temp_nicklen);
 		ptr_packetdata += slottemp[i].temp_nicklen;
+
+		memcpy(ptr_packetdata, &slottemp[i].temp_job_code, sizeof(int));
+		ptr_packetdata += sizeof(int);
 	}
 
 	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptrdata, datasize);
