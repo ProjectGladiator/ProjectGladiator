@@ -88,7 +88,7 @@ void AChracterCreateSelectPC::CharacterSelectWidgetToggle()
 	{
 		if (CharacterSelectWidget->GetVisibility() == ESlateVisibility::Hidden)
 		{
-			//CharacterSelectWidget->MyCharacterSlotUpdate();
+			CharacterSelectWidget->MyCharacterSlotUpdate();
 			CharacterSelectWidget->SetVisibility(ESlateVisibility::Visible);
 		}
 		else
