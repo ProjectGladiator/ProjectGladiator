@@ -17,6 +17,7 @@
 #include "Warrior/Warrior.h"
 #include "Tanker/Tanker.h"
 #include "Wizard/Wizard.h"
+#include "NetWork/JobInfo.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -200,7 +201,7 @@ void AMyCharacter::LeftClick()
 			AWarrior* Character = Cast<AWarrior>(HitResult.Actor);
 			if (Character)
 			{
-				CharacterCreateSelectPC->SelectCharacter(2000);
+				CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::WARRIOR);
 			}
 			else
 			{
@@ -208,7 +209,7 @@ void AMyCharacter::LeftClick()
 
 				if (Character)
 				{
-					CharacterCreateSelectPC->SelectCharacter(1000);
+					CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::TANKER);
 				}
 				else
 				{
@@ -216,7 +217,7 @@ void AMyCharacter::LeftClick()
 
 					if (Character)
 					{
-						CharacterCreateSelectPC->SelectCharacter(3000);
+						CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::MAGICIAN);
 					}
 				}
 			}
