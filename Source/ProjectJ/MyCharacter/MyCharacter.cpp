@@ -201,6 +201,7 @@ void AMyCharacter::LeftClick()
 			AWarrior* Character = Cast<AWarrior>(HitResult.Actor);
 			if (Character)
 			{
+				GLog->Log(FString::Printf(TEXT("전사 클릭")));
 				CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::WARRIOR);
 			}
 			else
@@ -209,6 +210,7 @@ void AMyCharacter::LeftClick()
 
 				if (Character)
 				{
+					GLog->Log(FString::Printf(TEXT("탱커 클릭")));
 					CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::TANKER);
 				}
 				else
@@ -217,6 +219,7 @@ void AMyCharacter::LeftClick()
 
 					if (Character)
 					{
+						GLog->Log(FString::Printf(TEXT("법사 클릭")));
 						CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::MAGICIAN);
 					}
 				}
