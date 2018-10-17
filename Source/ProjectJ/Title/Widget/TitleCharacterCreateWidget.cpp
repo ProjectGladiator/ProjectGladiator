@@ -33,6 +33,12 @@ void UTitleCharacterCreateWidget::ChracterCreate()
 {
 	if (ChracterCreateButton)
 	{
+		// 직업 코드랑 닉네임 변수 
+
+		// CharacterManager::GetInstance()->Character_Req_Character(캐릭터닉네임, 직업 코드);
+		NetworkClient_main::NetworkManager::GetInstance()->Send();
+		NetworkClient_main::NetworkManager::GetInstance()->Wait();
+
 		PC->CharacterSelectWidgetToggle();
 		PC->CharacterCreateWidgetToggle();
 	}
