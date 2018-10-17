@@ -112,3 +112,8 @@ void AChracterCreateSelectPC::CharacterCreateWidgetToggle()
 		}
 	}
 }
+
+void AChracterCreateSelectPC::SelectCharacter(int NewJobCode)
+{
+	JobCode = NewJobCode;
+}

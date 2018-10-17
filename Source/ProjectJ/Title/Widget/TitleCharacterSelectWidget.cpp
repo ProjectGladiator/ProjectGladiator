@@ -44,7 +44,7 @@ void UTitleCharacterSelectWidget::NativeConstruct()
 void UTitleCharacterSelectWidget::GameStart()
 {
 	if (PC)
-	{
+	{			
 		PC->SetInputMode(FInputModeGameOnly());
 		UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainStage")); //타이틀 맵으로 이동			
 	}	

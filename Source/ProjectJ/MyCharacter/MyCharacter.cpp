@@ -198,10 +198,9 @@ void AMyCharacter::LeftClick()
 		if (CharacterCreateSelectPC->GetHitResultUnderCursorForObjects(ObjectTypes, true, HitResult))
 		{
 			AWarrior* Character = Cast<AWarrior>(HitResult.Actor);
-
 			if (Character)
 			{
-				GLog->Log(FString::Printf(TEXT("Warrior LeftClick")));
+				CharacterCreateSelectPC->SelectCharacter(2000);
 			}
 			else
 			{
@@ -209,7 +208,7 @@ void AMyCharacter::LeftClick()
 
 				if (Character)
 				{
-					GLog->Log(FString::Printf(TEXT("Tanker LeftClick")));
+					CharacterCreateSelectPC->SelectCharacter(1000);
 				}
 				else
 				{
@@ -217,11 +216,7 @@ void AMyCharacter::LeftClick()
 
 					if (Character)
 					{
-						GLog->Log(FString::Printf(TEXT("Wizard LeftClick")));
-					}
-					else
-					{
-						GLog->Log(FString::Printf(TEXT("캐릭터 클릭하지 않음")));
+						CharacterCreateSelectPC->SelectCharacter(3000);
 					}
 				}
 			}

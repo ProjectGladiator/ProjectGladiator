@@ -20,12 +20,17 @@ public:
 	class UTitleCharacterCreateWidget* ChracterCreateWidget; //캐릭터 생성 위젯
 	class AChracterCreateCamera* CharacterCreateCamera;
 	class AChracterCreateCamera* CharacterSelectCamera;
+
+	int JobCode;
+
+	CharacterSlot* CharacterSlotInfo;
+
 	virtual void BeginPlay() override;	
 
 	void ToCharacterCreate();
 	void ToCharacterSelect();
 	void CharacterSelectWidgetToggle();
 	void CharacterCreateWidgetToggle();
-	
-	CharacterSlot* CharacterSlotInfo;
+
+	void SelectCharacter(int NewJobCode);
 };
