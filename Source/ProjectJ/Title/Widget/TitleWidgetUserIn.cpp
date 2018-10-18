@@ -77,7 +77,7 @@ void UTitleWidgetUserIn::IdOverapCheck()
 			bool result;
 			StorageManager::GetInstance()->ChangeData(pd->data, result);
 			StorageManager::GetInstance()->PopData();
-			if (result == false)
+			if (result == true)
 			{
 				UE_LOG(LogClass, Warning, TEXT("ID OK"));
 			}
