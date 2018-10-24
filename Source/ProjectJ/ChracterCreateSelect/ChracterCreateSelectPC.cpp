@@ -7,8 +7,8 @@
 #include "Kismet/KismetStringLibrary.h"
 #include "Engine/World.h"
 
-#include "Title/Widget/TitleCharacterCreateWidget.h"
-#include "Title/Widget/TitleCharacterSelectWidget.h"
+#include "ChracterCreateSelect/Widget/TitleCharacterCreateWidget.h"
+#include "ChracterCreateSelect/Widget/TitleCharacterSelectWidget.h"
 #include "Network/StorageManager.h"
 
 void AChracterCreateSelectPC::BeginPlay()

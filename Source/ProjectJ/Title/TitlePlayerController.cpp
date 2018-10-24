@@ -5,9 +5,8 @@
 #include "Title/Widget/TitleWidgetUserIn.h"
 #include "ErrorWidget/WidgetCancel.h"
 #include "ErrorWidget/WidgetOk.h"
-#include "Title/Widget/TitleCharacterCreateWidget.h"
-#include "Title/Widget/TitleCharacterSelectWidget.h"
-
+#include "ChracterCreateSelect/Widget/TitleCharacterCreateWidget.h"
+#include "ChracterCreateSelect/Widget/TitleCharacterSelectWidget.h"
 #include "NetWork/NetworkManager.h"
 
 void ATitlePlayerController::BeginPlay()
