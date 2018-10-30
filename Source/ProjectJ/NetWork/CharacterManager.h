@@ -24,6 +24,7 @@ public:
 	void Character_Req_Character(char* _nick, int _code);	// 캐릭터 생성요청(닉네임,직업코드)
 	void Character_Choice(int _select);						// 캐릭터 선택 
 	void Character_Exit();									// 캐릭터 생성 취소
+	void Character_Slot_Empty(bool _check);
 
 	bool Character_Slot(char* _buf);						// 슬롯에 캐릭터 있는지 확인
 	bool Character_Recv_Slot(char* _buf);					// 슬롯에 캐릭터가 있으면 캐릭터를 반환한다

@@ -60,7 +60,6 @@ bool CharacterManager::Character_Slot(char* _buf)
 	bool check;
 
 	memcpy(&check, _buf, sizeof(bool));
-
 	if (check)
 	{
 		// 캐릭터 슬롯이 있음
@@ -68,14 +67,15 @@ bool CharacterManager::Character_Slot(char* _buf)
 	}
 	else
 	{
-		// 캐릭터 슬롯이 없음
+			// 캐릭터 슬롯이 없음
 		return false;
 	}
 }
 
 bool CharacterManager::Character_Recv_Slot(char * _buf)
 {
-	char* ptrdata = nullptr;
+	//char* ptrdata = nullptr;
+	char ptrdata[BUFSIZE];
 	char* ptrbuf = _buf;
 
 	struct SlotTemp
@@ -134,7 +134,8 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		datasize += sizeof(int);
 	}
 
-	ptrdata = new char[datasize];
+	//ptrdata = new char[datasize];
+	memset(ptrdata, 0,sizeof(ptrdata));
 	char* ptr_packetdata = ptrdata;
 
 	memcpy(ptr_packetdata, &check, sizeof(bool));
@@ -220,7 +221,24 @@ void CharacterManager::Character_Exit()
 	memset(buf, 0, sizeof(buf));
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_CHARACTER_EXIT, buf, 0);
+}
 
+void CharacterManager::Character_Slot_Empty(bool _check)
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+	char* ptr = buf;
+
+	int size = sizeof(bool);
+
+	bool check = _check;
+
+	memcpy(ptr, &check, sizeof(bool));
+	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptr, size);
+
+	LogManager::GetInstance()->SetTime();
+	LogManager::GetInstance()->LogWrite(ptr);
+	
 }
 
 bool CharacterManager::Character_Recv_Create(char * _buf)
@@ -275,14 +293,12 @@ RESULT CharacterManager::CharacterInirRecvResult()
 		check = Character_Slot(buf);
 		if (check == true)
 		{
-			int size = strlen(buf);
 			check = Character_Recv_Slot(buf);
 			result = RT_CHARACTER_SLOTRESULT;
 		}
 		else
 		{
-			check = false;
-			StorageManager::GetInstance()->PushData(protocol, (void*)&check, sizeof(bool));
+			Character_Slot_Empty(check);
 			result = RT_CHARACTER_SLOTRESULT;
 		}
 		break;
