@@ -38,6 +38,25 @@ void UTitleCharacterCreateWidget::ChracterCreate()
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
 		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
+		bool result;
+
+		PacketData* Data;
+		if (StorageManager::GetInstance()->GetFront(Data))
+		{
+			if (Data->protocol == PCHARACTERDATA_CREATE_RESULT)
+			{
+				StorageManager::GetInstance()->ChangeData(Data->data, result);
+				StorageManager::GetInstance()->PopData();
+
+				if (result)
+				{
+					CharacterManager::GetInstance()->Character_Req_Slot();
+					NetworkClient_main::NetworkManager::GetInstance()->Send();
+					NetworkClient_main::NetworkManager::GetInstance()->Wait();
+				}
+			}
+		}
+
 		PC->CharacterSelectWidgetToggle();
 		PC->CharacterCreateWidgetToggle();
 	}
