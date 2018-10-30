@@ -68,7 +68,7 @@ void AChracterCreateSelectPC::BeginPlay()
 	DefaultClickTraceChannel = ECollisionChannel::ECC_Pawn;
 
 	CharacterSelectWidgetToggle();
-	//SetInputMode(FInputModeGameAndUI());
+	SetInputMode(FInputModeGameAndUI());
 	SetViewTargetWithBlend(CharacterSelectCamera, 0, EViewTargetBlendFunction::VTBlend_Linear, 0, false);
 }
 
