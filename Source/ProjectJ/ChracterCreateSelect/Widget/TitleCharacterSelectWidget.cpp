@@ -113,6 +113,7 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
 					}					
 				}
 			}
+			StorageManager::GetInstance()->PopData();
 		}
 	}
 }
