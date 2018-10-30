@@ -99,8 +99,10 @@ void StorageManager::ChangeData(void* data, bool& type)
 // ¼öÁ¤Áß
 void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot)
 {
- 	char* ptr = *(char**)data;
+ 	char* ptr = (char*)data;
 	
+	bool check;
+	int count;
 	int joblen;
 	char jobname[255];
 	int level;
@@ -108,18 +110,21 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 	char nick[255];
 	int charactercode;
 
-	memcpy(&_type, ptr, sizeof(bool));
+	memcpy(&check, ptr, sizeof(bool));
 	ptr += sizeof(bool);
+	_type = check;
 
-	if (_type == false)
+	if (check == false)
 	{
 		return;
 	}
 
-	memcpy(&_count, ptr, sizeof(bool));
+	memcpy(&count, ptr, sizeof(bool));
 	ptr += sizeof(int);
+	_count = count;
+	
 
-	for (int i = 0; i < _count; i++)
+	for (int i = 0; i < count; i++)
 	{
 		memcpy(&joblen, ptr, sizeof(int));
 		ptr += sizeof(int);
