@@ -2,6 +2,12 @@
 
 #include "MonsterAIController.h"
 
+AMonsterAIController::AMonsterAIController()
+{
 
+}
 
+void AMonsterAIController::Possess(APawn * InPawn)
+{
 
+}

@@ -13,8 +13,16 @@ UCLASS()
 class PROJECTJ_API AMonsterAIController : public AAIController
 {
 	GENERATED_BODY()
+
+private:
+	UPROPERTY(VisibleAnywhere)
+		class UBlackboardComponent* BBComponent;
+	UPROPERTY(VisibleAnywhere)
+		class UBehaviorTreeComponent* BTComponent;	
+
+public:
+	AMonsterAIController();
 	
-	
-	
-	
+	UFUNCTION()
+		virtual void Possess(APawn* InPawn) override;
 };
