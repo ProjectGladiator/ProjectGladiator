@@ -31,7 +31,7 @@ public:
 	bool Character_Recv_Create(char* _buf);					// 캐릭터 생성 결과
 	bool Character_Recv_Enter(char* _buf);					// 캐릭터 접속 결과
 
-	RESULT CharacterInirRecvResult();						// 
+	RESULT CharacterInitRecvResult();						// 
 	RESULT CharacterNewRecvResult();						// 
 };
 

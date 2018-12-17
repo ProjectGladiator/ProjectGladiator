@@ -10,7 +10,7 @@ bool CharacterState::Read(User * _user)
 	switch (state)
 	{
 	case CharacterState::CHARACTER_INIT_RECV:
-		result = charactermanager->CharacterInirRecvResult();
+		result = charactermanager->CharacterInitRecvResult();
 		if (result == RT_CHARACTER_SLOTRESULT)
 		{
 			state = CHARACTER_INIT_RECV;

@@ -234,7 +234,7 @@ void CharacterManager::Character_Slot_Empty(bool _check)
 	bool check = _check;
 
 	memcpy(ptr, &check, sizeof(bool));
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptr, size);
+	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)ptr, size);
 
 	LogManager::GetInstance()->SetTime();
 	LogManager::GetInstance()->LogWrite(ptr);
@@ -269,7 +269,7 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 
 	if (check)
 	{
-		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_RESULT, (void*)&ptr, strlen(ptr));
+		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_RESULT, (void*)ptr, strlen(ptr));
 		return true;
 	}
 	else
@@ -278,7 +278,7 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 	}
 }
 
-RESULT CharacterManager::CharacterInirRecvResult()
+RESULT CharacterManager::CharacterInitRecvResult()
 {
 	PROTOCOL protocol;
 	char buf[BUFSIZE];
@@ -324,7 +324,7 @@ RESULT CharacterManager::CharacterInirRecvResult()
 	default:
 		break;
 	}
-
+	
 	return result;
 }
 
