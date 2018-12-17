@@ -12,7 +12,8 @@ namespace DataProtocol {
 	enum PCHARACTERDATA {
 		PCHARACTERDATA_INFO = 0,		// 이동 정보
 		PCHARACTERDATA_SLOT_INFO,		// 슬롯 결과
-		PCHARACTERDATA_CREATE_RESULT	// 캐릭터 생성 결과
+		PCHARACTERDATA_CREATE_RESULT,	// 캐릭터 생성 결과
+		PCHARACTERDATA_ENTER_INFO		// 접속 정보
 	};
 	// 인게임 프로토콜
 	enum PGAMEDATA {

@@ -3,6 +3,7 @@
 
 #include "global.h"
 #include "DataProtocol.h"
+#include "StorageDataType.h"
 #include <queue>
 
 using namespace std;
@@ -17,18 +18,6 @@ struct PacketData
 	~PacketData()
 	{
 		delete[] data;
-	}
-};
-
-struct CharacterSlot
-{
-	char name[255];
-	int level;
-	char nick[255];
-	int charavercode;
-	~CharacterSlot()
-	{
-
 	}
 };
 
