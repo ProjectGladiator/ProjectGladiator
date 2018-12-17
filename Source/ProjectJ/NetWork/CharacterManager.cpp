@@ -234,10 +234,10 @@ void CharacterManager::Character_Slot_Empty(bool _check)
 	bool check = _check;
 
 	memcpy(ptr, &check, sizeof(bool));
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptr, size);
+	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&buf, size);
 
 	LogManager::GetInstance()->SetTime();
-	LogManager::GetInstance()->LogWrite(ptr);
+	LogManager::GetInstance()->LogWrite(buf);
 	
 }
 
