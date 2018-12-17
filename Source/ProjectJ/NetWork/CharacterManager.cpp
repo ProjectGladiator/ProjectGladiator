@@ -262,17 +262,24 @@ bool CharacterManager::Character_Recv_Create(char * _buf)
 bool CharacterManager::Character_Recv_Enter(char * _buf)
 {
 	bool check;
+	int ingame_usercount = 0;
+	char* ptr = _buf;
 
-	memcpy(&check, _buf, sizeof(bool));
+	memcpy(&check, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+
+	memcpy(&check, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+
 
 	if (check)
 	{
-		// 캐릭터 접속 성공
+
+
 		return true;
 	}
 	else
 	{
-		// 캐릭터 접속 실패
 		return false;
 	}
 }

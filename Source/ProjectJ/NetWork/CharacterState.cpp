@@ -17,7 +17,8 @@ bool CharacterState::Read(User * _user)
 		}
 		else if(result == RT_CHARACTER_ENTERGAME_SUCCESS)
 		{
-			// 캐릭터 접속
+			state = CHARACTER_INIT_RECV;
+			_user->SetState(_user->getIngameState());
 		}
 		else if (result == RT_CHARACTER_ENTERGAME_FAIL)
 		{
