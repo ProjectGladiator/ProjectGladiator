@@ -262,20 +262,14 @@ bool CharacterManager::Character_Recv_Create(char * _buf)
 bool CharacterManager::Character_Recv_Enter(char * _buf)
 {
 	bool check;
-	int ingame_usercount = 0;
 	char* ptr = _buf;
 
 	memcpy(&check, ptr, sizeof(bool));
 	ptr += sizeof(bool);
 
-	memcpy(&check, ptr, sizeof(bool));
-	ptr += sizeof(bool);
-
-
 	if (check)
 	{
-
-
+		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_RESULT, (void*)&ptr, strlen(ptr));
 		return true;
 	}
 	else

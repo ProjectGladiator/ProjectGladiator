@@ -15,7 +15,11 @@ struct CharacterSlot
 
 struct CharacterInfo
 {
-
+	int character_code;
+	char nick[NICKNAMESIZE];
+	float x;
+	float y;
+	float z;
 };
 
 #endif

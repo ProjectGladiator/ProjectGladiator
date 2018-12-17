@@ -30,6 +30,8 @@ int StorageManager::NProtocoltoDProtocol(int _networkprotocol)
 		return PCHARACTERDATA_SLOT_INFO;
 	case SERVER_CHARACTER_RESULT:
 		return PCHARACTERDATA_CREATE_RESULT;
+	case SERVER_CHARACTER_ENTER_RESULT:
+		return PCHARACTERDATA_ENTER_INFO;
 	}
 
 	return -1;
@@ -96,6 +98,13 @@ void StorageManager::ChangeData(void* data, bool& type)
 	type = *(bool*)data;
 }
 
+void StorageManager::ChangeData(void * data, int &_count)
+{
+	char* ptr = (char*)data;
+	memcpy(&_count, ptr, sizeof(int));
+	ptr += sizeof(int);
+}
+
 // ¼öÁ¤Áß
 void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot)
 {
@@ -119,7 +128,7 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 		return;
 	}
 
-	memcpy(&count, ptr, sizeof(bool));
+	memcpy(&count, ptr, sizeof(int));
 	ptr += sizeof(int);
 	_count = count;
 	
@@ -148,6 +157,33 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 		memcpy(_slot[i].nick, nick, nicklen);
 		_slot[i].level = level;
 		_slot[i].charavercode = charactercode;
+	}
+}
+
+void StorageManager::ChangeData(void * data, int _count, CharacterInfo *& _charinfo)
+{
+	char* ptr = (char*)data;
+	int nicksize = 0;
+
+	ptr += sizeof(int);
+
+	for (int i = 0; i < _count; i++)
+	{
+		memcpy(&_charinfo[i].character_code, ptr, sizeof(int));
+		ptr += sizeof(int);
+
+		memcpy(&nicksize, ptr, sizeof(int));
+		ptr += sizeof(int);
+
+		memcpy(_charinfo[i].nick, ptr, nicksize);
+		ptr += nicksize;
+
+		memcpy(&_charinfo[i].x, ptr, sizeof(float));
+		ptr += sizeof(float);
+		memcpy(&_charinfo[i].y, ptr, sizeof(float));
+		ptr += sizeof(float);
+		memcpy(&_charinfo[i].z, ptr, sizeof(float));
+		ptr += sizeof(float);
 	}
 }
 
