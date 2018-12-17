@@ -30,8 +30,23 @@ void UCharacterSelectButton::CharacterSelect()
 {
 	if (CharacterSelectButton)
 	{
-		PC->CharacterSelectWidgetToggle();
-		PC->CharacterCreateWidgetToggle();		
+	/*	PC->CharacterSelectWidgetToggle();
+		PC->CharacterCreateWidgetToggle();	*/	
+
+		FString str = this->GetName();
+
+		if (str.Compare("CharacterSelectButtonOne"))
+		{
+			PC->select_index = 1;
+		}
+		else if (str.Compare("CharacterSelectButtonTwo"))
+		{
+			PC->select_index = 2;
+		}
+		else if (str.Compare("CharacterSelectButtonThree"))
+		{
+			PC->select_index = 3;
+		}
 	}
 }
 

@@ -22,6 +22,7 @@ public:
 	class AChracterCreateCamera* CharacterSelectCamera;
 
 	int JobCode;
+	int select_index;
 
 	CharacterSlot* CharacterSlotInfo;
 

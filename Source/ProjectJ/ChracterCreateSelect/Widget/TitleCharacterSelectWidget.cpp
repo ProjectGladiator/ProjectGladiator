@@ -37,7 +37,7 @@ void UTitleCharacterSelectWidget::NativeConstruct()
 	{
 		CharacterCreate->OnClicked.AddDynamic(this, &UTitleCharacterSelectWidget::MyCharacterCreate);
 	}
-	
+
 	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));	
 }	
 
@@ -45,8 +45,22 @@ void UTitleCharacterSelectWidget::GameStart()
 {
 	if (PC)
 	{			
-		PC->SetInputMode(FInputModeGameOnly());
-		UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainStage")); //타이틀 맵으로 이동			
+		switch (PC->select_index)
+		{
+		case 1:
+			UE_LOG(LogClass, Warning, TEXT("1번 선택함"));
+			break;
+		case 2:
+			UE_LOG(LogClass, Warning, TEXT("2번 선택함"));
+			break;
+		case 3:
+			UE_LOG(LogClass, Warning, TEXT("3번 선택함"));
+			break;
+		}
+		
+		
+		//PC->SetInputMode(FInputModeGameOnly());
+		//UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainStage")); //타이틀 맵으로 이동			
 	}	
 }
 

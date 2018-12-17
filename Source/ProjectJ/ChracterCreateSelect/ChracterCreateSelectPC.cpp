@@ -13,6 +13,8 @@
 
 void AChracterCreateSelectPC::BeginPlay()
 {
+	JobCode = 0;
+	select_index = -1;
 	ACharacterCreateSelectGameMode* CCGM = Cast<ACharacterCreateSelectGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	if (CCGM)

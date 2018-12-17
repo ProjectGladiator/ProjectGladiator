@@ -31,7 +31,8 @@ void UTitleCharacterCreateWidget::NativeConstruct()
 
 void UTitleCharacterCreateWidget::ChracterCreate()
 {
-	if (ChracterCreateButton)
+	// 캐릭터가 선택 되었다면
+	if (ChracterCreateButton && PC->JobCode != 0)
 	{
 		FString id = NickNameInputBox->Text.ToString();		
 		CharacterManager::GetInstance()->Character_Req_Character(TCHAR_TO_ANSI(*id), PC->JobCode);
@@ -59,6 +60,11 @@ void UTitleCharacterCreateWidget::ChracterCreate()
 
 		PC->CharacterSelectWidgetToggle();
 		PC->CharacterCreateWidgetToggle();
+	}
+	else   // 캐릭터가 선택 되지 않았다면
+	{
+		FText ft = NSLOCTEXT("Character", "RequestCharacterSelect", "캐릭터를 선택해주세요");
+		EAppReturnType::Type Open(EAppMsgType::Type Ok, FText(ft));
 	}
 }
 
