@@ -241,6 +241,20 @@ void CharacterManager::Character_Slot_Empty(bool _check)
 	
 }
 
+void CharacterManager::Character_Select_Enter(int _index)
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+
+	char* ptr = buf;
+
+	int size = sizeof(int) + sizeof(int);
+
+	memcpy(ptr, &_index, sizeof(int));
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_REQ_CHARACTER, buf, size);
+}
+
 bool CharacterManager::Character_Recv_Create(char * _buf)
 {
 	bool check;
