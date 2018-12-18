@@ -75,3 +75,10 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# 소스파일 필터 무시 제거 # 개인 설정파일은 무시
+!Intermediate/ProjectFiles
+Intermediate/ProjectFiles/ProjectJ.vcxproj
+Intermediate/ProjectFiles/ProjectJ.vcxproj.user
+Intermediate/ProjectFiles/UE4.vcxproj
+Intermediate/ProjectFiles/UE4.vcxproj.user
