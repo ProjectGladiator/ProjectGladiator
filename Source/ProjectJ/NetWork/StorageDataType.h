@@ -47,6 +47,6 @@ public:
 	}
 
 	~Character() { delete[]character_name; }
-}
+};
 
 #endif

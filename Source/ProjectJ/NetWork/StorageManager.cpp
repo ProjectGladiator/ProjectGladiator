@@ -95,14 +95,14 @@ bool StorageManager::GetFront(PacketData *& data)
 // void 형 데이터 실제 데이터로 변환
 void StorageManager::ChangeData(void* data, bool& type)
 {
-	type = *(bool*)data;
+	char* ptr = (char*)data;
+	memcpy(&type, ptr, sizeof(bool));
 }
 
 void StorageManager::ChangeData(void * data, int &_count)
 {
 	char* ptr = (char*)data;
 	memcpy(&_count, ptr, sizeof(int));
-	ptr += sizeof(int);
 }
 
 // 수정중
