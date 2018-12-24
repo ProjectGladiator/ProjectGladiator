@@ -284,7 +284,7 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 	if (check)
 	{
 		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_RESULT, (void*)&check, sizeof(bool));
-		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_RESULT, (void*)ptr, strlen(ptr));
+		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_INFO, (void*)ptr, strlen(ptr));
 		return true;
 	}
 	else
