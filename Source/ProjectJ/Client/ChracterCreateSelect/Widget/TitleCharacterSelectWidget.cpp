@@ -8,6 +8,7 @@
 #include "NetWork/NetworkManager.h"
 #include "NetWork/CharacterManager.h"
 #include "NetWork/StorageManager.h"
+#include "Client/WinterGameInstance.h"
 
 void UTitleCharacterSelectWidget::NativeConstruct()
 {
@@ -43,21 +44,29 @@ void UTitleCharacterSelectWidget::NativeConstruct()
 
 void UTitleCharacterSelectWidget::GameStart()
 {
+
 	if (PC)
-	{			
-		switch (PC->select_index)
-		{
-		case 1:
-			UE_LOG(LogClass, Warning, TEXT("1번 선택함"));
-			break;
-		case 2:
-			UE_LOG(LogClass, Warning, TEXT("2번 선택함"));
-			break;
-		case 3:
-			UE_LOG(LogClass, Warning, TEXT("3번 선택함"));
-			break;
-		}
+	{	
+		UWinterGameInstance* MyGI = Cast<UWinterGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));		
 		
+		if (MyGI)
+		{
+			switch (PC->select_index)
+			{
+			case 1:
+				MyGI->SetSelectCharacterIndex(PC->select_index);
+				UE_LOG(LogClass, Warning, TEXT("1번 선택함"));
+				break;
+			case 2:
+				MyGI->SetSelectCharacterIndex(PC->select_index);
+				UE_LOG(LogClass, Warning, TEXT("2번 선택함"));
+				break;
+			case 3:
+				MyGI->SetSelectCharacterIndex(PC->select_index);
+				UE_LOG(LogClass, Warning, TEXT("3번 선택함"));
+				break;
+			}
+		}		
 		
 		//PC->SetInputMode(FInputModeGameOnly());
 		//UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainStage")); //타이틀 맵으로 이동			
