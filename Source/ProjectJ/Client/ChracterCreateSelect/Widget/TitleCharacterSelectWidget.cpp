@@ -51,24 +51,44 @@ void UTitleCharacterSelectWidget::GameStart()
 		
 		if (MyGI)
 		{
-			switch (PC->select_index)
-			{
-			case 1:
-				MyGI->SetSelectCharacterIndex(PC->select_index);
-				UE_LOG(LogClass, Warning, TEXT("1번 선택함"));
-				break;
-			case 2:
-				MyGI->SetSelectCharacterIndex(PC->select_index);
-				UE_LOG(LogClass, Warning, TEXT("2번 선택함"));
-				break;
-			case 3:
-				MyGI->SetSelectCharacterIndex(PC->select_index);
-				UE_LOG(LogClass, Warning, TEXT("3번 선택함"));
-				break;
-			}
 
-			// 게임 시작 버튼 Disable
-			// 추가 바람
+			PacketData* Data;
+			bool ResultFlag;
+
+			if (StorageManager::GetInstance()->GetFront(Data))
+			{
+				switch (Data->protocol)
+				{
+				case PCHARACTERDATA_ENTER_RESULT:
+					StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
+
+					if (ResultFlag)
+					{
+						StorageManager::GetInstance()->PopData();
+
+						switch (PC->select_index)
+						{
+						case 1:
+							MyGI->SetSelectCharacterIndex(PC->select_index);
+							UE_LOG(LogClass, Warning, TEXT("1번 선택함"));
+							break;
+						case 2:
+							MyGI->SetSelectCharacterIndex(PC->select_index);
+							UE_LOG(LogClass, Warning, TEXT("2번 선택함"));
+							break;
+						case 3:
+							MyGI->SetSelectCharacterIndex(PC->select_index);
+							UE_LOG(LogClass, Warning, TEXT("3번 선택함"));
+							break;
+						}
+					}
+					else
+					{
+
+					}
+					break;
+				}
+			}			
 		}		
 		
 		//PC->SetInputMode(FInputModeGameOnly());
