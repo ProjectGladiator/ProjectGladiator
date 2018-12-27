@@ -66,6 +66,9 @@ void UTitleCharacterSelectWidget::GameStart()
 				UE_LOG(LogClass, Warning, TEXT("3번 선택함"));
 				break;
 			}
+
+			// 게임 시작 버튼 Disable
+			// 추가 바람
 		}		
 		
 		//PC->SetInputMode(FInputModeGameOnly());

@@ -88,6 +88,8 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		int temp_job_code;
 	}slottemp[3];
 
+	memset(slottemp, 0, sizeof(slottemp));
+
 	// _buf ±Ê¿Ã
 	int datasize = 0;
 
