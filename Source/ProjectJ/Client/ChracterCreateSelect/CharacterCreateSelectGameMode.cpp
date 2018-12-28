@@ -35,9 +35,11 @@ void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 
 	if (StorageManager::GetInstance()->GetFront(Data))
 	{
-		/*switch (Data->protocol)
+		switch (Data->protocol)
 		{
-
-		}*/
+		case PCHARACTERDATA_SLOT_INFO:
+			MyCharacterSlotUpdate(Data);
+			break;
+		}
 	}
 }

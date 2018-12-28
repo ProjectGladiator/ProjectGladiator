@@ -112,54 +112,48 @@ void UTitleCharacterSelectWidget::MyCharacterCreate()
 	PC->ToCharacterCreate();
 }
 
-void UTitleCharacterSelectWidget::MyCharacterSlotUpdate()
+void UTitleCharacterSelectWidget::MyCharacterSlotUpdate(PacketData* _data)
 {
 	bool EmptySlot;
 	int SlotCount;
 	PacketData* Data;
 
-	if (StorageManager::GetInstance()->GetFront(Data))
+	CharacterSlot* characterslot = new CharacterSlot[3];
+
+	memset(characterslot, 0, sizeof(CharacterSlot[3]));
+
+	StorageManager::GetInstance()->ChangeData(Data->data, EmptySlot, SlotCount, characterslot);
+
+	if (!EmptySlot)
 	{
-		if (Data->protocol == PCHARACTERDATA_SLOT_INFO)
+		CharacterButtonOne->SetVisibility(ESlateVisibility::Hidden);
+		CharacterButtonTwo->SetVisibility(ESlateVisibility::Hidden);
+		CharacterButtonThree->SetVisibility(ESlateVisibility::Hidden);
+	}
+	else
+	{
+		for (int i = 0; i < SlotCount; i++)
 		{
-			CharacterSlot* characterslot = new CharacterSlot[3];
+			FString name = characterslot[i].name;
+			FString level = FString::FromInt(characterslot[i].level);
+			FString nick = characterslot[i].nick;
 
-			memset(characterslot, 0, sizeof(CharacterSlot[3]));
-
-			StorageManager::GetInstance()->ChangeData(Data->data, EmptySlot, SlotCount, characterslot);
-
-			if (!EmptySlot)
+			if (i == 0)
 			{
-				CharacterButtonOne->SetVisibility(ESlateVisibility::Hidden);
-				CharacterButtonTwo->SetVisibility(ESlateVisibility::Hidden);
-				CharacterButtonThree->SetVisibility(ESlateVisibility::Hidden);
+				CharacterButtonOne->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
+				CharacterButtonOne->SetVisibility(ESlateVisibility::Visible);
 			}
-			else
+			else if (i == 1)
 			{
-				for (int i = 0; i < SlotCount; i++)
-				{
-					FString name = characterslot[i].name;
-					FString level = FString::FromInt(characterslot[i].level);
-					FString nick = characterslot[i].nick;
-					
-					if (i == 0)
-					{
-						CharacterButtonOne->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
-						CharacterButtonOne->SetVisibility(ESlateVisibility::Visible);
-					}
-					else if (i == 1)
-					{
-						CharacterButtonTwo->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
-						CharacterButtonTwo->SetVisibility(ESlateVisibility::Visible);
-					}
-					else if (i == 2)
-					{
-						CharacterButtonThree->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
-						CharacterButtonThree->SetVisibility(ESlateVisibility::Visible);
-					}					
-				}
+				CharacterButtonTwo->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
+				CharacterButtonTwo->SetVisibility(ESlateVisibility::Visible);
 			}
-			StorageManager::GetInstance()->PopData();
+			else if (i == 2)
+			{
+				CharacterButtonThree->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
+				CharacterButtonThree->SetVisibility(ESlateVisibility::Visible);
+			}
 		}
 	}
+	StorageManager::GetInstance()->PopData();
 }
