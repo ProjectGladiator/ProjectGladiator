@@ -39,7 +39,8 @@ void UTitleCharacterSelectWidget::NativeConstruct()
 		CharacterCreate->OnClicked.AddDynamic(this, &UTitleCharacterSelectWidget::MyCharacterCreate);
 	}
 
-	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));	
+	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
 }	
 
 void UTitleCharacterSelectWidget::GameStart()
