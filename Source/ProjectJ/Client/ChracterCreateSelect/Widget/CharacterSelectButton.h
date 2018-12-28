@@ -28,6 +28,7 @@ public:
 	class AChracterCreateSelectPC* PC;
 
 	virtual void NativeConstruct() override;
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
 	UFUNCTION()
 	void CharacterSelect();

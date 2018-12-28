@@ -7,7 +7,7 @@
 #include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
-
+#include "NetWork/StorageManager.h"
 
 ACharacterCreateSelectGameMode::ACharacterCreateSelectGameMode()
 {
@@ -24,4 +24,20 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 	NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
+}
+
+void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	PacketData* Data;
+	//bool ResultFlag;
+
+	if (StorageManager::GetInstance()->GetFront(Data))
+	{
+		/*switch (Data->protocol)
+		{
+
+		}*/
+	}
 }

@@ -17,4 +17,5 @@ public:
 	TArray <AActor*> Cameras;
 	ACharacterCreateSelectGameMode();
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 };

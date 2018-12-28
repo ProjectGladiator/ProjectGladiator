@@ -5,6 +5,7 @@
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
+#include "NetWork/StorageManager.h"
 
 void UCharacterSelectButton::NativeConstruct()
 {
@@ -24,6 +25,22 @@ void UCharacterSelectButton::NativeConstruct()
 	}
 
 	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+}
+
+void UCharacterSelectButton::NativeTick(const FGeometry & MyGeometry, float InDeltaTime)
+{
+	Super::NativeTick(MyGeometry, InDeltaTime);
+
+	PacketData* Data;
+	//bool ResultFlag;
+
+	if (StorageManager::GetInstance()->GetFront(Data))
+	{
+		/*switch (Data->protocol)
+		{
+
+		}*/
+	}
 }
 
 void UCharacterSelectButton::CharacterSelect()
