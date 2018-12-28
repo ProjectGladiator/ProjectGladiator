@@ -16,6 +16,7 @@ class PROJECTJ_API ACharacterCreateSelectGameMode : public AGameModeBase
 public:
 	TArray <AActor*> Cameras;
 	ACharacterCreateSelectGameMode();
+	class UTitleCharacterSelectWidget* CharacterSelectWidget;
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 };

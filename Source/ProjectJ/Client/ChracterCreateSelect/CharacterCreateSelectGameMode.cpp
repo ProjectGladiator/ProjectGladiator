@@ -24,6 +24,12 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 	NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
+	AChracterCreateSelectPC* CCSPC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	
+	if (CCSPC)
+	{
+		CharacterSelectWidget = CCSPC->CharacterSelectWidget;
+	}
 }
 
 void ACharacterCreateSelectGameMode::Tick(float DeltaTime)

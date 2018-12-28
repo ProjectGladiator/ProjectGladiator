@@ -61,6 +61,7 @@ void AChracterCreateSelectPC::BeginPlay()
 
 		ChracterCreateWidget->AddToViewport(); //화면에 붙인다.
 		ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+
 	}
 	
 	bShowMouseCursor = true;
