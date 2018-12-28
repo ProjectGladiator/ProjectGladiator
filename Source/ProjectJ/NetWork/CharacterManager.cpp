@@ -88,6 +88,8 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		int temp_job_code;
 	}slottemp[3];
 
+	memset(slottemp, 0, sizeof(slottemp));
+
 	// _buf ±Ê¿Ã
 	int datasize = 0;
 
@@ -115,7 +117,7 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 
 		memcpy(slottemp[i].temp_jobname, ptrbuf, slottemp[i].temp_joblen);
 		ptrbuf += slottemp[i].temp_joblen;
-		datasize += sizeof(int);
+		datasize += slottemp[i].temp_joblen;;
 
 		memcpy(&slottemp[i].temp_level, ptrbuf, sizeof(int));
 		ptrbuf += sizeof(int);
@@ -127,7 +129,7 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 
 		memcpy(slottemp[i].temp_nick, ptrbuf, slottemp[i].temp_nicklen);
 		ptrbuf += slottemp[i].temp_nicklen;
-		datasize += sizeof(int);
+		datasize += slottemp[i].temp_nicklen;
 
 		memcpy(&slottemp[i].temp_job_code, ptrbuf, sizeof(int));
 		ptrbuf += sizeof(int);

@@ -159,6 +159,15 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 		memcpy(_slot[i].nick, nick, nicklen);
 		_slot[i].level = level;
 		_slot[i].charavercode = charactercode;
+
+		// 지역 초기화
+		memset(&joblen, 0, sizeof(int));
+		memset(jobname, 0, sizeof(jobname));
+		memset(&level, 0, sizeof(int));
+		memset(&nicklen, 0, sizeof(int));
+		memset(nick, 0, sizeof(nick));
+		memset(&charactercode, 0, sizeof(int));
+		//
 	}
 }
 
