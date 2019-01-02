@@ -12,6 +12,7 @@
 
 ACharacterCreateSelectGameMode::ACharacterCreateSelectGameMode()
 {
+	PrimaryActorTick.bCanEverTick = true;
 	PlayerControllerClass = AChracterCreateSelectPC::StaticClass();
 }
 
