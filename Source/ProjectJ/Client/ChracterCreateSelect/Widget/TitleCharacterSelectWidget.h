@@ -28,6 +28,7 @@ public:
 		class UCharacterSelectButton* CharacterButtonThree;
 
 	class AChracterCreateSelectPC* PC;
+	class ACharacterCreateSelectGameMode* CCSGM;
 	virtual void NativeConstruct() override;
 	
 	UFUNCTION()

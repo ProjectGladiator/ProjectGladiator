@@ -5,10 +5,12 @@
 #include "Client/ChracterCreateSelect/Widget/CharacterSelectButton.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
+#include "Client/ChracterCreateSelect/CharacterCreateSelectGameMode.h"
+#include "Client/WinterGameInstance.h"
+///////////////////////////////////////////////////////////////////////////
 #include "NetWork/NetworkManager.h"
 #include "NetWork/CharacterManager.h"
 #include "NetWork/StorageManager.h"
-#include "Client/WinterGameInstance.h"
 
 void UTitleCharacterSelectWidget::NativeConstruct()
 {
@@ -40,7 +42,7 @@ void UTitleCharacterSelectWidget::NativeConstruct()
 	}
 
 	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
+	CCSGM = Cast<ACharacterCreateSelectGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }	
 
 void UTitleCharacterSelectWidget::GameStart()
@@ -108,8 +110,8 @@ void UTitleCharacterSelectWidget::MyCharacterCreate()
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 	NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-	PC->CharacterCreateWidgetToggle();
-	PC->CharacterSelectWidgetToggle();
+	CCSGM->CharacterCreateWidgetToggle();
+	CCSGM->CharacterSelectWidgetToggle();
 	PC->ToCharacterCreate();
 }
 

@@ -2,13 +2,11 @@
 
 #include "ChracterCreateSelectPC.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
 #include "CharacterCreateSelectGameMode.h"
 #include "CameraActor/ChracterCreateCamera.h"
 #include "Kismet/KismetStringLibrary.h"
-#include "Engine/World.h"
 
-#include "Client/ChracterCreateSelect/Widget/TitleCharacterCreateWidget.h"
-#include "Client/ChracterCreateSelect/Widget/TitleCharacterSelectWidget.h"
 #include "Network/StorageManager.h"
 
 void AChracterCreateSelectPC::BeginPlay()
@@ -40,37 +38,12 @@ void AChracterCreateSelectPC::BeginPlay()
 		}
 	}
 
-	FStringClassReference CharacterSelectWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterSelect.W_CharacterSelect_C'"));
-
-	//앞에서 읽어 들인 CharacterSelectWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
-	if (UClass* MyWidgetClass = CharacterSelectWidgetClass.TryLoadClass<UUserWidget>())
-	{
-		//MyWidgetClass를 토대로 CharacterSelectWidget을 생성한다.
-		CharacterSelectWidget = Cast<UTitleCharacterSelectWidget>(CreateWidget<UUserWidget>(this, MyWidgetClass));
-		CharacterSelectWidget->SetVisibility(ESlateVisibility::Hidden);		
-		CharacterSelectWidget->AddToViewport(); //화면에 붙인다.
-	}
-
-	FStringClassReference ChracterCreateWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterCreate.W_CharacterCreate_C'"));
-
-	//앞에서 읽어 들인 ChracterCreateWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
-	if (UClass* MyWidgetClass = ChracterCreateWidgetClass.TryLoadClass<UUserWidget>())
-	{
-		//MyWidgetClass를 토대로 ChracterCreateWidget을 생성한다.
-		ChracterCreateWidget = Cast<UTitleCharacterCreateWidget>(CreateWidget<UUserWidget>(this, MyWidgetClass));
-
-		ChracterCreateWidget->AddToViewport(); //화면에 붙인다.
-		ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
-
-	}
-	
 	bShowMouseCursor = true;
 	bEnableClickEvents = true;
 	bEnableMouseOverEvents = true;
 	ClickEventKeys.Add(EKeys::LeftMouseButton); 
 	DefaultClickTraceChannel = ECollisionChannel::ECC_Pawn;
 
-	CharacterSelectWidgetToggle();
 	SetInputMode(FInputModeGameAndUI());
 	SetViewTargetWithBlend(CharacterSelectCamera, 0, EViewTargetBlendFunction::VTBlend_Linear, 0, false);
 }
@@ -83,37 +56,6 @@ void AChracterCreateSelectPC::ToCharacterCreate()
 void AChracterCreateSelectPC::ToCharacterSelect()
 {
 	SetViewTargetWithBlend(CharacterSelectCamera, 2.0f, EViewTargetBlendFunction::VTBlend_Linear, 0, false);
-}
-
-void AChracterCreateSelectPC::CharacterSelectWidgetToggle()
-{
-	if (CharacterSelectWidget)
-	{
-		if (CharacterSelectWidget->GetVisibility() == ESlateVisibility::Hidden)
-		{
-			//CharacterSelectWidget->MyCharacterSlotUpdate();
-			CharacterSelectWidget->SetVisibility(ESlateVisibility::Visible);
-		}
-		else
-		{
-			CharacterSelectWidget->SetVisibility(ESlateVisibility::Hidden);
-		}
-	}
-}
-
-void AChracterCreateSelectPC::CharacterCreateWidgetToggle()
-{
-	if (ChracterCreateWidget)
-	{
-		if (ChracterCreateWidget->GetVisibility() == ESlateVisibility::Hidden)
-		{
-			ChracterCreateWidget->SetVisibility(ESlateVisibility::Visible);
-		}
-		else
-		{
-			ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden);
-		}
-	}
 }
 
 void AChracterCreateSelectPC::SelectCharacter(int NewJobCode)

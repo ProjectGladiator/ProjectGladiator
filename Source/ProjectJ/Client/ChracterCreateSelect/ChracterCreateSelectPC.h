@@ -16,8 +16,6 @@ class PROJECTJ_API AChracterCreateSelectPC : public APlayerController
 	GENERATED_BODY()
 public:
 	TArray <AActor*> Cameras;
-	class UTitleCharacterSelectWidget* CharacterSelectWidget;//캐릭터 선택 위젯
-	class UTitleCharacterCreateWidget* ChracterCreateWidget; //캐릭터 생성 위젯
 	class AChracterCreateCamera* CharacterCreateCamera;
 	class AChracterCreateCamera* CharacterSelectCamera;
 
@@ -30,8 +28,6 @@ public:
 
 	void ToCharacterCreate();
 	void ToCharacterSelect();
-	void CharacterSelectWidgetToggle();
-	void CharacterCreateWidgetToggle();
 
 	void SelectCharacter(int NewJobCode);
 };

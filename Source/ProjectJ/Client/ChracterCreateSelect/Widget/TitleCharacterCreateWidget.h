@@ -22,6 +22,7 @@ public:
 		class UButton* CancelButton;
 
 	class AChracterCreateSelectPC* PC;
+	class ACharacterCreateSelectGameMode* CCSGM;
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()

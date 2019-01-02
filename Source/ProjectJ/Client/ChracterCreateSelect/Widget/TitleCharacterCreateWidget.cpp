@@ -5,6 +5,8 @@
 #include "Components/EditableTextBox.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
+#include "Client/ChracterCreateSelect/CharacterCreateSelectGameMode.h"
+///////////////////////////////////////////////////////////////////////////
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
 
@@ -27,6 +29,7 @@ void UTitleCharacterCreateWidget::NativeConstruct()
 	}
 
 	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	CCSGM = Cast<ACharacterCreateSelectGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 void UTitleCharacterCreateWidget::ChracterCreate()
@@ -58,8 +61,8 @@ void UTitleCharacterCreateWidget::ChracterCreate()
 			}
 		}
 
-		PC->CharacterSelectWidgetToggle();
-		PC->CharacterCreateWidgetToggle();
+		CCSGM->CharacterSelectWidgetToggle();
+		CCSGM->CharacterCreateWidgetToggle();
 	}
 	else   // 캐릭터가 선택 되지 않았다면
 	{
@@ -77,8 +80,8 @@ void UTitleCharacterCreateWidget::Cancel()
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
 		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-		PC->CharacterCreateWidgetToggle();
-		PC->CharacterSelectWidgetToggle();
+		CCSGM->CharacterCreateWidgetToggle();
+		CCSGM->CharacterSelectWidgetToggle();
 		PC->ToCharacterSelect();
 	}
 }

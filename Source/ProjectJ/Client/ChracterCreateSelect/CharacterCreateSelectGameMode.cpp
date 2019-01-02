@@ -5,7 +5,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
-#include "Widget/TitleCharacterSelectWidget.h"		// 새로 추가
+#include "Client/ChracterCreateSelect/Widget/TitleCharacterCreateWidget.h"
+#include "Client/ChracterCreateSelect/Widget/TitleCharacterSelectWidget.h"
+#include "Kismet/KismetStringLibrary.h"
+
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
 #include "NetWork/StorageManager.h"
@@ -22,15 +25,31 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AChracterCreateCamera::StaticClass(), Cameras);
 
+	FStringClassReference CharacterSelectWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterSelect.W_CharacterSelect_C'"));
+
+	//앞에서 읽어 들인 CharacterSelectWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
+	if (UClass* MyWidgetClass = CharacterSelectWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		//MyWidgetClass를 토대로 CharacterSelectWidget을 생성한다.
+		CharacterSelectWidget = Cast<UTitleCharacterSelectWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(),0), MyWidgetClass));
+		CharacterSelectWidget->SetVisibility(ESlateVisibility::Visible);
+		CharacterSelectWidget->AddToViewport(); //화면에 붙인다.
+	}
+
+	FStringClassReference ChracterCreateWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterCreate.W_CharacterCreate_C'"));
+
+	//앞에서 읽어 들인 ChracterCreateWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
+	if (UClass* MyWidgetClass = ChracterCreateWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		//MyWidgetClass를 토대로 ChracterCreateWidget을 생성한다.
+		ChracterCreateWidget = Cast<UTitleCharacterCreateWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
+
+		ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+		ChracterCreateWidget->AddToViewport(); //화면에 붙인다.
+	}
+
 	CharacterManager::GetInstance()->Character_Req_Slot();
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
-
-	AChracterCreateSelectPC* CCSPC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	
-	if (CCSPC)
-	{
-		CharacterSelectWidget = CCSPC->CharacterSelectWidget;
-	}
 }
 
 void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
@@ -47,6 +66,37 @@ void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 		case PCHARACTERDATA_SLOT_INFO:
 			CharacterSelectWidget->MyCharacterSlotUpdate(Data);
 			break;
+		}
+	}
+}
+
+void ACharacterCreateSelectGameMode::CharacterSelectWidgetToggle()
+{
+	if (CharacterSelectWidget)
+	{
+		if (CharacterSelectWidget->GetVisibility() == ESlateVisibility::Hidden)
+		{
+			//CharacterSelectWidget->MyCharacterSlotUpdate();
+			CharacterSelectWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			CharacterSelectWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+}
+
+void ACharacterCreateSelectGameMode::CharacterCreateWidgetToggle()
+{
+	if (ChracterCreateWidget)
+	{
+		if (ChracterCreateWidget->GetVisibility() == ESlateVisibility::Hidden)
+		{
+			ChracterCreateWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }
