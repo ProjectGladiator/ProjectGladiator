@@ -1,10 +1,11 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tanker.h"
-
+//클라 헤더
 #include "Components/SkeletalMeshComponent.h"		// 메시
 #include "UObject/ConstructorHelpers.h"					// 경로 탐색
 #include "Animation/AnimBlueprint.h"						// 애님 블루프린트
+//서버 헤더
 
 ATanker::ATanker()
 {

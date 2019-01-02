@@ -28,6 +28,7 @@ public:
 		class UButton* CancelButton;
 
 	class ATitlePlayerController* PC;
+	class ATitleGameMode* TitleGM;
 
 	virtual void NativeConstruct() override;
 

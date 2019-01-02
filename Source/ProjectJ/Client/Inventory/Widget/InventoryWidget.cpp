@@ -1,15 +1,16 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "InventoryWidget.h"
+//클라 헤더
 #include "Components/Button.h"
 #include "Components/UniformGridPanel.h"
-
 #include "Client/MyCharacter/MyCharacter.h"
 #include "Client/Inventory/Inventory.h"
 #include "Client/Inventory/Widget/InventorySlotWidget.h"
 #include "kismet/KismetMathLibrary.h"
 #include "Components/UniformGridSlot.h"
 #include "Client/Inventory/Structure/SInventorySlot.h"
+//서버 헤더
 
 void UInventoryWidget::NativeConstruct()
 {

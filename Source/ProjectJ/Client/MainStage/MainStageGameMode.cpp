@@ -1,12 +1,14 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MainStageGameMode.h"
+//클라 헤더
 #include "MainStagePlayerController.h"
 #include "Client/CharacterSpawnLocation.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "NetWork/CharacterManager.h"
 #include "Client/WinterGameInstance.h"
+//서버 헤더
 #include "NetWork/StorageManager.h"
 
 AMainStageGameMode::AMainStageGameMode()

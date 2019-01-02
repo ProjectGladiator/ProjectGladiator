@@ -1,13 +1,14 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TitleWidgetLogin.h"
+//클라 헤더
 #include "Components/EditableTextBox.h"
 #include "Components/Button.h"
-
 #include "Client/Title/TitlePlayerController.h"
-
+#include "Client/Title/TitleGameMode.h"
 #include "Kismet/GameplayStatics.h"
 
+//서버 헤더
 #include "NetWork/NetworkManager.h"
 #include "NetWork/LoginManager.h"
 #include "NetWork/CharacterManager.h"
@@ -42,6 +43,7 @@ void UTitleWidgetLogin::NativeConstruct()
 
 	//PC에 TitlePlayerController를 구해서 넣어준다.
 	PC = Cast<ATitlePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	TitleGM = Cast<ATitleGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 //회원가입 버튼 눌럿을때
@@ -54,8 +56,8 @@ void UTitleWidgetLogin::UserIn()
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
 		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-		PC->UserInWidgetToggle(); //회원가입 위젯을 켜고
-		PC->LoginWidgetToggle(); //로그인 위젯을 끈다
+		TitleGM->UserInWidgetToggle(); //회원가입 위젯을 켜고
+		TitleGM->LoginWidgetToggle(); //로그인 위젯을 끈다
 	}
 }
 
@@ -77,14 +79,14 @@ void UTitleWidgetLogin::Login()
 		// 로그인체크
 		if (LoginManager::GetInstance()->isLogin())
 		{
-			PC->LoginWidgetToggle();	
+			TitleGM->LoginWidgetToggle();
 
 			UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));
 
 		}
 		else
 		{
-			PC->OkWidgetToggle(FText(FText::FromString("로그인 실패")));
+			TitleGM->OkWidgetToggle(FText(FText::FromString("로그인 실패")));
 		}
 	}
 }

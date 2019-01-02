@@ -1,10 +1,12 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Warrior.h"
+//클라 헤더
 #include "UObject/ConstructorHelpers.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Animation/AnimBlueprint.h"
 #include "Components/CapsuleComponent.h"
+//서버 헤더
 
 AWarrior::AWarrior()
 {

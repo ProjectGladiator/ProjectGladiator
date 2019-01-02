@@ -1,6 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyCharacter.h"
+//클라 헤더
 #include "GameFramework/SpringArmComponent.h" //스프링암 컴포넌트 헤더파일
 #include "Camera/CameraComponent.h" //카메라 컴포넌트 헤더파일
 #include "Client/Inventory/Inventory.h"
@@ -11,12 +12,12 @@
 #include "Client/Monster/PatrolPoint.h"
 #include "Engine/World.h"
 #include "kismet/GameplayStatics.h"
-
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
 #include "Client/Title/TitlePlayerController.h"
 #include "Warrior/Warrior.h"
 #include "Tanker/Tanker.h"
 #include "Wizard/Wizard.h"
+//서버 헤더
 #include "NetWork/JobInfo.h"
 
 // Sets default values

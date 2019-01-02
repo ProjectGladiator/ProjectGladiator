@@ -1,14 +1,17 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CharacterCreateSelectGameMode.h"
+//클라 헤더
 #include "ChracterCreateSelectPC.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
 #include "Client/ChracterCreateSelect/Widget/TitleCharacterCreateWidget.h"
 #include "Client/ChracterCreateSelect/Widget/TitleCharacterSelectWidget.h"
+#include "Client/ErrorWidget/WidgetCancel.h"
+#include "Client/ErrorWidget/WidgetOk.h"
 #include "Kismet/KismetStringLibrary.h"
-
+//서버 헤더
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
 #include "NetWork/StorageManager.h"
@@ -46,6 +49,30 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 
 		ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 		ChracterCreateWidget->AddToViewport(); //화면에 붙인다.
+	}
+
+	FStringClassReference CancelWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Error/W_Cancel.W_Cancel_C'"));
+
+	//앞에서 읽어 들인 CancelWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
+	if (UClass* MyWidgetClass = CancelWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		//MyWidgetClass를 토대로 CancelWidget을 생성한다.
+		CancelWidget = Cast<UWidgetCancel>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
+
+		CancelWidget->AddToViewport(); //화면에 붙인다.
+		CancelWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+	}
+
+	FStringClassReference OkWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Error/W_ok.W_Ok_C'"));
+
+	//앞에서 읽어 들인 OkWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
+	if (UClass* MyWidgetClass = OkWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		//MyWidgetClass를 토대로 OkWidget을 생성한다.
+		OkWidget = Cast<UWidgetOk>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
+
+		OkWidget->AddToViewport(); //화면에 붙인다.
+		OkWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
 	CharacterManager::GetInstance()->Character_Req_Slot();

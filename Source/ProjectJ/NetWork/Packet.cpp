@@ -56,7 +56,6 @@ bool Packet::recvMsg()
 		int retval = recv(sock, ptr + recvedSize, sizeof(int) - recvedSize, 0);
 		if (retval == SOCKET_ERROR)
 		{
-			LogManager::GetInstance()->SetTime();
 			LogManager::GetInstance()->LogWrite("Packet::recvMsg : ERROR : recv() result = SOCKET_ERROR");
 			ErrorManager::GetInstance()->err_display("Packet first_recv()");
 			return false;

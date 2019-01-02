@@ -1,12 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ChracterCreateSelectPC.h"
+//클라 헤더
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "CharacterCreateSelectGameMode.h"
 #include "CameraActor/ChracterCreateCamera.h"
 #include "Kismet/KismetStringLibrary.h"
-
+//서버 헤더
 #include "Network/StorageManager.h"
 
 void AChracterCreateSelectPC::BeginPlay()

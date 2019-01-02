@@ -1,10 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "CharacterSelectButton.h"
+//클라 헤더
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
+//서버 헤더
 #include "NetWork/StorageManager.h"
 
 void UCharacterSelectButton::NativeConstruct()

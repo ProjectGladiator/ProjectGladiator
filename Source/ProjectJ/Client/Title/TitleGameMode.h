@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -15,17 +15,22 @@ class PROJECTJ_API ATitleGameMode : public AGameModeBase
 	GENERATED_BODY()
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
-		class UTitleWidgetUserIn* UserInWidget; //È¸¿ø°¡ÀÔ À§Á¬
+		class UTitleWidgetUserIn* UserInWidget; //íšŒì›ê°€ì… ìœ„ì ¯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
-		class UTitleWidgetLogin* LoginWidget; //·Î±×ÀÎ À§Á¬
+		class UTitleWidgetLogin* LoginWidget; //ë¡œê·¸ì¸ ìœ„ì ¯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
-		class UWidgetCancel* CancelWidget; //¿¡·¯ ´Ù½Ã½Ãµµ,Ãë¼Ò À§Á¬
+		class UWidgetCancel* CancelWidget; //ì—ëŸ¬ ë‹¤ì‹œì‹œë„,ì·¨ì†Œ ìœ„ì ¯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
-		class UWidgetOk* OkWidget; //¿¡·¯ È®ÀÎ À§Á¬
+		class UWidgetOk* OkWidget; //ì—ëŸ¬ í™•ì¸ ìœ„ì ¯
 
 	ATitleGameMode();
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;	
+
+	void UserInWidgetToggle(); //íšŒì›ê°€ì… ìœ„ì ¯ ë³´ì—¬ì£¼ê¸°,ë„ê¸°
+	void LoginWidgetToggle(); //ë¡œê·¸ì¸ ìœ„ì ¯ ë³´ì—¬ì£¼ê¸°,ë„ê¸°
+	void CancelWidgetToggle(const FText& Message); //ì—ëŸ¬ ë‹¤ì‹œì‹œë„,ì·¨ì†Œ ìœ„ì ¯ ë³´ì—¬ì£¼ê¸°
+	void OkWidgetToggle(const FText& Message); //ì—ëŸ¬ í™•ì¸ ìœ„ì ¯ ë³´ì—¬ì£¼ê¸°
 
 };

@@ -1,15 +1,16 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "InventorySlotWidget.h"
+//클라 헤더
 #include "Components/Border.h"
 #include "Components/Button.h"
 #include "Components/Image.h"
 #include "Components/TextBlock.h"
-
 #include "Kismet/KismetSystemLibrary.h"
 #include "Client/Item/MasterItem.h"
 #include "Engine/StreamableManager.h"
 #include "Engine/Texture2D.h"
+//서버 헤더
 
 void UInventorySlotWidget::NativeConstruct()
 {

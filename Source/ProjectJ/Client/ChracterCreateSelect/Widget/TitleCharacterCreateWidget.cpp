@@ -1,12 +1,13 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TitleCharacterCreateWidget.h"
+//클라 헤더
 #include "Components/Button.h"
 #include "Components/EditableTextBox.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
 #include "Client/ChracterCreateSelect/CharacterCreateSelectGameMode.h"
-///////////////////////////////////////////////////////////////////////////
+//서버 헤더
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
 

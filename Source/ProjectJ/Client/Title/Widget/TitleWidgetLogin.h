@@ -22,8 +22,9 @@ public:
 		class UButton* LoginButton;
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UButton* UserInButton;
-	class ATitlePlayerController* PC;
 
+	class ATitlePlayerController* PC;
+	class ATitleGameMode* TitleGM;
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
