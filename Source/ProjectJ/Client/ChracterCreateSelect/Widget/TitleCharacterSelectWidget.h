@@ -36,5 +36,5 @@ public:
 	void MyCharacterDelete();
 	UFUNCTION()
 	void MyCharacterCreate();
-	void MyCharacterSlotUpdate(PacketData* _data);
+	void MyCharacterSlotUpdate(struct PacketData* _data);
 };

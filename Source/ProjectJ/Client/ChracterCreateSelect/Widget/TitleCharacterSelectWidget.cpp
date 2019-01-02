@@ -117,7 +117,7 @@ void UTitleCharacterSelectWidget::MyCharacterSlotUpdate(PacketData* _data)
 {
 	bool EmptySlot;
 	int SlotCount;
-	PacketData* Data;
+	PacketData* Data = _data;
 
 	CharacterSlot* characterslot = new CharacterSlot[3];
 

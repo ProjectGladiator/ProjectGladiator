@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
+#include "Widget/TitleCharacterSelectWidget.h"		// 새로 추가
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
 #include "NetWork/StorageManager.h"
@@ -22,7 +23,6 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 
 	CharacterManager::GetInstance()->Character_Req_Slot();
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
-	NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
 	AChracterCreateSelectPC* CCSPC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	
@@ -44,7 +44,7 @@ void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 		switch (Data->protocol)
 		{
 		case PCHARACTERDATA_SLOT_INFO:
-			MyCharacterSlotUpdate(Data);
+			CharacterSelectWidget->MyCharacterSlotUpdate(Data);
 			break;
 		}
 	}
