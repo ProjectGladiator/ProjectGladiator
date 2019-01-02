@@ -54,48 +54,16 @@ void UTitleCharacterSelectWidget::GameStart()
 		
 		if (MyGI)
 		{
+			//****
+			//** 게임 시작, 캐릭터 생성 버튼 비활성화
+			//****
 
-			PacketData* Data;
-			bool ResultFlag;
-
-			if (StorageManager::GetInstance()->GetFront(Data))
-			{
-				switch (Data->protocol)
-				{
-				case PCHARACTERDATA_ENTER_RESULT:
-					StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
-
-					if (ResultFlag)
-					{
-						StorageManager::GetInstance()->PopData();
-
-						switch (PC->select_index)
-						{
-						case 1:
-							MyGI->SetSelectCharacterIndex(PC->select_index);
-							UE_LOG(LogClass, Warning, TEXT("1번 선택함"));
-							break;
-						case 2:
-							MyGI->SetSelectCharacterIndex(PC->select_index);
-							UE_LOG(LogClass, Warning, TEXT("2번 선택함"));
-							break;
-						case 3:
-							MyGI->SetSelectCharacterIndex(PC->select_index);
-							UE_LOG(LogClass, Warning, TEXT("3번 선택함"));
-							break;
-						}
-					}
-					else
-					{
-
-					}
-					break;
-				}
-			}			
+			/*
+			** 캐릭터 선택한 슬롯번호 서버에 보내면서 접속 요청하기
+			*/
+			CharacterManager::GetInstance()->Character_Req_Enter(PC->select_index);
+			NetworkClient_main::NetworkManager::GetInstance()->Send();
 		}		
-		
-		//PC->SetInputMode(FInputModeGameOnly());
-		//UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainStage")); //타이틀 맵으로 이동			
 	}	
 }
 

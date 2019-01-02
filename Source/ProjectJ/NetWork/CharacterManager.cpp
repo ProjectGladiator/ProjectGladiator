@@ -243,7 +243,7 @@ void CharacterManager::Character_Slot_Empty(bool _check)
 	
 }
 
-void CharacterManager::Character_Select_Enter(int _index)
+void CharacterManager::Character_Req_Enter(int _index)
 {
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));

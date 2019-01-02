@@ -38,7 +38,7 @@ void AMainStageGameMode::BeginPlay()
 
 	if (MyGI)
 	{
-		CharacterManager::GetInstance()->Character_Select_Enter(MyGI->GetSelectCharacterIndex());
+		CharacterManager::GetInstance()->Character_Req_Enter(MyGI->GetSelectCharacterIndex());
 	}	
 }
 
