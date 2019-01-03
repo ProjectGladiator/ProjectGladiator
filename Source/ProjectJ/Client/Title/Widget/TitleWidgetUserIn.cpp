@@ -70,25 +70,8 @@ void UTitleWidgetUserIn::IdOverapCheck()
 		FString id = IDInputBox->Text.ToString();
 		LoginManager::GetInstance()->reqIdOverlapCheck(TCHAR_TO_ANSI(*id));
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
-		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-		PacketData* pd;
-		StorageManager::GetInstance()->GetFront(pd);
-		if (pd->protocol == PLOGIN_IDOVERLAP_RESULT)
-		{
-			bool result;
-			StorageManager::GetInstance()->ChangeData(pd->data, result);
-			StorageManager::GetInstance()->PopData();
-			if (result == true)
-			{
-				UE_LOG(LogClass, Warning, TEXT("ID OK"));
-			}
-			else
-			{
-				//PC->OkWidgetToggle(FText(FText::FromString("이미있는 아이디입니다. 다른아이디를 입력하시기 바랍니다")));
-				UE_LOG(LogClass, Warning, TEXT("ID EXIST"));
-			}
-		}
+		IDOverlapCheckButton->bIsEnabled = false;
 	}
 }
 
@@ -100,18 +83,9 @@ void UTitleWidgetUserIn::Join()
 		FString pw = PWInputBox->Text.ToString();
 		LoginManager::GetInstance()->reqJoin(TCHAR_TO_ANSI(*id), TCHAR_TO_ANSI(*pw));
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
-		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-		if (LoginManager::GetInstance()->isJoin())
-		{
-			UE_LOG(LogClass, Warning, TEXT("join success"));
-		}
-		else
-		{
-			UE_LOG(LogClass, Warning, TEXT("join fail"));
-		}
-
-		TitleGM->LoginWidgetToggle(); //로그인 위젯을 켜고
-		TitleGM->UserInWidgetToggle(); //회원가입 위젯을 끈다
+		IDInputBox->bIsEnabled = false;
+		PWInputBox->bIsEnabled = false;
+		UserInButton->bIsEnabled = false;
 	}
 }

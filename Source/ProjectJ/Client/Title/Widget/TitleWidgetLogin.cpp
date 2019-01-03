@@ -72,21 +72,11 @@ void UTitleWidgetLogin::Login()
 	
 		// FString -> ANSI 표준으로 변환 후 인자로 넣어 로그인 요청 메세지 만듦
 		LoginManager::GetInstance()->reqLogin(TCHAR_TO_ANSI(*id), TCHAR_TO_ANSI(*pw));
-		// 패킷 전송 - Send , 서버 응답 대기 - Wait
+		// 패킷 전송 - Send
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
-		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 		
-		// 로그인체크
-		if (LoginManager::GetInstance()->isLogin())
-		{
-			TitleGM->LoginWidgetToggle();
-
-			UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));
-
-		}
-		else
-		{
-			TitleGM->OkWidgetToggle(FText(FText::FromString("로그인 실패")));
-		}
+		IDInputBox->bIsEnabled = false;
+		PWInputBox->bIsEnabled = false;
+		this->bIsEnabled = false;
 	}
 }

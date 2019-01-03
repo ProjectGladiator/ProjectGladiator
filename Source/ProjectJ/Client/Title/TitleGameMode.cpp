@@ -86,6 +86,57 @@ void ATitleGameMode::BeginPlay()
 void ATitleGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	PacketData* Data;
+	bool isOverlap = false;
+
+	if (StorageManager::GetInstance()->GetFront(Data))
+	{
+		switch (Data->protocol)
+		{
+		case PLOGIN_IDOVERLAP_RESULT:			// ID 중복체크 결과
+			StorageManager::GetInstance()->ChangeData(Data->data, isOverlap);
+			StorageManager::GetInstance()->PopData();
+			if (isOverlap == true)
+			{
+				UE_LOG(LogClass, Warning, TEXT("ID OK"));
+			}
+			else
+			{
+				//PC->OkWidgetToggle(FText(FText::FromString("이미있는 아이디입니다. 다른아이디를 입력하시기 바랍니다")));
+				UE_LOG(LogClass, Warning, TEXT("ID EXIST"));
+			}
+			break;
+		case PLOGIN_JOIN_RESULT:				// 회원가입 결과
+			if (LoginManager::GetInstance()->isJoin())
+			{
+				UE_LOG(LogClass, Warning, TEXT("join success"));
+			}
+			else
+			{
+				UE_LOG(LogClass, Warning, TEXT("join fail"));
+			}
+
+			LoginWidgetToggle(); //로그인 위젯을 켜고
+			UserInWidgetToggle(); //회원가입 위젯을 끈다
+			StorageManager::GetInstance()->PopData();
+			break;
+
+		case PLOGIN_LOGIN_RESULT:				// 로그인 결과
+			if (LoginManager::GetInstance()->isLogin())
+			{
+				LoginWidgetToggle();
+				UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));
+			}
+			else
+			{
+				OkWidgetToggle(FText(FText::FromString("로그인 실패")));
+			}
+
+			StorageManager::GetInstance()->PopData();
+			break;
+		}
+	}
 }
 
 void ATitleGameMode::UserInWidgetToggle()

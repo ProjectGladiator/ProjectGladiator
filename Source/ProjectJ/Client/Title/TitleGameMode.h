@@ -32,5 +32,4 @@ public:
 	void LoginWidgetToggle(); //로그인 위젯 보여주기,끄기
 	void CancelWidgetToggle(const FText& Message); //에러 다시시도,취소 위젯 보여주기
 	void OkWidgetToggle(const FText& Message); //에러 확인 위젯 보여주기
-
 };

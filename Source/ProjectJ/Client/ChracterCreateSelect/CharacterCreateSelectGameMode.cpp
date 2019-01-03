@@ -94,7 +94,7 @@ void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 			CharacterSelectWidget->MyCharacterSlotUpdate(Data);
 			break;
 		case PCHARACTERDATA_ENTER_RESULT:		// 게임 접속 요청 결과
-			StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
+			StorageManager::GetInstance()->ChangeData(Data->data, ResultFlag);
 			if (ResultFlag)
 			{
 				StorageManager::GetInstance()->PopData();
