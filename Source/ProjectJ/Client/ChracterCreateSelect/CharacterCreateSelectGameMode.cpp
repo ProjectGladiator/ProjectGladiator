@@ -6,8 +6,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
-#include "Client/ChracterCreateSelect/Widget/TitleCharacterCreateWidget.h"
-#include "Client/ChracterCreateSelect/Widget/TitleCharacterSelectWidget.h"
+#include "Client/ChracterCreateSelect/Widget/CharacterCreateWidget.h"
+#include "Client/ChracterCreateSelect/Widget/CharacterSelectWidget.h"
 #include "Client/ErrorWidget/WidgetCancel.h"
 #include "Client/ErrorWidget/WidgetOk.h"
 #include "Kismet/KismetStringLibrary.h"
@@ -28,24 +28,24 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AChracterCreateCamera::StaticClass(), Cameras);
 
-	FStringClassReference CharacterSelectWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterSelect.W_CharacterSelect_C'"));
+	FStringClassReference CharacterSelectWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/CharacterCreateSelect/Widget/W_CharacterSelect.W_CharacterSelect_C'"));
 
 	//앞에서 읽어 들인 CharacterSelectWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = CharacterSelectWidgetClass.TryLoadClass<UUserWidget>())
 	{
 		//MyWidgetClass를 토대로 CharacterSelectWidget을 생성한다.
-		CharacterSelectWidget = Cast<UTitleCharacterSelectWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(),0), MyWidgetClass));
+		CharacterSelectWidget = Cast<UCharacterSelectWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(),0), MyWidgetClass));
 		CharacterSelectWidget->SetVisibility(ESlateVisibility::Visible);
 		CharacterSelectWidget->AddToViewport(); //화면에 붙인다.
 	}
 
-	FStringClassReference ChracterCreateWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterCreate.W_CharacterCreate_C'"));
+	FStringClassReference ChracterCreateWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/CharacterCreateSelect/Widget/W_CharacterCreate.W_CharacterCreate_C'"));
 
 	//앞에서 읽어 들인 ChracterCreateWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = ChracterCreateWidgetClass.TryLoadClass<UUserWidget>())
 	{
 		//MyWidgetClass를 토대로 ChracterCreateWidget을 생성한다.
-		ChracterCreateWidget = Cast<UTitleCharacterCreateWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
+		ChracterCreateWidget = Cast<UCharacterCreateWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
 
 		ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 		ChracterCreateWidget->AddToViewport(); //화면에 붙인다.
@@ -75,16 +75,16 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 		OkWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
-	CharacterManager::GetInstance()->Character_Req_Slot();
-	NetworkClient_main::NetworkManager::GetInstance()->Send();
+	//CharacterManager::GetInstance()->Character_Req_Slot();
+	//NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
 void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	PacketData* Data;
-	bool ResultFlag;
+	//PacketData* Data;
+	//bool ResultFlag;
 
 	if (StorageManager::GetInstance()->GetFront(Data))
 	{
