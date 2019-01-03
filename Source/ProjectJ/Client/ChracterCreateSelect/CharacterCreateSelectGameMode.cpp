@@ -83,8 +83,8 @@ void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//PacketData* Data;
-	//bool ResultFlag;
+	PacketData* Data;
+	bool ResultFlag;
 
 	if (StorageManager::GetInstance()->GetFront(Data))
 	{
