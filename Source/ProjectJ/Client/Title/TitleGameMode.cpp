@@ -23,7 +23,7 @@ void ATitleGameMode::BeginPlay()
 	Super::BeginPlay();
 
 	//에디터 상에 있는 블루프린트를 읽어서 TitleUserInWidgetClass에 저장한다.
-	FStringClassReference TitleUserInWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/Login/Widget/W_UserIn.W_UserIn_C'"));
+	FStringClassReference TitleUserInWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/Widget/W_UserIn.W_UserIn_C'"));
 
 	//앞에서 읽어 들인 TitleUserInWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = TitleUserInWidgetClass.TryLoadClass<UUserWidget>())
@@ -36,7 +36,7 @@ void ATitleGameMode::BeginPlay()
 	}
 
 	//에디터 상에 있는 블루프린트를 읽어서 TitleLoginWidgetClass에 저장한다.
-	FStringClassReference TitleLoginWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/Login/Widget/W_Login.W_Login_C'"));
+	FStringClassReference TitleLoginWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/Widget/W_Login.W_Login_C'"));
 
 	//앞에서 읽어 들인 TitleLoginWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = TitleLoginWidgetClass.TryLoadClass<UUserWidget>())
