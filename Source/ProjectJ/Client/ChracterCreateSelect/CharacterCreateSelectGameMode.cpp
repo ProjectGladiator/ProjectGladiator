@@ -75,8 +75,8 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 		OkWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
-	//CharacterManager::GetInstance()->Character_Req_Slot();
-	//NetworkClient_main::NetworkManager::GetInstance()->Send();
+	CharacterManager::GetInstance()->Character_Req_Slot();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
 void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
