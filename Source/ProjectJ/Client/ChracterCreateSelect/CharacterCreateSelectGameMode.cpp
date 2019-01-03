@@ -6,8 +6,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
-#include "Client/ChracterCreateSelect/Widget/TitleCharacterCreateWidget.h"
-#include "Client/ChracterCreateSelect/Widget/TitleCharacterSelectWidget.h"
+#include "Client/ChracterCreateSelect/Widget/CharacterCreateWidget.h"
+#include "Client/ChracterCreateSelect/Widget/CharacterSelectWidget.h"
 #include "Client/ErrorWidget/WidgetCancel.h"
 #include "Client/ErrorWidget/WidgetOk.h"
 #include "Kismet/KismetStringLibrary.h"
@@ -34,7 +34,7 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 	if (UClass* MyWidgetClass = CharacterSelectWidgetClass.TryLoadClass<UUserWidget>())
 	{
 		//MyWidgetClass를 토대로 CharacterSelectWidget을 생성한다.
-		CharacterSelectWidget = Cast<UTitleCharacterSelectWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(),0), MyWidgetClass));
+		CharacterSelectWidget = Cast<UCharacterSelectWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(),0), MyWidgetClass));
 		CharacterSelectWidget->SetVisibility(ESlateVisibility::Visible);
 		CharacterSelectWidget->AddToViewport(); //화면에 붙인다.
 	}
@@ -45,7 +45,7 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 	if (UClass* MyWidgetClass = ChracterCreateWidgetClass.TryLoadClass<UUserWidget>())
 	{
 		//MyWidgetClass를 토대로 ChracterCreateWidget을 생성한다.
-		ChracterCreateWidget = Cast<UTitleCharacterCreateWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
+		ChracterCreateWidget = Cast<UCharacterCreateWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
 
 		ChracterCreateWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 		ChracterCreateWidget->AddToViewport(); //화면에 붙인다.

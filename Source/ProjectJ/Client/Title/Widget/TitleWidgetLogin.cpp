@@ -80,7 +80,7 @@ void UTitleWidgetLogin::Login()
 		if (LoginManager::GetInstance()->isLogin())
 		{
 			TitleGM->LoginWidgetToggle();
-
+			TitleGM->LoadingWidget->SetVisibility(ESlateVisibility::Visible);
 			UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));
 
 		}

@@ -22,6 +22,8 @@ public:
 		class UWidgetCancel* CancelWidget; //에러 다시시도,취소 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
 		class UWidgetOk* OkWidget; //에러 확인 위젯
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
+		class UUserWidget* LoadingWidget;
 
 	ATitleGameMode();
 	

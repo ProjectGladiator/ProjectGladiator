@@ -72,6 +72,17 @@ void ATitleGameMode::BeginPlay()
 		OkWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
+	FStringClassReference LoadingWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Loading/W_Loading.W_Loading_C'"));
+
+	if (UClass* MyWidgetClass = LoadingWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		//MyWidgetClass를 토대로 OkWidget을 생성한다.
+		LoadingWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass);
+
+		LoadingWidget->AddToViewport(); //화면에 붙인다.
+		LoadingWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+	}
+
 	// 서버와 연결 시도
 	if (NetworkClient_main::NetworkManager::GetInstance()->Connect() == false)
 	{

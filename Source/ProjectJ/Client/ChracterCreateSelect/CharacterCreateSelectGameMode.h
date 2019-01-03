@@ -16,9 +16,9 @@ class PROJECTJ_API ACharacterCreateSelectGameMode : public AGameModeBase
 public:
 	TArray <AActor*> Cameras;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
-		class UTitleCharacterSelectWidget* CharacterSelectWidget;//캐릭터 선택 위젯
+		class UCharacterSelectWidget* CharacterSelectWidget;//캐릭터 선택 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
-		class UTitleCharacterCreateWidget* ChracterCreateWidget; //캐릭터 생성 위젯
+		class UCharacterCreateWidget* ChracterCreateWidget; //캐릭터 생성 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
 		class UWidgetCancel* CancelWidget; //에러 다시시도,취소 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
