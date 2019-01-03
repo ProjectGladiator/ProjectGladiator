@@ -84,14 +84,31 @@ void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	PacketData* Data;
-	//bool ResultFlag;
+	bool ResultFlag;
 
 	if (StorageManager::GetInstance()->GetFront(Data))
 	{
 		switch (Data->protocol)
 		{
-		case PCHARACTERDATA_SLOT_INFO:
+		case PCHARACTERDATA_SLOT_INFO:			// 슬롯 정보
 			CharacterSelectWidget->MyCharacterSlotUpdate(Data);
+			break;
+		case PCHARACTERDATA_ENTER_RESULT:		// 게임 접속 요청 결과
+			StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
+			if (ResultFlag)
+			{
+				StorageManager::GetInstance()->PopData();
+				//****	
+				//** 다음 씬 로딩
+				//****
+			}
+			else
+			{
+				
+				//****
+				//** 게임 시작, 생성 버튼 활성화 후 메세지창 띄우기
+				//****
+			}
 			break;
 		}
 	}
