@@ -28,7 +28,7 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AChracterCreateCamera::StaticClass(), Cameras);
 
-	FStringClassReference CharacterSelectWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterSelect.W_CharacterSelect_C'"));
+	FStringClassReference CharacterSelectWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/CharacterCreateSelect/Widget/W_CharacterSelect.W_CharacterSelect_C'"));
 
 	//앞에서 읽어 들인 CharacterSelectWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = CharacterSelectWidgetClass.TryLoadClass<UUserWidget>())
@@ -39,7 +39,7 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 		CharacterSelectWidget->AddToViewport(); //화면에 붙인다.
 	}
 
-	FStringClassReference ChracterCreateWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/CharacterSelect/Widget/W_CharacterCreate.W_CharacterCreate_C'"));
+	FStringClassReference ChracterCreateWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/CharacterCreateSelect/Widget/W_CharacterCreate.W_CharacterCreate_C'"));
 
 	//앞에서 읽어 들인 ChracterCreateWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = ChracterCreateWidgetClass.TryLoadClass<UUserWidget>())
@@ -75,43 +75,43 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 		OkWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
-	CharacterManager::GetInstance()->Character_Req_Slot();
-	NetworkClient_main::NetworkManager::GetInstance()->Send();
+	//CharacterManager::GetInstance()->Character_Req_Slot();
+	//NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
 void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	PacketData* Data;
-	bool ResultFlag;
+	//PacketData* Data;
+	//bool ResultFlag;
 
-	if (StorageManager::GetInstance()->GetFront(Data))
-	{
-		switch (Data->protocol)
-		{
-		case PCHARACTERDATA_SLOT_INFO:			// 슬롯 정보
-			CharacterSelectWidget->MyCharacterSlotUpdate(Data);
-			break;
-		case PCHARACTERDATA_ENTER_RESULT:		// 게임 접속 요청 결과
-			StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
-			if (ResultFlag)
-			{
-				StorageManager::GetInstance()->PopData();
-				//****	
-				//** 다음 씬 로딩
-				//****
-			}
-			else
-			{
-				
-				//****
-				//** 게임 시작, 생성 버튼 활성화 후 메세지창 띄우기
-				//****
-			}
-			break;
-		}
-	}
+	//if (StorageManager::GetInstance()->GetFront(Data))
+	//{
+	//	switch (Data->protocol)
+	//	{
+	//	case PCHARACTERDATA_SLOT_INFO:			// 슬롯 정보
+	//		CharacterSelectWidget->MyCharacterSlotUpdate(Data);
+	//		break;
+	//	case PCHARACTERDATA_ENTER_RESULT:		// 게임 접속 요청 결과
+	//		StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
+	//		if (ResultFlag)
+	//		{
+	//			StorageManager::GetInstance()->PopData();
+	//			//****	
+	//			//** 다음 씬 로딩
+	//			//****
+	//		}
+	//		else
+	//		{
+	//			
+	//			//****
+	//			//** 게임 시작, 생성 버튼 활성화 후 메세지창 띄우기
+	//			//****
+	//		}
+	//		break;
+	//	}
+	//}
 }
 
 void ACharacterCreateSelectGameMode::CharacterSelectWidgetToggle()
