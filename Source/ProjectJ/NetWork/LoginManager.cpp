@@ -168,13 +168,15 @@ RESULT LoginManager::InitRecvResult()
 	char buf[BUFSIZE];
 
 	RESULT result;
+	bool isLogin = false;
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->unPack(&protocol, buf);
 
 	switch (protocol)
 	{
 	case SERVER_LOGIN_SUCCESS:
-		if (Login(buf) == true)
+		isLogin = Login(buf);
+		if (isLogin == true)
 		{
 			// 로그인성공 이후 상태변경
 			NetworkClient_main::NetworkManager::GetInstance()->GetUser()->setLogin();
@@ -185,6 +187,7 @@ RESULT LoginManager::InitRecvResult()
 			// 로그인실패
 			result = RT_LOGINFAIL;
 		}
+		StorageManager::GetInstance()->PushData(protocol, (void*)&isLogin, sizeof(bool));
 		break;
 	case SERVER_JOIN:
 		// 회원가입 매뉴
@@ -269,6 +272,7 @@ bool LoginManager::Login(char * _buf)
 	bool check;
 
 	memcpy(&check, _buf, sizeof(bool));
+	StorageManager::GetInstance()->PushData(SERVER_LOGIN_SUCCESS, &check, sizeof(bool));
 
 	if (check)
 	{
