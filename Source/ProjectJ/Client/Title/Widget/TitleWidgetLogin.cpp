@@ -7,6 +7,8 @@
 #include "Client/Title/TitlePlayerController.h"
 #include "Client/Title/TitleGameMode.h"
 #include "Kismet/GameplayStatics.h"
+#include "TimerManager.h"
+#include "Engine/World.h"
 
 //서버 헤더
 #include "NetWork/NetworkManager.h"
@@ -79,14 +81,24 @@ void UTitleWidgetLogin::Login()
 		// 로그인체크
 		if (LoginManager::GetInstance()->isLogin())
 		{
-			TitleGM->LoginWidgetToggle();
-			TitleGM->LoadingWidget->SetVisibility(ESlateVisibility::Visible);
-			UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));
-
+			if (TitleGM)
+			{
+				TitleGM->LoginWidgetToggle();
+				TitleGM->LoadingWidgetViewScreen();
+				UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));		
+			}			
 		}
 		else
 		{
 			TitleGM->OkWidgetToggle(FText(FText::FromString("로그인 실패")));
 		}
 	}
+}
+
+void UTitleWidgetLogin::ToCharacterSelectLevel()
+{
+	//나중에 처리
+	//GetWorld()->GetTimerManager().SetTimer(LoadingTimer, this, &UTitleWidgetLogin::ToCharacterSelectLevel, 1.5f, false);
+	GLog->Log(FString::Printf(TEXT("캐릭터 셀렉트 맵으로")));
+	UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));
 }

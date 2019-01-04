@@ -18,8 +18,8 @@ void UCharacterSelectWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	GameStartButton = Cast<UButton>(GetWidgetFromName(TEXT("GameStart")));
-	CharacterDelete = Cast<UButton>(GetWidgetFromName(TEXT("CharacterDelete")));
-	CharacterCreate = Cast<UButton>(GetWidgetFromName(TEXT("CharacterCreate")));
+	CharacterDeleteButton = Cast<UButton>(GetWidgetFromName(TEXT("CharacterDelete")));
+	CharacterCreateButton = Cast<UButton>(GetWidgetFromName(TEXT("CharacterCreate")));
 	CharacterButtonOne = Cast<UCharacterSelectButton>(GetWidgetFromName(TEXT("CharacterSelectButtonOne")));
 	CharacterButtonOne->SetVisibility(ESlateVisibility::Hidden);
 	CharacterButtonTwo = Cast<UCharacterSelectButton>(GetWidgetFromName(TEXT("CharacterSelectButtonTwo")));
@@ -32,14 +32,14 @@ void UCharacterSelectWidget::NativeConstruct()
 		GameStartButton->OnClicked.AddDynamic(this, &UCharacterSelectWidget::GameStart);
 	}
 
-	if (CharacterDelete)
+	if (CharacterDeleteButton)
 	{
-		CharacterDelete->OnClicked.AddDynamic(this, &UCharacterSelectWidget::MyCharacterDelete);
+		CharacterDeleteButton->OnClicked.AddDynamic(this, &UCharacterSelectWidget::MyCharacterDelete);
 	}
 
-	if (CharacterCreate)
+	if (CharacterCreateButton)
 	{
-		CharacterCreate->OnClicked.AddDynamic(this, &UCharacterSelectWidget::MyCharacterCreate);
+		CharacterCreateButton->OnClicked.AddDynamic(this, &UCharacterSelectWidget::MyCharacterCreate);
 	}
 
 	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
@@ -57,6 +57,8 @@ void UCharacterSelectWidget::GameStart()
 			//****
 			//** 게임 시작, 캐릭터 생성 버튼 비활성화
 			//****
+			GameStartButton->SetVisibility(ESlateVisibility::HitTestInvisible); 
+			CharacterCreateButton->SetVisibility(ESlateVisibility::HitTestInvisible);			
 
 			/*
 			** 캐릭터 선택한 슬롯번호 서버에 보내면서 접속 요청하기

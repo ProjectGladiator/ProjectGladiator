@@ -11,6 +11,7 @@
 #include "Client/ErrorWidget/WidgetCancel.h"
 #include "Client/ErrorWidget/WidgetOk.h"
 #include "Kismet/KismetStringLibrary.h"
+#include "Components/Button.h"
 //서버 헤더
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
@@ -34,7 +35,7 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 	if (UClass* MyWidgetClass = CharacterSelectWidgetClass.TryLoadClass<UUserWidget>())
 	{
 		//MyWidgetClass를 토대로 CharacterSelectWidget을 생성한다.
-		CharacterSelectWidget = Cast<UCharacterSelectWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(),0), MyWidgetClass));
+		CharacterSelectWidget = Cast<UCharacterSelectWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
 		CharacterSelectWidget->SetVisibility(ESlateVisibility::Visible);
 		CharacterSelectWidget->AddToViewport(); //화면에 붙인다.
 	}
@@ -75,43 +76,46 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 		OkWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
-	//CharacterManager::GetInstance()->Character_Req_Slot();
-	//NetworkClient_main::NetworkManager::GetInstance()->Send();
+	CharacterManager::GetInstance()->Character_Req_Slot();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
 void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//PacketData* Data;
-	//bool ResultFlag;
+	PacketData* Data;
+	bool ResultFlag;
 
-	//if (StorageManager::GetInstance()->GetFront(Data))
-	//{
-	//	switch (Data->protocol)
-	//	{
-	//	case PCHARACTERDATA_SLOT_INFO:			// 슬롯 정보
-	//		CharacterSelectWidget->MyCharacterSlotUpdate(Data);
-	//		break;
-	//	case PCHARACTERDATA_ENTER_RESULT:		// 게임 접속 요청 결과
-	//		StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
-	//		if (ResultFlag)
-	//		{
-	//			StorageManager::GetInstance()->PopData();
-	//			//****	
-	//			//** 다음 씬 로딩
-	//			//****
-	//		}
-	//		else
-	//		{
-	//			
-	//			//****
-	//			//** 게임 시작, 생성 버튼 활성화 후 메세지창 띄우기
-	//			//****
-	//		}
-	//		break;
-	//	}
-	//}
+	if (StorageManager::GetInstance()->GetFront(Data))
+	{
+		switch (Data->protocol)
+		{
+		case PCHARACTERDATA_SLOT_INFO:			// 슬롯 정보
+			CharacterSelectWidget->MyCharacterSlotUpdate(Data);
+			break;
+		case PCHARACTERDATA_ENTER_RESULT:		// 게임 접속 요청 결과
+			StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
+			if (ResultFlag)
+			{
+				//****	
+				//** 다음 씬 로딩
+				//****
+				StorageManager::GetInstance()->PopData();
+				GLog->Log(FString::Printf(TEXT("3")));
+				UGameplayStatics::OpenLevel(GetWorld(), TEXT("MainStage"));
+			}
+			else
+			{
+				//****
+				//** 게임 시작, 생성 버튼 활성화 후 메세지창 띄우기
+				//****
+				CharacterSelectWidget->GameStartButton->SetVisibility(ESlateVisibility::Visible);
+				CharacterSelectWidget->CharacterCreateButton->SetVisibility(ESlateVisibility::Visible);
+			}
+			break;
+		}
+	}
 }
 
 void ACharacterCreateSelectGameMode::CharacterSelectWidgetToggle()

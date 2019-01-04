@@ -26,9 +26,12 @@ public:
 	class ATitlePlayerController* PC;
 	class ATitleGameMode* TitleGM;
 	virtual void NativeConstruct() override;
+	FTimerHandle LoadingTimer;
 
 	UFUNCTION()
 		void UserIn();
 	UFUNCTION()
 		void Login();
+	UFUNCTION()
+		void ToCharacterSelectLevel();
 };

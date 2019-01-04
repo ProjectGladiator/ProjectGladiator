@@ -78,9 +78,6 @@ void ATitleGameMode::BeginPlay()
 	{
 		//MyWidgetClass를 토대로 OkWidget을 생성한다.
 		LoadingWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass);
-
-		LoadingWidget->AddToViewport(); //화면에 붙인다.
-		LoadingWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
 	// 서버와 연결 시도
@@ -152,5 +149,13 @@ void ATitleGameMode::OkWidgetToggle(const FText & Message)
 		OkWidget->SetErrorMessage(Message);
 		//확인 위젯을 보여준다.
 		OkWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void ATitleGameMode::LoadingWidgetViewScreen()
+{
+	if (LoadingWidget)
+	{
+		LoadingWidget->AddToViewport();
 	}
 }
