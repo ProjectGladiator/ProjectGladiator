@@ -111,7 +111,7 @@ void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 				//** 게임 시작, 생성 버튼 활성화 후 메세지창 띄우기
 				//****
 				CharacterSelectWidget->GameStartButton->SetVisibility(ESlateVisibility::Visible);
-				CharacterSelectWidget->CharacterCreateButton->SetVisibility(ESlateVisibility::Visible);
+				ChracterCreateWidget->ChracterCreateButton->SetVisibility(ESlateVisibility::Visible);
 			}
 			break;
 		}

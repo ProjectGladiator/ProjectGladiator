@@ -28,6 +28,7 @@ void EncryptManager::DestroyInstance()
 	if (Instance != nullptr)
 	{
 		delete Instance;
+		Instance = nullptr;
 	}
 }
 

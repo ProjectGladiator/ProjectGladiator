@@ -13,8 +13,10 @@ LogManager::~LogManager()
 
 void LogManager::CreateInstance()
 {
-	Instance = new LogManager();
-
+	if (Instance == nullptr)
+	{
+		Instance = new LogManager();
+	}
 }
 
 LogManager * LogManager::GetInstance()
