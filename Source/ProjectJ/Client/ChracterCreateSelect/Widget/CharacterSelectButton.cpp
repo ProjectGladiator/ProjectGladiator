@@ -54,15 +54,15 @@ void UCharacterSelectButton::CharacterSelect()
 
 		FString str = this->GetName();
 
-		if (str.Compare("CharacterSelectButtonOne") == 0)
+		if (str.Compare("CharacterSelectButtonOne"))
 		{
 			PC->select_index = 1;
 		}
-		else if (str.Compare("CharacterSelectButtonTwo") == 0)
+		else if (str.Compare("CharacterSelectButtonTwo"))
 		{
 			PC->select_index = 2;
 		}
-		else if (str.Compare("CharacterSelectButtonThree") == 0)
+		else if (str.Compare("CharacterSelectButtonThree"))
 		{
 			PC->select_index = 3;
 		}
