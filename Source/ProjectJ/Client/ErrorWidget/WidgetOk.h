@@ -15,7 +15,7 @@ class PROJECTJ_API UWidgetOk : public UUserWidget
 	GENERATED_BODY()
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UTextBlock* ErrorMessage; //에러메시지
+		class UTextBlock* ErrorMessageOK; //에러메시지
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
 		class UButton* OkButton; //확인 버튼
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")

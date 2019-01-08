@@ -62,8 +62,6 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	AttackPointSet();
-
 	CharacterCreateSelectPC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
@@ -227,73 +225,4 @@ void AMyCharacter::LeftClick()
 			}
 		}	
 	}	
-}
-
-void AMyCharacter::AttackPointSet()
-{
-	APatrolPoint* AttackPoint;
-	FAttachmentTransformRules AttachRules(EAttachmentRule::KeepWorld, EAttachmentRule::KeepWorld, EAttachmentRule::KeepWorld, false);
-	FVector CalculatePoint;
-	FVector InitPoint = GetActorLocation();
-	FVector Point;
-	
-	CalculatePoint = InitPoint;
-	CalculatePoint.X = InitPoint.X + 200.0f;
-	Point = CalculatePoint;
-
-	AttackPoint = GetWorld()->SpawnActor<APatrolPoint>(AttackPoint->StaticClass(), Point, this->GetActorRotation());
-	AttackPoints.Add(AttackPoint);
-	AttackPoint->AttachToComponent(RootComponent, AttachRules);
-
-	CalculatePoint.X = InitPoint.X - 200.0f;
-	Point = CalculatePoint;
-	AttackPoint = GetWorld()->SpawnActor<APatrolPoint>(AttackPoint->StaticClass(), Point, this->GetActorRotation());
-	AttackPoints.Add(AttackPoint);
-	AttackPoint->AttachToComponent(RootComponent, AttachRules);
-
-	CalculatePoint = InitPoint;
-	CalculatePoint.Y = InitPoint.Y - 200.0f;
-	Point = CalculatePoint;
-	AttackPoint = GetWorld()->SpawnActor<APatrolPoint>(AttackPoint->StaticClass(), Point, this->GetActorRotation());
-	AttackPoints.Add(AttackPoint);
-	AttackPoint->AttachToComponent(RootComponent, AttachRules);
-
-	CalculatePoint.Y = InitPoint.Y + 200.0f;
-	Point = CalculatePoint;
-	AttackPoint = GetWorld()->SpawnActor<APatrolPoint>(AttackPoint->StaticClass(), Point, this->GetActorRotation());
-	AttackPoints.Add(AttackPoint);
-	AttackPoint->AttachToComponent(RootComponent, AttachRules);
-
-	CalculatePoint = InitPoint;
-	CalculatePoint.X = InitPoint.X + 200.0f;
-	CalculatePoint.Y = InitPoint.Y - 200.0f;
-	Point = CalculatePoint;
-	AttackPoint = GetWorld()->SpawnActor<APatrolPoint>(AttackPoint->StaticClass(), Point, this->GetActorRotation());
-	AttackPoints.Add(AttackPoint);
-	AttackPoint->AttachToComponent(RootComponent, AttachRules);
-
-	CalculatePoint = InitPoint;
-	CalculatePoint.X = InitPoint.X + 200.0f;
-	CalculatePoint.Y = InitPoint.Y + 200.0f;
-	Point = CalculatePoint;
-	AttackPoint = GetWorld()->SpawnActor<APatrolPoint>(AttackPoint->StaticClass(), Point, this->GetActorRotation());
-	AttackPoints.Add(AttackPoint);
-	AttackPoint->AttachToComponent(RootComponent, AttachRules);
-
-	CalculatePoint = InitPoint;
-	CalculatePoint.X = InitPoint.X - 200.0f;
-	CalculatePoint.Y = InitPoint.Y - 200.0f;
-	Point = CalculatePoint;
-	AttackPoint = GetWorld()->SpawnActor<APatrolPoint>(AttackPoint->StaticClass(), Point, this->GetActorRotation());
-	AttackPoints.Add(AttackPoint);
-	AttackPoint->AttachToComponent(RootComponent, AttachRules);
-
-	CalculatePoint = InitPoint;
-	CalculatePoint.X = InitPoint.X - 200.0f;
-	CalculatePoint.Y = InitPoint.Y + 200.0f;
-	Point = CalculatePoint;
-	AttackPoint = GetWorld()->SpawnActor<APatrolPoint>(AttackPoint->StaticClass(), Point, this->GetActorRotation());
-	AttackPoints.Add(AttackPoint);
-	AttackPoint->AttachToComponent(RootComponent, AttachRules);
-
 } 

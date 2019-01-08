@@ -7,6 +7,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
 #include "Client/ChracterCreateSelect/CharacterCreateSelectGameMode.h"
+#include "Client/ErrorWidget/WidgetOk.h"
+#include "Client/ErrorWidget/WidgetCancel.h"
+
 //서버 헤더
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
@@ -41,31 +44,38 @@ void UCharacterCreateWidget::ChracterCreate()
 	if (ChracterCreateButton && PC->JobCode != 0)
 	{
 		FString id = NickNameInputBox->Text.ToString();
-		CharacterManager::GetInstance()->Character_Req_Character(TCHAR_TO_ANSI(*id), PC->JobCode);
-		NetworkClient_main::NetworkManager::GetInstance()->Send();
-		NetworkClient_main::NetworkManager::GetInstance()->Wait();
-
-		bool result;
-
-		PacketData* Data;
-		if (StorageManager::GetInstance()->GetFront(Data))
+		if (!id.IsEmpty())
 		{
-			if (Data->protocol == PCHARACTERDATA_CREATE_RESULT)
-			{
-				StorageManager::GetInstance()->ChangeData(Data->data, result);
-				StorageManager::GetInstance()->PopData();
+			CharacterManager::GetInstance()->Character_Req_Character(TCHAR_TO_ANSI(*id), PC->JobCode);
+			NetworkClient_main::NetworkManager::GetInstance()->Send();
+			NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-				if (result)
+			bool result;
+
+			PacketData* Data;
+			if (StorageManager::GetInstance()->GetFront(Data))
+			{
+				if (Data->protocol == PCHARACTERDATA_CREATE_RESULT)
 				{
-					CharacterManager::GetInstance()->Character_Req_Slot();
-					NetworkClient_main::NetworkManager::GetInstance()->Send();
-					NetworkClient_main::NetworkManager::GetInstance()->Wait();
+					StorageManager::GetInstance()->ChangeData(Data->data, result);
+					StorageManager::GetInstance()->PopData();
+
+					if (result)
+					{
+						CharacterManager::GetInstance()->Character_Req_Slot();
+						NetworkClient_main::NetworkManager::GetInstance()->Send();
+						//NetworkClient_main::NetworkManager::GetInstance()->Wait();
+					}
 				}
 			}
+			CCSGM->CharacterSelectWidgetToggle();
+			CCSGM->CharacterCreateWidgetToggle();
+			PC->ToCharacterSelect();
 		}
-
-		CCSGM->CharacterSelectWidgetToggle();
-		CCSGM->CharacterCreateWidgetToggle();
+		else
+		{
+			CCSGM->OkWidgetToggle(FText(FText::FromString("아이디를 입력해주세요")));
+		}
 	}
 	else   // 캐릭터가 선택 되지 않았다면
 	{

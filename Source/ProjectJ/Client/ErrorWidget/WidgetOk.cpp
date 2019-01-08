@@ -7,11 +7,13 @@
 
 void UWidgetOk::NativeConstruct()
 {
-	Super::NativeConstruct();
+	Super::NativeConstruct(); 
 	//위젯 블루프린트에 있는 ErrorMessage를 가져와서 ErrorMessage에 넣는다.
-	ErrorMessage = Cast<UTextBlock>(GetWidgetFromName(TEXT("ErrorMessage")));
+	ErrorMessageOK = Cast<UTextBlock>(GetWidgetFromName(TEXT("ErrorMessageOK")));
 	//위젯 블루프린트에 있는 OkButton를 가져와서 OkButton에 넣는다.
 	OkButton = Cast<UButton>(GetWidgetFromName(TEXT("OkButton")));
+	//위젯 블루프린트에 있는 CloseButton를 가져와서 CloseButton에 넣는다.
+	CloseButton = Cast<UButton>(GetWidgetFromName(TEXT("CloseButton")));
 
 	if (OkButton)
 	{
@@ -29,10 +31,10 @@ void UWidgetOk::NativeConstruct()
 void UWidgetOk::SetErrorMessage(const FText & Message)
 {
 	//매개변수로 받아온 에러메세지를 
-	if (ErrorMessage)
+	if (ErrorMessageOK)
 	{
 		//셋팅한다.
-		ErrorMessage->SetText(Message);
+		ErrorMessageOK->SetText(Message);
 	}
 }
 

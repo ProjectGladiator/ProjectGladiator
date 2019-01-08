@@ -133,7 +133,8 @@ void ATitleGameMode::Tick(float DeltaTime)
 		case PLOGIN_LOGIN_RESULT:				// 로그인 결과
 			if (LoginManager::GetInstance()->isLogin())
 			{
-				LoginWidgetToggle();
+				LoadingWidget->AddToViewport();
+				LoginWidgetToggle();				
 				UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));
 			}
 			else

@@ -15,4 +15,5 @@ void AMyPlayerController::CancelWidgetToggle(const FText & Message)
 
 void AMyPlayerController::OkWidgetToggle(const FText & Message)
 {
+
 }

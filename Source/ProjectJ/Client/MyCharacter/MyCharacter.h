@@ -65,8 +65,6 @@ public:
 	UFUNCTION()
 	void LeftClick();
 
-	void AttackPointSet();
-
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
 		class USpringArmComponent* SpringArm;
 

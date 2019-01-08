@@ -148,3 +148,23 @@ void ACharacterCreateSelectGameMode::CharacterCreateWidgetToggle()
 		}
 	}
 }
+
+void ACharacterCreateSelectGameMode::CancelWidgetToggle(const FText & Message)
+{
+	if (CancelWidget)
+	{
+		CancelWidget->SetErrorMessage(Message);
+		CancelWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void ACharacterCreateSelectGameMode::OkWidgetToggle(const FText & Message)
+{
+	if (OkWidget)
+	{
+		//매개변수로 받아온 메세지를 확인 위젯 에러메세지에 셋팅하고
+		OkWidget->SetErrorMessage(Message);
+		//확인 위젯을 보여준다.
+		OkWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
