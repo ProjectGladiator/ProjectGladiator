@@ -63,7 +63,7 @@ void UCharacterSelectWidget::GameStart()
 			/*
 			** 캐릭터 선택한 슬롯번호 서버에 보내면서 접속 요청하기
 			*/
-			CharacterManager::GetInstance()->Character_Req_Enter(PC->select_index);
+			CharacterManager::GetInstance()->Character_Req_Enter(PC->GetSelectIndex());
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
 		}
 	}
@@ -129,4 +129,14 @@ void UCharacterSelectWidget::MyCharacterSlotUpdate(PacketData * _data)
 		}
 	}
 	StorageManager::GetInstance()->PopData();
+}
+
+UButton * UCharacterSelectWidget::GetGameStartButton()
+{
+	return GameStartButton;
+}
+
+UButton * UCharacterSelectWidget::GetChracterCreateButton()
+{
+	return CharacterCreateButton;
 }

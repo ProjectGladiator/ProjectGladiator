@@ -7,26 +7,28 @@
 #include "CharacterCreateWidget.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTJ_API UCharacterCreateWidget : public UUserWidget
 {
 	GENERATED_BODY()
-public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UEditableTextBox* NickNameInputBox;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* ChracterCreateButton;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* CancelButton;
-
-	class AChracterCreateSelectPC* PC;
-	class ACharacterCreateSelectGameMode* CCSGM;
+	class AChracterCreateSelectPC* PC = nullptr;
+	class ACharacterCreateSelectGameMode* CCSGM = nullptr;
+public:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
 		void ChracterCreate();
 	UFUNCTION()
-		void Cancel();	
+		void Cancel();
+
+	class UButton* GetChracterCreateButton();
 };

@@ -14,6 +14,6 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Direction = CalculateDirection(MyCharacter->GetCharacterMovement()->Velocity, MyCharacter->GetActorRotation());
 		Speed = MyCharacter->GetCharacterMovement()->Velocity.Size();
-		ToRunFlag = MyCharacter->ToRunFlag;
+		ToRunFlag = MyCharacter->GetRunFlag();
 	}
 }

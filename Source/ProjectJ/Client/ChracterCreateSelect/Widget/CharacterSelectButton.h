@@ -13,19 +13,17 @@ UCLASS()
 class PROJECTJ_API UCharacterSelectButton : public UUserWidget
 {
 	GENERATED_BODY()
-public:
-	//UPROPERTY(VisibleAnywhere,BleurpintReadWrite,Category = "CharacerInfo")
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* CharacterSelectButton;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UTextBlock* CharacterNickName;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
-		class UTextBlock* CharacterLevel;	
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
+		class UTextBlock* CharacterLevel;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UTextBlock* ClassName;
-
-	class AChracterCreateSelectPC* PC;
+	class AChracterCreateSelectPC* PC = nullptr;
+public:	
 
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);

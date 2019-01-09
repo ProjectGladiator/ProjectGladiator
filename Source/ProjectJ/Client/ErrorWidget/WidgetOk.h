@@ -13,15 +13,15 @@ UCLASS()
 class PROJECTJ_API UWidgetOk : public UUserWidget
 {
 	GENERATED_BODY()
-public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UTextBlock* ErrorMessageOK; //에러메시지
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* OkButton; //확인 버튼
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* CloseButton; //닫기 버튼
 	class AMyPlaterController* PC;
-
+public:
 	virtual void NativeConstruct() override;
 	
 	//에러메세지를 셋팅해주는 함수

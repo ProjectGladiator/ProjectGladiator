@@ -21,11 +21,6 @@ EBTNodeResult::Type UBTTask_RandomMovePointSelect::ExecuteTask(UBehaviorTreeComp
 			
 			if (Mycharacter)
 			{
-				MovePoints = Mycharacter->AttackPoints;
-
-				int RandomAttackPointIndex = FMath::FRandRange(0, 7);
-
-				AI->BBComponent->SetValueAsObject("MovePoint", MovePoints[RandomAttackPointIndex]);
 				//Mutant->JumpRunCheckFlag = true;
 				return EBTNodeResult::Succeeded;
 			}

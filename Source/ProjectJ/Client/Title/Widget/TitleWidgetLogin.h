@@ -13,20 +13,21 @@ UCLASS()
 class PROJECTJ_API UTitleWidgetLogin : public UUserWidget
 {
 	GENERATED_BODY()
-public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UEditableTextBox* IDInputBox;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UEditableTextBox* PWInputBox;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* LoginButton;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* UserInButton;
 
-	class ATitlePlayerController* PC;
-	class ATitleGameMode* TitleGM;
-	virtual void NativeConstruct() override;
+	class ATitlePlayerController* PC=nullptr;
+	class ATitleGameMode* TitleGM=nullptr;
 	FTimerHandle LoadingTimer;
+public:	
+	virtual void NativeConstruct() override;	
 
 	UFUNCTION()
 		void UserIn();

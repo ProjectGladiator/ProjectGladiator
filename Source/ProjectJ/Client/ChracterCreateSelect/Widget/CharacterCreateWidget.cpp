@@ -41,12 +41,12 @@ void UCharacterCreateWidget::NativeConstruct()
 void UCharacterCreateWidget::ChracterCreate()
 {
 	// 캐릭터가 선택 되었다면
-	if (ChracterCreateButton && PC->JobCode != 0)
+	if (ChracterCreateButton && PC->GetJobCode() != 0)
 	{
 		FString id = NickNameInputBox->Text.ToString();
 		if (!id.IsEmpty())
 		{
-			CharacterManager::GetInstance()->Character_Req_Character(TCHAR_TO_ANSI(*id), PC->JobCode);
+			CharacterManager::GetInstance()->Character_Req_Character(TCHAR_TO_ANSI(*id), PC->GetJobCode());
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
 			NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
@@ -96,4 +96,9 @@ void UCharacterCreateWidget::Cancel()
 		CCSGM->CharacterSelectWidgetToggle();
 		PC->ToCharacterSelect();
 	}
+}
+
+UButton * UCharacterCreateWidget::GetChracterCreateButton()
+{
+	return ChracterCreateButton;
 }

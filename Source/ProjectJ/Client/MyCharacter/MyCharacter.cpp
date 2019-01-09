@@ -225,4 +225,9 @@ void AMyCharacter::LeftClick()
 			}
 		}	
 	}	
-} 
+}
+
+bool AMyCharacter::GetRunFlag()
+{
+	return ToRunFlag;
+}

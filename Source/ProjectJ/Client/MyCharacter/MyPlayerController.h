@@ -13,6 +13,7 @@ UCLASS()
 class PROJECTJ_API AMyPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
 		class UWidgetCancel* CancelWidget;

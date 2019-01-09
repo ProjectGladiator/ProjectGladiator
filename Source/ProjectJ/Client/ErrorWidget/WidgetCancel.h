@@ -13,17 +13,17 @@ UCLASS()
 class PROJECTJ_API UWidgetCancel : public UUserWidget
 {
 	GENERATED_BODY()
-public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UTextBlock* ErrorMessage; //에러메시지
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* RetryButton; //다시시도 버튼
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* CancelButton; //취소 버튼
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* CloseButton; //닫기 버튼
-	class ATitlePlayerController* PC;
-
+	class ATitlePlayerController* PC = nullptr; 
+public:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()

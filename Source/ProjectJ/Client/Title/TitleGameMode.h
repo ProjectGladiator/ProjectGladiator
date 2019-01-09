@@ -13,18 +13,18 @@ UCLASS()
 class PROJECTJ_API ATitleGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
-public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget", Meta = (AllowPrivateAccess = true))
 		class UTitleWidgetUserIn* UserInWidget; //회원가입 위젯
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget", Meta = (AllowPrivateAccess = true))
 		class UTitleWidgetLogin* LoginWidget; //로그인 위젯
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget", Meta = (AllowPrivateAccess = true))
 		class UWidgetCancel* CancelWidget; //에러 다시시도,취소 위젯
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget", Meta = (AllowPrivateAccess = true))
 		class UWidgetOk* OkWidget; //에러 확인 위젯
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget", Meta = (AllowPrivateAccess = true))
 		class UUserWidget* LoadingWidget;
-
+public:
 	ATitleGameMode();
 	
 	virtual void BeginPlay() override;

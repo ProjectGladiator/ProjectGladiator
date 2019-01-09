@@ -56,15 +56,15 @@ void UCharacterSelectButton::CharacterSelect()
 
 		if (str.Compare("CharacterSelectButtonOne") == 0)
 		{
-			PC->select_index = 1;
+			PC->SetSelectIndex(1);
 		}
 		else if (str.Compare("CharacterSelectButtonTwo") == 0)
 		{
-			PC->select_index = 2;
+			PC->SetSelectIndex(2);
 		}
 		else if (str.Compare("CharacterSelectButtonThree") == 0)
 		{
-			PC->select_index = 3;
+			PC->SetSelectIndex(3);
 		}
 	}
 }

@@ -12,8 +12,6 @@
 
 void AChracterCreateSelectPC::BeginPlay()
 {
-	JobCode = 0;
-	select_index = -1;
 	ACharacterCreateSelectGameMode* CCGM = Cast<ACharacterCreateSelectGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	if (CCGM)
@@ -62,4 +60,19 @@ void AChracterCreateSelectPC::ToCharacterSelect()
 void AChracterCreateSelectPC::SelectCharacter(int NewJobCode)
 {
 	JobCode = NewJobCode;
+}
+
+int32 AChracterCreateSelectPC::GetJobCode()
+{
+	return JobCode;
+}
+
+int32 AChracterCreateSelectPC::GetSelectIndex()
+{
+	return Select_index;
+}
+
+void AChracterCreateSelectPC::SetSelectIndex(int32 _SelectIndex)
+{
+	Select_index = _SelectIndex;
 }

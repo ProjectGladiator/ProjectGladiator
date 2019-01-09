@@ -7,36 +7,35 @@
 #include "TitleWidgetUserIn.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTJ_API UTitleWidgetUserIn : public UUserWidget
 {
 	GENERATED_BODY()
-public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UEditableTextBox* IDInputBox;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UEditableTextBox* PWInputBox;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UEditableTextBox* PWCheckInputBox;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* IDOverlapCheckButton;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* UserInButton;
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Data")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* CancelButton;
-
-	class ATitlePlayerController* PC;
-	class ATitleGameMode* TitleGM;
-
+	class ATitlePlayerController* PC = nullptr;
+	class ATitleGameMode* TitleGM = nullptr;
+public:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
-	void Cancel();
+		void Cancel();
 	UFUNCTION()
-	void IdOverapCheck();
+		void IdOverapCheck();
 	UFUNCTION()
-	void Join();
+		void Join();
 
 };

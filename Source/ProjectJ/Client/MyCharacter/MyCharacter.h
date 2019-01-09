@@ -10,7 +10,17 @@ UCLASS()
 class PROJECTJ_API AMyCharacter : public ACharacter
 {
 	GENERATED_BODY()
-
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ViewRightClick", Meta = (AllowPrivateAccess = true))
+		bool RightClickFlag;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "RunToggle", Meta = (AllowPrivateAccess = true))
+		bool ToRunFlag;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat", Meta = (AllowPrivateAccess = true))
+		float MaxHP;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat", Meta = (AllowPrivateAccess = true))
+		float CurrentHP;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat", Meta = (AllowPrivateAccess = true))
+		int32 Level;
 public:
 	// Sets default values for this character's properties
 	AMyCharacter();
@@ -20,6 +30,18 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		class USpringArmComponent* SpringArm;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		class UCameraComponent* Camera;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		class UInventory* Inventory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+		FRotator CurrentRotator;
+
+	class AChracterCreateSelectPC* CharacterCreateSelectPC;
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -65,31 +87,6 @@ public:
 	UFUNCTION()
 	void LeftClick();
 
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly)
-		class USpringArmComponent* SpringArm;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		class UCameraComponent* Camera;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		class UInventory* Inventory;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ViewRightClick")
-		bool RightClickFlag;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "RunToggle")
-		bool ToRunFlag;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		FRotator CurrentRotator;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
-		float MaxHP;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat")
-		float CurrentHP;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AttackPoint")
-		TArray<class APatrolPoint*> AttackPoints;
-
-	class AChracterCreateSelectPC* CharacterCreateSelectPC;
-
-	int Level;
+	bool GetRunFlag();
+	
 };
