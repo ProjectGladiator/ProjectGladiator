@@ -14,12 +14,14 @@ class PROJECTJ_API UMyAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 private:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Velocity", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Velocity, Meta = (AllowPrivateAccess = true))
 		float Speed;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Velocity", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Velocity, Meta = (AllowPrivateAccess = true))
 		float Direction;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "RunToggle", Meta = (AllowPrivateAccess = true))
-		bool ToRunFlag;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsRun, Meta = (AllowPrivateAccess = true))
+		bool IsAccelerating;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsJump, Meta = (AllowPrivateAccess = true))
+		bool IsJump;
 public:
 	UFUNCTION()
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;

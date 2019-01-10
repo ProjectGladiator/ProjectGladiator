@@ -14,6 +14,15 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		Direction = CalculateDirection(MyCharacter->GetCharacterMovement()->Velocity, MyCharacter->GetActorRotation());
 		Speed = MyCharacter->GetCharacterMovement()->Velocity.Size();
-		ToRunFlag = MyCharacter->GetRunFlag();
+
+		IsJump = MyCharacter->GetCharacterMovement()->IsFalling();
+		if (MyCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0)
+		{
+			IsAccelerating = true;
+		}		
+		else
+		{
+			IsAccelerating = false;
+		}
 	}
 }
