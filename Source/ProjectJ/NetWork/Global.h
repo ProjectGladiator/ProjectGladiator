@@ -35,9 +35,9 @@ enum PROTOCOL {
 
 	SERVER_CHARACTER_SLOT_RESULT,			// 서버 케릭터 슬롯 전송		[프로토콜]...
 	SERVER_CHARACTER_ENTER_RESULT,			// 서버 케릭터 접속결과			[프로토콜][bool]
-	SERVER_CHARACTER_ENTER_INFO,			// 서버 케릭터 접속 정보		[DataProtocol용]
 	SERVER_CHARACTER_DELETE_RESULT,			// 서버 케릭터 삭제 결과		[프로토콜][bool]
 	SERVER_CHARACTER_MENU,					// 서버 케릭터 메뉴 결과		[프로토콜]
+	SERVER_CHARACTER_ENTER_INFO,			// 서버 케릭터 접속 정보		[DataProtocol용]
 	//SERVER_NICK_OVERLAP_CHECK,			// 서버 닉네임 중복 결과		[프로토콜][bool]
 	SERVER_CHARACTER_RESULT,				// 서버 케릭터 생성 확인 결과	[프로토콜][bool]
 	SERVER_CHARACTER_EXIT_RESULT,			// 서버 케릭터 생성 취소 결과	[프로토콜[
@@ -141,7 +141,7 @@ enum RESULT {
 #define NICKNAMESIZE 20
 #define PRODUCT_NAMESIZE 50
 #define ENCRYPT_KEY 951324896
-#define SERVERIP "182.227.211.86"
+#define SERVERIP "127.0.0.1"
 //#define SERVERIP "14.36.166.64"
 
 #endif   

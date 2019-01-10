@@ -76,6 +76,8 @@ void ACharacterCreateSelectGameMode::BeginPlay()
 		OkWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
+	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
 	CharacterManager::GetInstance()->Character_Req_Slot();
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
@@ -88,11 +90,24 @@ void ACharacterCreateSelectGameMode::Tick(float DeltaTime)
 	bool ResultFlag;
 
 	if (StorageManager::GetInstance()->GetFront(Data))
-	{
+	{		
 		switch (Data->protocol)
 		{
 		case PCHARACTERDATA_SLOT_INFO:			// 슬롯 정보
 			CharacterSelectWidget->MyCharacterSlotUpdate(Data);
+			break;
+		case PCHARACTERDATA_CREATE_RESULT:
+			StorageManager::GetInstance()->ChangeData(Data->data, ResultFlag);
+			StorageManager::GetInstance()->PopData();
+
+			if (ResultFlag)
+			{
+				CharacterManager::GetInstance()->Character_Req_Slot();
+				NetworkClient_main::NetworkManager::GetInstance()->Send();
+				CharacterSelectWidgetToggle();
+				CharacterCreateWidgetToggle();
+				PC->ToCharacterSelect();
+			}
 			break;
 		case PCHARACTERDATA_ENTER_RESULT:		// 게임 접속 요청 결과
 			StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
