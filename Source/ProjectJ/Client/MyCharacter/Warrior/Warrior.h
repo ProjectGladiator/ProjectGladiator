@@ -14,12 +14,7 @@ class PROJECTJ_API AWarrior : public AMyCharacter
 {
 	GENERATED_BODY()
 public:
-	AWarrior();
-	
+	AWarrior();	
 	virtual void BeginPlay() override;
-
-	UFUNCTION()
-	void WarriorMouseClicked(AActor * TouchedActor, FKey ButtonPressed);
-	
-	
+	virtual void ClickedReactionMontagePlay() override;
 };

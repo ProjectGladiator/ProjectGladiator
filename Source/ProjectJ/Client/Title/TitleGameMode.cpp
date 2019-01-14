@@ -128,6 +128,7 @@ void ATitleGameMode::Tick(float DeltaTime)
 			LoginWidgetToggle(); //로그인 위젯을 켜고
 			UserInWidgetToggle(); //회원가입 위젯을 끈다
 			StorageManager::GetInstance()->PopData();
+
 			break;
 
 		case PLOGIN_LOGIN_RESULT:				// 로그인 결과

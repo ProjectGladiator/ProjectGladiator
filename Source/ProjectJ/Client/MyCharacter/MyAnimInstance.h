@@ -22,7 +22,14 @@ private:
 		bool IsAccelerating;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsJump, Meta = (AllowPrivateAccess = true))
 		bool IsJump;
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Montage)
+		class UAnimMontage* ClickedReaction;
 public:
+	UMyAnimInstance();
+
 	UFUNCTION()
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
+
+	virtual void PlayClickedReactionMontage();
 };

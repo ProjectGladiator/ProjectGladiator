@@ -26,10 +26,12 @@ public:
 	AMyCharacter();
 
 protected:
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void ClickedReactionMontagePlay();
 
-public:	
+public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class USpringArmComponent* SpringArm;
 
@@ -49,16 +51,16 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
-	void MoveForward(float Value);
+		void MoveForward(float Value);
 
 	UFUNCTION()
-	void MoveRight(float Value);
+		void MoveRight(float Value);
 
 	UFUNCTION()
-	void LookUp(float Value);
+		void LookUp(float Value);
 
 	UFUNCTION()
-	void Turn(float Value);
+		void Turn(float Value);
 
 	UFUNCTION()
 		void ViewExpand();
@@ -67,26 +69,26 @@ public:
 		void ViewReduce();
 
 	UFUNCTION()
-	void ViewRightClickOn();
+		void ViewRightClickOn();
 
 	UFUNCTION()
-	void ViewRightClickOff();
+		void ViewRightClickOff();
 
 	UFUNCTION()
-	void SightOff();
+		void SightOff();
 
 	UFUNCTION()
-	void SightOn();
+		void SightOn();
 
 	UFUNCTION()
-	void ToRun();
+		void ToRun();
 
 	UFUNCTION()
-	void JumpStart();
+		void JumpStart();
 
 	UFUNCTION()
-	void LeftClick();
+		void LeftClick();
 
 	bool GetRunFlag();
-	
+
 };

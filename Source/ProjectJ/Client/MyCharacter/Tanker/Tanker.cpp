@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h" // 메시
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
 #include "Animation/AnimBlueprint.h" // 애님 블루프린트
+#include "TankerAnimInstance.h"
 //서버 헤더
 
 ATanker::ATanker()
@@ -30,4 +31,18 @@ ATanker::ATanker()
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+
+}
+
+void ATanker::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
+
+void ATanker::ClickedReactionMontagePlay()
+{
+	auto TankerAnimInstance = Cast<UTankerAnimInstance>(GetMesh()->GetAnimInstance());
+
+	TankerAnimInstance->PlayClickedReactionMontage();
 }

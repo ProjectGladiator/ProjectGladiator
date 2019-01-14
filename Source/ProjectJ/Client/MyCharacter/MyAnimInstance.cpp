@@ -1,12 +1,19 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyAnimInstance.h"
-#include "MyCharacter.h"
-#include "GameFramework/CharacterMovementComponent.h"
+//클라 헤더
+#include "MyCharacter.h" //캐릭터 부모 헤더
+#include "GameFramework/CharacterMovementComponent.h" //캐릭터 속도 관련 헤더
+//서버헤더
+
+UMyAnimInstance::UMyAnimInstance()
+{
+
+}
 
 void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
-	Super::NativeUpdateAnimation(DeltaSeconds);
+	Super::NativeUpdateAnimation(DeltaSeconds);	
 
 	AMyCharacter* MyCharacter = Cast<AMyCharacter>(TryGetPawnOwner());
 
@@ -25,4 +32,9 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 			IsAccelerating = false;
 		}
 	}
+}
+
+void UMyAnimInstance::PlayClickedReactionMontage()
+{
+
 }

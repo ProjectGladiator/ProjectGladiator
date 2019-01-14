@@ -17,6 +17,8 @@
 #include "Warrior/Warrior.h"
 #include "Tanker/Tanker.h"
 #include "Wizard/Wizard.h"
+#include "MyAnimInstance.h"
+#include "UObject/ConstructorHelpers.h" // 경로 탐색
 //서버 헤더
 #include "NetWork/JobInfo.h"
 
@@ -63,6 +65,12 @@ void AMyCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	CharacterCreateSelectPC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+}
+
+void AMyCharacter::ClickedReactionMontagePlay()
+{
+
 }
 
 // Called every frame
@@ -198,8 +206,10 @@ void AMyCharacter::LeftClick()
 		if (CharacterCreateSelectPC->GetHitResultUnderCursorForObjects(ObjectTypes, true, HitResult))
 		{
 			AWarrior* Character = Cast<AWarrior>(HitResult.Actor);
+
 			if (Character)
 			{
+				Character->ClickedReactionMontagePlay();
 				GLog->Log(FString::Printf(TEXT("전사 클릭")));
 				CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::WARRIOR);
 			}
@@ -209,6 +219,7 @@ void AMyCharacter::LeftClick()
 
 				if (Character)
 				{
+					Character->ClickedReactionMontagePlay();
 					GLog->Log(FString::Printf(TEXT("탱커 클릭")));
 					CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::TANKER);
 				}
@@ -218,6 +229,7 @@ void AMyCharacter::LeftClick()
 
 					if (Character)
 					{
+						Character->ClickedReactionMontagePlay();
 						GLog->Log(FString::Printf(TEXT("법사 클릭")));
 						CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::MAGICIAN);
 					}

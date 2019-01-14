@@ -32,5 +32,7 @@ AWizard::AWizard()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 }
 
+void AWizard::ClickedReactionMontagePlay()
+{
 
-
+}
