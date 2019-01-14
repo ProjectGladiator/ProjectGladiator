@@ -25,7 +25,6 @@ private:
 
 public:
 	TArray <AActor*> Cameras;
-	class AChracterCreateSelectPC* PC = nullptr;
 
 	ACharacterCreateSelectGameMode();
 
