@@ -16,7 +16,7 @@
 #include "Client/Title/TitlePlayerController.h"
 #include "Warrior/Warrior.h"
 #include "Tanker/Tanker.h"
-#include "Wizard/Wizard.h"
+#include "Gunner/Gunner.h"
 #include "MyAnimInstance.h"
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
 //서버 헤더
@@ -205,7 +205,7 @@ void AMyCharacter::LeftClick()
 	{
 		if (CharacterCreateSelectPC->GetHitResultUnderCursorForObjects(ObjectTypes, true, HitResult))
 		{
-			AWarrior* Character = Cast<AWarrior>(HitResult.Actor);
+			auto Character = Cast<AWarrior>(HitResult.Actor);
 
 			if (Character)
 			{
@@ -215,7 +215,7 @@ void AMyCharacter::LeftClick()
 			}
 			else
 			{
-				ATanker* Character = Cast<ATanker>(HitResult.Actor);
+				auto Character = Cast<ATanker>(HitResult.Actor);
 
 				if (Character)
 				{
@@ -225,13 +225,13 @@ void AMyCharacter::LeftClick()
 				}
 				else
 				{
-					AWizard* Character = Cast<AWizard>(HitResult.Actor);
+					auto Character = Cast<AGunner>(HitResult.Actor);
 
 					if (Character)
 					{
 						Character->ClickedReactionMontagePlay();
-						GLog->Log(FString::Printf(TEXT("법사 클릭")));
-						CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::MAGICIAN);
+						GLog->Log(FString::Printf(TEXT("총잡이 클릭")));
+						CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::GUNNER);
 					}
 				}
 			}

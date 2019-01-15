@@ -11,7 +11,6 @@ UTankerAnimInstance::UTankerAnimInstance()
 
 	if (Clicked_Montage.Succeeded())
 	{
-		GLog->Log(FString::Printf(TEXT("-3")));
 		ClickedReaction = Clicked_Montage.Object;
 	}
 }
@@ -22,7 +21,6 @@ void UTankerAnimInstance::PlayClickedReactionMontage()
 	{
 		if (!Montage_IsPlaying(ClickedReaction))
 		{
-			GLog->Log(FString::Printf(TEXT("1")));
 			Montage_Play(ClickedReaction, 1.0f);
 		}
 	}

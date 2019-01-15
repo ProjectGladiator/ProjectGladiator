@@ -10,13 +10,13 @@
 
 ATanker::ATanker()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	// 스켈레탈 메시찾아 메쉬에 세팅
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SM_TankerMesh(TEXT("SkeletalMesh'/Game/Assets/Paragon/Chracter/ParagonTerra/Characters/Heroes/Terra/Meshes/Terra.Terra'"));	
-	if (SM_TankerMesh.Succeeded())
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SK_TankerMesh(TEXT("SkeletalMesh'/Game/Assets/Paragon/Chracter/ParagonTerra/Characters/Heroes/Terra/Meshes/Terra.Terra'"));	
+	if (SK_TankerMesh.Succeeded())
 	{
-		GetMesh()->SetSkeletalMesh(SM_TankerMesh.Object);
+		GetMesh()->SetSkeletalMesh(SK_TankerMesh.Object);
 	}
 
 	// 애님블루프린트 찾아 메쉬에 세팅

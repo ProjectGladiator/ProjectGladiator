@@ -28,7 +28,7 @@ void AChracterCreateSelectPC::BeginPlay()
 					CharacterSelectCamera = LocalCamera;
 					GLog->Log(FString::Printf(TEXT("캐릭터 선택창 카메라")));
 				}
-				else
+				else if(UKismetStringLibrary::EqualEqual_StrStr(LocalCamera->GetName(), FString::Printf(TEXT("BP_CharacterCreateSelect2_2"))))
 				{
 					CharacterCreateCamera = LocalCamera;
 					GLog->Log(FString::Printf(TEXT("캐릭터 생성창 카메라")));

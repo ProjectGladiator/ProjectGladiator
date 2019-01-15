@@ -13,7 +13,7 @@
 AWarrior::AWarrior()
 {
 	//에디터 상에서 스켈레탈메쉬를 찾아서 Warrior_SK_Mesh에 넣는다.
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>Warrior_SK_Mesh(TEXT("SkeletalMesh'/Game/Assets/Character/User/Warrior/Mesh/Male.Male'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>Warrior_SK_Mesh(TEXT("SkeletalMesh'/Game/Assets/Paragon/Chracter/ParagonKhaimera/Characters/Heroes/Khaimera/Meshes/Khaimera.Khaimera'"));
 
 	//찾는것에 성공하면
 	if (Warrior_SK_Mesh.Succeeded())
@@ -45,10 +45,11 @@ AWarrior::AWarrior()
 void AWarrior::BeginPlay()
 {
 	Super::BeginPlay();
-	GLog->Log(FString::Printf(TEXT("WarriorClick")));
 }
 
 void AWarrior::ClickedReactionMontagePlay()
 {
+	auto WarriorAnimInstance = Cast<UWarriorAnimInstance>(GetMesh()->GetAnimInstance());
 
+	WarriorAnimInstance->PlayClickedReactionMontage();
 }

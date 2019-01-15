@@ -23,7 +23,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsJump, Meta = (AllowPrivateAccess = true))
 		bool IsJump;
 protected:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Montage)
+	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = Montage)
 		class UAnimMontage* ClickedReaction;
 public:
 	UMyAnimInstance();

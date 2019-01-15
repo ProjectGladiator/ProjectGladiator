@@ -3,26 +3,19 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Animation/AnimInstance.h"
+#include "Client/MyCharacter/MyAnimInstance.h"
 #include "WarriorAnimInstance.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTJ_API UWarriorAnimInstance : public UAnimInstance
+class PROJECTJ_API UWarriorAnimInstance : public UMyAnimInstance
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Velocity")
-		float Speed;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Velocity")
-		float Direction;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "RunToggle")
-		bool ToRunFlag;
-	UFUNCTION(BlueprintCallable)
-		virtual void NativeUpdateAnimation(float DeltaSeconds) override;
-	
-	
+	UWarriorAnimInstance();
+
+	virtual void PlayClickedReactionMontage() override;
 	
 };

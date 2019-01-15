@@ -667,6 +667,12 @@
     <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\WizardAnimInstance.h">
       <Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\Gunner.h">
+      <Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\GunnerAnimInstance.h">
+      <Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Tanker\TankerAnimInstance.cpp">
@@ -675,5 +681,16 @@
     <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\WizardAnimInstance.cpp">
       <Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\Gunner.cpp">
+      <Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\GunnerAnimInstance.cpp">
+      <Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source\ProjectJ\Client\MyCharacter\Gunner">
+      <UniqueIdentifier>{60a22025-fd11-46fd-adaf-ad833a5e2515}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
