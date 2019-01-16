@@ -13,10 +13,9 @@ UCLASS()
 class PROJECTJ_API UTankerAnimInstance : public UMyAnimInstance
 {
 	GENERATED_BODY()
-
 public:
 	UTankerAnimInstance();
 
 	virtual void PlayClickedReactionMontage() override;
-	
+	virtual void PlayLevelStartMontage() override;
 };

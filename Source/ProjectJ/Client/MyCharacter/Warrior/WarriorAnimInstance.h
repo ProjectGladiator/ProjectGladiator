@@ -17,5 +17,5 @@ public:
 	UWarriorAnimInstance();
 
 	virtual void PlayClickedReactionMontage() override;
-	
+	virtual void PlayLevelStartMontage() override;
 };

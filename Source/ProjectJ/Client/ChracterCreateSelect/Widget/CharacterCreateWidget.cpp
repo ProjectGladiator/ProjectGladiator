@@ -68,6 +68,7 @@ void UCharacterCreateWidget::ChracterCreate()
 					}
 				}
 			}
+			NickNameInputBox->SetText(FText::FromString(TEXT("")));
 			CCSGM->CharacterSelectWidgetToggle();
 			CCSGM->CharacterCreateWidgetToggle();
 			PC->ToCharacterSelect();

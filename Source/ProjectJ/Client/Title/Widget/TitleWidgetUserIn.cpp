@@ -81,8 +81,12 @@ void UTitleWidgetUserIn::Join()
 	{
 		FString id = IDInputBox->Text.ToString();
 		FString pw = PWInputBox->Text.ToString();
-		LoginManager::GetInstance()->reqJoin(TCHAR_TO_ANSI(*id), TCHAR_TO_ANSI(*pw));
-		NetworkClient_main::NetworkManager::GetInstance()->Send();
+		//LoginManager::GetInstance()->reqJoin(TCHAR_TO_ANSI(*id), TCHAR_TO_ANSI(*pw));
+		//NetworkClient_main::NetworkManager::GetInstance()->Send();
+
+		IDInputBox->SetText(FText::FromString(TEXT("")));
+		PWInputBox->SetText(FText::FromString(TEXT("")));
+		PWCheckInputBox->SetText(FText::FromString(TEXT("")));
 
 		IDInputBox->bIsEnabled = false;
 		PWInputBox->bIsEnabled = false;

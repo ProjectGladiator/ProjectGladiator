@@ -13,6 +13,13 @@ UTankerAnimInstance::UTankerAnimInstance()
 	{
 		ClickedReaction = Clicked_Montage.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>LevelStart_Montage(TEXT("AnimMontage'/Game/Blueprints/MyCharacter/User/Tanker/Animations/LevelStart_Montage.LevelStart_Montage'"));
+
+	if (LevelStart_Montage.Succeeded())
+	{
+		LevelStart = LevelStart_Montage.Object;
+	}
 }
 
 void UTankerAnimInstance::PlayClickedReactionMontage()
@@ -27,5 +34,20 @@ void UTankerAnimInstance::PlayClickedReactionMontage()
 	else
 	{
 		GLog->Log(FString::Printf(TEXT("반응 몽타주가 존재하지 않음")));
+	}
+}
+
+void UTankerAnimInstance::PlayLevelStartMontage()
+{
+	if (LevelStart)
+	{
+		if (!Montage_IsPlaying(LevelStart))
+		{
+			Montage_Play(LevelStart, 1.0f);
+		}
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("레벨 스타트 몽타주가 존재하지 않음")));
 	}
 }

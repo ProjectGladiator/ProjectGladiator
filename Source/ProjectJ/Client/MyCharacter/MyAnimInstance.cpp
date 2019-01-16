@@ -38,3 +38,8 @@ void UMyAnimInstance::PlayClickedReactionMontage()
 {
 
 }
+
+void UMyAnimInstance::PlayLevelStartMontage()
+{
+
+}

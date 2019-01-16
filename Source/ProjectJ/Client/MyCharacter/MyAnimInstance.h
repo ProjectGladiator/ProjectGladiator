@@ -25,6 +25,8 @@ private:
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = Montage)
 		class UAnimMontage* ClickedReaction;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Montage)
+		class UAnimMontage* LevelStart;
 public:
 	UMyAnimInstance();
 
@@ -32,4 +34,5 @@ public:
 	virtual void NativeUpdateAnimation(float DeltaSeconds) override;
 
 	virtual void PlayClickedReactionMontage();
+	virtual void PlayLevelStartMontage();
 };

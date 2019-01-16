@@ -17,7 +17,5 @@ public:
 	UGunnerAnimInstance();
 
 	virtual void PlayClickedReactionMontage() override;
-	
-	
-	
+	virtual void PlayLevelStartMontage() override;	
 };
