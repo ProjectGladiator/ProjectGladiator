@@ -15,7 +15,16 @@ class PROJECTJ_API UGunnerAnimInstance : public UMyAnimInstance
 	GENERATED_BODY()
 public:
 	UGunnerAnimInstance();
-
+private:
+	UFUNCTION()
+		void AnimNotify_SaveAttack(UAnimNotify* Notify);
+	UFUNCTION()
+		void AnimNotify_ResetCombo(UAnimNotify* Notify);
+	UFUNCTION()
+		void AnimNotify_AttackEnded(UAnimNotify* Notify);
+public:
 	virtual void PlayClickedReactionMontage() override;
-	virtual void PlayLevelStartMontage() override;	
+	virtual void PlayLevelStartMontage() override;
+	virtual void PlayAttackMontage() override;
+	virtual void JumpAttackMontageSection(int32 NewSection) override;
 };

@@ -13,8 +13,17 @@ UCLASS()
 class PROJECTJ_API AWarrior : public AMyCharacter
 {
 	GENERATED_BODY()
+private:
+	UPROPERTY()
+		class UWarriorAnimInstance* WarriorAnimInstance;
 public:
 	AWarrior();	
+
 	virtual void BeginPlay() override;
 	virtual void ClickedReactionMontagePlay() override;
+
+	UFUNCTION()
+		virtual void LeftClick() override;
+	UFUNCTION()
+		virtual void OnComboMontageSave() override;
 };

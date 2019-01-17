@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -11,26 +11,29 @@ class PROJECTJ_API AMyCharacter : public ACharacter
 {
 	GENERATED_BODY()
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ViewRightClick", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ViewRightClick, Meta = (AllowPrivateAccess = true))
 		bool RightClickFlag;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "RunToggle", Meta = (AllowPrivateAccess = true))
-		bool ToRunFlag;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		float MaxHP;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		float CurrentHP;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stat", Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		int32 Level;
 public:
 	// Sets default values for this character's properties
 	AMyCharacter();
-
 protected:
-
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void ClickedReactionMontagePlay();
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
+		bool IsAttack; //공격중인지 아닌지
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
+		bool IsCombo;  //콤보공격중인지 아닌지
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
+		int32 CurrentCombo; //현재 콤보의 단계
+	class UMyAnimInstance* MyAnimInstance;
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class USpringArmComponent* SpringArm;
@@ -81,14 +84,15 @@ public:
 		void SightOn();
 
 	UFUNCTION()
-		void ToRun();
-
-	UFUNCTION()
 		void JumpStart();
 
 	UFUNCTION()
-		void LeftClick();
+		virtual void LeftClick();
 
-	bool GetRunFlag();
+	void CharacterSelect();
 
+	UFUNCTION()
+		void OnAttackMontageEnded();
+	UFUNCTION()
+		virtual void OnComboMontageSave();
 };

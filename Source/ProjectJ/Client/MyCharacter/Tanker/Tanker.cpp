@@ -38,11 +38,54 @@ void ATanker::BeginPlay()
 {
 	Super::BeginPlay();
 
+	TankerAnimInstance = Cast<UTankerAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (TankerAnimInstance)
+	{
+		TankerAnimInstance->OnAttackEnded.AddDynamic(this, &ATanker::OnAttackMontageEnded);
+		TankerAnimInstance->OnComboSave.AddDynamic(this, &ATanker::OnComboMontageSave);
+	}
 }
 
 void ATanker::ClickedReactionMontagePlay()
 {
-	auto TankerAnimInstance = Cast<UTankerAnimInstance>(GetMesh()->GetAnimInstance());
+	if (TankerAnimInstance)
+	{
+		TankerAnimInstance->PlayClickedReactionMontage();
+	}	
+}
 
-	TankerAnimInstance->PlayClickedReactionMontage();
+void ATanker::LeftClick()
+{
+	if (IsAttack)
+	{
+		IsCombo = true;
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("탱커 상태에서 왼쪽 클릭")));
+		IsAttack = true;
+
+		if (TankerAnimInstance)
+		{
+			TankerAnimInstance->PlayAttackMontage();
+			CurrentCombo += 1;
+			TankerAnimInstance->JumpAttackMontageSection(CurrentCombo);
+		}		
+	}
+}
+
+void ATanker::OnComboMontageSave()
+{
+	if (IsCombo)
+	{
+		GLog->Log(FString::Printf(TEXT("콤보 공격 시작함")));
+		IsCombo = false;
+		if (TankerAnimInstance)
+		{
+			TankerAnimInstance->PlayAttackMontage();
+			CurrentCombo += 1;
+			TankerAnimInstance->JumpAttackMontageSection(CurrentCombo);
+		}		
+	}	
 }

@@ -35,11 +35,55 @@ AGunner::AGunner()
 void AGunner::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GunnerAnimInstance = Cast<UGunnerAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (GunnerAnimInstance)
+	{
+		GunnerAnimInstance->OnAttackEnded.AddDynamic(this, &AGunner::OnAttackMontageEnded);
+		GunnerAnimInstance->OnComboSave.AddDynamic(this, &AGunner::OnComboMontageSave);
+	}
 }
 
 void AGunner::ClickedReactionMontagePlay()
 {
-	auto GunnerAnimInstance = Cast<UGunnerAnimInstance>(GetMesh()->GetAnimInstance());
+	if (GunnerAnimInstance)
+	{
+		GunnerAnimInstance->PlayClickedReactionMontage();
+	}	
+}
 
-	GunnerAnimInstance->PlayClickedReactionMontage();
+void AGunner::LeftClick()
+{
+	if (IsAttack)
+	{
+		IsCombo = true;
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("총잡이 상태에서 왼쪽 클릭")));
+		IsAttack = true;
+
+		if (GunnerAnimInstance)
+		{
+			GunnerAnimInstance->PlayAttackMontage();
+			CurrentCombo += 1;
+			GunnerAnimInstance->JumpAttackMontageSection(CurrentCombo);
+		}
+	}
+}
+
+void AGunner::OnComboMontageSave()
+{
+	if (IsCombo)
+	{
+		GLog->Log(FString::Printf(TEXT("콤보 공격 시작함")));
+		IsCombo = false;
+		if (GunnerAnimInstance)
+		{
+			GunnerAnimInstance->PlayAttackMontage();
+			CurrentCombo += 1;
+			GunnerAnimInstance->JumpAttackMontageSection(CurrentCombo);
+		}
+	}
 }

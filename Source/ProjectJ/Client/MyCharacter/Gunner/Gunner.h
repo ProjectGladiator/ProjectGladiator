@@ -13,9 +13,17 @@ UCLASS()
 class PROJECTJ_API AGunner : public AMyCharacter
 {
 	GENERATED_BODY()
+private:
+	UPROPERTY()
+		class UGunnerAnimInstance* GunnerAnimInstance;
 public:
 	AGunner();
 	
 	virtual void BeginPlay() override;
 	virtual void ClickedReactionMontagePlay() override;	
+
+	UFUNCTION()
+		virtual void LeftClick() override;
+	UFUNCTION()
+		virtual void OnComboMontageSave() override;
 };

@@ -8,7 +8,12 @@
 
 UMyAnimInstance::UMyAnimInstance()
 {
+	
+}
 
+FName UMyAnimInstance::GetAttackMontageSection(int32 NewSection)
+{
+	return FName(*FString::Printf(TEXT("Attack%d"), NewSection));
 }
 
 void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -40,6 +45,16 @@ void UMyAnimInstance::PlayClickedReactionMontage()
 }
 
 void UMyAnimInstance::PlayLevelStartMontage()
+{
+
+}
+
+void UMyAnimInstance::PlayAttackMontage()
+{
+
+}
+
+void UMyAnimInstance::JumpAttackMontageSection(int32 NewSection)
 {
 
 }

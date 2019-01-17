@@ -11,24 +11,48 @@ UTankerAnimInstance::UTankerAnimInstance()
 
 	if (Clicked_Montage.Succeeded())
 	{
-		ClickedReaction = Clicked_Montage.Object;
+		ClickedReactionMontage = Clicked_Montage.Object;
 	}
 
 	static ConstructorHelpers::FObjectFinder<UAnimMontage>LevelStart_Montage(TEXT("AnimMontage'/Game/Blueprints/MyCharacter/User/Tanker/Animations/LevelStart_Montage.LevelStart_Montage'"));
 
 	if (LevelStart_Montage.Succeeded())
 	{
-		LevelStart = LevelStart_Montage.Object;
+		LevelStartMontage = LevelStart_Montage.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>Attack_Montage(TEXT("AnimMontage'/Game/Blueprints/MyCharacter/User/Tanker/Animations/AttackMontage.AttackMontage'"));
+
+	if (Attack_Montage.Succeeded())
+	{
+		AttackMontage = Attack_Montage.Object;
+	}
+}
+
+void UTankerAnimInstance::AnimNotify_SaveAttack(UAnimNotify* Notify)
+{
+	GLog->Log(FString::Printf(TEXT("콤보 공격 저장")));
+	OnComboSave.Broadcast();
+}
+
+void UTankerAnimInstance::AnimNotify_ResetCombo(UAnimNotify* Notify)
+{
+	GLog->Log(FString::Printf(TEXT("콤보 공격 초기화")));
+}
+
+void UTankerAnimInstance::AnimNotify_AttackEnded(UAnimNotify* Notify)
+{
+	GLog->Log(FString::Printf(TEXT("공격 몽타주 끝")));
+	OnAttackEnded.Broadcast();
 }
 
 void UTankerAnimInstance::PlayClickedReactionMontage()
 {
-	if (ClickedReaction)
+	if (ClickedReactionMontage)
 	{
-		if (!Montage_IsPlaying(ClickedReaction))
+		if (!Montage_IsPlaying(ClickedReactionMontage))
 		{
-			Montage_Play(ClickedReaction, 1.0f);
+			Montage_Play(ClickedReactionMontage, 1.0f);
 		}
 	}
 	else
@@ -39,15 +63,36 @@ void UTankerAnimInstance::PlayClickedReactionMontage()
 
 void UTankerAnimInstance::PlayLevelStartMontage()
 {
-	if (LevelStart)
+	if (LevelStartMontage)
 	{
-		if (!Montage_IsPlaying(LevelStart))
+		if (!Montage_IsPlaying(LevelStartMontage))
 		{
-			Montage_Play(LevelStart, 1.0f);
+			Montage_Play(LevelStartMontage, 1.0f);
 		}
 	}
 	else
 	{
 		GLog->Log(FString::Printf(TEXT("레벨 스타트 몽타주가 존재하지 않음")));
 	}
+}
+
+void UTankerAnimInstance::PlayAttackMontage()
+{
+	if (AttackMontage)
+	{
+		if (!Montage_IsPlaying(AttackMontage))
+		{
+			Montage_Play(AttackMontage, 1.0f);
+		}
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("일반 공격 몽타주가 존재하지 않음")));
+	}
+}
+
+void UTankerAnimInstance::JumpAttackMontageSection(int32 NewSection)
+{
+	FName AttackMontageSection = GetAttackMontageSection(NewSection);
+	Montage_JumpToSection(AttackMontageSection, AttackMontage);
 }

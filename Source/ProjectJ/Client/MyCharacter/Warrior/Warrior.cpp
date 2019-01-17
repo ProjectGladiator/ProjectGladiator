@@ -45,11 +45,55 @@ AWarrior::AWarrior()
 void AWarrior::BeginPlay()
 {
 	Super::BeginPlay();
+
+	WarriorAnimInstance = Cast<UWarriorAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (WarriorAnimInstance)
+	{
+		WarriorAnimInstance->OnAttackEnded.AddDynamic(this, &AWarrior::OnAttackMontageEnded);
+		WarriorAnimInstance->OnComboSave.AddDynamic(this, &AWarrior::OnComboMontageSave);
+	}
 }
 
 void AWarrior::ClickedReactionMontagePlay()
 {
-	auto WarriorAnimInstance = Cast<UWarriorAnimInstance>(GetMesh()->GetAnimInstance());
+	if (WarriorAnimInstance)
+	{
+		WarriorAnimInstance->PlayClickedReactionMontage();
+	}	
+}
 
-	WarriorAnimInstance->PlayClickedReactionMontage();
+void AWarrior::LeftClick()
+{
+	if (IsAttack)
+	{
+		IsCombo = true;
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("전사 상태에서 왼쪽 클릭")));
+		IsAttack = true;
+		
+		if (WarriorAnimInstance)
+		{
+			WarriorAnimInstance->PlayAttackMontage();
+			CurrentCombo += 1;
+			WarriorAnimInstance->JumpAttackMontageSection(CurrentCombo);
+		}
+	}
+}
+
+void AWarrior::OnComboMontageSave()
+{
+	if (IsCombo)
+	{
+		GLog->Log(FString::Printf(TEXT("콤보 공격 시작함")));
+		IsCombo = false;
+		if (WarriorAnimInstance)
+		{
+			WarriorAnimInstance->PlayAttackMontage();
+			CurrentCombo += 1;
+			WarriorAnimInstance->JumpAttackMontageSection(CurrentCombo);
+		}
+	}
 }

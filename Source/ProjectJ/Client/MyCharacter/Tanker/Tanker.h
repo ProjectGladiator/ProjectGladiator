@@ -13,12 +13,17 @@ UCLASS()
 class PROJECTJ_API ATanker : public AMyCharacter
 {
 	GENERATED_BODY()
-//private:
-//	UPROPERTY()
-//		class UTankerAnimInstance* TankerAnimInstance;
+private:
+	UPROPERTY()
+		class UTankerAnimInstance* TankerAnimInstance;
 public:
 	ATanker();
 
 	virtual void BeginPlay() override;
 	virtual void ClickedReactionMontagePlay() override;
+
+	UFUNCTION()
+		virtual void LeftClick() override;
+	UFUNCTION()
+		virtual void OnComboMontageSave() override;
 };

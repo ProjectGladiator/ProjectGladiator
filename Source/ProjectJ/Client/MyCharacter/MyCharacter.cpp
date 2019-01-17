@@ -26,7 +26,7 @@
 AMyCharacter::AMyCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	bUseControllerRotationYaw = true;
 		
@@ -50,8 +50,8 @@ AMyCharacter::AMyCharacter()
 
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 	RightClickFlag = false;
-	ToRunFlag = false;
-	
+	IsAttack = false;
+
 	MaxHP = 100.0f;
 	CurrentHP = MaxHP;
 	Level = 0;
@@ -65,7 +65,9 @@ void AMyCharacter::BeginPlay()
 	Super::BeginPlay();
 	
 	CharacterCreateSelectPC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 
+	
 }
 
 void AMyCharacter::ClickedReactionMontagePlay()
@@ -100,10 +102,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("Alt"), IE_Pressed, this, &AMyCharacter::SightOff);
 	PlayerInputComponent->BindAction(TEXT("Alt"), IE_Released, this, &AMyCharacter::SightOn);
 
-	PlayerInputComponent->BindAction(TEXT("ToRun"), IE_Pressed, this, &AMyCharacter::ToRun);
-
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AMyCharacter::JumpStart);
-	PlayerInputComponent->BindAction(TEXT("LeftClick"), IE_Pressed, this, &AMyCharacter::LeftClick);
+	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &AMyCharacter::LeftClick);
 }
 
 void AMyCharacter::MoveForward(float Value)
@@ -176,20 +176,6 @@ void AMyCharacter::SightOn()
 	bUseControllerRotationYaw = true;
 }	
 
-void AMyCharacter::ToRun()
-{	
-	if (ToRunFlag)
-	{
-		ToRunFlag = false;
-		GetCharacterMovement()->MaxWalkSpeed = 300.0f;
-	}
-	else
-	{
-		ToRunFlag = true;
-		GetCharacterMovement()->MaxWalkSpeed = 600.0f;
-	}
-}
-
 void AMyCharacter::JumpStart()
 {
 	Jump();
@@ -197,49 +183,62 @@ void AMyCharacter::JumpStart()
 
 void AMyCharacter::LeftClick()
 {
+	GLog->Log(FString::Printf(TEXT("캐릭터 부모 상태에서 클릭")));
+	if (CharacterCreateSelectPC)
+	{
+		CharacterSelect();	
+	}	
+}
+
+void AMyCharacter::CharacterSelect()
+{
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	FHitResult HitResult;
 	ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery3); //Pawn타입으로 결정
 
-	if (CharacterCreateSelectPC)
+	if (CharacterCreateSelectPC->GetHitResultUnderCursorForObjects(ObjectTypes, true, HitResult))
 	{
-		if (CharacterCreateSelectPC->GetHitResultUnderCursorForObjects(ObjectTypes, true, HitResult))
+		auto Character = Cast<AWarrior>(HitResult.Actor);
+
+		if (Character)
 		{
-			auto Character = Cast<AWarrior>(HitResult.Actor);
+			Character->ClickedReactionMontagePlay();
+			GLog->Log(FString::Printf(TEXT("전사 클릭")));
+			CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::WARRIOR);
+		}
+		else
+		{
+			auto Character = Cast<ATanker>(HitResult.Actor);
 
 			if (Character)
 			{
 				Character->ClickedReactionMontagePlay();
-				GLog->Log(FString::Printf(TEXT("전사 클릭")));
-				CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::WARRIOR);
+				GLog->Log(FString::Printf(TEXT("탱커 클릭")));
+				CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::TANKER);
 			}
 			else
 			{
-				auto Character = Cast<ATanker>(HitResult.Actor);
+				auto Character = Cast<AGunner>(HitResult.Actor);
 
 				if (Character)
 				{
 					Character->ClickedReactionMontagePlay();
-					GLog->Log(FString::Printf(TEXT("탱커 클릭")));
-					CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::TANKER);
-				}
-				else
-				{
-					auto Character = Cast<AGunner>(HitResult.Actor);
-
-					if (Character)
-					{
-						Character->ClickedReactionMontagePlay();
-						GLog->Log(FString::Printf(TEXT("총잡이 클릭")));
-						CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::GUNNER);
-					}
+					GLog->Log(FString::Printf(TEXT("총잡이 클릭")));
+					CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::GUNNER);
 				}
 			}
-		}	
-	}	
+		}
+	}
 }
 
-bool AMyCharacter::GetRunFlag()
+void AMyCharacter::OnAttackMontageEnded()
 {
-	return ToRunFlag;
+	GLog->Log(FString::Printf(TEXT("IsAttack 초기화")));
+	IsAttack = false;
+	CurrentCombo = 0;
+}
+
+void AMyCharacter::OnComboMontageSave()
+{
+
 }
