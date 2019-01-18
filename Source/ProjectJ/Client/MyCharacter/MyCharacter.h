@@ -12,16 +12,16 @@ class PROJECTJ_API AMyCharacter : public ACharacter
 	GENERATED_BODY()
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ViewRightClick, Meta = (AllowPrivateAccess = true))
-		bool RightClickFlag;
+		bool RightClickFlag; //마우스 오른쪽 버튼 눌럿는지 안눌럿는지
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
-		float MaxHP;
+		float MaxHP; //최대 HP값
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
-		float CurrentHP;
+		float CurrentHP; //현재 HP값
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
-		int32 Level;
+		int32 Level; //현재 레벨
 public:
 	// Sets default values for this character's properties
-	AMyCharacter();
+	AMyCharacter(); //생성자
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -6,8 +6,8 @@
 #include "Animation/AnimInstance.h"
 #include "MyAnimInstance.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttackEndedDelegate); //°ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç µ¨¸®°ÔÀÌÆ®
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnComboSaveDelegate); //ÄŞº¸ ÀúÀå ¾Ö´Ï¸ŞÀÌ¼Ç µ¨¸®°ÔÀÌÆ®
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttackEndedDelegate); //ê³µê²© ì• ë‹ˆë©”ì´ì…˜ ë¸ë¦¬ê²Œì´íŠ¸
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnComboSaveDelegate); //ì½¤ë³´ ì €ì¥ ì• ë‹ˆë©”ì´ì…˜ ë¸ë¦¬ê²Œì´íŠ¸
 
 /**
  * 
@@ -18,33 +18,33 @@ class PROJECTJ_API UMyAnimInstance : public UAnimInstance
 	GENERATED_BODY()
 private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Velocity, Meta = (AllowPrivateAccess = true))
-		float Speed; //Ä³¸¯ÅÍÀÇ ¼Ó·Â
+		float Speed; //ìºë¦­í„°ì˜ ì†ë ¥
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Velocity, Meta = (AllowPrivateAccess = true))
-		float Direction; //Ä³¸¯ÅÍÀÇ ÇöÀç ¹æÇâ
+		float Direction; //ìºë¦­í„°ì˜ í˜„ì¬ ë°©í–¥
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsRun, Meta = (AllowPrivateAccess = true))
-		bool IsAccelerating; //°¡¼Ó ÁßÀÎÁö ¾Æ´ÑÁö
+		bool IsAccelerating; //ê°€ì† ì¤‘ì¸ì§€ ì•„ë‹Œì§€
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsJump, Meta = (AllowPrivateAccess = true))
-		bool IsJump; //Á¡ÇÁ ÁßÀÎÁö ¾Æ´ÑÁö
+		bool IsJump; //ì í”„ ì¤‘ì¸ì§€ ì•„ë‹Œì§€
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = Montage)
-		class UAnimMontage* ClickedReactionMontage; //Ä³¸¯ÅÍ »ı¼ºÃ¢¿¡¼­ ¼±ÅÃ½Ã Ãâ·ÂÇØÁÙ ¾Ö´Ï¸ŞÀÌ¼Ç
+		class UAnimMontage* ClickedReactionMontage; //ìºë¦­í„° ìƒì„±ì°½ì—ì„œ ì„ íƒì‹œ ì¶œë ¥í•´ì¤„ ì• ë‹ˆë©”ì´ì…˜
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Montage)
-		class UAnimMontage* LevelStartMontage; //Ä³¸¯ÅÍ ¼±ÅÃÃ¢¿¡¼­ ½½·Ô ¼±ÅÃ½Ã Ãâ·ÂÇØÁÙ ¾Ö´Ï¸ŞÀÌ¼Ç
+		class UAnimMontage* LevelStartMontage; //ìºë¦­í„° ì„ íƒì°½ì—ì„œ ìŠ¬ë¡¯ ì„ íƒì‹œ ì¶œë ¥í•´ì¤„ ì• ë‹ˆë©”ì´ì…˜
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Montage)
-		class UAnimMontage* AttackMontage; //Ä³¸¯ÅÍ °ø°İ¾Ö´Ï¸ŞÀÌ¼Ç 
+		class UAnimMontage* AttackMontage; //ìºë¦­í„° ê³µê²©ì• ë‹ˆë©”ì´ì…˜ 
 
-	FName GetAttackMontageSection(int32 NewSection); //Ä³¸¯ÅÍ °ø°İ¾Ö´Ï¸ŞÀÌ¼Ç
+	FName GetAttackMontageSection(int32 NewSection); //ìºë¦­í„° ê³µê²©ì• ë‹ˆë©”ì´ì…˜
 
-	virtual void PlayClickedReactionMontage(); //Ä³¸¯ÅÍ »ı¼ºÃ¢ ¼±ÅÃ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
-	virtual void PlayLevelStartMontage(); //Ä³¸¯ÅÍ ¼±ÅÃÃ¢ ½½·Ô ¼±ÅÃ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
-	virtual void PlayAttackMontage(); //°ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
-	virtual void JumpAttackMontageSection(int32 NewSection); //°ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç ¸ùÅ¸ÁÖ ¼½¼Ç Á¡ÇÁ ÇØÁÖ´Â ÇÔ¼ö
+	virtual void PlayClickedReactionMontage(); //ìºë¦­í„° ìƒì„±ì°½ ì„ íƒ ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰
+	virtual void PlayLevelStartMontage(); //ìºë¦­í„° ì„ íƒì°½ ìŠ¬ë¡¯ ì„ íƒ ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰
+	virtual void PlayAttackMontage(); //ê³µê²© ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰
+	virtual void JumpAttackMontageSection(int32 NewSection); //ê³µê²© ì• ë‹ˆë©”ì´ì…˜ ëª½íƒ€ì£¼ ì„¹ì…˜ ì í”„ í•´ì£¼ëŠ” í•¨ìˆ˜
 public:
-	FOnAttackEndedDelegate OnAttackEnded; //°ø°İ ¾Ö´Ï¸ŞÀÌ¼Ç ³¡ µ¨¸®°ÔÀÌÆ® º¯¼ö
-	FOnComboSaveDelegate OnComboSave; //ÄŞº¸ ÀúÀå µ¨¸®°ÔÀÌÆ® º¯¼ö
+	FOnAttackEndedDelegate OnAttackEnded; //ê³µê²© ì• ë‹ˆë©”ì´ì…˜ ë ë¸ë¦¬ê²Œì´íŠ¸ ë³€ìˆ˜
+	FOnComboSaveDelegate OnComboSave; //ì½¤ë³´ ì €ì¥ ë¸ë¦¬ê²Œì´íŠ¸ ë³€ìˆ˜
 
-	UMyAnimInstance(); //»ı¼ºÀÚ
+	UMyAnimInstance(); //ìƒì„±ì
 
 	UFUNCTION()
-	virtual void NativeUpdateAnimation(float DeltaSeconds) override; // Æ½ ÇÔ¼ö
+	virtual void NativeUpdateAnimation(float DeltaSeconds) override; // í‹± í•¨ìˆ˜
 };

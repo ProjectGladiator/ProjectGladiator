@@ -4,12 +4,9 @@
 //클라 헤더
 #include "GameFramework/SpringArmComponent.h" //스프링암 컴포넌트 헤더파일
 #include "Camera/CameraComponent.h" //카메라 컴포넌트 헤더파일
-#include "Client/Inventory/Inventory.h"
-#include "GameFramework/CharacterMovementComponent.h"
-#include "Animation/AnimBlueprint.h"
-#include "Particles/ParticleSystem.h"
-#include "TimerManager.h"
-#include "Client/Monster/PatrolPoint.h"
+#include "Client/Inventory/Inventory.h" //인벤토리 헤더파일
+#include "GameFramework/CharacterMovementComponent.h" //캐릭터 속력 관련 헤더파일
+#include "Animation/AnimBlueprint.h" //애니메이션블루프린트 헤더파일
 #include "Engine/World.h"
 #include "kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
@@ -234,11 +231,11 @@ void AMyCharacter::CharacterSelect()
 void AMyCharacter::OnAttackMontageEnded()
 {
 	GLog->Log(FString::Printf(TEXT("IsAttack 초기화")));
-	IsAttack = false;
-	CurrentCombo = 0;
+	IsAttack = false; //false로 초기화
+	CurrentCombo = 0; //콤보수 0으로 초기화
 }
 
 void AMyCharacter::OnComboMontageSave()
 {
-
+	//자식들에서 따로 구현
 }

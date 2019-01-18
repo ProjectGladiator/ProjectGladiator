@@ -8,6 +8,6 @@
 
 AMyGameModeBase::AMyGameModeBase()
 {
-	DefaultPawnClass = AMyCharacter::StaticClass();
-	PlayerControllerClass = AMyPlayerController::StaticClass();
+	DefaultPawnClass = AMyCharacter::StaticClass(); //기본 폰을 캐릭터의 부모캐릭터로 설정
+	PlayerControllerClass = AMyPlayerController::StaticClass(); //기본 플레이어컨트롤러를 MyPlayerController로 설정
 }
