@@ -5,9 +5,7 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
 #include "Animation/AnimBlueprint.h" //애니메이션블루프린트 헤더
-#include "Components/CapsuleComponent.h" //캡슐 컴포넌트 헤더
 #include "WarriorAnimInstance.h" //전사 애님 인스턴스 헤더
-
 //서버 헤더
 
 AWarrior::AWarrior()
