@@ -730,6 +730,12 @@
     <Filter Include="Source\ProjectJ\Client\Monster\Animal\Bear">
       <UniqueIdentifier>{75cacad6-7684-447b-aafa-fd0093b10674}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\ProjectJ\Client\Monster\Animal\Worm">
+      <UniqueIdentifier>{8f13dfb5-2fe9-4277-8601-1838c8c221de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\ProjectJ\Client\Monster\Manager">
+      <UniqueIdentifier>{c2262613-b248-4526-92a4-420d02b0a433}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\Animal\Bear\Bear.h">
@@ -738,6 +744,18 @@
     <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\Animal\Bear\BearAnimInstance.h">
       <Filter>Source\ProjectJ\Client\Monster\Animal\Bear</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\Animal\Worm\Worm.h">
+      <Filter>Source\ProjectJ\Client\Monster\Animal\Worm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\Animal\Worm\WormAnimInstance.h">
+      <Filter>Source\ProjectJ\Client\Monster\Animal\Worm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\Animal\Worm\WormAIController.h">
+      <Filter>Source\ProjectJ\Client\Monster\Animal\Worm</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\Manager\DistanceCheckAIManager.h">
+      <Filter>Source\ProjectJ\Client\Monster\Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Animal\Bear\Bear.cpp">
@@ -745,6 +763,18 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Animal\Bear\BearAnimInstance.cpp">
       <Filter>Source\ProjectJ\Client\Monster\Animal\Bear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Animal\Worm\Worm.cpp">
+      <Filter>Source\ProjectJ\Client\Monster\Animal\Worm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Animal\Worm\WormAnimInstance.cpp">
+      <Filter>Source\ProjectJ\Client\Monster\Animal\Worm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Animal\Worm\WormAIController.cpp">
+      <Filter>Source\ProjectJ\Client\Monster\Animal\Worm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Manager\DistanceCheckAIManager.cpp">
+      <Filter>Source\ProjectJ\Client\Monster\Manager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -10,5 +10,5 @@ AMonsterAIController::AMonsterAIController()
 
 void AMonsterAIController::Possess(APawn * InPawn)
 {
-
+	Super::Possess(InPawn);
 }

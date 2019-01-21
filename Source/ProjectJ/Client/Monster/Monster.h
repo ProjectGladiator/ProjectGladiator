@@ -12,12 +12,18 @@ class PROJECTJ_API AMonster : public ACharacter
 	GENERATED_BODY()
 
 private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		float MaxHP;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		float CurrentHP;
-
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = AI)
+		class UDistanceCheckAIManager* DistanceCheckAIManager;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AI)
+		float TargetLimitDistance;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Target)
+		class AMyCharacter* Target;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 

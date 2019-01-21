@@ -11,6 +11,11 @@ UMonsterAnimInstance::UMonsterAnimInstance()
 
 }
 
+void UMonsterAnimInstance::PlayAttackMontage()
+{
+
+}
+
 void UMonsterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
 	Super::NativeUpdateAnimation(DeltaSeconds);
@@ -25,6 +30,7 @@ void UMonsterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		//몬스터의 속력이 0이상이면 가속중이라고 판단하고 0보다 작으면 비가속중이라고 판단한다.
 		if (Monster->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0)
 		{
+			GLog->Log(FString::Printf(TEXT("몬스터 가속중")));
 			IsAccelerating = true;
 		}
 		else
