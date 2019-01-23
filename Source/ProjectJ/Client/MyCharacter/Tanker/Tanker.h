@@ -16,14 +16,21 @@ class PROJECTJ_API ATanker : public AMyCharacter
 private:
 	UPROPERTY()
 		class UTankerAnimInstance* TankerAnimInstance;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon, Meta = (AllowPrivateAccess = true))
+		class UCapsuleComponent* WeaponCapsule;
 public:
 	ATanker();
 
 	virtual void BeginPlay() override;
 	virtual void ClickedReactionMontagePlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
 		virtual void LeftClick() override;
 	UFUNCTION()
 		virtual void OnComboMontageSave() override;
+	UFUNCTION()
+		virtual void OnAttackHit() override;
+
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };

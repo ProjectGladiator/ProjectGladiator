@@ -40,6 +40,12 @@ void UTankerAnimInstance::AnimNotify_ResetCombo(UAnimNotify* Notify)
 	GLog->Log(FString::Printf(TEXT("콤보 공격 초기화")));
 }
 
+void UTankerAnimInstance::AnimNotify_AttackHit(UAnimNotify* Notify)
+{
+	GLog->Log(FString::Printf(TEXT("공격 판정")));
+	OnAttackHit.Broadcast();
+}
+
 void UTankerAnimInstance::AnimNotify_AttackEnded(UAnimNotify* Notify)
 {
 	GLog->Log(FString::Printf(TEXT("공격 몽타주 끝")));

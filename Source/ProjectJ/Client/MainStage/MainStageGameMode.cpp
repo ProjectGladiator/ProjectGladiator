@@ -48,23 +48,23 @@ void AMainStageGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//PacketData* Data;
+	PacketData* Data;
 	//bool ResultFlag;
-	//if (StorageManager::GetInstance()->GetFront(Data))
-	//{
-	//	switch (Data->protocol)
-	//	{
-	//	case PCHARACTERDATA_ENTER_RESULT:
-	//		StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
+	if (StorageManager::GetInstance()->GetFront(Data))
+	{
+		switch (Data->protocol)
+		{
+		case PCHARACTERDATA_ENTER_RESULT:
+			/*StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
 
-	//		if (ResultFlag)
-	//		{
-	//			StorageManager::GetInstance()->PopData();
-	//		}
-	//		break;
-	//	case PCHARACTERDATA_ENTER_INFO:
-	//		//StorageManager::GetInstance()->ChangeData(Data,)
-	//		break;
-	//	}
-	//}	
+			if (ResultFlag)
+			{
+				StorageManager::GetInstance()->PopData();
+			}*/
+			break;
+		case PCHARACTERDATA_ENTER_INFO:
+			//StorageManager::GetInstance()->ChangeData(Data,)
+			break;
+		}
+	}	
 }

@@ -13,6 +13,7 @@
 #include "Navigation/PathFollowingComponent.h"
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
 #include "GameFrameWork/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 
 //서버 헤더
 
@@ -50,11 +51,12 @@ AWorm::AWorm()
 
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 
-	TargetLimitDistance = 150.0f;
+	TargetLimitDistance = 100.0f;
 
 	DeathFlag = false;
 
 	CurrentState = EWormState::Idle;
+	MaxHP = 100.0f;
 }
 
 void AWorm::BeginPlay()
@@ -75,6 +77,15 @@ void AWorm::BeginPlay()
 void AWorm::Tick(float DeltaTime)
 {
 	float Distance = DistanceCheckAIManager->DistanceCalculate(this, Target);
+
+	TArray<AActor*>IgonreActors;
+	IgonreActors.Add(this);
+	FHitResult HitResult;
+	FVector TraceStart;
+	FVector TraceEnd;
+	TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
+
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
 
 	if (WormAIController)
 	{
@@ -104,10 +115,43 @@ void AWorm::Tick(float DeltaTime)
 		}
 		break;
 		case EWormState::Attack:
+		{
+			TraceStart = GetActorLocation();
+			TraceEnd = TraceStart + (GetActorForwardVector()*9000.0f);
+			bool Result = UKismetSystemLibrary::LineTraceSingleForObjects(
+				GetWorld(),
+				TraceStart,
+				TraceEnd,
+				ObjectTypes,
+				true,
+				IgonreActors,
+				EDrawDebugTrace::ForDuration,
+				HitResult,
+				true,
+				FLinearColor::Red);
+
 			WormAnimInstance->PlayAttackMontage();
+
+			UGameplayStatics::ApplyRadialDamage(GetWorld(),
+				10.0f,
+				HitResult.ImpactPoint,
+				300.0f,
+				nullptr,
+				IgonreActors,
+				this,
+				UGameplayStatics::GetPlayerController(GetWorld(), 0),
+				false,
+				ECollisionChannel::ECC_WorldStatic
+			);
+
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			CurrentState = EWormState::Death;
+		}
 			break;
 		case EWormState::Death:
+			DeathInVisibleValue += 0.01;
+			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
+
 			if (DeathFlag)
 			{
 				Destroy();

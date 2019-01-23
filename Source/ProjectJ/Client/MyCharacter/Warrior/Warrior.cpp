@@ -6,6 +6,7 @@
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
 #include "Animation/AnimBlueprint.h" //애니메이션블루프린트 헤더
 #include "WarriorAnimInstance.h" //전사 애님 인스턴스 헤더
+#include "Kismet/KismetSystemLibrary.h"  //라인 트레이스 헤더 관련 헤더
 //서버 헤더
 
 AWarrior::AWarrior()
@@ -50,6 +51,7 @@ void AWarrior::BeginPlay()
 	{
 		WarriorAnimInstance->OnAttackEnded.AddDynamic(this, &AWarrior::OnAttackMontageEnded);
 		WarriorAnimInstance->OnComboSave.AddDynamic(this, &AWarrior::OnComboMontageSave);
+		WarriorAnimInstance->OnAttackHit.AddDynamic(this, &AWarrior::OnAttackHit);
 	}
 }
 
@@ -93,5 +95,36 @@ void AWarrior::OnComboMontageSave()
 			CurrentCombo += 1;
 			WarriorAnimInstance->JumpAttackMontageSection(CurrentCombo);
 		}
+	}
+}
+
+void AWarrior::OnAttackHit()
+{
+	TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
+
+	TArray<FHitResult> HitResults;
+
+	TArray<AActor*>IgonreActors;
+	IgonreActors.Add(this);
+
+	FVector TraceStart = GetActorLocation() + GetActorForwardVector()*100.0f;
+	FVector TraceEnd = TraceStart + GetActorForwardVector()*40.0f;
+
+
+	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
+		TraceStart,
+		TraceEnd,
+		100.0f,
+		ObjectTypes,
+		false,
+		IgonreActors,
+		EDrawDebugTrace::ForDuration,
+		HitResults,
+		true);
+
+	for (int i = 0; i < HitResults.Num(); i++)
+	{
+		GLog->Log(FString::Printf(TEXT("%s"), *HitResults[i].BoneName.ToString()));
 	}
 }

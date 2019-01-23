@@ -23,7 +23,7 @@
 AMyCharacter::AMyCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	bUseControllerRotationYaw = true;
 		
@@ -52,6 +52,8 @@ AMyCharacter::AMyCharacter()
 	MaxHP = 100.0f;
 	CurrentHP = MaxHP;
 	Level = 0;
+
+	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 
 	Tags.Add(TEXT("Character"));
 }
@@ -232,10 +234,16 @@ void AMyCharacter::OnAttackMontageEnded()
 {
 	GLog->Log(FString::Printf(TEXT("IsAttack 초기화")));
 	IsAttack = false; //false로 초기화
+	IsCombo = false;
 	CurrentCombo = 0; //콤보수 0으로 초기화
 }
 
 void AMyCharacter::OnComboMontageSave()
+{
+	//자식들에서 따로 구현
+}
+
+void AMyCharacter::OnAttackHit()
 {
 	//자식들에서 따로 구현
 }

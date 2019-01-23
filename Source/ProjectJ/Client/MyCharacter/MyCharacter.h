@@ -95,4 +95,6 @@ public:
 		void OnAttackMontageEnded();
 	UFUNCTION()
 		virtual void OnComboMontageSave();
+	UFUNCTION()
+		virtual void OnAttackHit();
 };

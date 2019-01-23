@@ -15,6 +15,8 @@ AMonster::AMonster()
 	AIControllerClass = AMonsterAIController::StaticClass();
 
 	DistanceCheckAIManager = CreateDefaultSubobject<UDistanceCheckAIManager>(TEXT("DistanceCheckAIManager"));
+
+	Tags.Add(TEXT("Monster"));
 }
 
 // Called when the game starts or when spawned
