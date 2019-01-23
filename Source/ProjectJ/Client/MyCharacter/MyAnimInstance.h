@@ -8,6 +8,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttackEndedDelegate); //공격 애니메이션 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnComboSaveDelegate); //콤보 저장 애니메이션 델리게이트
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttackHitDelegate); //공격 판정 애니메이션 델리게이트
 
 /**
  * 
@@ -42,6 +43,7 @@ protected:
 public:
 	FOnAttackEndedDelegate OnAttackEnded; //공격 애니메이션 끝 델리게이트 변수
 	FOnComboSaveDelegate OnComboSave; //콤보 저장 델리게이트 변수
+	FOnAttackHitDelegate OnAttackHit; //공격 판정 델리게이트 변수
 
 	UMyAnimInstance(); //생성자
 

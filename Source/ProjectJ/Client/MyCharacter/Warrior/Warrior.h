@@ -26,4 +26,6 @@ public:
 		virtual void LeftClick() override;
 	UFUNCTION()
 		virtual void OnComboMontageSave() override;
+	UFUNCTION()
+		virtual void OnAttackHit() override;
 };

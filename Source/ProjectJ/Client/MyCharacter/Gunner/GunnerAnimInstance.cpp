@@ -48,6 +48,11 @@ void UGunnerAnimInstance::AnimNotify_ResetCombo(UAnimNotify * Notify)
 
 }
 
+void UGunnerAnimInstance::AnimNotify_AttackHit(UAnimNotify * Notify)
+{
+	OnAttackHit.Broadcast();
+}
+
 void UGunnerAnimInstance::AnimNotify_AttackEnded(UAnimNotify * Notify)
 {
 	OnAttackEnded.Broadcast(); //OnAttackEnded 델리게이트에 연결된 모든 함수를 호출한다.

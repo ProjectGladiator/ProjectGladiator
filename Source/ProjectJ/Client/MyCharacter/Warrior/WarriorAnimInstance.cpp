@@ -40,6 +40,12 @@ void UWarriorAnimInstance::AnimNotify_ResetCombo(UAnimNotify * Notify)
 
 }
 
+void UWarriorAnimInstance::AnimNotify_AttackHit(UAnimNotify * Notify)
+{
+	GLog->Log(FString::Printf(TEXT("공격 판정")));
+	OnAttackHit.Broadcast();
+}
+
 void UWarriorAnimInstance::AnimNotify_AttackEnded(UAnimNotify * Notify)
 {
 	GLog->Log(FString::Printf(TEXT("공격 몽타주 끝")));

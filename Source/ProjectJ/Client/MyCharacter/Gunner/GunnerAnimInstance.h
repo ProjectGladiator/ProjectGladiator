@@ -21,6 +21,8 @@ private:
 	UFUNCTION()
 		void AnimNotify_ResetCombo(UAnimNotify* Notify); //콤보 리셋 노티파이
 	UFUNCTION()
+		void AnimNotify_AttackHit(UAnimNotify* Notify);
+	UFUNCTION()
 		void AnimNotify_AttackEnded(UAnimNotify* Notify); //공격 끝 노티파이
 public:
 	virtual void PlayClickedReactionMontage() override;  //캐릭터 생성창 선택 애니메이션 실행
