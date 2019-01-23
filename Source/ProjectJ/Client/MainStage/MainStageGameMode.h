@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "Network/StorageDataType.h"
 #include "MainStageGameMode.generated.h"
 
 /**
@@ -15,9 +14,8 @@ class PROJECTJ_API AMainStageGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
-	CharacterInfo CharacterInfos;
-
 	AMainStageGameMode();
+	~AMainStageGameMode();
 	virtual void BeginPlay() override;	
 	virtual void Tick(float DeltaTime) override;
 };

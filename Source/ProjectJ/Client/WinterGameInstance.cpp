@@ -3,6 +3,9 @@
 #include "WinterGameInstance.h"
 //클라 헤더
 //서버 헤더
+#include "NetWork/NetworkManager.h"
+
+using namespace NetworkClient_main;
 
 void UWinterGameInstance::Init()
 {
