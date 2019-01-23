@@ -4,7 +4,7 @@
 	<ItemGroup>
 		<None Include="..\..\ProjectJ.uproject" />
 		<Filter Include="Source">
-			<UniqueIdentifier>{13B6CC0E-7B4B-4149-9D2D-A8D6906D4422}</UniqueIdentifier>
+			<UniqueIdentifier>{AAD1DA30-BDAA-4E97-A636-F7B0FD36EB92}</UniqueIdentifier>
 		</Filter>
 		<None Include="..\..\Source\ProjectJ.Target.cs">
 			<Filter>Source</Filter>
@@ -13,7 +13,7 @@
 			<Filter>Source</Filter>
 		</None >
 		<Filter Include="Config">
-			<UniqueIdentifier>{6ACD0D46-AC6B-4D94-8273-7849A51FFE57}</UniqueIdentifier>
+			<UniqueIdentifier>{A91013A3-DBEB-4E49-83F8-A8EE8BA80E27}</UniqueIdentifier>
 		</Filter>
 		<None Include="..\..\Config\DefaultEditor.ini">
 			<Filter>Config</Filter>
@@ -28,7 +28,7 @@
 			<Filter>Config</Filter>
 		</None >
 		<Filter Include="Source\ProjectJ">
-			<UniqueIdentifier>{DCA728D8-A8FF-4A6A-AE93-26C49ECD9B4E}</UniqueIdentifier>
+			<UniqueIdentifier>{52784581-E493-498B-9CBD-AEB6C7E3EAED}</UniqueIdentifier>
 		</Filter>
 		<None Include="..\..\Source\ProjectJ\ProjectJ.Build.cs">
 			<Filter>Source\ProjectJ</Filter>
@@ -40,7 +40,7 @@
 			<Filter>Source\ProjectJ</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client">
-			<UniqueIdentifier>{8D6198AC-4243-4D64-9317-DFEBF51018DD}</UniqueIdentifier>
+			<UniqueIdentifier>{5CCFC445-2B58-4EE2-8D2F-FB6339FF6066}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\CharacterSpawnLocation.cpp">
 			<Filter>Source\ProjectJ\Client</Filter>
@@ -55,7 +55,7 @@
 			<Filter>Source\ProjectJ\Client</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\ChracterCreateSelect">
-			<UniqueIdentifier>{CAD5039B-D87F-41A6-A51D-FD27D5F8906F}</UniqueIdentifier>
+			<UniqueIdentifier>{104C186F-62A1-4D27-B878-B8EB794BE7AE}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\CharacterCreateSelectGameMode.cpp">
 			<Filter>Source\ProjectJ\Client\ChracterCreateSelect</Filter>
@@ -70,7 +70,7 @@
 			<Filter>Source\ProjectJ\Client\ChracterCreateSelect</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\ChracterCreateSelect\CameraActor">
-			<UniqueIdentifier>{2C24B35E-7B17-4473-94E5-DDBAE24135FA}</UniqueIdentifier>
+			<UniqueIdentifier>{DA523E1E-FA81-4A73-9A89-33F66D02568B}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\CameraActor\ChracterCreateCamera.cpp">
 			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\CameraActor</Filter>
@@ -79,7 +79,7 @@
 			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\CameraActor</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\ChracterCreateSelect\Widget">
-			<UniqueIdentifier>{C5F4B2E3-60B3-4390-BAB8-2DCE7C6DC95E}</UniqueIdentifier>
+			<UniqueIdentifier>{A7A25E7C-5D81-4E2C-A995-E4F6EACDDC58}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterCreateWidget.cpp">
 			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
@@ -100,7 +100,7 @@
 			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\ErrorWidget">
-			<UniqueIdentifier>{9AC9D051-DE6D-486D-9455-86C20A0E47C6}</UniqueIdentifier>
+			<UniqueIdentifier>{9668DF03-794F-4B5D-BCB4-23DD77049DF5}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\ErrorWidget\WidgetCancel.cpp">
 			<Filter>Source\ProjectJ\Client\ErrorWidget</Filter>
@@ -115,7 +115,7 @@
 			<Filter>Source\ProjectJ\Client\ErrorWidget</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Header">
-			<UniqueIdentifier>{C3815B9F-19A8-47CF-8294-03DDFC57C5FF}</UniqueIdentifier>
+			<UniqueIdentifier>{A9A48604-482E-4577-9049-40CEAF622650}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Header\MutantAIHeader.cpp">
 			<Filter>Source\ProjectJ\Client\Header</Filter>
@@ -124,7 +124,7 @@
 			<Filter>Source\ProjectJ\Client\Header</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Inventory">
-			<UniqueIdentifier>{1092D689-795B-4ED4-B2AB-B6894E344894}</UniqueIdentifier>
+			<UniqueIdentifier>{93F46358-5CD0-4880-B566-458CFCD3C52E}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Inventory.cpp">
 			<Filter>Source\ProjectJ\Client\Inventory</Filter>
@@ -133,7 +133,7 @@
 			<Filter>Source\ProjectJ\Client\Inventory</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Inventory\Structure">
-			<UniqueIdentifier>{2C72B978-9572-4A16-BB32-B89594D551C7}</UniqueIdentifier>
+			<UniqueIdentifier>{F0E03134-A31F-4EDC-94F2-7FA5B78943E3}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Structure\SInventorySlot.cpp">
 			<Filter>Source\ProjectJ\Client\Inventory\Structure</Filter>
@@ -142,7 +142,7 @@
 			<Filter>Source\ProjectJ\Client\Inventory\Structure</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Inventory\Widget">
-			<UniqueIdentifier>{762E7A76-A766-4D39-8FFA-9D31419C9037}</UniqueIdentifier>
+			<UniqueIdentifier>{7A3C4355-120B-4603-AD25-3935AE441E36}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Widget\InventorySlotWidget.cpp">
 			<Filter>Source\ProjectJ\Client\Inventory\Widget</Filter>
@@ -157,7 +157,7 @@
 			<Filter>Source\ProjectJ\Client\Inventory\Widget</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Item">
-			<UniqueIdentifier>{081A3875-ADE5-4B74-A4D7-DF8BF4385BA3}</UniqueIdentifier>
+			<UniqueIdentifier>{72B42D43-2925-4A8D-A6DF-C4918DD411B8}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\MasterItem.cpp">
 			<Filter>Source\ProjectJ\Client\Item</Filter>
@@ -166,7 +166,7 @@
 			<Filter>Source\ProjectJ\Client\Item</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Item\BattleAxe">
-			<UniqueIdentifier>{56E74B70-BD66-41C0-882C-A3BCA2AEC5F0}</UniqueIdentifier>
+			<UniqueIdentifier>{2E9577BE-2256-40DA-A858-7FA8D1854E0B}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\BattleAxe\BattleAxe.cpp">
 			<Filter>Source\ProjectJ\Client\Item\BattleAxe</Filter>
@@ -175,7 +175,7 @@
 			<Filter>Source\ProjectJ\Client\Item\BattleAxe</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Item\DataTable">
-			<UniqueIdentifier>{05BE5136-A9D5-487B-BC2A-ABF23DCC2F04}</UniqueIdentifier>
+			<UniqueIdentifier>{D1D1603B-817E-4851-A1FC-1BAC41917059}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\DataTable\DataTableComponent.cpp">
 			<Filter>Source\ProjectJ\Client\Item\DataTable</Filter>
@@ -190,7 +190,7 @@
 			<Filter>Source\ProjectJ\Client\Item\DataTable</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Item\Potion">
-			<UniqueIdentifier>{50F3C576-C2FA-4151-892B-3BA52555957A}</UniqueIdentifier>
+			<UniqueIdentifier>{C9777089-CC10-460A-A3FE-806BBA9D639C}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\Potion\Potion.cpp">
 			<Filter>Source\ProjectJ\Client\Item\Potion</Filter>
@@ -199,7 +199,7 @@
 			<Filter>Source\ProjectJ\Client\Item\Potion</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Item\Staff">
-			<UniqueIdentifier>{BAE61621-7F9C-49A9-9DDC-6C64F63F604C}</UniqueIdentifier>
+			<UniqueIdentifier>{36A2A9A2-A91F-4774-9F2A-CFE76A3FA60B}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\Staff\Staff.cpp">
 			<Filter>Source\ProjectJ\Client\Item\Staff</Filter>
@@ -208,7 +208,7 @@
 			<Filter>Source\ProjectJ\Client\Item\Staff</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Item\Sword">
-			<UniqueIdentifier>{2FE07441-76DE-4CBF-8269-F906976F1E59}</UniqueIdentifier>
+			<UniqueIdentifier>{B20F8DD2-3295-4519-BAD0-910D4E9D3792}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\Sword\Sword.cpp">
 			<Filter>Source\ProjectJ\Client\Item\Sword</Filter>
@@ -217,7 +217,7 @@
 			<Filter>Source\ProjectJ\Client\Item\Sword</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\MainStage">
-			<UniqueIdentifier>{4229A2EA-2BC7-47F5-B003-3B28FA1E3AFA}</UniqueIdentifier>
+			<UniqueIdentifier>{E1F9FC5A-AC46-4E68-BB35-1AB600B734D0}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\MainStage\MainStageGameMode.cpp">
 			<Filter>Source\ProjectJ\Client\MainStage</Filter>
@@ -232,7 +232,7 @@
 			<Filter>Source\ProjectJ\Client\MainStage</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Manager">
-			<UniqueIdentifier>{1A653123-F955-4084-8A01-964B77A8DB71}</UniqueIdentifier>
+			<UniqueIdentifier>{27B58343-3886-4773-A914-D63C73B39CB4}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Manager\StateManager.cpp">
 			<Filter>Source\ProjectJ\Client\Manager</Filter>
@@ -241,7 +241,7 @@
 			<Filter>Source\ProjectJ\Client\Manager</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Monster">
-			<UniqueIdentifier>{9CF2D03C-DD6B-4A22-A64A-6BE33ACB3D95}</UniqueIdentifier>
+			<UniqueIdentifier>{942ABBD8-41A7-4B6B-AEB2-91F30C7861FD}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Monster.cpp">
 			<Filter>Source\ProjectJ\Client\Monster</Filter>
@@ -268,10 +268,10 @@
 			<Filter>Source\ProjectJ\Client\Monster</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Monster\Animal">
-			<UniqueIdentifier>{534647DE-F573-4825-9982-A716CA90384B}</UniqueIdentifier>
+			<UniqueIdentifier>{3F6B58BA-EFB4-4B8E-8383-B09A15FBEA85}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="Source\ProjectJ\Client\Monster\Animal\Bear">
-			<UniqueIdentifier>{E20E122A-A190-4984-B9BA-A635C4ED1FF4}</UniqueIdentifier>
+			<UniqueIdentifier>{622A4E66-17C0-4AEC-9B06-CFC303E1716E}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Animal\Bear\Bear.cpp">
 			<Filter>Source\ProjectJ\Client\Monster\Animal\Bear</Filter>
@@ -286,7 +286,7 @@
 			<Filter>Source\ProjectJ\Client\Monster\Animal\Bear</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Monster\Animal\Dinosaur">
-			<UniqueIdentifier>{AA1CA8B3-9663-488C-9E32-32676D5BD8BC}</UniqueIdentifier>
+			<UniqueIdentifier>{06B2C0F4-DD26-455E-ADF5-83C588984DB3}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Animal\Dinosaur\Dinosaur.cpp">
 			<Filter>Source\ProjectJ\Client\Monster\Animal\Dinosaur</Filter>
@@ -301,7 +301,7 @@
 			<Filter>Source\ProjectJ\Client\Monster\Animal\Dinosaur</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Monster\Animal\Spider">
-			<UniqueIdentifier>{2949B087-449B-4CE0-BBAE-E6196281F977}</UniqueIdentifier>
+			<UniqueIdentifier>{3E4530B2-D98B-47D9-AC94-E9608947D1A9}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Animal\Spider\Spider.cpp">
 			<Filter>Source\ProjectJ\Client\Monster\Animal\Spider</Filter>
@@ -316,7 +316,7 @@
 			<Filter>Source\ProjectJ\Client\Monster\Animal\Spider</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Monster\Animal\Worm">
-			<UniqueIdentifier>{049E8A47-6258-40CA-A3C0-BB05AE777915}</UniqueIdentifier>
+			<UniqueIdentifier>{5C4B3F16-E7E3-416C-B12A-36D700BA8F56}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Animal\Worm\Worm.cpp">
 			<Filter>Source\ProjectJ\Client\Monster\Animal\Worm</Filter>
@@ -337,7 +337,7 @@
 			<Filter>Source\ProjectJ\Client\Monster\Animal\Worm</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Monster\ArcherMonster">
-			<UniqueIdentifier>{1AA9B0C7-9DEC-4EFE-B85B-8CF5695B876D}</UniqueIdentifier>
+			<UniqueIdentifier>{969EF25E-DA40-4549-9228-07DDAAD30347}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherAIController.cpp">
 			<Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
@@ -358,7 +358,7 @@
 			<Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Monster\Manager">
-			<UniqueIdentifier>{2D693A38-E4DC-48CF-A8E9-56CC703B1585}</UniqueIdentifier>
+			<UniqueIdentifier>{430F3F34-FE6F-46F5-84AC-CB4D187B6D5D}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Manager\DistanceCheckAIManager.cpp">
 			<Filter>Source\ProjectJ\Client\Monster\Manager</Filter>
@@ -367,7 +367,7 @@
 			<Filter>Source\ProjectJ\Client\Monster\Manager</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Monster\MutantMonster">
-			<UniqueIdentifier>{8468B2A1-6363-4B99-9F78-EFCE4277CBC9}</UniqueIdentifier>
+			<UniqueIdentifier>{3516BAD0-F352-4F99-9F9E-3866E027E820}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantAIController.cpp">
 			<Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
@@ -388,7 +388,7 @@
 			<Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Monster\MutantMonster\AI">
-			<UniqueIdentifier>{7B85B1A9-E9B3-46D4-85D5-1E7B61B662D0}</UniqueIdentifier>
+			<UniqueIdentifier>{B1E92D31-F7F8-4344-9789-95F852FA4102}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\AnimNotifyState_ParryingAttack.cpp">
 			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
@@ -487,7 +487,7 @@
 			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\MyCharacter">
-			<UniqueIdentifier>{2C0156E6-243A-4FC9-9661-07809408C069}</UniqueIdentifier>
+			<UniqueIdentifier>{05C5133E-131D-4976-92F9-165971E231F1}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\MyAnimInstance.cpp">
 			<Filter>Source\ProjectJ\Client\MyCharacter</Filter>
@@ -514,7 +514,7 @@
 			<Filter>Source\ProjectJ\Client\MyCharacter</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\MyCharacter\Gunner">
-			<UniqueIdentifier>{295BA05B-35D1-4E08-B56C-059091E8D861}</UniqueIdentifier>
+			<UniqueIdentifier>{523F86C0-B9CC-4258-B386-8AE3031DF30F}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\Gunner.cpp">
 			<Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
@@ -529,7 +529,7 @@
 			<Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\MyCharacter\NPC">
-			<UniqueIdentifier>{E8E89145-5B68-4D85-9C5B-ACC990B8472B}</UniqueIdentifier>
+			<UniqueIdentifier>{4A4FA6FC-B34F-4D61-A996-0459DA310569}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\MyNonPlayerCharacter.cpp">
 			<Filter>Source\ProjectJ\Client\MyCharacter\NPC</Filter>
@@ -544,7 +544,7 @@
 			<Filter>Source\ProjectJ\Client\MyCharacter\NPC</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\MyCharacter\NPC\Potion">
-			<UniqueIdentifier>{471BA1FA-D07B-415D-98E1-B40E960C9638}</UniqueIdentifier>
+			<UniqueIdentifier>{318676A6-2248-4CD1-A74F-C8A8188504F7}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\Potion\PotionStoreNPC.cpp">
 			<Filter>Source\ProjectJ\Client\MyCharacter\NPC\Potion</Filter>
@@ -553,7 +553,7 @@
 			<Filter>Source\ProjectJ\Client\MyCharacter\NPC\Potion</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\MyCharacter\Tanker">
-			<UniqueIdentifier>{EA000AFC-642D-4FF6-B532-93D03BA1C134}</UniqueIdentifier>
+			<UniqueIdentifier>{C68AEC9E-F4FC-496E-B227-1D8A7B3382FE}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Tanker\Tanker.cpp">
 			<Filter>Source\ProjectJ\Client\MyCharacter\Tanker</Filter>
@@ -568,7 +568,7 @@
 			<Filter>Source\ProjectJ\Client\MyCharacter\Tanker</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\MyCharacter\Warrior">
-			<UniqueIdentifier>{3ECAD383-A5C6-464D-A3CA-81928EE5F924}</UniqueIdentifier>
+			<UniqueIdentifier>{D9C8A7FA-9446-4098-800C-931CBE31A991}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Warrior\Warrior.cpp">
 			<Filter>Source\ProjectJ\Client\MyCharacter\Warrior</Filter>
@@ -583,7 +583,7 @@
 			<Filter>Source\ProjectJ\Client\MyCharacter\Warrior</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\MyCharacter\Wizard">
-			<UniqueIdentifier>{131C2167-E806-42E8-A596-3C496FE30017}</UniqueIdentifier>
+			<UniqueIdentifier>{7CA504D5-D101-45B5-A0B6-406C9D4BA569}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\Wizard.cpp">
 			<Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
@@ -598,10 +598,10 @@
 			<Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\State">
-			<UniqueIdentifier>{9FDB8B11-1303-491A-ADFC-41597F2491E3}</UniqueIdentifier>
+			<UniqueIdentifier>{112BC0E7-59A4-4B00-99BB-C7C3AD998121}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="Source\ProjectJ\Client\State\ArcherState">
-			<UniqueIdentifier>{F82C5557-8B0A-49AF-8D3F-D42D4AAA6B75}</UniqueIdentifier>
+			<UniqueIdentifier>{192BC279-DB85-4CE2-8641-89D7B07E512C}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\State\ArcherState\ArcherState.cpp">
 			<Filter>Source\ProjectJ\Client\State\ArcherState</Filter>
@@ -610,7 +610,7 @@
 			<Filter>Source\ProjectJ\Client\State\ArcherState</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\State\MonsterState">
-			<UniqueIdentifier>{982FF3DF-3D05-428A-8327-0F971B4D838F}</UniqueIdentifier>
+			<UniqueIdentifier>{1B7D3C6A-73F2-48F3-8EF6-2A680D803266}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\State\MonsterState\MonsterState.cpp">
 			<Filter>Source\ProjectJ\Client\State\MonsterState</Filter>
@@ -619,7 +619,7 @@
 			<Filter>Source\ProjectJ\Client\State\MonsterState</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Title">
-			<UniqueIdentifier>{DA8CEFF2-6A96-47C4-B07C-38010B03118C}</UniqueIdentifier>
+			<UniqueIdentifier>{258F563C-D881-4EFA-859D-F2474F5C6D12}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Title\TitleGameMode.cpp">
 			<Filter>Source\ProjectJ\Client\Title</Filter>
@@ -634,7 +634,7 @@
 			<Filter>Source\ProjectJ\Client\Title</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\Client\Title\Widget">
-			<UniqueIdentifier>{F408F5F2-86B5-4C74-868B-BF3F69250BBC}</UniqueIdentifier>
+			<UniqueIdentifier>{2C7548ED-930D-49BE-9463-A6A34B124ABE}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\Client\Title\Widget\TitleWidgetLogin.cpp">
 			<Filter>Source\ProjectJ\Client\Title\Widget</Filter>
@@ -649,7 +649,7 @@
 			<Filter>Source\ProjectJ\Client\Title\Widget</Filter>
 		</ClInclude >
 		<Filter Include="Source\ProjectJ\NetWork">
-			<UniqueIdentifier>{CBA9188D-D6EC-4108-BED5-6D969E4F7AD2}</UniqueIdentifier>
+			<UniqueIdentifier>{3306697E-A15F-43F2-B964-F01614E9033D}</UniqueIdentifier>
 		</Filter>
 		<ClCompile Include="..\..\Source\ProjectJ\NetWork\CharacterManager.cpp">
 			<Filter>Source\ProjectJ\NetWork</Filter>

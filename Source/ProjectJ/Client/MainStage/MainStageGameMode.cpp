@@ -8,6 +8,7 @@
 #include "Engine/World.h"
 #include "NetWork/CharacterManager.h"
 #include "Client/WinterGameInstance.h"
+#include "Client/MyCharacter/Tanker/Tanker.h"
 //서버 헤더
 #include "NetWork/StorageManager.h"
 
@@ -21,20 +22,6 @@ AMainStageGameMode::AMainStageGameMode()
 void AMainStageGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ACharacterSpawnLocation::StaticClass(), CharacterSpawnLocations);
-
-	if (CharacterSpawnLocations.Num() > 0)
-	{
-		for (auto CharacterSpawnLocation : CharacterSpawnLocations)
-		{
-			SpawnLocation.Add(CharacterSpawnLocation->GetActorLocation());
-		}		
-	}
-	else
-	{
-		GLog->Log(FString::Printf(TEXT("월드에 캐릭터 스폰 위치가 존재하지 않음")));
-	}
 
 	UWinterGameInstance* MyGI = Cast<UWinterGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
@@ -63,7 +50,28 @@ void AMainStageGameMode::Tick(float DeltaTime)
 			}*/
 			break;
 		case PCHARACTERDATA_ENTER_INFO:
-			//StorageManager::GetInstance()->ChangeData(Data,)
+			StorageManager::GetInstance()->ChangeData(Data, 1, CharacterInfos);
+
+			FVector SpawnLocation(CharacterInfos.x, CharacterInfos.y, CharacterInfos.z);
+
+			FActorSpawnParameters SpawnActorOption;
+	
+			SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+			switch (CharacterInfos.character_code)
+			{
+			case 1000:
+			{
+				ATanker * Tanker = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+			}
+				break;
+			case 2000:
+				break;
+			case 3000:
+				break;
+			case 4000:
+				break;
+			}
 			break;
 		}
 	}	

@@ -22,7 +22,6 @@ private:
 		class UCharacterSelectWidget* CharacterSelectWidget;//캐릭터 선택 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Widget", Meta = (AllowPrivateAccess = true))
 		class UCharacterCreateWidget* ChracterCreateWidget; //캐릭터 생성 위젯
-
 public:
 	TArray <AActor*> Cameras;
 
