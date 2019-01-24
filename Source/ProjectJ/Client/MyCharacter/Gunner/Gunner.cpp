@@ -139,7 +139,7 @@ void AGunner::OnAttackHit()
 		ObjectTypes,
 		false,
 		IgonreActors,
-		EDrawDebugTrace::None,
+		EDrawDebugTrace::ForDuration,
 		HitResult,
 		true);
 
@@ -149,6 +149,13 @@ void AGunner::OnAttackHit()
 		{
 			GLog->Log(FString::Printf(TEXT("몬스터 때림")));
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffectMonster, HitResult.Location);
+			
+			UGameplayStatics::ApplyDamage(
+			HitResult.GetActor(),
+			10.0f,
+			UGameplayStatics::GetPlayerController(GetWorld(), 0),
+			this,
+			nullptr);
 		}
 		else
 		{

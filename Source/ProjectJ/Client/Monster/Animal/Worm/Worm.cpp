@@ -175,3 +175,17 @@ void AWorm::Death()
 	GLog->Log(FString::Printf(TEXT("죽음")));
 	DeathFlag = true;
 }
+
+float AWorm::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	CurrentHP -= DamageAmount;
+
+	if (CurrentHP <= 0)
+	{
+		WormAnimInstance->PlayAttackMontage();
+		CurrentState = EWormState::Death;
+	}
+	return DamageAmount;
+}
