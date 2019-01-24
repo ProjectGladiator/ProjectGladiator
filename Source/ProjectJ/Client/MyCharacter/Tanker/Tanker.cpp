@@ -106,7 +106,7 @@ void ATanker::OnAttackHit()
 
 	TArray<AActor*>IgonreActors;
 	IgonreActors.Add(this);
-
+	
 	FVector TraceStart = GetActorLocation() + GetActorForwardVector()*100.0f;
 	FVector TraceEnd = TraceStart + GetActorForwardVector()*100.0f;
 

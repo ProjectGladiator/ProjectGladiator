@@ -19,8 +19,6 @@ private:
 	UFUNCTION()
 		void AnimNotify_SaveAttack(UAnimNotify* Notify);
 	UFUNCTION()
-		void AnimNotify_ResetCombo(UAnimNotify* Notify);
-	UFUNCTION()
 		void AnimNotify_AttackHit(UAnimNotify* Notify);
 	UFUNCTION()
 		void AnimNotify_AttackEnded(UAnimNotify* Notify);

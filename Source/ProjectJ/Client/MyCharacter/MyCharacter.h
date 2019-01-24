@@ -92,9 +92,9 @@ public:
 	void CharacterSelect();
 
 	UFUNCTION()
-		void OnAttackMontageEnded();
+		virtual void OnAttackHit();
 	UFUNCTION()
 		virtual void OnComboMontageSave();
 	UFUNCTION()
-		virtual void OnAttackHit();
+		void OnAttackMontageEnded();
 };

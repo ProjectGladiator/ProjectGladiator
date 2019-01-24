@@ -35,11 +35,6 @@ void UTankerAnimInstance::AnimNotify_SaveAttack(UAnimNotify* Notify)
 	OnComboSave.Broadcast();
 }
 
-void UTankerAnimInstance::AnimNotify_ResetCombo(UAnimNotify* Notify)
-{
-	GLog->Log(FString::Printf(TEXT("콤보 공격 초기화")));
-}
-
 void UTankerAnimInstance::AnimNotify_AttackHit(UAnimNotify* Notify)
 {
 	GLog->Log(FString::Printf(TEXT("공격 판정")));
