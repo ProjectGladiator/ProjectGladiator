@@ -6,7 +6,7 @@
 #include "Animation/AnimInstance.h"
 #include "MyAnimInstance.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttackEndedDelegate); //공격 애니메이션 델리게이트
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttackEndedDelegate); //공격 끝 애니메이션 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnComboSaveDelegate); //콤보 저장 애니메이션 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAttackHitDelegate); //공격 판정 애니메이션 델리게이트
 

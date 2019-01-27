@@ -1,784 +1,781 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup>
-    <None Include="..\..\ProjectJ.uproject" />
-    <Filter Include="Source">
-      <UniqueIdentifier>{F014635D-DB63-43FF-B837-2560DCFDF342}</UniqueIdentifier>
-    </Filter>
-    <None Include="..\..\Source\ProjectJ.Target.cs">
-      <Filter>Source</Filter>
-    </None>
-    <None Include="..\..\Source\ProjectJEditor.Target.cs">
-      <Filter>Source</Filter>
-    </None>
-    <Filter Include="Config">
-      <UniqueIdentifier>{D920859F-FAF1-4C24-B9B2-77A55AB585A5}</UniqueIdentifier>
-    </Filter>
-    <None Include="..\..\Config\DefaultEditor.ini">
-      <Filter>Config</Filter>
-    </None>
-    <None Include="..\..\Config\DefaultEngine.ini">
-      <Filter>Config</Filter>
-    </None>
-    <None Include="..\..\Config\DefaultGame.ini">
-      <Filter>Config</Filter>
-    </None>
-    <None Include="..\..\Config\DefaultInput.ini">
-      <Filter>Config</Filter>
-    </None>
-    <Filter Include="Source\ProjectJ">
-      <UniqueIdentifier>{58A7AE80-4782-4930-8DE4-020B66916AF1}</UniqueIdentifier>
-    </Filter>
-    <None Include="..\..\Source\ProjectJ\ProjectJ.Build.cs">
-      <Filter>Source\ProjectJ</Filter>
-    </None>
-    <ClCompile Include="..\..\Source\ProjectJ\ProjectJ.cpp">
-      <Filter>Source\ProjectJ</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\ProjectJ.h">
-      <Filter>Source\ProjectJ</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client">
-      <UniqueIdentifier>{3C461EA9-5B64-4135-A81E-291C092F5EDF}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\CharacterSpawnLocation.cpp">
-      <Filter>Source\ProjectJ\Client</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\CharacterSpawnLocation.h">
-      <Filter>Source\ProjectJ\Client</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\WinterGameInstance.cpp">
-      <Filter>Source\ProjectJ\Client</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\WinterGameInstance.h">
-      <Filter>Source\ProjectJ\Client</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\ChracterCreateSelect">
-      <UniqueIdentifier>{F199D0B2-7386-4B71-82D9-2EAAC3CD4528}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\CharacterCreateSelectGameMode.cpp">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\CharacterCreateSelectGameMode.h">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\ChracterCreateSelectPC.cpp">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\ChracterCreateSelectPC.h">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\ChracterCreateSelect\CameraActor">
-      <UniqueIdentifier>{4D78FD5D-CAD2-489E-806F-5FE15550FFB1}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\CameraActor\ChracterCreateCamera.cpp">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect\CameraActor</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\CameraActor\ChracterCreateCamera.h">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect\CameraActor</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\ChracterCreateSelect\Widget">
-      <UniqueIdentifier>{7E2C3AD1-5CB3-4BD1-B5A7-D8BB2B3EE49C}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterCreateWidget.cpp">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterCreateWidget.h">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterSelectButton.cpp">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterSelectButton.h">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterSelectWidget.cpp">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterSelectWidget.h">
-      <Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\ErrorWidget">
-      <UniqueIdentifier>{ED4FC98A-C727-4B9F-9283-AC3849F883EB}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\ErrorWidget\WidgetCancel.cpp">
-      <Filter>Source\ProjectJ\Client\ErrorWidget</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\ErrorWidget\WidgetCancel.h">
-      <Filter>Source\ProjectJ\Client\ErrorWidget</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\ErrorWidget\WidgetOk.cpp">
-      <Filter>Source\ProjectJ\Client\ErrorWidget</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\ErrorWidget\WidgetOk.h">
-      <Filter>Source\ProjectJ\Client\ErrorWidget</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Header">
-      <UniqueIdentifier>{109ED261-A10C-459C-B040-177D4CEA0719}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Header\MutantAIHeader.cpp">
-      <Filter>Source\ProjectJ\Client\Header</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Header\MutantAIHeader.h">
-      <Filter>Source\ProjectJ\Client\Header</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Inventory">
-      <UniqueIdentifier>{35B09BA9-A9E2-44B4-A333-3B0DA2AD24E3}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Inventory.cpp">
-      <Filter>Source\ProjectJ\Client\Inventory</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Inventory\Inventory.h">
-      <Filter>Source\ProjectJ\Client\Inventory</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Inventory\Structure">
-      <UniqueIdentifier>{4FC6EDD1-FBD9-4620-8630-345A2497986A}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Structure\SInventorySlot.cpp">
-      <Filter>Source\ProjectJ\Client\Inventory\Structure</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Inventory\Structure\SInventorySlot.h">
-      <Filter>Source\ProjectJ\Client\Inventory\Structure</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Inventory\Widget">
-      <UniqueIdentifier>{0C238B10-4D1B-46A9-8938-5CCF40F831D7}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Widget\InventorySlotWidget.cpp">
-      <Filter>Source\ProjectJ\Client\Inventory\Widget</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Inventory\Widget\InventorySlotWidget.h">
-      <Filter>Source\ProjectJ\Client\Inventory\Widget</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Widget\InventoryWidget.cpp">
-      <Filter>Source\ProjectJ\Client\Inventory\Widget</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Inventory\Widget\InventoryWidget.h">
-      <Filter>Source\ProjectJ\Client\Inventory\Widget</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Item">
-      <UniqueIdentifier>{CD6B11FE-B8E0-46A1-B62A-AEA72D780E58}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Item\MasterItem.cpp">
-      <Filter>Source\ProjectJ\Client\Item</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Item\MasterItem.h">
-      <Filter>Source\ProjectJ\Client\Item</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Item\BattleAxe">
-      <UniqueIdentifier>{89FB3175-B19D-45A2-824C-726EC9B0777F}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Item\BattleAxe\BattleAxe.cpp">
-      <Filter>Source\ProjectJ\Client\Item\BattleAxe</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Item\BattleAxe\BattleAxe.h">
-      <Filter>Source\ProjectJ\Client\Item\BattleAxe</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Item\DataTable">
-      <UniqueIdentifier>{A02E9C73-1C83-4F10-A29F-22B9E6BEA3BE}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Item\DataTable\DataTableComponent.cpp">
-      <Filter>Source\ProjectJ\Client\Item\DataTable</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Item\DataTable\DataTableComponent.h">
-      <Filter>Source\ProjectJ\Client\Item\DataTable</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Item\DataTable\ItemDataTable.cpp">
-      <Filter>Source\ProjectJ\Client\Item\DataTable</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Item\DataTable\ItemDataTable.h">
-      <Filter>Source\ProjectJ\Client\Item\DataTable</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Item\Potion">
-      <UniqueIdentifier>{B5211E92-542F-4684-B367-BCFDDEF30901}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Item\Potion\Potion.cpp">
-      <Filter>Source\ProjectJ\Client\Item\Potion</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Item\Potion\Potion.h">
-      <Filter>Source\ProjectJ\Client\Item\Potion</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Item\Staff">
-      <UniqueIdentifier>{B85C43A4-0528-4CA8-AA7A-3C36857227BD}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Item\Staff\Staff.cpp">
-      <Filter>Source\ProjectJ\Client\Item\Staff</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Item\Staff\Staff.h">
-      <Filter>Source\ProjectJ\Client\Item\Staff</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Item\Sword">
-      <UniqueIdentifier>{B12A32FB-01DA-476E-BC7F-F3354B5916E3}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Item\Sword\Sword.cpp">
-      <Filter>Source\ProjectJ\Client\Item\Sword</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Item\Sword\Sword.h">
-      <Filter>Source\ProjectJ\Client\Item\Sword</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\MainStage">
-      <UniqueIdentifier>{AB8519BD-FB51-4D99-B12C-7EE387B6D3F8}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MainStage\MainStageGameMode.cpp">
-      <Filter>Source\ProjectJ\Client\MainStage</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MainStage\MainStageGameMode.h">
-      <Filter>Source\ProjectJ\Client\MainStage</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MainStage\MainStagePlayerController.cpp">
-      <Filter>Source\ProjectJ\Client\MainStage</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MainStage\MainStagePlayerController.h">
-      <Filter>Source\ProjectJ\Client\MainStage</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Manager">
-      <UniqueIdentifier>{7A939D6D-CD0E-46FE-830B-226EFBAD3208}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Manager\StateManager.cpp">
-      <Filter>Source\ProjectJ\Client\Manager</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Manager\StateManager.h">
-      <Filter>Source\ProjectJ\Client\Manager</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Monster">
-      <UniqueIdentifier>{B7C2AAFA-8E53-4283-A08B-D92EAC551D1E}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Monster.cpp">
-      <Filter>Source\ProjectJ\Client\Monster</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\Monster.h">
-      <Filter>Source\ProjectJ\Client\Monster</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MonsterAIController.cpp">
-      <Filter>Source\ProjectJ\Client\Monster</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MonsterAIController.h">
-      <Filter>Source\ProjectJ\Client\Monster</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MonsterAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\Monster</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MonsterAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\Monster</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\PatrolPoint.cpp">
-      <Filter>Source\ProjectJ\Client\Monster</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\PatrolPoint.h">
-      <Filter>Source\ProjectJ\Client\Monster</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Monster\ArcherMonster">
-      <UniqueIdentifier>{D67804B8-07A1-4C35-AB10-78D392499401}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherAIController.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherAIController.h">
-      <Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherMonster.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherMonster.h">
-      <Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Monster\Manager">
-      <UniqueIdentifier>{34EB4754-9B60-40B4-A19A-96C919789EB1}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Manager\DistanceCheckAIManager.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\Manager</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\Manager\DistanceCheckAIManager.h">
-      <Filter>Source\ProjectJ\Client\Monster\Manager</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Monster\MutantMonster">
-      <UniqueIdentifier>{621445EA-CCE7-4B31-9545-21A1E37DB73C}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantAIController.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantAIController.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantMonster.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantMonster.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Monster\MutantMonster\AI">
-      <UniqueIdentifier>{A3C6F285-99A0-452C-8463-65403097895F}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\AnimNotifyState_ParryingAttack.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\AnimNotifyState_ParryingAttack.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTService_StateUpdate.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTService_StateUpdate.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_AnimWait.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_AnimWait.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_AttackReadyState.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_AttackReadyState.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_BattleState.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_BattleState.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_ChaseStateCheck.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_ChaseStateCheck.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_DeadState.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_DeadState.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_JumpAttackState.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_JumpAttackState.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_JumpReadyState.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_JumpReadyState.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_LookAtPlayer.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_LookAtPlayer.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_ParryingState.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_ParryingState.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RandomMovePointSelect.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RandomMovePointSelect.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RoarState.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RoarState.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RotationUpdate.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RotationUpdate.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RunState.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RunState.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_WalkState.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_WalkState.h">
-      <Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Monster\StageOne">
-      <UniqueIdentifier>{DC84C206-3C2E-4828-A7AD-4A8E4009C323}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\ProjectJ\Client\Monster\StageOne\Bear">
-      <UniqueIdentifier>{4E4AE232-7894-4966-AD0C-11CBF72FF490}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\Bear.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\Bear.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\BearAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\BearAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Monster\StageOne\Dinosaur">
-      <UniqueIdentifier>{DF2DE140-992A-4CCF-AC70-D10EC06F71D2}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Dinosaur\Dinosaur.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Dinosaur</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Dinosaur\Dinosaur.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Dinosaur</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Dinosaur\DinosaurAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Dinosaur</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Dinosaur\DinosaurAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Dinosaur</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Monster\StageOne\Spider">
-      <UniqueIdentifier>{95BDD53A-C923-4914-8F1C-209866028C6F}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Spider\Spider.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Spider</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Spider\Spider.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Spider</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Spider\SpiderAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Spider</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Spider\SpiderAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Spider</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Monster\StageOne\Worm">
-      <UniqueIdentifier>{9A9E3D8E-14C9-480E-9180-AF66B8824EBF}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\Worm.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\Worm.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\WormAIController.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\WormAIController.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\WormAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\WormAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\MyCharacter">
-      <UniqueIdentifier>{01C36F1D-1D0D-4FAC-82E8-706CD19C6EB2}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\MyAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\MyAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\MyCharacter.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\MyCharacter.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\MyGameModeBase.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\MyGameModeBase.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\MyPlayerController.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\MyPlayerController.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\MyCharacter\Gunner">
-      <UniqueIdentifier>{725DD83F-FA15-467A-8EF1-871A4B008894}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\Gunner.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\Gunner.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\GunnerAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\GunnerAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\MyCharacter\NPC">
-      <UniqueIdentifier>{EF534707-FAA2-41B9-90FE-5AF76E4FD94E}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\MyNonPlayerCharacter.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\NPC</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\MyNonPlayerCharacter.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\NPC</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\MyNonPlayerCharacterAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\NPC</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\MyNonPlayerCharacterAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\NPC</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\MyCharacter\NPC\Potion">
-      <UniqueIdentifier>{74A2DF9F-5D8E-4DA1-975A-20AF26651C1D}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\Potion\PotionStoreNPC.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\NPC\Potion</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\Potion\PotionStoreNPC.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\NPC\Potion</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\MyCharacter\Tanker">
-      <UniqueIdentifier>{13673CF0-AA04-4708-AF66-44110435BAA8}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Tanker\Tanker.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Tanker</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Tanker\Tanker.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Tanker</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Tanker\TankerAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Tanker</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Tanker\TankerAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Tanker</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\MyCharacter\Warrior">
-      <UniqueIdentifier>{3F5EBC53-39FC-4C39-B415-C9861C83C600}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Warrior\Warrior.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Warrior</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Warrior\Warrior.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Warrior</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Warrior\WarriorAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Warrior</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Warrior\WarriorAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Warrior</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\MyCharacter\Wizard">
-      <UniqueIdentifier>{FB78A1F2-061D-4FF5-9E9E-F78C12644BA5}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\Wizard.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\Wizard.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\WizardAnimInstance.cpp">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\WizardAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\State">
-      <UniqueIdentifier>{F5BF2EAF-9313-4234-A5D2-95FC91A2DF23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\ProjectJ\Client\State\ArcherState">
-      <UniqueIdentifier>{C12D8891-1CC1-4015-A6B1-27B70FBF0F7C}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\State\ArcherState\ArcherState.cpp">
-      <Filter>Source\ProjectJ\Client\State\ArcherState</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\State\ArcherState\ArcherState.h">
-      <Filter>Source\ProjectJ\Client\State\ArcherState</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\State\MonsterState">
-      <UniqueIdentifier>{845E6796-C1CE-4BCD-87CF-37CF8C52622E}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\State\MonsterState\MonsterState.cpp">
-      <Filter>Source\ProjectJ\Client\State\MonsterState</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\State\MonsterState\MonsterState.h">
-      <Filter>Source\ProjectJ\Client\State\MonsterState</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Title">
-      <UniqueIdentifier>{16930883-4111-4794-A772-7A2F6CD52B5C}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Title\TitleGameMode.cpp">
-      <Filter>Source\ProjectJ\Client\Title</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Title\TitleGameMode.h">
-      <Filter>Source\ProjectJ\Client\Title</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Title\TitlePlayerController.cpp">
-      <Filter>Source\ProjectJ\Client\Title</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Title\TitlePlayerController.h">
-      <Filter>Source\ProjectJ\Client\Title</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\Client\Title\Widget">
-      <UniqueIdentifier>{9BA89CE1-D4F4-4B57-92B5-02EEF80761D2}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Title\Widget\TitleWidgetLogin.cpp">
-      <Filter>Source\ProjectJ\Client\Title\Widget</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Title\Widget\TitleWidgetLogin.h">
-      <Filter>Source\ProjectJ\Client\Title\Widget</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Title\Widget\TitleWidgetUserIn.cpp">
-      <Filter>Source\ProjectJ\Client\Title\Widget</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Title\Widget\TitleWidgetUserIn.h">
-      <Filter>Source\ProjectJ\Client\Title\Widget</Filter>
-    </ClInclude>
-    <Filter Include="Source\ProjectJ\NetWork">
-      <UniqueIdentifier>{9E415EC4-16B6-4E36-88AC-2673E8F40203}</UniqueIdentifier>
-    </Filter>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\CharacterManager.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\CharacterManager.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\CharacterState.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\CharacterState.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\ChatManager.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\ChatManager.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\DataProtocol.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\EncryptManager.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\EnryptManager.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\ErrorManager.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\ErrorManager.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\Global.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\InGameState.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\InGameState.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\JobInfo.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\LinkedList.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\LoginManager.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\LoginManager.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\LoginState.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\LoginState.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\LogManager.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\LogManager.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\NetworkManager.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\NetworkManager.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\Packet.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\Packet.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\Socket.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\Socket.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\StorageDataType.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\StorageManager.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\StorageManager.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\TCPClient.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\TCPClient.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\ThreadManager.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\ThreadManager.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\User.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\User.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\ProjectJ\NetWork\UserManager.cpp">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\UserManager.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Source\ProjectJ\NetWork\UserState.h">
-      <Filter>Source\ProjectJ\NetWork</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\BearAIController.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\BearAIController.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
-    </ClCompile>
-  </ItemGroup>
+	<ItemGroup>
+		<None Include="..\..\ProjectJ.uproject" />
+		<Filter Include="Source">
+			<UniqueIdentifier>{FC9314F8-1137-4D97-A01A-C66E64819499}</UniqueIdentifier>
+		</Filter>
+		<None Include="..\..\Source\ProjectJ.Target.cs">
+			<Filter>Source</Filter>
+		</None >
+		<None Include="..\..\Source\ProjectJEditor.Target.cs">
+			<Filter>Source</Filter>
+		</None >
+		<Filter Include="Config">
+			<UniqueIdentifier>{6E2C68DD-5399-4F4E-BD2B-F470C4E1F6C2}</UniqueIdentifier>
+		</Filter>
+		<None Include="..\..\Config\DefaultEditor.ini">
+			<Filter>Config</Filter>
+		</None >
+		<None Include="..\..\Config\DefaultEngine.ini">
+			<Filter>Config</Filter>
+		</None >
+		<None Include="..\..\Config\DefaultGame.ini">
+			<Filter>Config</Filter>
+		</None >
+		<None Include="..\..\Config\DefaultInput.ini">
+			<Filter>Config</Filter>
+		</None >
+		<Filter Include="Source\ProjectJ">
+			<UniqueIdentifier>{AB785F77-9658-4DA4-A1D3-274DC727EAB5}</UniqueIdentifier>
+		</Filter>
+		<None Include="..\..\Source\ProjectJ\ProjectJ.Build.cs">
+			<Filter>Source\ProjectJ</Filter>
+		</None >
+		<ClCompile Include="..\..\Source\ProjectJ\ProjectJ.cpp">
+			<Filter>Source\ProjectJ</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\ProjectJ.h">
+			<Filter>Source\ProjectJ</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client">
+			<UniqueIdentifier>{2C7BACB1-0D3F-41D0-9E9E-D40F18399348}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\CharacterSpawnLocation.cpp">
+			<Filter>Source\ProjectJ\Client</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\CharacterSpawnLocation.h">
+			<Filter>Source\ProjectJ\Client</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\WinterGameInstance.cpp">
+			<Filter>Source\ProjectJ\Client</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\WinterGameInstance.h">
+			<Filter>Source\ProjectJ\Client</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\ChracterCreateSelect">
+			<UniqueIdentifier>{AFE9FF09-85C7-4570-BB22-473165453622}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\CharacterCreateSelectGameMode.cpp">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\CharacterCreateSelectGameMode.h">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\ChracterCreateSelectPC.cpp">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\ChracterCreateSelectPC.h">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\ChracterCreateSelect\CameraActor">
+			<UniqueIdentifier>{410424CE-CB62-415C-AACF-A697A47691BF}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\CameraActor\ChracterCreateCamera.cpp">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\CameraActor</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\CameraActor\ChracterCreateCamera.h">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\CameraActor</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\ChracterCreateSelect\Widget">
+			<UniqueIdentifier>{88CC55A6-7CBC-4548-B55E-40BE2BA239A5}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterCreateWidget.cpp">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterCreateWidget.h">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterSelectButton.cpp">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterSelectButton.h">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterSelectWidget.cpp">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\ChracterCreateSelect\Widget\CharacterSelectWidget.h">
+			<Filter>Source\ProjectJ\Client\ChracterCreateSelect\Widget</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\ErrorWidget">
+			<UniqueIdentifier>{42C054EB-AE1A-4949-AA24-DF65EE53A466}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\ErrorWidget\WidgetCancel.cpp">
+			<Filter>Source\ProjectJ\Client\ErrorWidget</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\ErrorWidget\WidgetCancel.h">
+			<Filter>Source\ProjectJ\Client\ErrorWidget</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\ErrorWidget\WidgetOk.cpp">
+			<Filter>Source\ProjectJ\Client\ErrorWidget</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\ErrorWidget\WidgetOk.h">
+			<Filter>Source\ProjectJ\Client\ErrorWidget</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Header">
+			<UniqueIdentifier>{E147F75E-C953-44C9-B39A-5BC14B513B21}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Header\MutantAIHeader.cpp">
+			<Filter>Source\ProjectJ\Client\Header</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Header\MutantAIHeader.h">
+			<Filter>Source\ProjectJ\Client\Header</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Inventory">
+			<UniqueIdentifier>{93F491DE-CBEF-45E8-874F-9BD9F889A331}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Inventory.cpp">
+			<Filter>Source\ProjectJ\Client\Inventory</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Inventory\Inventory.h">
+			<Filter>Source\ProjectJ\Client\Inventory</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Inventory\Structure">
+			<UniqueIdentifier>{A53BAB96-EF79-4E05-989A-DDE99AFDED2E}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Structure\SInventorySlot.cpp">
+			<Filter>Source\ProjectJ\Client\Inventory\Structure</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Inventory\Structure\SInventorySlot.h">
+			<Filter>Source\ProjectJ\Client\Inventory\Structure</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Inventory\Widget">
+			<UniqueIdentifier>{EC864B18-5B1B-4FAB-A670-EAEB4A77E426}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Widget\InventorySlotWidget.cpp">
+			<Filter>Source\ProjectJ\Client\Inventory\Widget</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Inventory\Widget\InventorySlotWidget.h">
+			<Filter>Source\ProjectJ\Client\Inventory\Widget</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Inventory\Widget\InventoryWidget.cpp">
+			<Filter>Source\ProjectJ\Client\Inventory\Widget</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Inventory\Widget\InventoryWidget.h">
+			<Filter>Source\ProjectJ\Client\Inventory\Widget</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Item">
+			<UniqueIdentifier>{4FA20C5F-19E0-4D2E-BC73-E0CEC3375B91}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\MasterItem.cpp">
+			<Filter>Source\ProjectJ\Client\Item</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Item\MasterItem.h">
+			<Filter>Source\ProjectJ\Client\Item</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Item\BattleAxe">
+			<UniqueIdentifier>{4E265372-D3E7-4DF0-A235-EB2E48E5B90B}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\BattleAxe\BattleAxe.cpp">
+			<Filter>Source\ProjectJ\Client\Item\BattleAxe</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Item\BattleAxe\BattleAxe.h">
+			<Filter>Source\ProjectJ\Client\Item\BattleAxe</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Item\DataTable">
+			<UniqueIdentifier>{032C6009-3BCA-4B5F-B2C3-83F888AD357C}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\DataTable\DataTableComponent.cpp">
+			<Filter>Source\ProjectJ\Client\Item\DataTable</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Item\DataTable\DataTableComponent.h">
+			<Filter>Source\ProjectJ\Client\Item\DataTable</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\DataTable\ItemDataTable.cpp">
+			<Filter>Source\ProjectJ\Client\Item\DataTable</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Item\DataTable\ItemDataTable.h">
+			<Filter>Source\ProjectJ\Client\Item\DataTable</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Item\Potion">
+			<UniqueIdentifier>{289A6163-CE8B-4B62-A0CF-ADD258EBE3B8}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\Potion\Potion.cpp">
+			<Filter>Source\ProjectJ\Client\Item\Potion</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Item\Potion\Potion.h">
+			<Filter>Source\ProjectJ\Client\Item\Potion</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Item\Staff">
+			<UniqueIdentifier>{64BDBCFD-81FF-4613-86DB-1D296A848518}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\Staff\Staff.cpp">
+			<Filter>Source\ProjectJ\Client\Item\Staff</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Item\Staff\Staff.h">
+			<Filter>Source\ProjectJ\Client\Item\Staff</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Item\Sword">
+			<UniqueIdentifier>{DB38F9B9-0B87-4D7C-BE20-8AF86A0848F9}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Item\Sword\Sword.cpp">
+			<Filter>Source\ProjectJ\Client\Item\Sword</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Item\Sword\Sword.h">
+			<Filter>Source\ProjectJ\Client\Item\Sword</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\MainStage">
+			<UniqueIdentifier>{36F126A3-CD67-42B9-901E-3828D0841955}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MainStage\MainStageGameMode.cpp">
+			<Filter>Source\ProjectJ\Client\MainStage</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MainStage\MainStageGameMode.h">
+			<Filter>Source\ProjectJ\Client\MainStage</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MainStage\MainStagePlayerController.cpp">
+			<Filter>Source\ProjectJ\Client\MainStage</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MainStage\MainStagePlayerController.h">
+			<Filter>Source\ProjectJ\Client\MainStage</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Manager">
+			<UniqueIdentifier>{E79437D4-DEC7-4472-B6EB-0C7B03FC6F9C}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Manager\StateManager.cpp">
+			<Filter>Source\ProjectJ\Client\Manager</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Manager\StateManager.h">
+			<Filter>Source\ProjectJ\Client\Manager</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Monster">
+			<UniqueIdentifier>{883C4AB5-25B6-4861-923D-9D64ECD17E96}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Monster.cpp">
+			<Filter>Source\ProjectJ\Client\Monster</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\Monster.h">
+			<Filter>Source\ProjectJ\Client\Monster</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MonsterAIController.cpp">
+			<Filter>Source\ProjectJ\Client\Monster</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MonsterAIController.h">
+			<Filter>Source\ProjectJ\Client\Monster</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MonsterAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\Monster</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MonsterAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\Monster</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\PatrolPoint.cpp">
+			<Filter>Source\ProjectJ\Client\Monster</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\PatrolPoint.h">
+			<Filter>Source\ProjectJ\Client\Monster</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Monster\ArcherMonster">
+			<UniqueIdentifier>{20B18C5A-2162-4473-B72E-84C4E30FC563}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherAIController.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherAIController.h">
+			<Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherMonster.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\ArcherMonster\ArcherMonster.h">
+			<Filter>Source\ProjectJ\Client\Monster\ArcherMonster</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Monster\Manager">
+			<UniqueIdentifier>{7B34BFFB-74E5-4368-B0FE-1BA6F9BD9E9D}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\Manager\DistanceCheckAIManager.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\Manager</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\Manager\DistanceCheckAIManager.h">
+			<Filter>Source\ProjectJ\Client\Monster\Manager</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Monster\MutantMonster">
+			<UniqueIdentifier>{B2E4A158-818E-4B30-9C01-6C62A3C8535D}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantAIController.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantAIController.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantMonster.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\MutantMonster.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Monster\MutantMonster\AI">
+			<UniqueIdentifier>{2E68850B-36F3-4333-9CF2-9BE3367D6E9B}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\AnimNotifyState_ParryingAttack.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\AnimNotifyState_ParryingAttack.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTService_StateUpdate.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTService_StateUpdate.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_AnimWait.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_AnimWait.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_AttackReadyState.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_AttackReadyState.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_BattleState.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_BattleState.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_ChaseStateCheck.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_ChaseStateCheck.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_DeadState.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_DeadState.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_JumpAttackState.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_JumpAttackState.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_JumpReadyState.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_JumpReadyState.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_LookAtPlayer.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_LookAtPlayer.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_ParryingState.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_ParryingState.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RandomMovePointSelect.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RandomMovePointSelect.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RoarState.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RoarState.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RotationUpdate.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RotationUpdate.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RunState.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_RunState.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_WalkState.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\MutantMonster\AI\BTTask_WalkState.h">
+			<Filter>Source\ProjectJ\Client\Monster\MutantMonster\AI</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Monster\StageOne">
+			<UniqueIdentifier>{C0F11012-CC7C-42E0-980C-F7E29C25155C}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="Source\ProjectJ\Client\Monster\StageOne\Bear">
+			<UniqueIdentifier>{FCE77058-1D33-4B2D-BFDF-25E7D6125FD0}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\Bear.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\Bear.h">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\BearAIController.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\BearAIController.h">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\BearAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Bear\BearAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Monster\StageOne\Dinosaur">
+			<UniqueIdentifier>{9384109D-6BA0-494B-92AF-AE128E3ABE93}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Dinosaur\Dinosaur.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Dinosaur</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Dinosaur\Dinosaur.h">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Dinosaur</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Dinosaur\DinosaurAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Dinosaur</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Dinosaur\DinosaurAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Dinosaur</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Monster\StageOne\Spider">
+			<UniqueIdentifier>{4DDD5269-D9BE-4A2E-AB47-C78B4D5A04E6}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Spider\Spider.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Spider</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Spider\Spider.h">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Spider</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Spider\SpiderAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Spider</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Spider\SpiderAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Spider</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Monster\StageOne\Worm">
+			<UniqueIdentifier>{8C48231B-01C9-42C7-8B5D-99FD3DA85D10}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\Worm.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\Worm.h">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\WormAIController.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\WormAIController.h">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\WormAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageOne\Worm\WormAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\Monster\StageOne\Worm</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\MyCharacter">
+			<UniqueIdentifier>{943801AE-5606-4DEC-8460-D3CB452B974D}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\MyAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\MyAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\MyCharacter.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\MyCharacter.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\MyGameModeBase.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\MyGameModeBase.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\MyPlayerController.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\MyPlayerController.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\MyCharacter\Gunner">
+			<UniqueIdentifier>{55D72FC7-4157-4284-AC7F-1D10393E1F21}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\Gunner.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\Gunner.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\GunnerAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Gunner\GunnerAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Gunner</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\MyCharacter\NPC">
+			<UniqueIdentifier>{841828D4-3285-42C5-9BAD-1A16AEB96187}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\MyNonPlayerCharacter.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\NPC</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\MyNonPlayerCharacter.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\NPC</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\MyNonPlayerCharacterAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\NPC</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\MyNonPlayerCharacterAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\NPC</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\MyCharacter\NPC\Potion">
+			<UniqueIdentifier>{A3A6462B-8E97-4264-9364-8710E7F95770}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\Potion\PotionStoreNPC.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\NPC\Potion</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\NPC\Potion\PotionStoreNPC.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\NPC\Potion</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\MyCharacter\Tanker">
+			<UniqueIdentifier>{15CB8450-C1FE-4F27-834E-29AA252E80CB}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Tanker\Tanker.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Tanker</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Tanker\Tanker.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Tanker</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Tanker\TankerAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Tanker</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Tanker\TankerAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Tanker</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\MyCharacter\Warrior">
+			<UniqueIdentifier>{416EA960-A4EC-4AE7-84F5-21365D154544}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Warrior\Warrior.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Warrior</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Warrior\Warrior.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Warrior</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Warrior\WarriorAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Warrior</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Warrior\WarriorAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Warrior</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\MyCharacter\Wizard">
+			<UniqueIdentifier>{3A32936D-927C-4960-8A87-726BEE386387}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\Wizard.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\Wizard.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\WizardAnimInstance.cpp">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Wizard\WizardAnimInstance.h">
+			<Filter>Source\ProjectJ\Client\MyCharacter\Wizard</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\State">
+			<UniqueIdentifier>{F5C6E6CC-3E49-4F0E-AE7D-3257756464F8}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="Source\ProjectJ\Client\State\ArcherState">
+			<UniqueIdentifier>{C5A64335-F4F9-4521-A9D2-774CDE06DC2B}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\State\ArcherState\ArcherState.cpp">
+			<Filter>Source\ProjectJ\Client\State\ArcherState</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\State\ArcherState\ArcherState.h">
+			<Filter>Source\ProjectJ\Client\State\ArcherState</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\State\MonsterState">
+			<UniqueIdentifier>{42E8E22C-69A5-40FE-B00F-98E5BB3ED209}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\State\MonsterState\MonsterState.cpp">
+			<Filter>Source\ProjectJ\Client\State\MonsterState</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\State\MonsterState\MonsterState.h">
+			<Filter>Source\ProjectJ\Client\State\MonsterState</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Title">
+			<UniqueIdentifier>{56672855-E332-465E-93A4-BDCCC3224360}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Title\TitleGameMode.cpp">
+			<Filter>Source\ProjectJ\Client\Title</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Title\TitleGameMode.h">
+			<Filter>Source\ProjectJ\Client\Title</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Title\TitlePlayerController.cpp">
+			<Filter>Source\ProjectJ\Client\Title</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Title\TitlePlayerController.h">
+			<Filter>Source\ProjectJ\Client\Title</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\Client\Title\Widget">
+			<UniqueIdentifier>{51C28226-1799-4E06-8C4F-8646CB648849}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Title\Widget\TitleWidgetLogin.cpp">
+			<Filter>Source\ProjectJ\Client\Title\Widget</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Title\Widget\TitleWidgetLogin.h">
+			<Filter>Source\ProjectJ\Client\Title\Widget</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\Client\Title\Widget\TitleWidgetUserIn.cpp">
+			<Filter>Source\ProjectJ\Client\Title\Widget</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\Client\Title\Widget\TitleWidgetUserIn.h">
+			<Filter>Source\ProjectJ\Client\Title\Widget</Filter>
+		</ClInclude >
+		<Filter Include="Source\ProjectJ\NetWork">
+			<UniqueIdentifier>{FFD7AD88-8DF3-4257-8A2C-80398643E399}</UniqueIdentifier>
+		</Filter>
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\CharacterManager.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\CharacterManager.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\CharacterState.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\CharacterState.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\ChatManager.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\ChatManager.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\DataProtocol.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\EncryptManager.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\EnryptManager.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\ErrorManager.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\ErrorManager.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\Global.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\InGameState.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\InGameState.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\JobInfo.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\LinkedList.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\LoginManager.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\LoginManager.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\LoginState.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\LoginState.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\LogManager.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\LogManager.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\NetworkManager.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\NetworkManager.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\Packet.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\Packet.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\Socket.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\Socket.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\StorageDataType.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\StorageManager.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\StorageManager.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\TCPClient.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\TCPClient.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\ThreadManager.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\ThreadManager.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\User.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\User.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClCompile Include="..\..\Source\ProjectJ\NetWork\UserManager.cpp">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClCompile >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\UserManager.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+		<ClInclude Include="..\..\Source\ProjectJ\NetWork\UserState.h">
+			<Filter>Source\ProjectJ\NetWork</Filter>
+		</ClInclude >
+	</ItemGroup>
 </Project>

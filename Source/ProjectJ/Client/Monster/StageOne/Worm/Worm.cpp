@@ -54,8 +54,6 @@ AWorm::AWorm()
 
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 
-	TargetLimitDistance = 100.0f;
-
 	DeathFlag = false;
 
 	CurrentState = EWormState::Idle;
@@ -67,6 +65,7 @@ void AWorm::BeginPlay()
 {
 	Super::BeginPlay();
 
+	TargetLimitDistance = 100.0f;
 
 	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 

@@ -5,6 +5,11 @@
 #include "UObject/ConstructorHelpers.h" // 경로 탐색 헤더
 #include "BearAIController.h" //곰 AI 컨트롤러 헤더
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
+#include "Kismet/GameplayStatics.h"
+#include "Client/Monster/Manager/DistanceCheckAIManager.h"
+#include "Client/MyCharacter/MyCharacter.h"
+#include "GameFrameWork/CharacterMovementComponent.h"
+#include "BearAnimInstance.h"
 
 //서버 헤더
 
@@ -38,6 +43,19 @@ ABear::ABear()
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+
+	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+}
+
+void ABear::BeginPlay()
+{
+	Super::BeginPlay();
+
+	TargetLimitDistance = 150.0f;
+
+	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	BearAnimInstance = Cast<UBearAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void ABear::Tick(float DeltaTime)
@@ -45,12 +63,43 @@ void ABear::Tick(float DeltaTime)
 	switch (CurrentState)
 	{
 	case EBearState::Idle:
+		if (Target)
+		{
+			CurrentState = EBearState::Chase;
+		}
+		else
+		{
+			
+		}
 		break;
 	case EBearState::Chase:
+	{
+		EPathFollowingRequestResult::Type GoalResult = DistanceCheckAIManager->TargetChase(BearAIController, Target, TargetLimitDistance);
+
+		switch (GoalResult)
+		{
+		case EPathFollowingRequestResult::AlreadyAtGoal:
+			GLog->Log(FString::Printf(TEXT("골에 도착")));
+			BearAnimInstance->SetIsAttack(true);
+			break;
+		case EPathFollowingRequestResult::Failed:
+			GLog->Log(FString::Printf(TEXT("요청 실패")));
+			break;
+		case EPathFollowingRequestResult::RequestSuccessful:
+			GLog->Log(FString::Printf(TEXT("성공")));
+			BearAnimInstance->SetIsAttack(false);
+			break;
+		}
+	}
 		break;
 	case EBearState::Attack:
 		break;
 	case EBearState::Death:
 		break;
 	}
+}
+
+void ABear::SetAIController(AMonsterAIController * NewAIController)
+{
+	BearAIController = Cast<ABearAIController>(NewAIController);
 }

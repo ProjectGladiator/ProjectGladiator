@@ -7,6 +7,7 @@
 #include "MonsterAnimInstance.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeathDelegate); //죽음 애니메이션 델리게이트
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterAttackEndedDelegate); //공격 끝 애니메이션 델리게이트
 
 /**
  * 
@@ -27,11 +28,15 @@ private:
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = Montage)
 		class UAnimMontage* AttackMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsAttack)
+		bool IsAttack;
 
 	virtual void PlayAttackMontage(); //공격 애니메이션 몽타주 실행
 public:
 	FOnDeathDelegate OnDeath;
+	FOnMonsterAttackEndedDelegate OnMonsterAttackEnded;
 
 	UFUNCTION()
 		virtual void NativeUpdateAnimation(float DeltaSeconds) override; // 틱 함수
+	void SetIsAttack(bool _IsAttack);
 };

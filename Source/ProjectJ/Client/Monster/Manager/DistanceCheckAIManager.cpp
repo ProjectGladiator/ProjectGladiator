@@ -58,7 +58,8 @@ EPathFollowingRequestResult::Type UDistanceCheckAIManager::TargetChase(AMonsterA
 	if (MonsterAIController->IsValidLowLevel() && Target->IsValidLowLevel())
 	{
 		GoalResult = MonsterAIController->MoveToActor(Target, TargetLimitDistance, true, true, true, 0, true);
-
+		/*FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(MonsterAIController->GetPawn()->GetActorLocation(), Target->GetActorLocation());
+		MonsterAIController->GetPawn()->SetActorRotation(LooAtRotation);*/
 		return GoalResult;
 	}
 	else

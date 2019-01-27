@@ -39,3 +39,8 @@ void UMonsterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		}
 	}
 }
+
+void UMonsterAnimInstance::SetIsAttack(bool _IsAttack)
+{
+	IsAttack = _IsAttack;
+}

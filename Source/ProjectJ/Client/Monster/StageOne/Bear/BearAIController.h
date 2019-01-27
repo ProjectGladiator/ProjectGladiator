@@ -13,8 +13,7 @@ UCLASS()
 class PROJECTJ_API ABearAIController : public AMonsterAIController
 {
 	GENERATED_BODY()
-	
-	
-	
-	
+public:
+	UFUNCTION()
+		virtual void Possess(APawn* InPawn) override;
 };

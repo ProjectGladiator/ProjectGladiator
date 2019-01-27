@@ -25,8 +25,16 @@ class PROJECTJ_API ABear : public AMonster
 public:
 	ABear();
 private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Controller, Meta = (AllowPrivateAccess = true))
+		class ABearAIController* BearAIController;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
 		EBearState CurrentState;
+	UPROPERTY()
+		class UBearAnimInstance* BearAnimInstance;
+protected:
+	virtual void BeginPlay() override;
 public:
 	virtual void Tick(float DeltaTime) override;
+
+	void SetAIController(class AMonsterAIController* NewAIController);
 };

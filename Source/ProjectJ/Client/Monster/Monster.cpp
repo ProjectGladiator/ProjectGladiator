@@ -4,6 +4,8 @@
 //클라 헤더
 #include "MonsterAIController.h"
 #include "Client/Monster/Manager/DistanceCheckAIManager.h"
+#include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
+
 //서버 헤더
 
 // Sets default values
@@ -15,6 +17,8 @@ AMonster::AMonster()
 	AIControllerClass = AMonsterAIController::StaticClass();
 
 	DistanceCheckAIManager = CreateDefaultSubobject<UDistanceCheckAIManager>(TEXT("DistanceCheckAIManager"));
+
+	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 
 	Tags.Add(TEXT("Monster"));
 }
