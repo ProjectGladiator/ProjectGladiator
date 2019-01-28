@@ -31,8 +31,6 @@ private:
 		EWormState CurrentState;
 	UPROPERTY()
 		class UWormAnimInstance* WormAnimInstance;
-	UPROPERTY()
-		bool DeathFlag;
 protected:
 	virtual void BeginPlay() override;
 public:
@@ -40,7 +38,7 @@ public:
 
 	void SetAIController(class AMonsterAIController* NewAIController);
 	UFUNCTION()
-		void Death();
+		virtual void Death() override;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };

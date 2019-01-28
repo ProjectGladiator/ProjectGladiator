@@ -10,6 +10,8 @@
 #include "Client/MyCharacter/MyCharacter.h"
 #include "GameFrameWork/CharacterMovementComponent.h"
 #include "BearAnimInstance.h"
+#include "Kismet/KismetSystemLibrary.h"  //라인 트레이스 헤더 관련 헤더
+#include "Kismet/KismetMathLibrary.h"
 
 //서버 헤더
 
@@ -45,61 +47,140 @@ ABear::ABear()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+
 }
 
 void ABear::BeginPlay()
 {
 	Super::BeginPlay();
 
+	MaxHP = 100.0f;
+	CurrentHP = MaxHP;
+
 	TargetLimitDistance = 150.0f;
 
 	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
 	BearAnimInstance = Cast<UBearAnimInstance>(GetMesh()->GetAnimInstance());
+
+	if (BearAnimInstance)
+	{
+		BearAnimInstance->OnMonsterAttackHit.AddDynamic(this, &ABear::AttackHit);
+		BearAnimInstance->OnDeath.AddDynamic(this, &ABear::Death);
+	}
 }
 
 void ABear::Tick(float DeltaTime)
 {
-	switch (CurrentState)
+	if (Target)
 	{
-	case EBearState::Idle:
-		if (Target)
+		float Distance = DistanceCheckAIManager->DistanceCalculate(this, Target);
+	
+		switch (CurrentState)
 		{
+		case EBearState::Idle:
 			CurrentState = EBearState::Chase;
-		}
-		else
+			break;
+		case EBearState::Chase:
 		{
-			
+			EPathFollowingRequestResult::Type GoalResult = DistanceCheckAIManager->TargetChase(BearAIController, Target, TargetLimitDistance);
+
+			switch (GoalResult)
+			{
+			case EPathFollowingRequestResult::AlreadyAtGoal:
+				//GLog->Log(FString::Printf(TEXT("골에 도착")));
+				CurrentState = EBearState::Attack;
+				break;
+			case EPathFollowingRequestResult::Failed:
+				//GLog->Log(FString::Printf(TEXT("요청 실패")));
+				break;
+			case EPathFollowingRequestResult::RequestSuccessful:
+				//GLog->Log(FString::Printf(TEXT("성공")));
+				CurrentState = EBearState::Chase;
+				break;
+			}
 		}
 		break;
-	case EBearState::Chase:
-	{
-		EPathFollowingRequestResult::Type GoalResult = DistanceCheckAIManager->TargetChase(BearAIController, Target, TargetLimitDistance);
-
-		switch (GoalResult)
+		case EBearState::Attack:
 		{
-		case EPathFollowingRequestResult::AlreadyAtGoal:
-			GLog->Log(FString::Printf(TEXT("골에 도착")));
-			BearAnimInstance->SetIsAttack(true);
-			break;
-		case EPathFollowingRequestResult::Failed:
-			GLog->Log(FString::Printf(TEXT("요청 실패")));
-			break;
-		case EPathFollowingRequestResult::RequestSuccessful:
-			GLog->Log(FString::Printf(TEXT("성공")));
-			BearAnimInstance->SetIsAttack(false);
+			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
+			//GLog->Log(FString::Printf(TEXT("Pitch : %f Yaw : %f"), LooAtRotation.Pitch, LooAtRotation.Yaw));
+			SetActorRotation(LooAtRotation);
+			if (Distance > TargetLimitDistance*2.0f)
+			{
+				CurrentState = EBearState::Chase;
+			}
+		}
+		break;
+		case EBearState::Death:
+			DeathInVisibleValue += 0.01;
+			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
+
+			if (DeathFlag)
+			{
+				Destroy();
+			}
 			break;
 		}
 	}
-		break;
-	case EBearState::Attack:
-		break;
-	case EBearState::Death:
-		break;
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("곰 : 타겟이 존재하지 않음")));
 	}
 }
 
 void ABear::SetAIController(AMonsterAIController * NewAIController)
 {
 	BearAIController = Cast<ABearAIController>(NewAIController);
+}
+
+EBearState ABear::GetCurrentState()
+{
+	return CurrentState;
+}
+
+void ABear::AttackHit()
+{
+	GLog->Log(FString::Printf(TEXT("곰 공격중")));
+	TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
+
+	TArray<FHitResult> HitResults;
+
+	TArray<AActor*>IgonreActors;
+	IgonreActors.Add(this);
+
+	FVector TraceStart = GetActorLocation() + GetActorForwardVector()*150.0f;
+	FVector TraceEnd = TraceStart + GetActorForwardVector()*80.0f;
+
+	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
+		TraceStart,
+		TraceEnd,
+		120.0f,
+		ObjectTypes,
+		false,
+		IgonreActors,
+		EDrawDebugTrace::ForDuration,
+		HitResults,
+		true);
+}
+
+void ABear::Death()
+{
+	Super::Death();
+	DeathFlag = true;
+}
+
+float ABear::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+{
+	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	CurrentHP -= DamageAmount;
+
+	if (CurrentHP <= 0)
+	{
+		CurrentHP = 0;
+		CurrentState = EBearState::Death;
+	}
+	return DamageAmount;
 }

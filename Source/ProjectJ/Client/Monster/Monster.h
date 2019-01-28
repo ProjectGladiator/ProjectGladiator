@@ -10,6 +10,8 @@ UCLASS()
 class PROJECTJ_API AMonster : public ACharacter
 {
 	GENERATED_BODY()
+public:
+	AMonster();
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 		float MaxHP;
@@ -25,11 +27,13 @@ protected:
 		float DeathInVisibleValue;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	UPROPERTY()
+		bool DeathFlag;
+	UFUNCTION()
+		virtual void AttackHit();
+	UFUNCTION()
+		virtual void Death();
 public:
-	// Sets default values for this character's properties
-	AMonster();
-
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 

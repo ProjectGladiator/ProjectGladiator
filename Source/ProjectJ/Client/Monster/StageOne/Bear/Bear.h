@@ -4,16 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Client/Monster/Monster.h"
+#include "Client/State/MonsterState/MonsterState.h"
 #include "Bear.generated.h"
-
-UENUM(BlueprintType)
-enum class EBearState : uint8
-{
-	Idle,
-	Chase,
-	Attack,
-	Death
-};
 
 /**
  * 
@@ -37,4 +29,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void SetAIController(class AMonsterAIController* NewAIController);
+
+	EBearState GetCurrentState();
+	
+	UFUNCTION()
+		virtual void AttackHit() override;
+	UFUNCTION()
+		virtual void Death() override;
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 };

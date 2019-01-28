@@ -1,4 +1,5 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Tanker.h"
 //클라 헤더
@@ -7,6 +8,7 @@
 #include "Animation/AnimBlueprint.h" // 애님 블루프린트
 #include "TankerAnimInstance.h" //탱커 애님 인스턴스 헤더
 #include "Kismet/KismetSystemLibrary.h"  //라인 트레이스 헤더 관련 헤더
+#include "Kismet/GameplayStatics.h"
 //서버 헤더
 
 ATanker::ATanker()
@@ -123,6 +125,12 @@ void ATanker::OnAttackHit()
 
 	for (int i = 0; i < HitResults.Num(); i++)
 	{
+		UGameplayStatics::ApplyDamage(
+			HitResults[i].GetActor(),
+			10.0f,
+			UGameplayStatics::GetPlayerController(GetWorld(), 0),
+			this,
+			nullptr);
 		GLog->Log(FString::Printf(TEXT("%s"), *HitResults[i].BoneName.ToString()));
 	}
 }

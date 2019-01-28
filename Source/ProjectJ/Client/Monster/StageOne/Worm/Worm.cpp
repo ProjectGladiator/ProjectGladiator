@@ -7,13 +7,12 @@
 #include "Animation/AnimBlueprint.h" // 애님 블루프린트
 #include "WormAnimInstance.h" //벌레 애님인스턴스 헤더
 #include "WormAIController.h" //벌레 AI 컨트롤러 헤더
-#include "Client/MyCharacter/MyCharacter.h"
-#include "Client/Monster/Manager/DistanceCheckAIManager.h"
-#include "Kismet/GameplayStatics.h"
-#include "Navigation/PathFollowingComponent.h"
+#include "Client/MyCharacter/MyCharacter.h" //캐릭터들 부모 헤더
+#include "Client/Monster/Manager/DistanceCheckAIManager.h" //AI담당 컴포넌트 헤더
+#include "Kismet/GameplayStatics.h" //각종 유틸 헤더
+#include "Navigation/PathFollowingComponent.h" //AI관련 헤더
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
 #include "GameFrameWork/CharacterMovementComponent.h"
-#include "Components/CapsuleComponent.h"
 
 //서버 헤더
 
@@ -57,13 +56,14 @@ AWorm::AWorm()
 	DeathFlag = false;
 
 	CurrentState = EWormState::Idle;
-	MaxHP = 100.0f;
-	CurrentHP = MaxHP;
 }
 
 void AWorm::BeginPlay()
 {
 	Super::BeginPlay();
+
+	MaxHP = 100.0f;
+	CurrentHP = MaxHP;
 
 	TargetLimitDistance = 100.0f;
 
@@ -148,7 +148,6 @@ void AWorm::Tick(float DeltaTime)
 				ECollisionChannel::ECC_WorldStatic
 			);
 
-			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 			CurrentState = EWormState::Death;
 		}
 			break;
@@ -176,7 +175,7 @@ void AWorm::SetAIController(AMonsterAIController * NewAIController)
 
 void AWorm::Death()
 {
-	GLog->Log(FString::Printf(TEXT("죽음")));
+	Super::Death();
 	DeathFlag = true;
 }
 

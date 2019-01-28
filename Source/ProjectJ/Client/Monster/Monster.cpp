@@ -5,6 +5,7 @@
 #include "MonsterAIController.h"
 #include "Client/Monster/Manager/DistanceCheckAIManager.h"
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
+#include "Components/CapsuleComponent.h"
 
 //서버 헤더
 
@@ -21,6 +22,17 @@ AMonster::AMonster()
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 
 	Tags.Add(TEXT("Monster"));
+}
+
+void AMonster::AttackHit()
+{
+
+}
+
+void AMonster::Death()
+{
+	GLog->Log(FString::Printf(TEXT("부모 Dath 호출")));
+	GetCapsuleComponent()->SetCollisionProfileName("OverlapOnlyPawn");
 }
 
 // Called when the game starts or when spawned
@@ -47,4 +59,6 @@ float AMonster::GetHP()
 {
 	return CurrentHP;
 }
+
+
 
