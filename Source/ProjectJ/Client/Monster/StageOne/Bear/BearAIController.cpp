@@ -14,10 +14,10 @@ void ABearAIController::Possess(APawn * InPawn)
 	if (Bear)
 	{
 		Bear->SetAIController(this);
-		GLog->Log(FString::Printf(TEXT("Posses Success")));
+		GLog->Log(FString::Printf(TEXT("Bear Posses Success")));
 	}
 	else
 	{
-		GLog->Log(FString::Printf(TEXT("Posses Fail")));
+		GLog->Log(FString::Printf(TEXT("Bear Posses Fail")));
 	}
 }

@@ -8,7 +8,7 @@
 
 UWormAnimInstance::UWormAnimInstance()
 {
-	static ConstructorHelpers::FObjectFinder<UAnimMontage>Explosion_Montage(TEXT("AnimMontage'/Game/Blueprints/Monster/Worm/Animations/Explosion_Montage.Explosion_Montage'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>Explosion_Montage(TEXT("AnimMontage'/Game/Blueprints/Monster/StageOne/Worm/Animations/Explosion_Montage.Explosion_Montage'"));
 
 	if (Explosion_Montage.Succeeded())
 	{

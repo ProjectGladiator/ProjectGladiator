@@ -8,11 +8,12 @@
 #include "WormAnimInstance.h" //벌레 애님인스턴스 헤더
 #include "WormAIController.h" //벌레 AI 컨트롤러 헤더
 #include "Client/MyCharacter/MyCharacter.h" //캐릭터들 부모 헤더
-#include "Client/Monster/Manager/DistanceCheckAIManager.h" //AI담당 컴포넌트 헤더
+#include "Client/Monster/Manager/AIManager.h" //AI담당 컴포넌트 헤더
 #include "Kismet/GameplayStatics.h" //각종 유틸 헤더
 #include "Navigation/PathFollowingComponent.h" //AI관련 헤더
 #include "Runtime/AIModule/Classes/Blueprint/AIBlueprintHelperLibrary.h"
 #include "GameFrameWork/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 
 //서버 헤더
 
@@ -33,7 +34,7 @@ AWorm::AWorm()
 	}
 
 	// 애님블루프린트 찾아 메쉬에 세팅
-	static ConstructorHelpers::FObjectFinder<UClass>ABP_Worm(TEXT("AnimBlueprint'/Game/Blueprints/Monster/Worm/Blueprints/ABP_Worm.ABP_Worm_C'"));
+	static ConstructorHelpers::FObjectFinder<UClass>ABP_Worm(TEXT("AnimBlueprint'/Game/Blueprints/Monster/StageOne/Worm/Blueprints/ABP_Worm.ABP_Worm_C'"));
 
 	if (ABP_Worm.Succeeded())  //찾는것에 성공햇으면
 	{
@@ -66,7 +67,7 @@ void AWorm::BeginPlay()
 	CurrentHP = MaxHP;
 
 	TargetLimitDistance = 100.0f;
-
+	AttackInfo.SetAttackInfo(0, 0, 200.0f);
 	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
 	WormAnimInstance = Cast<UWormAnimInstance>(GetMesh()->GetAnimInstance());
@@ -80,16 +81,7 @@ void AWorm::BeginPlay()
 
 void AWorm::Tick(float DeltaTime)
 {
-	float Distance = DistanceCheckAIManager->DistanceCalculate(this, Target);
-
-	TArray<AActor*>IgonreActors;
-	IgonreActors.Add(this);
-	FHitResult HitResult;
-	FVector TraceStart;
-	FVector TraceEnd;
-	TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
-
-	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
+	float Distance = AIManager->DistanceCalculate(this, Target);
 
 	if (WormAIController)
 	{
@@ -103,7 +95,7 @@ void AWorm::Tick(float DeltaTime)
 			break;
 		case EWormState::Chase:
 		{
-			EPathFollowingRequestResult::Type GoalResult = DistanceCheckAIManager->TargetChase(WormAIController, Target, TargetLimitDistance);
+			EPathFollowingRequestResult::Type GoalResult = AIManager->TargetChase(WormAIController, Target, TargetLimitDistance);
 
 			switch (GoalResult)
 			{
@@ -120,37 +112,24 @@ void AWorm::Tick(float DeltaTime)
 		break;
 		case EWormState::Attack:
 		{
-			TraceStart = GetActorLocation();
-			TraceEnd = TraceStart + (GetActorForwardVector()*200.0f);
-			bool Result = UKismetSystemLibrary::LineTraceSingleForObjects(
-				GetWorld(),
-				TraceStart,
-				TraceEnd,
-				ObjectTypes,
-				true,
-				IgonreActors,
-				EDrawDebugTrace::ForDuration,
-				HitResult,
-				true,
-				FLinearColor::Red);
-
+			AIManager->AttackHitCreate(this, AttackInfo);
 			WormAnimInstance->PlayAttackMontage();
 
-			UGameplayStatics::ApplyRadialDamage(GetWorld(),
-				10.0f,
-				HitResult.ImpactPoint,
-				300.0f,
-				nullptr,
-				IgonreActors,
-				this,
-				UGameplayStatics::GetPlayerController(GetWorld(), 0),
-				false,
-				ECollisionChannel::ECC_WorldStatic
-			);
+			/*	UGameplayStatics::ApplyRadialDamage(GetWorld(),
+					10.0f,
+					HitResult.ImpactPoint,
+					300.0f,
+					nullptr,
+					IgonreActors,
+					this,
+					UGameplayStatics::GetPlayerController(GetWorld(), 0),
+					false,
+					ECollisionChannel::ECC_WorldStatic
+				);*/
 
 			CurrentState = EWormState::Death;
 		}
-			break;
+		break;
 		case EWormState::Death:
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
@@ -175,7 +154,6 @@ void AWorm::SetAIController(AMonsterAIController * NewAIController)
 
 void AWorm::Death()
 {
-	Super::Death();
 	DeathFlag = true;
 }
 
@@ -187,6 +165,7 @@ float AWorm::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 
 	if (CurrentHP <= 0)
 	{
+		GetCapsuleComponent()->SetCollisionProfileName("OverlapOnlyPawn");
 		CurrentHP = 0;
 		CurrentState = EWormState::Death;
 		WormAnimInstance->PlayAttackMontage();

@@ -13,3 +13,21 @@ enum class EBearState : uint8
 	Attack,
 	Death
 };
+
+UENUM(BlueprintType)
+enum class ESpiderState : uint8
+{
+	Idle,
+	Chase,
+	Attack,
+	Summon,
+	Death
+};
+
+UENUM(BlueprintType)
+enum class ESpiderAttackState : uint8
+{
+	Idle,
+	DefaultAttack,
+	ChargeAttack
+};

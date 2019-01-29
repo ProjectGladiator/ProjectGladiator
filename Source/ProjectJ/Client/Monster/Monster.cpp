@@ -3,9 +3,8 @@
 #include "Monster.h"
 //클라 헤더
 #include "MonsterAIController.h"
-#include "Client/Monster/Manager/DistanceCheckAIManager.h"
+#include "Client/Monster/Manager/AIManager.h"
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
-#include "Components/CapsuleComponent.h"
 
 //서버 헤더
 
@@ -17,7 +16,7 @@ AMonster::AMonster()
 
 	AIControllerClass = AMonsterAIController::StaticClass();
 
-	DistanceCheckAIManager = CreateDefaultSubobject<UDistanceCheckAIManager>(TEXT("DistanceCheckAIManager"));
+	AIManager = CreateDefaultSubobject<UAIManager>(TEXT("AIManager"));
 
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 
@@ -29,10 +28,14 @@ void AMonster::AttackHit()
 
 }
 
+void AMonster::AttackEnded()
+{
+
+}
+
 void AMonster::Death()
 {
-	GLog->Log(FString::Printf(TEXT("부모 Dath 호출")));
-	GetCapsuleComponent()->SetCollisionProfileName("OverlapOnlyPawn");
+
 }
 
 // Called when the game starts or when spawned

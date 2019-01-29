@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Client/Monster/Struct/MonsterAttackInfo.h"
 #include "Monster.generated.h"
 
 UCLASS()
@@ -18,19 +19,23 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 		float CurrentHP;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = AI)
-		class UDistanceCheckAIManager* DistanceCheckAIManager;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AI)
-		float TargetLimitDistance;
+		class UAIManager* AIManager;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Target)
 		class AMyCharacter* Target;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AI)
 		float DeathInVisibleValue;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
+		float TargetLimitDistance;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
+		FMonsterAttackInfo AttackInfo;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	UPROPERTY()
 		bool DeathFlag;
 	UFUNCTION()
 		virtual void AttackHit();
+	UFUNCTION()
+		virtual void AttackEnded();
 	UFUNCTION()
 		virtual void Death();
 public:

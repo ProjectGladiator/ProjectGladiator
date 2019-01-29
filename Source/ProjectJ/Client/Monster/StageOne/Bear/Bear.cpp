@@ -5,13 +5,14 @@
 #include "UObject/ConstructorHelpers.h" // 경로 탐색 헤더
 #include "BearAIController.h" //곰 AI 컨트롤러 헤더
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
-#include "Kismet/GameplayStatics.h"
-#include "Client/Monster/Manager/DistanceCheckAIManager.h"
-#include "Client/MyCharacter/MyCharacter.h"
-#include "GameFrameWork/CharacterMovementComponent.h"
-#include "BearAnimInstance.h"
+#include "Kismet/GameplayStatics.h" //각종 유틸 헤더
+#include "Client/Monster/Manager/AIManager.h" //AI담당 컴포넌트 헤더
+#include "Client/MyCharacter/MyCharacter.h" //캐릭터들 부모
+#include "GameFrameWork/CharacterMovementComponent.h" //캐릭터 속도 관련 헤더
+#include "BearAnimInstance.h" //곰 애님 인스턴스 헤더
 #include "Kismet/KismetSystemLibrary.h"  //라인 트레이스 헤더 관련 헤더
-#include "Kismet/KismetMathLibrary.h"
+#include "Kismet/KismetMathLibrary.h" //수학 관련 헤더
+#include "Components/CapsuleComponent.h"
 
 //서버 헤더
 
@@ -27,8 +28,9 @@ ABear::ABear()
 	{
 		GetMesh()->SetSkeletalMesh(SK_Bear.Object);
 	}
+
 	// 애님블루프린트 찾아 메쉬에 세팅
-	static ConstructorHelpers::FObjectFinder<UClass>ABP_Bear(TEXT("AnimBlueprint'/Game/Blueprints/Monster/Bear/Blueprints/ABP_Bear.ABP_Bear_C'"));
+	static ConstructorHelpers::FObjectFinder<UClass>ABP_Bear(TEXT("AnimBlueprint'/Game/Blueprints/Monster/StageOne/Bear/Blueprints/ABP_Bear.ABP_Bear_C'"));
 
 	if (ABP_Bear.Succeeded())  //찾는것에 성공햇으면
 	{
@@ -47,7 +49,6 @@ ABear::ABear()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
-
 }
 
 void ABear::BeginPlay()
@@ -58,6 +59,9 @@ void ABear::BeginPlay()
 	CurrentHP = MaxHP;
 
 	TargetLimitDistance = 150.0f;
+	AttackInfo.SetAttackInfo(150.0f, 80.0f, 120.0f);
+
+	CurrentState = EBearState::Idle;
 
 	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
@@ -74,7 +78,7 @@ void ABear::Tick(float DeltaTime)
 {
 	if (Target)
 	{
-		float Distance = DistanceCheckAIManager->DistanceCalculate(this, Target);
+		float Distance = AIManager->DistanceCalculate(this, Target);
 	
 		switch (CurrentState)
 		{
@@ -83,7 +87,7 @@ void ABear::Tick(float DeltaTime)
 			break;
 		case EBearState::Chase:
 		{
-			EPathFollowingRequestResult::Type GoalResult = DistanceCheckAIManager->TargetChase(BearAIController, Target, TargetLimitDistance);
+			EPathFollowingRequestResult::Type GoalResult = AIManager->TargetChase(BearAIController, Target, TargetLimitDistance);
 
 			switch (GoalResult)
 			{
@@ -106,6 +110,7 @@ void ABear::Tick(float DeltaTime)
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
 			//GLog->Log(FString::Printf(TEXT("Pitch : %f Yaw : %f"), LooAtRotation.Pitch, LooAtRotation.Yaw));
 			SetActorRotation(LooAtRotation);
+
 			if (Distance > TargetLimitDistance*2.0f)
 			{
 				CurrentState = EBearState::Chase;
@@ -141,33 +146,11 @@ EBearState ABear::GetCurrentState()
 
 void ABear::AttackHit()
 {
-	GLog->Log(FString::Printf(TEXT("곰 공격중")));
-	TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
-	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
-
-	TArray<FHitResult> HitResults;
-
-	TArray<AActor*>IgonreActors;
-	IgonreActors.Add(this);
-
-	FVector TraceStart = GetActorLocation() + GetActorForwardVector()*150.0f;
-	FVector TraceEnd = TraceStart + GetActorForwardVector()*80.0f;
-
-	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
-		TraceStart,
-		TraceEnd,
-		120.0f,
-		ObjectTypes,
-		false,
-		IgonreActors,
-		EDrawDebugTrace::ForDuration,
-		HitResults,
-		true);
+	AIManager->AttackHitCreate(this, AttackInfo);
 }
 
 void ABear::Death()
 {
-	Super::Death();
 	DeathFlag = true;
 }
 
@@ -179,8 +162,10 @@ float ABear::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 
 	if (CurrentHP <= 0)
 	{
+		GetCapsuleComponent()->SetCollisionProfileName("OverlapOnlyPawn");
 		CurrentHP = 0;
 		CurrentState = EBearState::Death;
 	}
+
 	return DamageAmount;
 }

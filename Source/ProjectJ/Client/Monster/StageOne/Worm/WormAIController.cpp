@@ -14,10 +14,10 @@ void AWormAIController::Possess(APawn * InPawn)
 	if (Worm)
 	{
 		Worm->SetAIController(this);
-		GLog->Log(FString::Printf(TEXT("Posses Success")));
+		GLog->Log(FString::Printf(TEXT("Worm Posses Success")));
 	}
 	else
 	{
-		GLog->Log(FString::Printf(TEXT("Posses Fail")));
+		GLog->Log(FString::Printf(TEXT("Worm Posses Fail")));
 	}
 }
