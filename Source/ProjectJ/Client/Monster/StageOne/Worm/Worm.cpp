@@ -67,7 +67,7 @@ void AWorm::BeginPlay()
 	CurrentHP = MaxHP;
 
 	TargetLimitDistance = 100.0f;
-	AttackInfo.SetAttackInfo(0, 0, 200.0f);
+	AttackInfo.SetAttackInfo(0, 0, 300.0f);
 	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
 	WormAnimInstance = Cast<UWormAnimInstance>(GetMesh()->GetAnimInstance());
@@ -114,19 +114,6 @@ void AWorm::Tick(float DeltaTime)
 		{
 			AIManager->AttackMeleeHitCreate(this, AttackInfo);
 			WormAnimInstance->PlayAttackMontage();
-
-			/*	UGameplayStatics::ApplyRadialDamage(GetWorld(),
-					10.0f,
-					HitResult.ImpactPoint,
-					300.0f,
-					nullptr,
-					IgonreActors,
-					this,
-					UGameplayStatics::GetPlayerController(GetWorld(), 0),
-					false,
-					ECollisionChannel::ECC_WorldStatic
-				);*/
-
 			CurrentState = EWormState::Death;
 		}
 		break;

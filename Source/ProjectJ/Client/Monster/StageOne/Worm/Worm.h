@@ -4,16 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Client/Monster/Monster.h"
+#include "Client/State/MonsterState/MonsterState.h"
 #include "Worm.generated.h"
-
-UENUM(BlueprintType)
-enum class EWormState : uint8
-{
-	Idle,
-	Chase,
-	Attack,
-	Death
-};
 
 /**
  *

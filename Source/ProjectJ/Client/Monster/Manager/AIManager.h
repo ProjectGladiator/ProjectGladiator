@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -26,11 +26,15 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	//플레이어와의 거리를 재는 함수
 	float DistanceCalculate(class AMonster* Monster, class AMyCharacter* Target);
 
+	//플레이어를 쫓아가는 함수
 	EPathFollowingRequestResult::Type TargetChase(class AMonsterAIController* MonsterAIController, class AMyCharacter* Target, float& TargetLimitDistance);	
 	
+	//근거리 공격판정 함수
 	void AttackMeleeHitCreate(class AMonster* Monster, FMonsterAttackInfo& AttackInfo);
 
+	//원거리 공격판정 함수
 	FHitResult AttackRangeHitCreate(class AMonster* Monster, float RangeDistance, const FName& SocketName);
 };

@@ -9,6 +9,7 @@
 #include "TankerAnimInstance.h" //탱커 애님 인스턴스 헤더
 #include "Kismet/KismetSystemLibrary.h"  //라인 트레이스 헤더 관련 헤더
 #include "Kismet/GameplayStatics.h"
+#include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 //서버 헤더
 
 ATanker::ATanker()
@@ -20,6 +21,13 @@ ATanker::ATanker()
 	if (SK_TankerMesh.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(SK_TankerMesh.Object);
+	}
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>PT_HitEffectMonster(TEXT("ParticleSystem'/Game/Assets/Paragon/Chracter/ParagonTerra/FX/Particles/Terra/Abilities/Primary/FX/P_Terra_Primary_Impact.P_Terra_Primary_Impact'"));
+
+	if (PT_HitEffectMonster.Succeeded())
+	{
+		HitEffectMonster = PT_HitEffectMonster.Object;
 	}
 
 	// 애님블루프린트 찾아 메쉬에 세팅
@@ -105,21 +113,44 @@ void ATanker::OnAttackHit()
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
 
 	TArray<FHitResult> HitResults;
-
+	FHitResult HirResult;
 	TArray<AActor*>IgonreActors;
 	IgonreActors.Add(this);
 	
 	FVector TraceStart = GetActorLocation() + GetActorForwardVector()*100.0f;
 	FVector TraceEnd = TraceStart + GetActorForwardVector()*100.0f;
 
-	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
+	UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(),
 		TraceStart,
 		TraceEnd,
 		140.0f,
 		ObjectTypes,
 		false,
 		IgonreActors,
-		EDrawDebugTrace::ForDuration,
+		EDrawDebugTrace::None,
+		HirResult,
+		true);
+	
+	GLog->Log(FString::Printf(TEXT("%s"),*HirResult.BoneName.ToString()));
+
+	UGameplayStatics::ApplyDamage(
+		HirResult.GetActor(),
+		10.0f,
+		UGameplayStatics::GetPlayerController(GetWorld(), 0),
+		this,
+		nullptr);
+
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffectMonster, HirResult.ImpactPoint);
+
+
+	/*UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
+		TraceStart,
+		TraceEnd,
+		140.0f,
+		ObjectTypes,
+		false,
+		IgonreActors,
+		EDrawDebugTrace::None,
 		HitResults,
 		true);
 
@@ -131,8 +162,9 @@ void ATanker::OnAttackHit()
 			UGameplayStatics::GetPlayerController(GetWorld(), 0),
 			this,
 			nullptr);
-		GLog->Log(FString::Printf(TEXT("%s"), *HitResults[i].BoneName.ToString()));
-	}
+		
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffectMonster, HitResults[i].ImpactPoint);
+	}*/
 }
 
 float ATanker::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)

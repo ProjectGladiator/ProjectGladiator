@@ -9,6 +9,7 @@
 #include "Kismet/KismetSystemLibrary.h" //라인 트레이스 관련 헤더
 #include "Engine/World.h" //월드 관련 헤더 
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 컴포넌트 헤더
+#include "Kismet/GameplayStatics.h"
 
 //서버헤더
 
@@ -96,6 +97,21 @@ void UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & A
 			EDrawDebugTrace::ForDuration,
 			HitResults,
 			true);
+
+		/*for (int i = 0; i < HitResults.Num(); i++)
+		{
+			UGameplayStatics::ApplyRadialDamage(GetWorld(),
+				10.0f,
+				HitResults[i].ImpactPoint,
+				300.0f,
+				nullptr,
+				IgnoreActors,
+				Monster,
+				UGameplayStatics::GetPlayerController(GetWorld(), 0),
+				false,
+				ECollisionChannel::ECC_Visibility
+			);
+		}*/
 	}
 }
 

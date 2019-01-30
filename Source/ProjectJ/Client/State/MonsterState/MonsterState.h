@@ -6,6 +6,15 @@
 #include "MonsterState.generated.h"
 
 UENUM(BlueprintType)
+enum class EWormState : uint8
+{
+	Idle,
+	Chase,
+	Attack,
+	Death
+};
+
+UENUM(BlueprintType)
 enum class EBearState : uint8
 {
 	Idle,

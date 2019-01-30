@@ -18,6 +18,8 @@ private:
 		class UTankerAnimInstance* TankerAnimInstance;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon, Meta = (AllowPrivateAccess = true))
 		class UCapsuleComponent* WeaponCapsule;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect, Meta = (AllowPrivateAccess = true))
+		class UParticleSystem* HitEffectMonster;
 public:
 	ATanker();
 

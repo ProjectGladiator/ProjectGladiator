@@ -23,7 +23,6 @@ void UInventorySlotWidget::NativeConstruct()
 
 void UInventorySlotWidget::UpdateInventorySlot(FSInventorySlot SlotInfo)
 {
-
 	if (UKismetSystemLibrary::IsValidClass(SlotInfo.ItemClass->StaticClass()))
 	{
 		InventorySlotButton->SetIsEnabled(true);

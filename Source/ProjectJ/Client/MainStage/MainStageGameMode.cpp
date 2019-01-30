@@ -8,9 +8,11 @@
 #include "Engine/World.h"
 #include "Client/WinterGameInstance.h"
 #include "Client/MyCharacter/Tanker/Tanker.h"
+#include "MainStagePlayerController.h"
 //서버 헤더
 #include "NetWork/CharacterManager.h"
 #include "NetWork/StorageManager.h"
+#include "NetWork/JobInfo.h"
 
 AMainStageGameMode::AMainStageGameMode()
 {	
@@ -74,16 +76,34 @@ void AMainStageGameMode::Tick(float DeltaTime)
 
 			switch (character_info->character_code)
 			{
-			case 1000:
+			case CHARACTER_JOB::TANKER:
 				{// 지역 변수이용하기 위함
 					ATanker * Tanker = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+
+					if (Tanker)
+					{
+						auto MainStagePlayerController = Cast<AMainStagePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+						if (MainStagePlayerController)
+						{
+							MainStagePlayerController->Possess(Tanker);
+						}
+						else
+						{
+							GLog->Log(FString::Printf(TEXT("메인 스테이지 월드에 메인스테이지 플레이어컨트롤러가 스폰 안됨")));
+						}
+					}
+					else
+					{
+						GLog->Log(FString::Printf(TEXT("메인 스테이지 월드에 탱커가 스폰 안됨")));
+					}
 				}
 				break;
-			case 2000:
+			case CHARACTER_JOB::WARRIOR:
 				break;
-			case 3000:
+			case CHARACTER_JOB::MAGICIAN:
 				break;
-			case 4000:
+			case CHARACTER_JOB::GUNNER:
 				break;
 			}
 			break;
