@@ -174,10 +174,9 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 void StorageManager::ChangeData(void * data, int _count, CharacterInfo *& _charinfo)
 {
 	char* ptr = (char*)data;
+	
 	int nicksize = 0;
-
-	ptr += sizeof(int);
-
+		
 	for (int i = 0; i < _count; i++)
 	{
 		memcpy(&_charinfo[i].character_code, ptr, sizeof(int));

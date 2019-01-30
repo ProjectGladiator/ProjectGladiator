@@ -277,8 +277,14 @@ bool CharacterManager::Character_Recv_Create(char * _buf)
 
 bool CharacterManager::Character_Recv_Enter(char * _buf)
 {
-	bool check;
+	char ptrdata[BUFSIZE];
 	char* ptr = _buf;
+	int datasize = 0;
+
+	CharacterInfo charterinfo;
+	
+	int nicklen = 0;
+	bool check;
 
 	memcpy(&check, ptr, sizeof(bool));
 	ptr += sizeof(bool);
@@ -286,7 +292,57 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 	if (check)
 	{
 		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_RESULT, (void*)&check, sizeof(bool));
-		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_INFO, (void*)ptr, strlen(ptr));
+	
+		// 분해하기
+		memcpy(&charterinfo.character_code, ptr, sizeof(int));
+		ptr += sizeof(int);
+		datasize += sizeof(int);
+
+		memcpy(&nicklen, ptr, sizeof(int));
+		ptr += sizeof(int);
+		datasize += sizeof(int);
+
+		memcpy(charterinfo.nick, ptr, nicklen);
+		ptr += nicklen;
+		datasize += nicklen;
+
+		memcpy(&charterinfo.x, ptr, sizeof(float));
+		ptr += sizeof(float);
+		datasize += sizeof(float);
+
+		memcpy(&charterinfo.y, ptr, sizeof(float));
+		ptr += sizeof(float);
+		datasize += sizeof(float);
+
+		memcpy(&charterinfo.z, ptr,sizeof(float));
+		ptr += sizeof(float);
+		datasize += sizeof(float);
+
+		// ptrdata 초기화
+		memset(ptrdata, 0, sizeof(ptrdata));
+		char* ptr_packetdata = ptrdata;
+
+		// data에 넣는 작업
+		memcpy(ptr_packetdata, &charterinfo.character_code, sizeof(int));
+		ptr_packetdata += sizeof(int);
+
+		memcpy(ptr_packetdata, &nicklen, sizeof(int));
+		ptr_packetdata += sizeof(int);
+
+		memcpy(ptr_packetdata, charterinfo.nick, nicklen);
+		ptr_packetdata += nicklen;
+
+		memcpy(ptr_packetdata, &charterinfo.x, sizeof(float));
+		ptr_packetdata += sizeof(float);
+
+		memcpy(ptr_packetdata, &charterinfo.y, sizeof(float));
+		ptr_packetdata += sizeof(float);
+
+		memcpy(ptr_packetdata, &charterinfo.z, sizeof(float));
+		ptr_packetdata += sizeof(float);
+
+		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_INFO, (void*)&ptrdata, datasize);
+
 		return true;
 	}
 	else
