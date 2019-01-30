@@ -2,12 +2,14 @@
 
 #include "AIManager.h"
 //클라헤더
-#include "Client/Monster/Monster.h"
-#include "Client/MyCharacter/MyCharacter.h"
-#include "Kismet/KismetMathLibrary.h"
-#include "Client/Monster/MonsterAIController.h"
-#include "Kismet/KismetSystemLibrary.h"
-#include "Engine/World.h"
+#include "Client/Monster/Monster.h" //몬스터 관련 헤더
+#include "Client/MyCharacter/MyCharacter.h" //캐릭터 부모 관련 헤더
+#include "Kismet/KismetMathLibrary.h" //수학 관련 헤더
+#include "Client/Monster/MonsterAIController.h" //몬스터 AI 컨트롤러 관련 헤더
+#include "Kismet/KismetSystemLibrary.h" //라인 트레이스 관련 헤더
+#include "Engine/World.h" //월드 관련 헤더 
+#include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 컴포넌트 헤더
+
 //서버헤더
 
 // Sets default values for this component's properties
@@ -68,7 +70,7 @@ EPathFollowingRequestResult::Type UAIManager::TargetChase(AMonsterAIController *
 	}
 }
 
-void UAIManager::AttackHitCreate(AMonster * Monster, FMonsterAttackInfo & AttackInfo)
+void UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & AttackInfo)
 {
 	if (Monster->IsValidLowLevel())
 	{
@@ -78,8 +80,8 @@ void UAIManager::AttackHitCreate(AMonster * Monster, FMonsterAttackInfo & Attack
 
 		TArray<FHitResult> HitResults;
 
-		TArray<AActor*>IgonreActors;
-		IgonreActors.Add(Monster);
+		TArray<AActor*>IgnoreActors;
+		IgnoreActors.Add(Monster);
 
 		FVector TraceStart = Monster->GetActorLocation() + Monster->GetActorForwardVector() * AttackInfo.AttackStartLocation;
 		FVector TraceEnd = TraceStart + Monster->GetActorForwardVector() * AttackInfo.AttackEndLocation;
@@ -90,10 +92,40 @@ void UAIManager::AttackHitCreate(AMonster * Monster, FMonsterAttackInfo & Attack
 			AttackInfo.AttackWidth,
 			ObjectTypes,
 			false,
-			IgonreActors,
+			IgnoreActors,
 			EDrawDebugTrace::ForDuration,
 			HitResults,
 			true);
 	}
+}
+
+FHitResult UAIManager::AttackRangeHitCreate(AMonster * Monster, float RangeDistance, const FName& SocketName)
+{
+	FHitResult HitResult;
+
+	if (Monster->IsValidLowLevel())
+	{
+		TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
+		ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
+		ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
+
+		TArray<AActor*>IgnoreActors;
+		IgnoreActors.Add(Monster);
+
+		FVector TraceStart = Monster->GetMesh()->GetSocketLocation(SocketName);
+		FVector TraceEnd = TraceStart + Monster->GetActorForwardVector()*RangeDistance;
+
+		UKismetSystemLibrary::LineTraceSingleForObjects(GetWorld(),
+			TraceStart,
+			TraceEnd,
+			ObjectTypes,
+			false,
+			IgnoreActors,
+			EDrawDebugTrace::ForDuration,
+			HitResult,
+			true);
+	}
+
+	return HitResult;
 }
 

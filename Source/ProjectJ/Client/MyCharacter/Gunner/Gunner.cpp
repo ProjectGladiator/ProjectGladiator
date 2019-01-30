@@ -125,8 +125,8 @@ void AGunner::OnAttackHit()
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
 
-	TArray<AActor*>IgonreActors;
-	IgonreActors.Add(this);
+	TArray<AActor*> IgnoreActors;
+	IgnoreActors.Add(this);
 
 	FHitResult HitResult;
 
@@ -138,7 +138,7 @@ void AGunner::OnAttackHit()
 		TraceEnd,
 		ObjectTypes,
 		false,
-		IgonreActors,
+		IgnoreActors,
 		EDrawDebugTrace::ForDuration,
 		HitResult,
 		true);

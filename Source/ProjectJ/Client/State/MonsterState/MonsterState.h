@@ -31,3 +31,20 @@ enum class ESpiderAttackState : uint8
 	DefaultAttack,
 	ChargeAttack
 };
+
+UENUM(BlueprintType)
+enum class EDinosaurState : uint8
+{
+	Idle,
+	Chase,
+	Attack,
+	Death
+};
+
+UENUM(BlueprintType)
+enum class EDinosaurAttackState : uint8
+{
+	Idle,
+	DefaultAttack,
+	RangeAttack
+};

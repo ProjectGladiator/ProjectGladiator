@@ -12,7 +12,7 @@
 #include "BearAnimInstance.h" //곰 애님 인스턴스 헤더
 #include "Kismet/KismetSystemLibrary.h"  //라인 트레이스 헤더 관련 헤더
 #include "Kismet/KismetMathLibrary.h" //수학 관련 헤더
-#include "Components/CapsuleComponent.h"
+#include "Components/CapsuleComponent.h" //캡슐 컴포넌트 헤더
 
 //서버 헤더
 
@@ -146,7 +146,7 @@ EBearState ABear::GetCurrentState()
 
 void ABear::AttackHit()
 {
-	AIManager->AttackHitCreate(this, AttackInfo);
+	AIManager->AttackMeleeHitCreate(this, AttackInfo);
 }
 
 void ABear::Death()

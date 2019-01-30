@@ -155,7 +155,7 @@ ESpiderAttackState ASpider::GetCurrentAttackState()
 
 void ASpider::AttackHit()
 {
-	AIManager->AttackHitCreate(this, AttackInfo);
+	AIManager->AttackMeleeHitCreate(this, AttackInfo);
 }
 
 void ASpider::AttackEnded()

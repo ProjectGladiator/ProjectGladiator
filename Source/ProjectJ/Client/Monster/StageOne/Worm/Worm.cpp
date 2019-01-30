@@ -112,7 +112,7 @@ void AWorm::Tick(float DeltaTime)
 		break;
 		case EWormState::Attack:
 		{
-			AIManager->AttackHitCreate(this, AttackInfo);
+			AIManager->AttackMeleeHitCreate(this, AttackInfo);
 			WormAnimInstance->PlayAttackMontage();
 
 			/*	UGameplayStatics::ApplyRadialDamage(GetWorld(),

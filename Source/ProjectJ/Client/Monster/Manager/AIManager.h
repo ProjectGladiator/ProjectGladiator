@@ -30,5 +30,7 @@ public:
 
 	EPathFollowingRequestResult::Type TargetChase(class AMonsterAIController* MonsterAIController, class AMyCharacter* Target, float& TargetLimitDistance);	
 	
-	void AttackHitCreate(class AMonster* Monster, FMonsterAttackInfo& AttackInfo);
+	void AttackMeleeHitCreate(class AMonster* Monster, FMonsterAttackInfo& AttackInfo);
+
+	FHitResult AttackRangeHitCreate(class AMonster* Monster, float RangeDistance, const FName& SocketName);
 };
