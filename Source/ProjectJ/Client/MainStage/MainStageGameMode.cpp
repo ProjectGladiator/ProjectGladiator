@@ -58,8 +58,13 @@ void AMainStageGameMode::Tick(float DeltaTime)
 		case PCHARACTERDATA_ENTER_INFO:
 			// 캐릭터 정보 받을 구조체 할당
 			character_info = new CharacterInfo;
+
+			memset(character_info, 0, sizeof(CharacterInfo));
+
 			// 캐릭터 정보 서버에서 받은거 넣어줌
-			StorageManager::GetInstance()->ChangeData(Data, 1, character_info);
+			StorageManager::GetInstance()->ChangeData(Data->data, 1, character_info);
+
+			StorageManager::GetInstance()->PopData();
 
 			FVector SpawnLocation(character_info->x, character_info->y, character_info->z);
 
