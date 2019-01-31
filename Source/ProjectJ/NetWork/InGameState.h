@@ -8,7 +8,7 @@ class InGameState : public UserState
 private:
 	enum CSTATE {
 		// RECV 스테이트
-		INGAME_INIT_RECV, 
+		INGAME_INIT_RECV
 		
 	};
 
