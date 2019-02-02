@@ -6,6 +6,7 @@
 #include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
+#include "Client/MainMap/MainMapPlayerController.h"
 //서버 헤더
 #include "NetWork/StorageManager.h"
 
@@ -26,7 +27,7 @@ void UCharacterSelectButton::NativeConstruct()
 		CharacterSelectButton->OnClicked.AddDynamic(this, &UCharacterSelectButton::CharacterSelect);
 	}
 
-	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
 void UCharacterSelectButton::NativeTick(const FGeometry & MyGeometry, float InDeltaTime)
@@ -56,15 +57,15 @@ void UCharacterSelectButton::CharacterSelect()
 
 		if (str.Compare("CharacterSelectButtonOne") == 0)
 		{
-			PC->SetSelectIndex(1);
+			MainMapPlayerController->SetSelectIndex(1);
 		}
 		else if (str.Compare("CharacterSelectButtonTwo") == 0)
 		{
-			PC->SetSelectIndex(2);
+			MainMapPlayerController->SetSelectIndex(2);
 		}
 		else if (str.Compare("CharacterSelectButtonThree") == 0)
 		{
-			PC->SetSelectIndex(3);
+			MainMapPlayerController->SetSelectIndex(3);
 		}
 	}
 }

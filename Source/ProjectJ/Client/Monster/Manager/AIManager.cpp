@@ -71,15 +71,18 @@ EPathFollowingRequestResult::Type UAIManager::TargetChase(AMonsterAIController *
 	}
 }
 
-void UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & AttackInfo)
+FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & AttackInfo)
 {
+	FHitResult HitResult;
+
 	if (Monster->IsValidLowLevel())
 	{
 		GLog->Log(FString::Printf(TEXT("몬스터 공격중")));
 		TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
 		ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
 
-		TArray<FHitResult> HitResults;
+		
+		//TArray<FHitResult> HitResults;
 
 		TArray<AActor*>IgnoreActors;
 		IgnoreActors.Add(Monster);
@@ -87,7 +90,18 @@ void UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & A
 		FVector TraceStart = Monster->GetActorLocation() + Monster->GetActorForwardVector() * AttackInfo.AttackStartLocation;
 		FVector TraceEnd = TraceStart + Monster->GetActorForwardVector() * AttackInfo.AttackEndLocation;
 
-		UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
+		UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(),
+			TraceStart,
+			TraceEnd,
+			AttackInfo.AttackWidth,
+			ObjectTypes,
+			false,
+			IgnoreActors,
+			EDrawDebugTrace::None,
+			HitResult,
+			true);
+
+		/*UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
 			TraceStart,
 			TraceEnd,
 			AttackInfo.AttackWidth,
@@ -96,7 +110,7 @@ void UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & A
 			IgnoreActors,
 			EDrawDebugTrace::ForDuration,
 			HitResults,
-			true);
+			true);*/
 
 		/*for (int i = 0; i < HitResults.Num(); i++)
 		{
@@ -113,6 +127,8 @@ void UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & A
 			);
 		}*/
 	}
+
+	return HitResult;
 }
 
 FHitResult UAIManager::AttackRangeHitCreate(AMonster * Monster, float RangeDistance, const FName& SocketName)
@@ -137,7 +153,7 @@ FHitResult UAIManager::AttackRangeHitCreate(AMonster * Monster, float RangeDista
 			ObjectTypes,
 			false,
 			IgnoreActors,
-			EDrawDebugTrace::ForDuration,
+			EDrawDebugTrace::None,
 			HitResult,
 			true);
 	}

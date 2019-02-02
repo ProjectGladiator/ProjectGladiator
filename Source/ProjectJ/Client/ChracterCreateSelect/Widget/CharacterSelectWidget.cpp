@@ -7,6 +7,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
 #include "Client/ChracterCreateSelect/CharacterCreateSelectGameMode.h"
+#include "Client/MainMap/MainMapGameMode.h"
+#include "Client/MainMap/MainMapPlayerController.h"
 #include "Client/WinterGameInstance.h"
 //서버 헤더
 #include "NetWork/NetworkManager.h"
@@ -42,13 +44,13 @@ void UCharacterSelectWidget::NativeConstruct()
 		CharacterCreateButton->OnClicked.AddDynamic(this, &UCharacterSelectWidget::MyCharacterCreate);
 	}
 
-	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	CCSGM = Cast<ACharacterCreateSelectGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 void UCharacterSelectWidget::GameStart()
 {
-	if (PC)
+	if (MainMapPlayerController)
 	{
 		UWinterGameInstance* MyGI = Cast<UWinterGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 
@@ -63,7 +65,7 @@ void UCharacterSelectWidget::GameStart()
 			/*
 			** 캐릭터 선택한 슬롯번호 서버에 보내면서 접속 요청하기
 			*/
-			CharacterManager::GetInstance()->Character_Req_Enter(PC->GetSelectIndex());
+			CharacterManager::GetInstance()->Character_Req_Enter(MainMapPlayerController->GetSelectIndex());
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
 		}
 	}
@@ -80,9 +82,9 @@ void UCharacterSelectWidget::MyCharacterCreate()
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 	NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-	CCSGM->CharacterCreateWidgetToggle();
-	CCSGM->CharacterSelectWidgetToggle();
-	PC->ToCharacterCreate();
+	MainMapGameMode->CharacterCreateWidgetToggle();
+	MainMapGameMode->CharacterSelectWidgetToggle();
+	MainMapPlayerController->ToCharacterCreate();
 }
 
 void UCharacterSelectWidget::MyCharacterSlotUpdate(PacketData * _data)

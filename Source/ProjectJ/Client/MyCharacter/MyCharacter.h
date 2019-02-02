@@ -45,7 +45,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		FRotator CurrentRotator;
 
-	class AChracterCreateSelectPC* CharacterCreateSelectPC;
+	class AMainMapPlayerController* MainMapPlayerController = nullptr;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

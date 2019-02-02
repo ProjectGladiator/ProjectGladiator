@@ -7,6 +7,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
 #include "Client/ChracterCreateSelect/CharacterCreateSelectGameMode.h"
+#include "Client/MainMap/MainMapGameMode.h"
+#include "Client/MainMap/MainMapPlayerController.h"
 #include "Client/ErrorWidget/WidgetOk.h"
 #include "Client/ErrorWidget/WidgetCancel.h"
 
@@ -34,19 +36,19 @@ void UCharacterCreateWidget::NativeConstruct()
 		CancelButton->OnClicked.AddDynamic(this, &UCharacterCreateWidget::Cancel);
 	}
 
-	PC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	CCSGM = Cast<ACharacterCreateSelectGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 void UCharacterCreateWidget::ChracterCreate()
 {
 	// 캐릭터가 선택 되었다면
-	if (ChracterCreateButton && PC->GetJobCode() != 0)
+	if (ChracterCreateButton && MainMapPlayerController->GetJobCode() != 0)
 	{
 		FString id = NickNameInputBox->Text.ToString();
 		if (!id.IsEmpty())
 		{
-			CharacterManager::GetInstance()->Character_Req_Character(TCHAR_TO_ANSI(*id), PC->GetJobCode());
+			CharacterManager::GetInstance()->Character_Req_Character(TCHAR_TO_ANSI(*id), MainMapPlayerController->GetJobCode());
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
 			NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
@@ -69,13 +71,13 @@ void UCharacterCreateWidget::ChracterCreate()
 				}
 			}
 			NickNameInputBox->SetText(FText::FromString(TEXT("")));
-			CCSGM->CharacterSelectWidgetToggle();
-			CCSGM->CharacterCreateWidgetToggle();
-			PC->ToCharacterSelect();
+			MainMapGameMode->CharacterSelectWidgetToggle();
+			MainMapGameMode->CharacterCreateWidgetToggle();
+			MainMapPlayerController->ToCharacterSelect();
 		}
 		else
 		{
-			CCSGM->OkWidgetToggle(FText(FText::FromString("아이디를 입력해주세요")));
+			MainMapGameMode->OkWidgetToggle(FText(FText::FromString("아이디를 입력해주세요")));
 		}
 	}
 	else   // 캐릭터가 선택 되지 않았다면
@@ -87,15 +89,15 @@ void UCharacterCreateWidget::ChracterCreate()
 
 void UCharacterCreateWidget::Cancel()
 {
-	if (PC)
+	if (MainMapPlayerController)
 	{
 		CharacterManager::GetInstance()->Character_Exit();
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
 		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-		CCSGM->CharacterCreateWidgetToggle();
-		CCSGM->CharacterSelectWidgetToggle();
-		PC->ToCharacterSelect();
+		MainMapGameMode->CharacterCreateWidgetToggle();
+		MainMapGameMode->CharacterSelectWidgetToggle();
+		MainMapPlayerController->ToCharacterSelect();
 	}
 }
 

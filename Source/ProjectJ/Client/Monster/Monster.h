@@ -28,6 +28,8 @@ protected:
 		float TargetLimitDistance;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
 		FMonsterAttackInfo AttackInfo;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect)
+		class UParticleSystem* HitEffectTarget;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	UPROPERTY()

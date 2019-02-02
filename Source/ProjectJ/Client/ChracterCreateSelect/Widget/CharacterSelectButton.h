@@ -22,7 +22,7 @@ private:
 		class UTextBlock* CharacterLevel;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UTextBlock* ClassName;
-	class AChracterCreateSelectPC* PC = nullptr;
+	class AMainMapPlayerController* MainMapPlayerController = nullptr;
 public:	
 
 	virtual void NativeConstruct() override;

@@ -16,6 +16,7 @@
 #include "Gunner/Gunner.h"
 #include "MyAnimInstance.h"
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
+#include "Client/MainMap/MainMapPlayerController.h"
 //서버 헤더
 #include "NetWork/JobInfo.h"
 
@@ -63,10 +64,8 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	CharacterCreateSelectPC = Cast<AChracterCreateSelectPC>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
-
-	
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());	
 }
 
 void AMyCharacter::ClickedReactionMontagePlay()
@@ -183,7 +182,7 @@ void AMyCharacter::JumpStart()
 void AMyCharacter::LeftClick()
 {
 	GLog->Log(FString::Printf(TEXT("캐릭터 부모 상태에서 클릭")));
-	if (CharacterCreateSelectPC)
+	if (MainMapPlayerController)
 	{
 		CharacterSelect();	
 	}	
@@ -195,7 +194,7 @@ void AMyCharacter::CharacterSelect()
 	FHitResult HitResult;
 	ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery3); //Pawn타입으로 결정
 
-	if (CharacterCreateSelectPC->GetHitResultUnderCursorForObjects(ObjectTypes, true, HitResult))
+	if (MainMapPlayerController->GetHitResultUnderCursorForObjects(ObjectTypes, true, HitResult))
 	{
 		auto Character = Cast<AWarrior>(HitResult.Actor);
 
@@ -203,7 +202,7 @@ void AMyCharacter::CharacterSelect()
 		{
 			Character->ClickedReactionMontagePlay();
 			GLog->Log(FString::Printf(TEXT("전사 클릭")));
-			CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::WARRIOR);
+			MainMapPlayerController->SelectCharacter(CHARACTER_JOB::WARRIOR);
 		}
 		else
 		{
@@ -213,7 +212,7 @@ void AMyCharacter::CharacterSelect()
 			{
 				Character->ClickedReactionMontagePlay();
 				GLog->Log(FString::Printf(TEXT("탱커 클릭")));
-				CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::TANKER);
+				MainMapPlayerController->SelectCharacter(CHARACTER_JOB::TANKER);
 			}
 			else
 			{
@@ -223,7 +222,7 @@ void AMyCharacter::CharacterSelect()
 				{
 					Character->ClickedReactionMontagePlay();
 					GLog->Log(FString::Printf(TEXT("총잡이 클릭")));
-					CharacterCreateSelectPC->SelectCharacter(CHARACTER_JOB::GUNNER);
+					MainMapPlayerController->SelectCharacter(CHARACTER_JOB::GUNNER);
 				}
 			}
 		}

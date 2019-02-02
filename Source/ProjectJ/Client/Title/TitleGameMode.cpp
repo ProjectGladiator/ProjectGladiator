@@ -9,6 +9,7 @@
 #include "Client/Title/Widget/TitleWidgetUserIn.h"
 #include "Client/ErrorWidget/WidgetCancel.h"
 #include "Client/ErrorWidget/WidgetOk.h"
+#include "Engine/StreamableManager.h"
 //서버 헤더
 #include "NetWork/NetworkManager.h"
 
@@ -89,6 +90,12 @@ void ATitleGameMode::BeginPlay()
 	{
 		UE_LOG(LogClass, Warning, TEXT("Server connect success"));
 	}
+
+	/*FStreamableManager Loader;
+	FStringAssetReference MapToLoad = FStringAssetReference(TEXT("CharacterCreateSelect"));
+	Loader.RequestAsyncLoad(MapToLoad, FStreamableDelegate::CreateUObject(this, &ATitleGameMode::LoadingNextLevel));*/
+	/*Loader.RequestAsyncLoad()
+	UGameplayStatics::LoadStreamLevel(this, TEXT("CharacterCreateSelect"), true, true, LatentInfo);*/
 }
 
 void ATitleGameMode::Tick(float DeltaTime)

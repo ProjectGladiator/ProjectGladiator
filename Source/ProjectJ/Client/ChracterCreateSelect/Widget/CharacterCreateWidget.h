@@ -20,8 +20,8 @@ private:
 		class UButton* ChracterCreateButton;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* CancelButton;
-	class AChracterCreateSelectPC* PC = nullptr;
-	class ACharacterCreateSelectGameMode* CCSGM = nullptr;
+	class AMainMapPlayerController* MainMapPlayerController = nullptr;
+	class AMainMapGameMode* MainMapGameMode = nullptr;
 public:
 	virtual void NativeConstruct() override;
 

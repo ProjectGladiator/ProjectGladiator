@@ -23,8 +23,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* UserInButton;
 
-	class ATitlePlayerController* PC=nullptr;
-	class ATitleGameMode* TitleGM=nullptr;
+	class AMainMapPlayerController* MainMapPlayerController =nullptr;
+	class AMainMapGameMode* MainMapGameMode =nullptr;
 	FTimerHandle LoadingTimer;
 public:	
 	virtual void NativeConstruct() override;	

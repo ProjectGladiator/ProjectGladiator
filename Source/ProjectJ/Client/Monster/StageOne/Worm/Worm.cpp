@@ -52,7 +52,7 @@ AWorm::AWorm()
 	GetMesh()->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 
-	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 320.0f;
 
 	DeathFlag = false;
 

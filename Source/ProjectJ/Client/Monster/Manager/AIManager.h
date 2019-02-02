@@ -33,7 +33,7 @@ public:
 	EPathFollowingRequestResult::Type TargetChase(class AMonsterAIController* MonsterAIController, class AMyCharacter* Target, float& TargetLimitDistance);	
 	
 	//근거리 공격판정 함수
-	void AttackMeleeHitCreate(class AMonster* Monster, FMonsterAttackInfo& AttackInfo);
+	FHitResult AttackMeleeHitCreate(class AMonster* Monster, FMonsterAttackInfo& AttackInfo);
 
 	//원거리 공격판정 함수
 	FHitResult AttackRangeHitCreate(class AMonster* Monster, float RangeDistance, const FName& SocketName);

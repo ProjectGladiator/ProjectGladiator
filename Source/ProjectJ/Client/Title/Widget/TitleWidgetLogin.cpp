@@ -6,6 +6,8 @@
 #include "Components/Button.h"
 #include "Client/Title/TitlePlayerController.h"
 #include "Client/Title/TitleGameMode.h"
+#include "Client/MainMap/MainMapGameMode.h"
+#include "Client/MainMap/MainMapPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
@@ -44,30 +46,34 @@ void UTitleWidgetLogin::NativeConstruct()
 	}
 
 	//PC에 TitlePlayerController를 구해서 넣어준다.
-	PC = Cast<ATitlePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	TitleGM = Cast<ATitleGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	//PC = Cast<ATitlePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	//TitleGM = Cast<ATitleGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 //회원가입 버튼 눌럿을때
 void UTitleWidgetLogin::UserIn()
 {
-	if (PC)
+	if (MainMapPlayerController)
 	{
 		LoginManager::GetInstance()->logoutMenuChoice(2);
 		// 패킷 전송 - Send , 서버 응답 대기 - Wait
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
 		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-		TitleGM->UserInWidgetToggle(); //회원가입 위젯을 켜고
-		TitleGM->LoginWidgetToggle(); //로그인 위젯을 끈다
+		MainMapGameMode->UserInWidgetToggle(); //회원가입 위젯을 켜고
+		MainMapGameMode->LoginWidgetToggle(); //로그인 위젯을 끈다
 	}
 }
 
 //로그인 버튼 눌럿을때
 void UTitleWidgetLogin::Login()
 {
-	if (PC)
+	if (MainMapPlayerController)
 	{
+		GLog->Log(FString::Printf(TEXT("로그인")));
 		// 아이디, 패스워드 에디트박스에서 Text 뽑아서 FString 으로 변환
 		FString id = IDInputBox->Text.ToString();
 		FString pw = PWInputBox->Text.ToString();
