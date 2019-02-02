@@ -10,7 +10,7 @@ namespace DataProtocol {
 	};
 	// 캐릭터 프로토콜
 	enum PCHARACTERDATA {
-		PCHARACTERDATA_INFO = 0,		// 이동 정보
+		PCHARACTERDATA_INFO = 100,		// 이동 정보
 		PCHARACTERDATA_SLOT_INFO,		// 슬롯 결과
 		PCHARACTERDATA_CREATE_RESULT,	// 캐릭터 생성 결과
 		PCHARACTERDATA_ENTER_RESULT,	// 접속 결과
@@ -18,7 +18,7 @@ namespace DataProtocol {
 	};
 	// 인게임 프로토콜
 	enum PGAMEDATA {
-		PGAMEDATA_PLAYER_MOVE_INFO = 0,
+		PGAMEDATA_PLAYER_MOVE_INFO = 200,
 		PGAMEDATA_USERLIST,				// 유저리스트
 		PGAMEDATA_USERLIST_EMPTY
 	};
