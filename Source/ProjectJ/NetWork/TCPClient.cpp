@@ -18,8 +18,8 @@ bool TCPClient::createSocket()
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == INVALID_SOCKET)
 	{
-		LogManager::GetInstance()->SetTime();
-		LogManager::GetInstance()->LogWrite("TCPClient::createSocket : ERROR : socket() result = INVALID_SOCKET");
+		//LogManager::GetInstance()->SetTime();
+		//LogManager::GetInstance()->LogWrite("TCPClient::createSocket : ERROR : socket() result = INVALID_SOCKET");
 		ErrorManager::GetInstance()->err_display("createSocket socket()");
 		return false;
 	}
@@ -40,8 +40,8 @@ bool TCPClient::connect_client(const char * ip, int port)
 	int retval = connect(sock, (SOCKADDR *)&serveraddr, sizeof(serveraddr));
 	if (retval == SOCKET_ERROR)						// 예외 처리
 	{
-		LogManager::GetInstance()->SetTime();
-		LogManager::GetInstance()->LogWrite("TCPClient::connect_client : ERROR : connect() result = SOCKET_ERROR");
+		//LogManager::GetInstance()->SetTime();
+		//LogManager::GetInstance()->LogWrite("TCPClient::connect_client : ERROR : connect() result = SOCKET_ERROR");
 		ErrorManager::GetInstance()->err_display("TCPClient connect()");
 		return false;
 	}

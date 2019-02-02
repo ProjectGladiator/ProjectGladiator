@@ -30,8 +30,8 @@ bool Packet::sendMsg()
 	int retval = send(sock, ptr + sentSize, sendSize - sentSize, 0);
 	if (retval == SOCKET_ERROR)
 	{
-		LogManager::GetInstance()->SetTime();
-		LogManager::GetInstance()->LogWrite("Packet::sendMsg : ERROR : send() result = SOCKET_ERROR");
+		//LogManager::GetInstance()->SetTime();
+		//LogManager::GetInstance()->LogWrite("Packet::sendMsg : ERROR : send() result = SOCKET_ERROR");
 		ErrorManager::GetInstance()->err_display("TCPClient send()");
 		return false;
 	}
@@ -56,7 +56,7 @@ bool Packet::recvMsg()
 		int retval = recv(sock, ptr + recvedSize, sizeof(int) - recvedSize, 0);
 		if (retval == SOCKET_ERROR)
 		{
-			LogManager::GetInstance()->LogWrite("Packet::recvMsg : ERROR : recv() result = SOCKET_ERROR");
+			//LogManager::GetInstance()->LogWrite("Packet::recvMsg : ERROR : recv() result = SOCKET_ERROR");
 			ErrorManager::GetInstance()->err_display("Packet first_recv()");
 			return false;
 		}
@@ -85,8 +85,8 @@ bool Packet::recvMsg()
 		int retval = recv(sock, ptr + recvedSize, recvSize - recvedSize, 0);
 		if (retval == SOCKET_ERROR)
 		{
-			LogManager::GetInstance()->SetTime();
-			LogManager::GetInstance()->LogWrite("Packet::recvMsg : ERROR : recv() result = SOCKET_ERROR");
+			//LogManager::GetInstance()->SetTime();
+			//LogManager::GetInstance()->LogWrite("Packet::recvMsg : ERROR : recv() result = SOCKET_ERROR");
 			ErrorManager::GetInstance()->err_display("Packet second_recv()");
 			return false;
 		}

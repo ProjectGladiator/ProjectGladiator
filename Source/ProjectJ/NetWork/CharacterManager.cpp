@@ -238,8 +238,8 @@ void CharacterManager::Character_Slot_Empty(bool _check)
 	memcpy(ptr, &check, sizeof(bool));
 	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&buf, size);
 
-	LogManager::GetInstance()->SetTime();
-	LogManager::GetInstance()->LogWrite(buf);
+	//LogManager::GetInstance()->SetTime();
+	//LogManager::GetInstance()->LogWrite(buf);
 	
 }
 

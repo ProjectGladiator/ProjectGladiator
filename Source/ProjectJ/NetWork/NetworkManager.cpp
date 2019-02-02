@@ -104,8 +104,8 @@ bool NetworkManager::Initialize()
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)	// 소켓 DLL 초기화(DLL을 메모리에 올림). 사용하기에 앞서 "ws2_32"라이브러리를 포함시켜줘야함.( #pragma comment(lib, "ws2_32")  )
 	{
-		LogManager::GetInstance()->SetTime();
-		LogManager::GetInstance()->LogWrite("NetworkManager::Initialize : ERROR : WSAStartup() failed ");
+		//LogManager::GetInstance()->SetTime();
+		//LogManager::GetInstance()->LogWrite("NetworkManager::Initialize : ERROR : WSAStartup() failed ");
 		return false;
 	}
 
@@ -160,7 +160,7 @@ HANDLE NetworkManager::CreatRecvThread()
 
 bool NetworkManager::MangerInitialize()
 {
-	LogManager::GetInstance()->InitializeManager();
+	//LogManager::GetInstance()->InitializeManager();
 	ErrorManager::GetInstance()->InitializeManager();
 	ThreadManager::GetInstance()->InitializeManager();
 	LoginManager::GetInstance()->InitializeManager();
@@ -179,7 +179,7 @@ void NetworkManager::EndManager()
 	EncryptManager::GetInstance()->EndManager();
 	ThreadManager::GetInstance()->EndManager();
 	ErrorManager::GetInstance()->EndManager();
-	LogManager::GetInstance()->EndManager();
+	//LogManager::GetInstance()->EndManager();
 
 	// 윈속 종료
 	WSACleanup();	// 소켓 DLL 메모리 해제

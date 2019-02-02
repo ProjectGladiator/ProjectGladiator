@@ -35,8 +35,8 @@ void Socket::setBlocking(bool set)
 		retval = ioctlsocket(sock, FIONBIO, &on);
 		if (retval == SOCKET_ERROR)
 		{
-			LogManager::GetInstance()->SetTime();
-			LogManager::GetInstance()->LogWrite("Socket::setBlocking : ERROR : ioctlsocket() result = SOCKET_ERROR");
+			//LogManager::GetInstance()->SetTime();
+			//LogManager::GetInstance()->LogWrite("Socket::setBlocking : ERROR : ioctlsocket() result = SOCKET_ERROR");
 			ErrorManager::GetInstance()->err_display("TCPServer ioctlsocket()");
 		}
 	}
@@ -46,8 +46,8 @@ void Socket::setBlocking(bool set)
 		retval = ioctlsocket(sock, FIONBIO, &on);
 		if (retval == SOCKET_ERROR)
 		{
-			LogManager::GetInstance()->SetTime();
-			LogManager::GetInstance()->LogWrite("Socket::setBlocking : ERROR : ioctlsocket() result = SOCKET_ERROR");
+			//LogManager::GetInstance()->SetTime();
+			//LogManager::GetInstance()->LogWrite("Socket::setBlocking : ERROR : ioctlsocket() result = SOCKET_ERROR");
 			ErrorManager::GetInstance()->err_display("TCPServer ioctlsocket()");
 		}
 	}
