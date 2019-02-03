@@ -70,6 +70,7 @@ void UCharacterCreateWidget::ChracterCreate()
 					}
 				}
 			}
+
 			NickNameInputBox->SetText(FText::FromString(TEXT("")));
 			MainMapGameMode->CharacterSelectWidgetToggle();
 			MainMapGameMode->CharacterCreateWidgetToggle();

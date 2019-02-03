@@ -46,7 +46,7 @@ AMyCharacter::AMyCharacter()
 
 	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 
-	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 450.0f;
 	RightClickFlag = false;
 	IsAttack = false;
 

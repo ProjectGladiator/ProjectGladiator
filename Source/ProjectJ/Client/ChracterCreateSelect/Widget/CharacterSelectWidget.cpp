@@ -50,23 +50,26 @@ void UCharacterSelectWidget::NativeConstruct()
 
 void UCharacterSelectWidget::GameStart()
 {
+	GLog->Log(FString::Printf(TEXT("%d"), MainMapPlayerController->GetSelectIndex()));
 	if (MainMapPlayerController)
 	{
-		UWinterGameInstance* MyGI = Cast<UWinterGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-
-		if (MyGI)
+		if (MainMapPlayerController->GetSelectIndex() != -1)
 		{
 			//****
 			//** 게임 시작, 캐릭터 생성 버튼 비활성화
 			//****
-			GameStartButton->SetVisibility(ESlateVisibility::HitTestInvisible); 
-			CharacterCreateButton->SetVisibility(ESlateVisibility::HitTestInvisible);			
+			GameStartButton->SetVisibility(ESlateVisibility::HitTestInvisible);
+			CharacterCreateButton->SetVisibility(ESlateVisibility::HitTestInvisible);
 
 			/*
 			** 캐릭터 선택한 슬롯번호 서버에 보내면서 접속 요청하기
 			*/
 			CharacterManager::GetInstance()->Character_Req_Enter(MainMapPlayerController->GetSelectIndex());
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
+		}
+		else
+		{
+			MainMapGameMode->CancelWidgetToggle(FText(FText::FromString("select chracter button")));
 		}
 	}
 }

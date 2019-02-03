@@ -34,7 +34,7 @@ private:
 public:
 	AMainMapGameMode();
 
-	TArray <AActor*> Cameras;
+	TArray <AActor*> Cameras; //캐릭터 선택, 생성창의 카메라 
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
@@ -45,9 +45,9 @@ public:
 	void CharacterCreateWidgetToggle(); //캐릭터 생성창 위젯 보여주기, 끄기
 	void CancelWidgetToggle(const FText& Message); //에러 다시시도,취소 위젯 보여주기
 	void OkWidgetToggle(const FText& Message); //에러 확인 위젯 보여주기
-	void LoadingWidgetViewScreen();
+	void LoadingWidgetViewScreen(); //로딩 위젯 화면에 붙이기
 	
 	UFUNCTION()
-		void MapLoadComplete();
-	void MainMapSpawnCharacterPossess(class AMyCharacter* _MyCharacter);
+		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수
+	void MainMapSpawnCharacterPossess(class AMyCharacter* _MyCharacter); //게임 시작시 캐릭터 빙의 함수
 };

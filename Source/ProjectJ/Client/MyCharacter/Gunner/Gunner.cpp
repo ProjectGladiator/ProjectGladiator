@@ -120,7 +120,6 @@ void AGunner::OnComboMontageSave()
 
 void AGunner::OnAttackHit()
 {
-	GLog->Log(FString::Printf(TEXT("총잡이 라인트레이스 발사")));
 	TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
 	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_WorldStatic));
@@ -130,8 +129,24 @@ void AGunner::OnAttackHit()
 
 	FHitResult HitResult;
 
-	FVector TraceStart = GetMesh()->GetSocketLocation(TEXT("MuzzleStationary"));
-	FVector TraceEnd = TraceStart + GetActorForwardVector()*9000.0f;
+	FVector CameraLocation;
+	FRotator CameraRotation;
+
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPlayerViewPoint(CameraLocation, CameraRotation);
+
+	int32 SizeX;
+	int32 SizeY;
+
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetViewportSize(SizeX, SizeY);
+
+	FVector WorldLocation;
+	FVector WorldDirection;
+
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->DeprojectScreenPositionToWorld(SizeX / 2, SizeY / 2, WorldLocation, WorldDirection);
+
+	//FVector TraceStart = GetMesh()->GetSocketLocation(TEXT("MuzzleStationary"));
+	FVector TraceStart = CameraLocation;
+	FVector TraceEnd = TraceStart + (WorldDirection*9000.0f);
 
 	UKismetSystemLibrary::LineTraceSingleForObjects(GetWorld(),
 		TraceStart,

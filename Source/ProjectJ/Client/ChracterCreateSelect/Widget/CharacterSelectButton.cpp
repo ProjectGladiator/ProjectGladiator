@@ -50,9 +50,6 @@ void UCharacterSelectButton::CharacterSelect()
 {
 	if (CharacterSelectButton)
 	{
-	/*	PC->CharacterSelectWidgetToggle();
-		PC->CharacterCreateWidgetToggle();	*/	
-
 		FString str = this->GetName();
 
 		if (str.Compare("CharacterSelectButtonOne") == 0)
