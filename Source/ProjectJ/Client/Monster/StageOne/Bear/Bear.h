@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -8,7 +8,7 @@
 #include "Bear.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTJ_API ABear : public AMonster
@@ -31,9 +31,13 @@ public:
 	void SetAIController(class AMonsterAIController* NewAIController);
 
 	EBearState GetCurrentState();
-	
+
 	UFUNCTION()
 		virtual void AttackHit() override;
+	UFUNCTION()
+		virtual void OnMonsterAttackEnded() override;
+	UFUNCTION()
+		virtual void OnComboSave() override;
 	UFUNCTION()
 		virtual void Death() override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;

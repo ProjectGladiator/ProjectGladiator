@@ -169,11 +169,19 @@ void ATanker::OnAttackHit()
 
 float ATanker::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
 {
-	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
 	if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
 	{
-		GLog->Log(FString::Printf(TEXT("탱커 데미지 처리 함수 호출 데미지 : %f"), DamageAmount));
+		FRadialDamageEvent* RadialDamageEvent = (FRadialDamageEvent*)(&DamageEvent);
+		
+		GLog->Log(FString::Printf(TEXT("탱커 데미지 범위 데미지 받음 : %f"), ActualDamage));
+	}
+	else if (DamageEvent.IsOfType(FPointDamageEvent::ClassID))
+	{
+		FPointDamageEvent* PointDamageEvent = (FPointDamageEvent*)(&DamageEvent);
+
+		GLog->Log(FString::Printf(TEXT("탱커 데미지 포인트 데미지 받음 : %f"), ActualDamage));
 	}
 	return DamageAmount;
 }

@@ -3,12 +3,25 @@
 #include "SpiderAnimInstance.h"
 //클라 헤더
 #include "Spider.h"
+#include "UObject/ConstructorHelpers.h" // 경로 탐색
 
 //서버 헤더
 
 USpiderAnimInstance::USpiderAnimInstance()
 {
-	
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>SpiderDefaultAttack_Montage(TEXT("AnimMontage'/Game/Blueprints/Monster/StageOne/Spider/Animations/SpiderDefaultAttackMontage.SpiderDefaultAttackMontage'"));
+
+	if (SpiderDefaultAttack_Montage.Succeeded())
+	{
+		AttackMontages.Add(SpiderDefaultAttack_Montage.Object);
+	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>SpiderChargeAttack_Montage(TEXT("AnimMontage'/Game/Blueprints/Monster/StageOne/Spider/Animations/SpiderChargeAttackMontage.SpiderChargeAttackMontage'"));
+
+	if (SpiderChargeAttack_Montage.Succeeded())
+	{
+		AttackMontages.Add(SpiderChargeAttack_Montage.Object);
+	}
 }
 
 void USpiderAnimInstance::AnimNotify_MonsterAttackHit(UAnimNotify * Notify)
@@ -16,9 +29,19 @@ void USpiderAnimInstance::AnimNotify_MonsterAttackHit(UAnimNotify * Notify)
 	OnMonsterAttackHit.Broadcast();	
 }
 
+void USpiderAnimInstance::AnimNotify_MonsterSaveAttack(UAnimNotify * Notify)
+{
+	OnMonsterComboSave.Broadcast();
+}
+
 void USpiderAnimInstance::AnimNotify_MonsterAttackEnded(UAnimNotify * Notify)
 {
 	OnMonsterAttackEnded.Broadcast();
+}
+
+void USpiderAnimInstance::AnimNotify_MonsterAttackChanged()
+{
+	OnMonsterAttackChanged.Broadcast();
 }
 
 void USpiderAnimInstance::AnimNotify_Death(UAnimNotify * Notify)
@@ -37,4 +60,14 @@ void USpiderAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		CurrentState = Spider->GetCurrentState();
 		CurrentAttackState = Spider->GetCurrentAttackState();
 	}
+}
+
+void USpiderAnimInstance::PlayAttackMontage(int32 MontageSequence)
+{
+	Super::PlayAttackMontage(MontageSequence);
+}
+
+void USpiderAnimInstance::JumpAttackMontageSection(int32 MontageSequence, int32 NewSection)
+{
+	Super::JumpAttackMontageSection(MontageSequence, NewSection);
 }

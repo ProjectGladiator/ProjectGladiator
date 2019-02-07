@@ -20,10 +20,13 @@ private:
 		class UParticleSystem* HitEffectMonster;  
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect, Meta = (AllowPrivateAccess = true))
 		class UParticleSystem* HitEffectWorld;
+	UPROPERTY()
+		float CrossHairSpread;
 public:
 	AGunner(); //생성자
 	
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 	virtual void ClickedReactionMontagePlay() override;	//캐릭터 생성창에서 선택시 실행할 애니메이션 함수
 
 	UFUNCTION()
@@ -34,4 +37,6 @@ public:
 		virtual void OnAttackHit() override;
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
+
+	float GetCrossHairSpread();
 };

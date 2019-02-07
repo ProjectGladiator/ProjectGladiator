@@ -1,4 +1,5 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Bear.h"
 //클라 헤더
@@ -30,7 +31,7 @@ ABear::ABear()
 	}
 
 	// 애님블루프린트 찾아 메쉬에 세팅
-	static ConstructorHelpers::FObjectFinder<UClass>ABP_Bear(TEXT("AnimBlueprint'/Game/Blueprints/Monster/StageOne/Bear/Blueprints/ABP_Bear.ABP_Bear_C'"));
+	static ConstructorHelpers::FObjectFinder<UClass>ABP_Bear(TEXT("AnimBlueprint'/Game/Blueprints/Monster/StageOne/Bear/Blueprints/ABP_CompleteBear.ABP_CompleteBear_C'"));
 
 	if (ABP_Bear.Succeeded())  //찾는것에 성공햇으면
 	{
@@ -48,7 +49,7 @@ ABear::ABear()
 	GetMesh()->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
-	GetCharacterMovement()->MaxWalkSpeed = 350.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 510.0f;
 }
 
 void ABear::BeginPlay()
@@ -70,6 +71,8 @@ void ABear::BeginPlay()
 	if (BearAnimInstance)
 	{
 		BearAnimInstance->OnMonsterAttackHit.AddDynamic(this, &ABear::AttackHit);
+		BearAnimInstance->OnMonsterComboSave.AddDynamic(this, &ABear::OnComboSave);
+		BearAnimInstance->OnMonsterAttackEnded.AddDynamic(this, &ABear::OnMonsterAttackEnded);
 		BearAnimInstance->OnDeath.AddDynamic(this, &ABear::Death);
 	}
 }
@@ -107,12 +110,30 @@ void ABear::Tick(float DeltaTime)
 		break;
 		case EBearState::Attack:
 		{
+			if (IsAttack)
+			{
+				IsCombo = true;
+			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("곰 처음 공격")));
+				IsAttack = true;
+
+				if (BearAnimInstance)
+				{
+					BearAnimInstance->PlayAttackMontage(0);
+					CurrentCombo += 1;
+					BearAnimInstance->JumpAttackMontageSection(0,CurrentCombo);
+				}
+			}
+
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
 			//GLog->Log(FString::Printf(TEXT("Pitch : %f Yaw : %f"), LooAtRotation.Pitch, LooAtRotation.Yaw));
 			SetActorRotation(LooAtRotation);
 
 			if (Distance > TargetLimitDistance*2.0f)
 			{
+				IsCombo = false;
 				CurrentState = EBearState::Chase;
 			}
 		}
@@ -146,7 +167,28 @@ EBearState ABear::GetCurrentState()
 
 void ABear::AttackHit()
 {
-	AIManager->AttackMeleeHitCreate(this, AttackInfo);
+	AIManager->AttackMeleeHitCreate(this, AttackInfo,false);
+}
+
+void ABear::OnMonsterAttackEnded()
+{
+	Super::OnMonsterAttackEnded();
+}
+
+void ABear::OnComboSave()
+{
+	GLog->Log(FString::Printf(TEXT("곰 콤보 공격 시작")));
+	if (IsCombo)
+	{
+		IsCombo = false;
+
+		if (BearAnimInstance)
+		{
+			BearAnimInstance->PlayAttackMontage(0);
+			CurrentCombo += 1;
+			BearAnimInstance->JumpAttackMontageSection(0, CurrentCombo);
+		}
+	}
 }
 
 void ABear::Death()
@@ -162,7 +204,7 @@ float ABear::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 
 	if (CurrentHP <= 0)
 	{
-		GetCapsuleComponent()->SetCollisionProfileName("OverlapOnlyPawn");
+		SetActorEnableCollision(false);
 		CurrentHP = 0;
 		CurrentState = EBearState::Death;
 	}

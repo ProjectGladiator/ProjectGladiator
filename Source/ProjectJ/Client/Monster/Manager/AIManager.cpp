@@ -30,7 +30,7 @@ void UAIManager::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+
 }
 
 
@@ -71,7 +71,7 @@ EPathFollowingRequestResult::Type UAIManager::TargetChase(AMonsterAIController *
 	}
 }
 
-FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & AttackInfo)
+FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & AttackInfo, bool RadialDamage)
 {
 	FHitResult HitResult;
 
@@ -81,7 +81,7 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 		TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
 		ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
 
-		
+
 		//TArray<FHitResult> HitResults;
 
 		TArray<AActor*>IgnoreActors;
@@ -101,6 +101,34 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 			HitResult,
 			true);
 
+		if (HitResult.GetActor()->IsValidLowLevel())
+		{
+			if (RadialDamage)
+			{
+				UGameplayStatics::ApplyRadialDamage(GetWorld(),
+					10.0f,
+					Monster->GetActorLocation(),
+					300.0f,
+					nullptr,
+					IgnoreActors,
+					Monster,
+					UGameplayStatics::GetPlayerController(GetWorld(), 0),
+					false,
+					ECollisionChannel::ECC_WorldStatic
+				);
+			}
+			else
+			{
+				UGameplayStatics::ApplyPointDamage(HitResult.GetActor(),
+					10.0f,
+					Monster->GetActorForwardVector(),
+					HitResult,
+					Monster->GetController(),
+					Monster,
+					nullptr);
+			}
+		}
+		
 		/*UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
 			TraceStart,
 			TraceEnd,
@@ -112,26 +140,26 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 			HitResults,
 			true);*/
 
-		/*for (int i = 0; i < HitResults.Num(); i++)
-		{
-			UGameplayStatics::ApplyRadialDamage(GetWorld(),
-				10.0f,
-				HitResults[i].ImpactPoint,
-				300.0f,
-				nullptr,
-				IgnoreActors,
-				Monster,
-				UGameplayStatics::GetPlayerController(GetWorld(), 0),
-				false,
-				ECollisionChannel::ECC_Visibility
-			);
-		}*/
+			/*for (int i = 0; i < HitResults.Num(); i++)
+			{
+				UGameplayStatics::ApplyRadialDamage(GetWorld(),
+					10.0f,
+					HitResults[i].ImpactPoint,
+					300.0f,
+					nullptr,
+					IgnoreActors,
+					Monster,
+					UGameplayStatics::GetPlayerController(GetWorld(), 0),
+					false,
+					ECollisionChannel::ECC_Visibility
+				);
+			}*/
 	}
 
 	return HitResult;
 }
 
-FHitResult UAIManager::AttackRangeHitCreate(AMonster * Monster, float RangeDistance, const FName& SocketName)
+FHitResult UAIManager::AttackRangeHitCreate(AMonster * Monster, float RangeDistance, const FName& SocketName, bool RadialDamage)
 {
 	FHitResult HitResult;
 
@@ -156,6 +184,34 @@ FHitResult UAIManager::AttackRangeHitCreate(AMonster * Monster, float RangeDista
 			EDrawDebugTrace::None,
 			HitResult,
 			true);
+
+		if (HitResult.GetActor()->IsValidLowLevel())
+		{
+			if (RadialDamage)
+			{
+				UGameplayStatics::ApplyRadialDamage(GetWorld(),
+					10.0f,
+					HitResult.GetActor()->GetActorLocation(),
+					300.0f,
+					nullptr,
+					IgnoreActors,
+					Monster,
+					UGameplayStatics::GetPlayerController(GetWorld(), 0),
+					false,
+					ECollisionChannel::ECC_WorldStatic
+				);
+			}
+			else
+			{
+				UGameplayStatics::ApplyPointDamage(HitResult.GetActor(),
+					10.0f,
+					Monster->GetActorForwardVector(),
+					HitResult,
+					Monster->GetController(),
+					Monster,
+					nullptr);
+			}
+		}
 	}
 
 	return HitResult;

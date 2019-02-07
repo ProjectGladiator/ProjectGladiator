@@ -28,7 +28,20 @@ void AMonster::AttackHit()
 
 }
 
-void AMonster::AttackEnded()
+void AMonster::OnMonsterAttackEnded()
+{
+	GLog->Log(FString::Printf(TEXT("IsAttack 초기화")));
+	IsAttack = false; //false로 초기화
+	IsCombo = false;
+	CurrentCombo = 0; //콤보수 0으로 초기화
+}
+
+void AMonster::OnComboSave()
+{
+
+}
+
+void AMonster::OnMonsterAttackChanged()
 {
 
 }

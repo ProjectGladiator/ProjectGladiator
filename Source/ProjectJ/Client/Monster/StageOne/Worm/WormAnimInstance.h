@@ -19,5 +19,5 @@ private:
 	UFUNCTION()
 		void AnimNotify_Death(UAnimNotify* Notify);
 public:
-	virtual void PlayAttackMontage() override; //공격 몽타주 실행
+	virtual void PlayAttackMontage(int32 MontageSequence) override; //공격 몽타주 실행
 };

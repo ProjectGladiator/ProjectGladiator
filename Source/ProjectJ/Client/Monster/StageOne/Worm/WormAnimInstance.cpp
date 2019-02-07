@@ -12,7 +12,7 @@ UWormAnimInstance::UWormAnimInstance()
 
 	if (Explosion_Montage.Succeeded())
 	{
-		AttackMontage = Explosion_Montage.Object;
+		AttackMontages.Add(Explosion_Montage.Object);
 	}
 }
 
@@ -22,13 +22,13 @@ void UWormAnimInstance::AnimNotify_Death(UAnimNotify * Notify)
 	OnDeath.Broadcast();
 }
 
-void UWormAnimInstance::PlayAttackMontage()
+void UWormAnimInstance::PlayAttackMontage(int32 MontageSequence)
 {
-	if (AttackMontage)
+	if (AttackMontages[MontageSequence])
 	{
-		if (!Montage_IsPlaying(AttackMontage))
+		if (!Montage_IsPlaying(AttackMontages[MontageSequence]))
 		{
-			Montage_Play(AttackMontage);
+			Montage_Play(AttackMontages[MontageSequence]);
 		}
 	}
 }

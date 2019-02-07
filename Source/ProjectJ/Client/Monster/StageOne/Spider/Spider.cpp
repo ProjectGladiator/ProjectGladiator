@@ -48,7 +48,7 @@ ASpider::ASpider()
 	GetMesh()->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
-	GetCharacterMovement()->MaxWalkSpeed = 350.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 }
 
 void ASpider::BeginPlay()
@@ -70,7 +70,9 @@ void ASpider::BeginPlay()
 	if (SpiderAnimInstance)
 	{
 		SpiderAnimInstance->OnMonsterAttackHit.AddDynamic(this, &ASpider::AttackHit);
-		SpiderAnimInstance->OnMonsterAttackEnded.AddDynamic(this, &ASpider::AttackEnded);
+		SpiderAnimInstance->OnMonsterComboSave.AddDynamic(this, &ASpider::OnComboSave);
+		SpiderAnimInstance->OnMonsterAttackEnded.AddDynamic(this, &ASpider::OnMonsterAttackEnded);
+		SpiderAnimInstance->OnMonsterAttackChanged.AddDynamic(this, &ASpider::OnMonsterAttackChanged);
 		SpiderAnimInstance->OnDeath.AddDynamic(this, &ASpider::Death);
 	}
 }
@@ -107,17 +109,41 @@ void ASpider::Tick(float DeltaTime)
 		break;
 		case ESpiderState::Attack:
 		{
+			switch (CurrentAttackState)
+			{
+			case ESpiderAttackState::DefaultAttack:
+				if (IsAttack)
+				{
+					IsCombo = true;
+				}
+				else
+				{
+					IsAttack = true;
+
+					if (SpiderAnimInstance)
+					{
+						SpiderAnimInstance->PlayAttackMontage(0);
+						CurrentCombo += 1;
+						SpiderAnimInstance->JumpAttackMontageSection(0, CurrentCombo);
+					}
+				}
+				break;
+			case ESpiderAttackState::ChargeAttack:
+				if (SpiderAnimInstance)
+				{
+					SpiderAnimInstance->PlayAttackMontage(1);
+				}
+				break;
+			}
+
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
 			//GLog->Log(FString::Printf(TEXT("Pitch : %f Yaw : %f"), LooAtRotation.Pitch, LooAtRotation.Yaw));
 			SetActorRotation(LooAtRotation);
 
 			if (Distance > TargetLimitDistance * 2.0f)
 			{
+				IsCombo = false;
 				CurrentState = ESpiderState::Chase;
-			}
-			else
-			{
-
 			}
 		}
 		break;
@@ -155,12 +181,33 @@ ESpiderAttackState ASpider::GetCurrentAttackState()
 
 void ASpider::AttackHit()
 {
-	AIManager->AttackMeleeHitCreate(this, AttackInfo);
+	AIManager->AttackMeleeHitCreate(this, AttackInfo,false);
 }
 
-void ASpider::AttackEnded()
+void ASpider::OnComboSave()
 {
-	RandomAttack();
+	GLog->Log(FString::Printf(TEXT("거미 콤보 공격 시작")));
+	if (IsCombo)
+	{
+		IsCombo = false;
+
+		if (SpiderAnimInstance)
+		{
+			SpiderAnimInstance->PlayAttackMontage(0);
+			CurrentCombo += 1;
+			SpiderAnimInstance->JumpAttackMontageSection(0, CurrentCombo);
+		}
+	}
+}
+
+void ASpider::OnMonsterAttackEnded()
+{
+	Super::OnMonsterAttackEnded();
+}
+
+void ASpider::OnMonsterAttackChanged()
+{
+	
 }
 
 void ASpider::Death()
@@ -173,15 +220,16 @@ void ASpider::RandomAttack()
 	RandomAttackValue = rand() % 10000 / 100.0f;
 
 	GLog->Log(FString::Printf(TEXT("%f"), RandomAttackValue));
-
-	if ( RandomAttackValue >= 60.0f)
+	CurrentAttackState = ESpiderAttackState::DefaultAttack;
+	/*if ( RandomAttackValue >= 60.0f)
 	{
 		CurrentAttackState = ESpiderAttackState::DefaultAttack;
 	}
 	else
 	{
 		CurrentAttackState = ESpiderAttackState::ChargeAttack;
-	}
+	}*/
+
 	CurrentState = ESpiderState::Attack;
 }
 
@@ -193,7 +241,7 @@ float ASpider::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, 
 
 	if (CurrentHP <= 0)
 	{
-		GetCapsuleComponent()->SetCollisionProfileName("OverlapOnlyPawn");
+		SetActorEnableCollision(false);
 		CurrentHP = 0;
 		CurrentState = ESpiderState::Death;
 	}
