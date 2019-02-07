@@ -4,8 +4,8 @@
 //클라 헤더
 #include "Components/EditableTextBox.h"
 #include "Components/Button.h"
-#include "Client/Title/TitlePlayerController.h"
-#include "Client/Title/TitleGameMode.h"
+#include "Client/MainMap/MainMapGameMode.h"
+#include "Client/MainMap/MainMapPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 //서버 헤더
 #include "NetWork/NetworkManager.h"
@@ -45,27 +45,27 @@ void UTitleWidgetUserIn::NativeConstruct()
 		UserInButton->OnClicked.AddDynamic(this, &UTitleWidgetUserIn::Join);
 	}
 
-	PC = Cast<ATitlePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	TitleGM = Cast<ATitleGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 void UTitleWidgetUserIn::Cancel()
 {
-	if (PC)
+	if (MainMapPlayerController)
 	{
 		LoginManager::GetInstance()->exitJoin();
 		// 패킷 전송 - Send , 서버 응답 대기 - Wait
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
 		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-		TitleGM->LoginWidgetToggle(); //로그인 위젯을 켜고
-		TitleGM->UserInWidgetToggle(); //회원가입 위젯을 끈다
+		MainMapGameMode->LoginWidgetToggle(); //로그인 위젯을 켜고
+		MainMapGameMode->UserInWidgetToggle(); //회원가입 위젯을 끈다
 	}
 }
 
 void UTitleWidgetUserIn::IdOverapCheck()
 {
-	if (PC)
+	if (MainMapPlayerController)
 	{
 		FString id = IDInputBox->Text.ToString();
 		LoginManager::GetInstance()->reqIdOverlapCheck(TCHAR_TO_ANSI(*id));
@@ -77,7 +77,7 @@ void UTitleWidgetUserIn::IdOverapCheck()
 
 void UTitleWidgetUserIn::Join()
 {
-	if (PC)
+	if (MainMapPlayerController)
 	{
 		FString id = IDInputBox->Text.ToString();
 		FString pw = PWInputBox->Text.ToString();
