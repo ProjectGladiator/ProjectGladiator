@@ -40,7 +40,11 @@ public:
 	UFUNCTION()
 		virtual void AttackHit() override;
 	UFUNCTION()
-		virtual void AttackEnded() override;
+		virtual void OnComboSave() override;
+	UFUNCTION()
+		virtual void OnMonsterAttackEnded() override;
+	UFUNCTION()
+		virtual void OnMonsterAttackChanged() override;
 	UFUNCTION()
 		virtual void Death() override;
 	void RandomAttack();

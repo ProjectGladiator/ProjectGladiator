@@ -46,7 +46,7 @@ AMyCharacter::AMyCharacter()
 
 	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 
-	GetCharacterMovement()->MaxWalkSpeed = 450.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 	RightClickFlag = false;
 	IsAttack = false;
 
@@ -94,8 +94,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("ViewExpand"), IE_Pressed, this, &AMyCharacter::ViewExpand);
 	PlayerInputComponent->BindAction(TEXT("ViewReduce"), IE_Pressed, this, &AMyCharacter::ViewReduce);
 
-	PlayerInputComponent->BindAction(TEXT("ViewRightClick"), IE_Pressed, this, &AMyCharacter::ViewRightClickOn);
-	PlayerInputComponent->BindAction(TEXT("ViewRightClick"), IE_Released, this, &AMyCharacter::ViewRightClickOff);
+	PlayerInputComponent->BindAction(TEXT("ViewRightClick"), IE_Pressed, this, &AMyCharacter::RightClickOn);
+	PlayerInputComponent->BindAction(TEXT("ViewRightClick"), IE_Released, this, &AMyCharacter::RightClickOff);
 
 	PlayerInputComponent->BindAction(TEXT("Alt"), IE_Pressed, this, &AMyCharacter::SightOff);
 	PlayerInputComponent->BindAction(TEXT("Alt"), IE_Released, this, &AMyCharacter::SightOn);
@@ -122,7 +122,11 @@ void AMyCharacter::MoveRight(float Value)
 
 void AMyCharacter::LookUp(float Value)
 {
-	if (RightClickFlag && Value != 0)
+	/*if (RightClickFlag && Value != 0)
+	{
+		AddControllerPitchInput(Value);
+	}*/
+	if (Value != 0)
 	{
 		AddControllerPitchInput(Value);
 	}
@@ -130,7 +134,12 @@ void AMyCharacter::LookUp(float Value)
 
 void AMyCharacter::Turn(float Value)
 {
-	if (RightClickFlag && Value != 0)
+	/*if (RightClickFlag && Value != 0)
+	{
+		AddControllerYawInput(Value);
+	}*/
+
+	if (Value != 0)
 	{
 		AddControllerYawInput(Value);
 	}
@@ -154,12 +163,12 @@ void AMyCharacter::ViewReduce()
 	SpringArm->TargetArmLength -= 20;
 }
 
-void AMyCharacter::ViewRightClickOn()
+void AMyCharacter::RightClickOn()
 {
 	RightClickFlag = true;
 }
 
-void AMyCharacter::ViewRightClickOff()
+void AMyCharacter::RightClickOff()
 {
 	RightClickFlag = false;
 }
@@ -235,6 +244,11 @@ void AMyCharacter::OnAttackMontageEnded()
 	IsAttack = false; //false로 초기화
 	IsCombo = false;
 	CurrentCombo = 0; //콤보수 0으로 초기화
+}
+
+bool AMyCharacter::GetRightClickFlag()
+{
+	return RightClickFlag;
 }
 
 void AMyCharacter::OnComboMontageSave()

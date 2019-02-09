@@ -225,6 +225,22 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				ChracterCreateWidget->GetChracterCreateButton()->SetVisibility(ESlateVisibility::Visible);
 			}
 			break;
+		case PCHARACTERDATA_CREATE_RESULT:
+			GLog->Log(FString::Printf(TEXT("캐릭터 생성창 프로토콜 인증 성공")));
+			StorageManager::GetInstance()->ChangeData(Data->data, ResultFlag);
+			StorageManager::GetInstance()->PopData();
+
+			if (ResultFlag)
+			{
+				CharacterManager::GetInstance()->Character_Req_Slot();
+				NetworkClient_main::NetworkManager::GetInstance()->Send();
+				
+			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("캐릭터 생성후 ChangeData Result가 false")));
+			}
+			break;
 		case PCHARACTERDATA_ENTER_INFO:
 			// 캐릭터 정보 받을 구조체 할당
 			character_info = new CharacterInfo;

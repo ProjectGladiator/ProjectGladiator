@@ -11,8 +11,6 @@ class PROJECTJ_API AMyCharacter : public ACharacter
 {
 	GENERATED_BODY()
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ViewRightClick, Meta = (AllowPrivateAccess = true))
-		bool RightClickFlag; //마우스 오른쪽 버튼 눌럿는지 안눌럿는지
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		float MaxHP; //최대 HP값
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
@@ -23,6 +21,9 @@ public:
 	// Sets default values for this character's properties
 	AMyCharacter(); //생성자
 protected:
+	UPROPERTY()
+		bool RightClickFlag; //마우스 오른쪽 버튼 눌럿는지 안눌럿는지
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void ClickedReactionMontagePlay();
@@ -72,10 +73,10 @@ public:
 		void ViewReduce();
 
 	UFUNCTION()
-		void ViewRightClickOn();
+		void RightClickOn();
 
 	UFUNCTION()
-		void ViewRightClickOff();
+		void RightClickOff();
 
 	UFUNCTION()
 		void SightOff();
@@ -97,4 +98,6 @@ public:
 		virtual void OnComboMontageSave();
 	UFUNCTION()
 		void OnAttackMontageEnded();
+
+	bool GetRightClickFlag();
 };

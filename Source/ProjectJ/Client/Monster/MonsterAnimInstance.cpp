@@ -11,9 +11,26 @@ UMonsterAnimInstance::UMonsterAnimInstance()
 
 }
 
-void UMonsterAnimInstance::PlayAttackMontage()
+FName UMonsterAnimInstance::GetMonsterAttackMontageSection(int32 NewSection)
 {
+	return FName(*FString::Printf(TEXT("MonsterAttack%d"), NewSection));
+}
 
+void UMonsterAnimInstance::PlayAttackMontage(int32 MontageSequence)
+{
+	if (AttackMontages[MontageSequence])
+	{
+		if (!Montage_IsPlaying(AttackMontages[MontageSequence]))
+		{
+			Montage_Play(AttackMontages[MontageSequence]);
+		}
+	}
+}
+
+void UMonsterAnimInstance::JumpAttackMontageSection(int32 MontageSequence, int32 NewSection)
+{
+	FName AttackMontageSection = GetMonsterAttackMontageSection(NewSection);
+	Montage_JumpToSection(AttackMontageSection, AttackMontages[MontageSequence]);
 }
 
 void UMonsterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)

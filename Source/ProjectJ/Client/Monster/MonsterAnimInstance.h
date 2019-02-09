@@ -7,8 +7,10 @@
 #include "MonsterAnimInstance.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnDeathDelegate); //죽음 애니메이션 델리게이트
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterAttackHit);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterAttackHitDelegate); //몬스터 공격 판정 애니메이션 델리게이트
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterComboSaveDelegate); //몬스터 콤보 저장 애니메이션 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterAttackEndedDelegate); //공격 끝 애니메이션 델리게이트
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterAttackChanged);
 
 /**
  * 
@@ -28,15 +30,20 @@ private:
 		bool IsJump; //점프 중인지 아닌지
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = Montage)
-		class UAnimMontage* AttackMontage;
+		TArray<class UAnimMontage*> AttackMontages;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsAttack)
 		bool IsAttack;
 
-	virtual void PlayAttackMontage(); //공격 애니메이션 몽타주 실행
+	FName GetMonsterAttackMontageSection(int32 NewSection);
+
+	virtual void PlayAttackMontage(int32 MontageSequence); //공격 애니메이션 몽타주 실행
+	virtual void JumpAttackMontageSection(int32 MontageSequence, int32 NewSection); //공격 애니메이션 몽타주 섹션 점프 해주는 함수
 public:
 	FOnDeathDelegate OnDeath;
-	FOnMonsterAttackHit OnMonsterAttackHit;
+	FOnMonsterAttackHitDelegate OnMonsterAttackHit;
+	FOnMonsterComboSaveDelegate OnMonsterComboSave;
 	FOnMonsterAttackEndedDelegate OnMonsterAttackEnded;
+	FOnMonsterAttackChanged OnMonsterAttackChanged;
 
 	UFUNCTION()
 		virtual void NativeUpdateAnimation(float DeltaSeconds) override; // 틱 함수

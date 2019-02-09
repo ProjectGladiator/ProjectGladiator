@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -34,10 +34,22 @@ protected:
 	virtual void BeginPlay() override;
 	UPROPERTY()
 		bool DeathFlag;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ComboAttack)
+		bool IsAttack; //공격중인지 아닌지
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ComboAttack)
+		bool IsCombo;  //콤보공격중인지 아닌지
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ComboAttack)
+		int32 CurrentCombo; //현재 콤보의 단계
+
 	UFUNCTION()
 		virtual void AttackHit();
 	UFUNCTION()
-		virtual void AttackEnded();
+		virtual void OnMonsterAttackEnded();
+	UFUNCTION()
+		virtual void OnComboSave();
+	UFUNCTION()
+		virtual void OnMonsterAttackChanged();
 	UFUNCTION()
 		virtual void Death();
 public:
@@ -48,5 +60,5 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UFUNCTION()
-		float GetHP();	
+		float GetHP();
 };

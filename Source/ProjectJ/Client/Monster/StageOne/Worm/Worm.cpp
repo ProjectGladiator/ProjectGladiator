@@ -112,8 +112,9 @@ void AWorm::Tick(float DeltaTime)
 		break;
 		case EWormState::Attack:
 		{
-			AIManager->AttackMeleeHitCreate(this, AttackInfo);
-			WormAnimInstance->PlayAttackMontage();
+			FHitResult HitResult=AIManager->AttackMeleeHitCreate(this, AttackInfo,true);
+			WormAnimInstance->PlayAttackMontage(0);
+
 			CurrentState = EWormState::Death;
 		}
 		break;
@@ -152,10 +153,10 @@ float AWorm::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 
 	if (CurrentHP <= 0)
 	{
-		GetCapsuleComponent()->SetCollisionProfileName("OverlapOnlyPawn");
+		SetActorEnableCollision(false);
 		CurrentHP = 0;
 		CurrentState = EWormState::Death;
-		WormAnimInstance->PlayAttackMontage();
+		WormAnimInstance->PlayAttackMontage(0);
 	}
 	return DamageAmount;
 }

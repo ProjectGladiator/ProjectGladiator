@@ -160,7 +160,7 @@ EDinosaurAttackState ADinosaur::GetCurrentAttackState()
 
 void ADinosaur::AttackHit()
 {
-	FHitResult HitResult = AIManager->AttackRangeHitCreate(this, 1000.0f, TEXT("Muzzle_01"));
+	FHitResult HitResult = AIManager->AttackRangeHitCreate(this, 1000.0f, TEXT("Muzzle_01"),false);
 
 	if (HitResult.Actor.IsValid()) //원거리 데미지를 받은 액터가 현재 유효한지 판단한다.
 	{
