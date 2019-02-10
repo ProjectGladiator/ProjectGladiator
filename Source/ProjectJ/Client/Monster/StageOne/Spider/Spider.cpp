@@ -129,15 +129,20 @@ void ASpider::Tick(float DeltaTime)
 				}
 				break;
 			case ESpiderAttackState::ChargeAttack:
-				if (SpiderAnimInstance)
+				if (IsAttack)
 				{
+					
+				}
+				else
+				{
+					IsAttack = true;
 					SpiderAnimInstance->PlayAttackMontage(1);
 				}
 				break;
 			}
 
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
-			//GLog->Log(FString::Printf(TEXT("Pitch : %f Yaw : %f"), LooAtRotation.Pitch, LooAtRotation.Yaw));
+
 			SetActorRotation(LooAtRotation);
 
 			if (Distance > TargetLimitDistance * 2.0f)
@@ -207,7 +212,7 @@ void ASpider::OnMonsterAttackEnded()
 
 void ASpider::OnMonsterAttackChanged()
 {
-	
+	RandomAttack();
 }
 
 void ASpider::Death()
@@ -220,15 +225,15 @@ void ASpider::RandomAttack()
 	RandomAttackValue = rand() % 10000 / 100.0f;
 
 	GLog->Log(FString::Printf(TEXT("%f"), RandomAttackValue));
-	CurrentAttackState = ESpiderAttackState::DefaultAttack;
-	/*if ( RandomAttackValue >= 60.0f)
+	
+	if ( RandomAttackValue >= 60.0f)
 	{
 		CurrentAttackState = ESpiderAttackState::DefaultAttack;
 	}
 	else
 	{
 		CurrentAttackState = ESpiderAttackState::ChargeAttack;
-	}*/
+	}
 
 	CurrentState = ESpiderState::Attack;
 }

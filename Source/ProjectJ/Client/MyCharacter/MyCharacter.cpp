@@ -37,6 +37,7 @@ AMyCharacter::AMyCharacter()
 	SpringArm->bInheritPitch = true;
 	SpringArm->bInheritYaw = true;
 	SpringArm->bInheritRoll = false;
+	SpringArm->bDoCollisionTest = false;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;

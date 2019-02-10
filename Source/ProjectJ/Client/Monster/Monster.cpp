@@ -5,6 +5,7 @@
 #include "MonsterAIController.h"
 #include "Client/Monster/Manager/AIManager.h"
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
+#include "GameFrameWork/CharacterMovementComponent.h" //캐릭터 속도 관련 헤더
 
 //서버 헤더
 
@@ -20,6 +21,9 @@ AMonster::AMonster()
 
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 
+	bUseControllerRotationYaw = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true; //몬스터가 가속하는 방향으로 회전 시킨다.
 	Tags.Add(TEXT("Monster"));
 }
 
