@@ -66,7 +66,7 @@ void UCharacterSelectWidget::GameStart()
 			*/
 			CharacterManager::GetInstance()->Character_Req_Enter(MainMapPlayerController->GetSelectIndex());
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
-			MainMapPlayerController->SetSelectIndex(-1);
+			//MainMapPlayerController->SetSelectIndex(-1);
 		}
 		else
 		{
