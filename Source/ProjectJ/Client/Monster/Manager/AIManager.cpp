@@ -101,8 +101,13 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 			HitResult,
 			true);
 
+		
 		if (HitResult.GetActor()->IsValidLowLevel())
 		{
+			/*auto Target = Cast<AMyCharacter>(HitResult.GetActor());
+
+			Target->LaunchCharacter(Monster->GetActorForwardVector()*10.0f, false, false);*/
+
 			if (RadialDamage)
 			{
 				UGameplayStatics::ApplyRadialDamage(GetWorld(),
@@ -215,5 +220,20 @@ FHitResult UAIManager::AttackRangeHitCreate(AMonster * Monster, float RangeDista
 	}
 
 	return HitResult;
+}
+
+AMyCharacter * UAIManager::GetTarget()
+{
+	auto MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	if (MyCharacter)
+	{
+		return MyCharacter;
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("타겟이 없음")));
+		return nullptr;
+	}
 }
 

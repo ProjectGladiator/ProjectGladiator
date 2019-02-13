@@ -55,6 +55,7 @@ void UCharacterSelectWidget::GameStart()
 	{
 		if (MainMapPlayerController->GetSelectIndex() != -1)
 		{
+			MainMapPlayerController->SetSelectIndex(-1);
 			//****
 			//** 게임 시작, 캐릭터 생성 버튼 비활성화
 			//****
@@ -69,7 +70,10 @@ void UCharacterSelectWidget::GameStart()
 		}
 		else
 		{
-			MainMapGameMode->CancelWidgetToggle(FText(FText::FromString("select chracter button")));
+			if (MainMapGameMode)
+			{
+				MainMapGameMode->CancelWidgetToggle(FText(FText::FromString("select chracter button")));
+			}
 		}
 	}
 }
@@ -85,9 +89,14 @@ void UCharacterSelectWidget::MyCharacterCreate()
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 	NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-	MainMapGameMode->CharacterCreateWidgetToggle();
-	MainMapGameMode->CharacterSelectWidgetToggle();
-	MainMapPlayerController->ToCharacterCreate();
+	if (MainMapGameMode && MainMapPlayerController)
+	{
+		MainMapGameMode->CharacterCreateWidgetToggle();
+		MainMapGameMode->CharacterSelectWidgetToggle();
+		MainMapGameMode->SelectCharacterDestroy();
+		MainMapPlayerController->SetSelectIndex(-1);
+		MainMapPlayerController->ToCharacterCreate();
+	}
 }
 
 void UCharacterSelectWidget::MyCharacterSlotUpdate(PacketData * _data)

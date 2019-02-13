@@ -17,6 +17,8 @@ private:
 		float CurrentHP; //현재 HP값
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		int32 Level; //현재 레벨
+	UPROPERTY()
+		bool IsClick;
 public:
 	// Sets default values for this character's properties
 	AMyCharacter(); //생성자
@@ -34,11 +36,11 @@ protected:
 		bool IsCombo;  //콤보공격중인지 아닌지
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
 		int32 CurrentCombo; //현재 콤보의 단계
-	class UMyAnimInstance* MyAnimInstance;
+	UPROPERTY()
+		class UMyAnimInstance* MyAnimInstance;
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class USpringArmComponent* SpringArm;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class UCameraComponent* Camera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -73,12 +75,6 @@ public:
 		void ViewReduce();
 
 	UFUNCTION()
-		void RightClickOn();
-
-	UFUNCTION()
-		void RightClickOff();
-
-	UFUNCTION()
 		void SightOff();
 
 	UFUNCTION()
@@ -90,6 +86,12 @@ public:
 	UFUNCTION()
 		virtual void LeftClick();
 
+	UFUNCTION()
+		virtual void RightClickOn();
+
+	UFUNCTION()
+		virtual void RightClickOff();
+
 	void CharacterSelect();
 
 	UFUNCTION()
@@ -100,4 +102,9 @@ public:
 		void OnAttackMontageEnded();
 
 	bool GetRightClickFlag();
+
+	UMyAnimInstance* GetMyAnimInstance();
+
+	bool GetIsClick();
+	void SetIsClick(bool _IsClick);
 };

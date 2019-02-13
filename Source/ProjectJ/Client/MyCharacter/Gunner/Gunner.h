@@ -14,8 +14,6 @@ class PROJECTJ_API AGunner : public AMyCharacter
 {
 	GENERATED_BODY()
 private:
-	UPROPERTY()
-		class UGunnerAnimInstance* GunnerAnimInstance; //총잡이 애니메이션인스턴스
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect , Meta = (AllowPrivateAccess = true))
 		class UParticleSystem* HitEffectMonster;  
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect, Meta = (AllowPrivateAccess = true))

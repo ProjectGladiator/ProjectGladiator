@@ -37,4 +37,6 @@ public:
 
 	//원거리 공격판정 함수
 	FHitResult AttackRangeHitCreate(class AMonster* Monster, float RangeDistance, const FName& SocketName, bool RadialDamage);
+
+	AMyCharacter* GetTarget();
 };

@@ -23,12 +23,12 @@
 // Sets default values
 AMyCharacter::AMyCharacter()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = false;
 
 	bUseControllerRotationYaw = true;
-		
-	SpringArm=CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
 	SpringArm->TargetArmLength = 800.0f;
 	SpringArm->SetRelativeRotation(FRotator(-25.0f, 0, 0));
@@ -37,7 +37,7 @@ AMyCharacter::AMyCharacter()
 	SpringArm->bInheritPitch = true;
 	SpringArm->bInheritYaw = true;
 	SpringArm->bInheritRoll = false;
-	SpringArm->bDoCollisionTest = false;
+	SpringArm->bDoCollisionTest = true;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
@@ -64,9 +64,11 @@ AMyCharacter::AMyCharacter()
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	IsClick = false;
+
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());	
+	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void AMyCharacter::ClickedReactionMontagePlay()
@@ -78,8 +80,6 @@ void AMyCharacter::ClickedReactionMontagePlay()
 void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	
 }
 
 // Called to bind functionality to input
@@ -95,8 +95,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("ViewExpand"), IE_Pressed, this, &AMyCharacter::ViewExpand);
 	PlayerInputComponent->BindAction(TEXT("ViewReduce"), IE_Pressed, this, &AMyCharacter::ViewReduce);
 
-	PlayerInputComponent->BindAction(TEXT("ViewRightClick"), IE_Pressed, this, &AMyCharacter::RightClickOn);
-	PlayerInputComponent->BindAction(TEXT("ViewRightClick"), IE_Released, this, &AMyCharacter::RightClickOff);
+	PlayerInputComponent->BindAction(TEXT("RightClick"), IE_Pressed, this, &AMyCharacter::RightClickOn);
+	PlayerInputComponent->BindAction(TEXT("RightClick"), IE_Released, this, &AMyCharacter::RightClickOff);
 
 	PlayerInputComponent->BindAction(TEXT("Alt"), IE_Pressed, this, &AMyCharacter::SightOff);
 	PlayerInputComponent->BindAction(TEXT("Alt"), IE_Released, this, &AMyCharacter::SightOn);
@@ -139,7 +139,6 @@ void AMyCharacter::Turn(float Value)
 	{
 		AddControllerYawInput(Value);
 	}*/
-
 	if (Value != 0)
 	{
 		AddControllerYawInput(Value);
@@ -182,7 +181,7 @@ void AMyCharacter::SightOff()
 void AMyCharacter::SightOn()
 {
 	bUseControllerRotationYaw = true;
-}	
+}
 
 void AMyCharacter::JumpStart()
 {
@@ -194,12 +193,20 @@ void AMyCharacter::LeftClick()
 	GLog->Log(FString::Printf(TEXT("캐릭터 부모 상태에서 클릭")));
 	if (MainMapPlayerController)
 	{
-		CharacterSelect();	
-	}	
+		if (IsClick)
+		{
+			CharacterSelect();
+		}
+		else
+		{
+			GLog->Log(FString::Printf(TEXT("IsClick가 false")));
+		}
+	}
 }
 
 void AMyCharacter::CharacterSelect()
 {
+	GLog->Log(FString::Printf(TEXT("캐릭터 클릭 true")));
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	FHitResult HitResult;
 	ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery3); //Pawn타입으로 결정
@@ -260,4 +267,19 @@ void AMyCharacter::OnComboMontageSave()
 void AMyCharacter::OnAttackHit()
 {
 	//자식들에서 따로 구현
+}
+
+UMyAnimInstance* AMyCharacter::GetMyAnimInstance()
+{
+	return MyAnimInstance;
+}
+
+bool AMyCharacter::GetIsClick()
+{
+	return IsClick;
+}
+
+void AMyCharacter::SetIsClick(bool _IsClick)
+{
+	IsClick = _IsClick;
 }

@@ -69,7 +69,18 @@ void UWarriorAnimInstance::PlayClickedReactionMontage()
 
 void UWarriorAnimInstance::PlayLevelStartMontage()
 {
-
+	GLog->Log(FString::Printf(TEXT("워리어 애님 인스턴스 레벨스타트 몽타주")));
+	if (LevelStartMontage) //레벨시작 애니메이션 몽타주가 잇는지 확인하고
+	{
+		if (!Montage_IsPlaying(LevelStartMontage)) //현재 플레이 중이 아니면
+		{
+			Montage_Play(LevelStartMontage, 1.0f); //몽타주를 실행한다.
+		}
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("레벨 스타트 몽타주가 존재하지 않음")));
+	}
 }
 
 void UWarriorAnimInstance::PlayAttackMontage()

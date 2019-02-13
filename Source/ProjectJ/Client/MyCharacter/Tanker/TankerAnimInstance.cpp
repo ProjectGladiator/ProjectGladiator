@@ -27,6 +27,13 @@ UTankerAnimInstance::UTankerAnimInstance()
 	{
 		AttackMontage = Attack_Montage.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>RightClickAbility_Montage(TEXT("AnimMontage'/Game/Blueprints/MyCharacter/User/Tanker/Animations/RMB_intro_Montage.RMB_intro_Montage'"));
+
+	if (RightClickAbility_Montage.Succeeded())
+	{
+		RightClickAbilityMontage = RightClickAbility_Montage.Object;
+	}
 }
 
 void UTankerAnimInstance::AnimNotify_SaveAttack(UAnimNotify* Notify)
@@ -64,6 +71,7 @@ void UTankerAnimInstance::PlayClickedReactionMontage()
 
 void UTankerAnimInstance::PlayLevelStartMontage()
 {
+	GLog->Log(FString::Printf(TEXT("탱커 애님 인스턴스 레벨스타트 몽타주")));
 	if (LevelStartMontage)
 	{
 		if (!Montage_IsPlaying(LevelStartMontage))
@@ -89,6 +97,21 @@ void UTankerAnimInstance::PlayAttackMontage()
 	else
 	{
 		GLog->Log(FString::Printf(TEXT("일반 공격 몽타주가 존재하지 않음")));
+	}
+}
+
+void UTankerAnimInstance::PlayRightClickAbilityMontage()
+{
+	if (RightClickAbilityMontage)
+	{
+		if (!Montage_IsPlaying(RightClickAbilityMontage))
+		{
+			Montage_Play(RightClickAbilityMontage, 1.0f);
+		}
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("오른쪽 특수능력 몽타주가 존재하지 않음")));
 	}
 }
 

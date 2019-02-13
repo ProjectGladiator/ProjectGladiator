@@ -13,9 +13,6 @@ UCLASS()
 class PROJECTJ_API AWarrior : public AMyCharacter
 {
 	GENERATED_BODY()
-private:
-	UPROPERTY()
-		class UWarriorAnimInstance* WarriorAnimInstance;
 public:
 	AWarrior();	
 

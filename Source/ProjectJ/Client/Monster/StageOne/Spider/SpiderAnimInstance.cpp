@@ -2,7 +2,7 @@
 
 #include "SpiderAnimInstance.h"
 //클라 헤더
-#include "Spider.h"
+#include "Spider.h" //거미 헤더
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
 
 //서버 헤더

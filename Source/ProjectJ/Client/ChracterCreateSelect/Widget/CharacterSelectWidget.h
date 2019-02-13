@@ -27,9 +27,11 @@ private:
 		class UCharacterSelectButton* CharacterButtonTwo;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterButtons, Meta = (AllowPrivateAccess = true))
 		class UCharacterSelectButton* CharacterButtonThree;
+	UPROPERTY()
+		class AMainMapPlayerController* MainMapPlayerController;
+	UPROPERTY()
+		class AMainMapGameMode* MainMapGameMode;
 
-	class AMainMapPlayerController* MainMapPlayerController = nullptr;
-	class AMainMapGameMode* MainMapGameMode = nullptr;
 public:
 	virtual void NativeConstruct() override;
 
