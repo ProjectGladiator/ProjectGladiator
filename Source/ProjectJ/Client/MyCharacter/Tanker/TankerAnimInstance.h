@@ -26,5 +26,6 @@ public:
 	virtual void PlayClickedReactionMontage() override;
 	virtual void PlayLevelStartMontage() override;
 	virtual void PlayAttackMontage() override;
+	virtual void PlayRightClickAbilityMontage() override;
 	virtual void JumpAttackMontageSection(int32 NewSection) override;
 };

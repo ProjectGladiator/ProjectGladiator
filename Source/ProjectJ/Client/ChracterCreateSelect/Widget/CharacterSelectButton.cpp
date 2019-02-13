@@ -7,8 +7,11 @@
 #include "Kismet/GameplayStatics.h"
 #include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
 #include "Client/MainMap/MainMapPlayerController.h"
+#include "Client/MainMap/MainMapGameMode.h"
+
 //서버 헤더
 #include "NetWork/StorageManager.h"
+#include "NetWork/JobInfo.h"
 
 void UCharacterSelectButton::NativeConstruct()
 {
@@ -28,6 +31,7 @@ void UCharacterSelectButton::NativeConstruct()
 	}
 
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 void UCharacterSelectButton::NativeTick(const FGeometry & MyGeometry, float InDeltaTime)
@@ -64,6 +68,23 @@ void UCharacterSelectButton::CharacterSelect()
 		{
 			MainMapPlayerController->SetSelectIndex(3);
 		}
+
+		str = ClassName->GetText().ToString();
+
+		if (str.Compare("TANKER") == 0)
+		{
+			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::TANKER);
+		}
+		else if (str.Compare("WARRIOR") == 0)
+		{
+			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::WARRIOR);
+		}
+		else if (str.Compare("GUNNER") == 0)
+		{
+			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::GUNNER);
+		}
+
+		MainMapPlayerController->ToCharacterZoomInCamera();
 	}
 }
 

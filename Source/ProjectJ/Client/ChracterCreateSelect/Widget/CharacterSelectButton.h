@@ -7,7 +7,7 @@
 #include "CharacterSelectButton.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTJ_API UCharacterSelectButton : public UUserWidget
@@ -22,14 +22,16 @@ private:
 		class UTextBlock* CharacterLevel;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UTextBlock* ClassName;
-	class AMainMapPlayerController* MainMapPlayerController = nullptr;
-public:	
-
+	UPROPERTY()
+		class AMainMapPlayerController* MainMapPlayerController;
+	UPROPERTY()
+		class AMainMapGameMode* MainMapGameMode;
+public:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime);
 
 	UFUNCTION()
-	void CharacterSelect();
+		void CharacterSelect();
 
-	void CharacterInfoInput(const FText& NickName, const FText& Level, const FText& JobName);	
+	void CharacterInfoInput(const FText& NickName, const FText& Level, const FText& JobName);
 };

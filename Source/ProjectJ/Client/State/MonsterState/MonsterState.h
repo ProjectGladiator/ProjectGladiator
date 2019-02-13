@@ -29,7 +29,6 @@ enum class ESpiderState : uint8
 	Idle,
 	Chase,
 	Attack,
-	Summon,
 	Death
 };
 
@@ -56,4 +55,14 @@ enum class EDinosaurAttackState : uint8
 	Idle,
 	DefaultAttack,
 	RangeAttack
+};
+
+UENUM(BlueprintType)
+enum class ESpiderBossState : uint8
+{
+	Idle,
+	Chase,
+	Attack,
+	Summon,
+	Death
 };

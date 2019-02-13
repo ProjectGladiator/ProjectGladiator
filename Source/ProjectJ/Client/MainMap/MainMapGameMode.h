@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "NetWork/JobInfo.h"
 #include "MainMapGameMode.generated.h"
 
 /**
@@ -30,7 +31,10 @@ private:
 		class UWidgetOk* OkWidget; //에러 확인 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
 		class UUserWidget* LoadingWidget; //로딩 위젯
-
+	UPROPERTY()
+		class UStageManager* StageManager;
+	UPROPERTY()
+		class AMyCharacter* SelectCharacter;
 public:
 	AMainMapGameMode();
 
@@ -50,4 +54,7 @@ public:
 	UFUNCTION()
 		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수
 	void MainMapSpawnCharacterPossess(class AMyCharacter* _MyCharacter); //게임 시작시 캐릭터 빙의 함수
+
+	void SelectCharacterSpawn(CHARACTER_JOB _SelectJob);
+	void SelectCharacterDestroy();
 };

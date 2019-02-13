@@ -22,6 +22,7 @@ public:
 	void Character_Req_Slot();								// 슬롯요청
 	void Character_Req_New_Character();						// 캐릭터 생성 메뉴
 	void Character_Req_Character(char* _nick, int _code);	// 캐릭터 생성요청(닉네임,직업코드)
+	void Character_Req_Delete(int _index);
 	void Character_Choice(int _select);						// 캐릭터 선택 
 	void Character_Exit();									// 캐릭터 생성 취소
 	void Character_Slot_Empty(bool _check);

@@ -11,12 +11,15 @@
 #include "Kismet/GameplayStatics.h" //각종 유틸 헤더
 #include "Kismet/KismetMathLibrary.h"
 #include "Camera/CameraComponent.h" //카메라 컴포넌트 헤더파일
-#include "GunnerCameraShake.h"
+#include "GunnerCameraShake.h" //총잡이 카메라 흔들기
+#include "GameFramework/SpringArmComponent.h" //스프링암 컴포넌트 헤더파일
 
 //서버 헤더
 AGunner::AGunner()
 {
 	PrimaryActorTick.bCanEverTick = true; //틱 활성화
+
+	SpringArm->SetRelativeLocation(FVector(0, 83.0f, 108.0f)); //카메라 위치 조정
 
 	//총잡이 메쉬를 에디터에서 찾아서 SK_GunnerMesh에 저장
 	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SK_GunnerMesh(TEXT("SkeletalMesh'/Game/Assets/Paragon/Chracter/ParagonLtBelica/Characters/Heroes/Belica/Meshes/Belica.Belica'"));
@@ -64,15 +67,15 @@ void AGunner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GunnerAnimInstance = Cast<UGunnerAnimInstance>(GetMesh()->GetAnimInstance()); //총잡이 애님인스턴스를 구해서 GunnerAnimInstance에 저장
+	MyAnimInstance = Cast<UGunnerAnimInstance>(GetMesh()->GetAnimInstance()); //총잡이 애님인스턴스를 구해서 GunnerAnimInstance에 저장
 
-	if (GunnerAnimInstance) //null이 아니면
+	if (MyAnimInstance) //null이 아니면
 	{
 		//OnAttackEnded( 공격 애니메이션 끝 ) 델리게이트를 이용해서 총잡이에 있는 OnAttackMontageEnded 연동
-		GunnerAnimInstance->OnAttackEnded.AddDynamic(this, &AGunner::OnAttackMontageEnded);
+		MyAnimInstance->OnAttackEnded.AddDynamic(this, &AGunner::OnAttackMontageEnded);
 		//OnComboSave( 콤보 저장 ) 델리게이트를 이용해서 총잡이에 있는 OnComboMontageSave 연동
-		GunnerAnimInstance->OnComboSave.AddDynamic(this, &AGunner::OnComboMontageSave);
-		GunnerAnimInstance->OnAttackHit.AddDynamic(this, &AGunner::OnAttackHit);
+		MyAnimInstance->OnComboSave.AddDynamic(this, &AGunner::OnComboMontageSave);
+		MyAnimInstance->OnAttackHit.AddDynamic(this, &AGunner::OnAttackHit);
 	}
 }
 
@@ -88,11 +91,11 @@ void AGunner::Tick(float DeltaTime)
 
 void AGunner::ClickedReactionMontagePlay()
 {
-	if (GunnerAnimInstance) //총잡이 애님인스턴스가 null인지 확인
+	if (MyAnimInstance) //총잡이 애님인스턴스가 null인지 확인
 	{
 		//제대로 있으면
 		//캐릭터 선택 애니메이션 실행
-		GunnerAnimInstance->PlayClickedReactionMontage();
+		MyAnimInstance->PlayClickedReactionMontage();
 	}
 }
 
@@ -107,11 +110,11 @@ void AGunner::LeftClick()
 		GLog->Log(FString::Printf(TEXT("총잡이 상태에서 왼쪽 클릭")));
 		IsAttack = true;
 
-		if (GunnerAnimInstance)
+		if (MyAnimInstance)
 		{
-			GunnerAnimInstance->PlayAttackMontage();
+			MyAnimInstance->PlayAttackMontage();
 			CurrentCombo += 1;
-			GunnerAnimInstance->JumpAttackMontageSection(CurrentCombo);
+			MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
 		}
 	}
 }
@@ -122,11 +125,11 @@ void AGunner::OnComboMontageSave()
 	{
 		GLog->Log(FString::Printf(TEXT("콤보 공격 시작함")));
 		IsCombo = false;
-		if (GunnerAnimInstance)
+		if (MyAnimInstance)
 		{
-			GunnerAnimInstance->PlayAttackMontage();
+			MyAnimInstance->PlayAttackMontage();
 			CurrentCombo += 1;
-			GunnerAnimInstance->JumpAttackMontageSection(CurrentCombo);
+			MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
 		}
 	}
 }

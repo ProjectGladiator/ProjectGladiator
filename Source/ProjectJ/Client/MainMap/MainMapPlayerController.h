@@ -22,6 +22,8 @@ private:
 		class AChracterCreateCamera* CharacterCreateCamera; //캐릭터 생성창 카메라
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Cameras, Meta = (AllowPrivateAccess = true))
 		class AChracterCreateCamera* CharacterSelectCamera; //캐릭터 선택창 카메라
+	UPROPERTY()
+		class AChracterCreateCamera* CharacterSelectZoomInCamera;
 	int32 JobCode;
 	int32 Select_index = -1;
 public:
@@ -31,6 +33,7 @@ public:
 
 	void ToCharacterCreate();
 	void ToCharacterSelect();
+	void ToCharacterZoomInCamera();
 
 	void SelectCharacter(int NewJobCode);
 

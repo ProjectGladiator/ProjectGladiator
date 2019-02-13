@@ -14,8 +14,6 @@ class PROJECTJ_API ATanker : public AMyCharacter
 {
 	GENERATED_BODY()
 private:
-	UPROPERTY()
-		class UTankerAnimInstance* TankerAnimInstance;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Weapon, Meta = (AllowPrivateAccess = true))
 		class UCapsuleComponent* WeaponCapsule;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect, Meta = (AllowPrivateAccess = true))
@@ -29,6 +27,10 @@ public:
 
 	UFUNCTION()
 		virtual void LeftClick() override;
+	UFUNCTION()
+		virtual void RightClickOn() override;
+	UFUNCTION()
+		virtual void RightClickOff() override;
 	UFUNCTION()
 		virtual void OnComboMontageSave() override;
 	UFUNCTION()

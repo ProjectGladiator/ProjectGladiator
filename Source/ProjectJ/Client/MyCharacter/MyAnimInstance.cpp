@@ -52,12 +52,39 @@ void UMyAnimInstance::PlayClickedReactionMontage()
 
 void UMyAnimInstance::PlayLevelStartMontage()
 {
-	//캐릭터 선택창에서 슬롯 선택시 실행해줄 애니메이션 자식 함수에서 따로 구현
+	GLog->Log(FString::Printf(TEXT("레벨 스타트 몽타주 실행1")));
+
+	if (LevelStartMontage) //레벨시작 애니메이션 몽타주가 잇는지 확인하고
+	{
+		if (!Montage_IsPlaying(LevelStartMontage)) //현재 플레이 중이 아니면
+		{
+			Montage_Play(LevelStartMontage, 1.0f); //몽타주를 실행한다.
+		}
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("레벨 스타트 몽타주가 존재하지 않음")));
+	}
 }
 
 void UMyAnimInstance::PlayAttackMontage()
 {
 	//공격 애니메이션 실행 자식 함수에서 따로 구현
+}
+
+void UMyAnimInstance::PlayRightClickAbilityMontage()
+{
+	if (RightClickAbilityMontage)
+	{
+		if (!Montage_IsPlaying(RightClickAbilityMontage))
+		{
+			Montage_Play(RightClickAbilityMontage, 1.0f);
+		}
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("오른쪽 특수능력 몽타주가 존재하지 않음")));
+	}
 }
 
 void UMyAnimInstance::JumpAttackMontageSection(int32 NewSection)

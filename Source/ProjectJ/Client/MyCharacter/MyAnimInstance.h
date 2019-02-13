@@ -33,14 +33,18 @@ protected:
 		class UAnimMontage* LevelStartMontage; //캐릭터 선택창에서 슬롯 선택시 출력해줄 애니메이션
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Montage)
 		class UAnimMontage* AttackMontage; //캐릭터 공격애니메이션 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Montage)
+		class UAnimMontage* RightClickAbilityMontage; //캐릭터 공격애니메이션 
 
 	FName GetAttackMontageSection(int32 NewSection); //캐릭터 공격애니메이션
 
+public:
 	virtual void PlayClickedReactionMontage(); //캐릭터 생성창 선택 애니메이션 실행
 	virtual void PlayLevelStartMontage(); //캐릭터 선택창 슬롯 선택 애니메이션 실행
 	virtual void PlayAttackMontage(); //공격 애니메이션 실행
+	virtual void PlayRightClickAbilityMontage();
 	virtual void JumpAttackMontageSection(int32 NewSection); //공격 애니메이션 몽타주 섹션 점프 해주는 함수
-public:
+
 	FOnAttackEndedDelegate OnAttackEnded; //공격 애니메이션 끝 델리게이트 변수
 	FOnComboSaveDelegate OnComboSave; //콤보 저장 델리게이트 변수
 	FOnAttackHitDelegate OnAttackHit; //공격 판정 델리게이트 변수

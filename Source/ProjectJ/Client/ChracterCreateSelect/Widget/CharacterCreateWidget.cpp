@@ -52,11 +52,11 @@ void UCharacterCreateWidget::ChracterCreate()
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
 			//NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
-
 			NickNameInputBox->SetText(FText::FromString(TEXT("")));
 			MainMapGameMode->CharacterSelectWidgetToggle();
 			MainMapGameMode->CharacterCreateWidgetToggle();
 			MainMapPlayerController->ToCharacterSelect();
+			MainMapPlayerController->SelectCharacter(0);
 		}
 		else
 		{
@@ -81,6 +81,7 @@ void UCharacterCreateWidget::Cancel()
 		MainMapGameMode->CharacterCreateWidgetToggle();
 		MainMapGameMode->CharacterSelectWidgetToggle();
 		MainMapPlayerController->ToCharacterSelect();
+		MainMapPlayerController->SelectCharacter(0);
 	}
 }
 

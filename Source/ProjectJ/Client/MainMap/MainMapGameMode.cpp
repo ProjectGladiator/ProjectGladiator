@@ -17,16 +17,19 @@
 #include "Client/MyCharacter/Warrior/Warrior.h"
 #include "Client/MyCharacter/Gunner/Gunner.h"
 #include "MainMapPlayerController.h"
+#include "Manager/StageManager.h"
+#include "Client/MyCharacter/Gunner/GunnerAnimInstance.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
 #include "NetWork/StorageManager.h"
-#include "NetWork/JobInfo.h"
 
 AMainMapGameMode::AMainMapGameMode()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	StageManager = CreateDefaultSubobject<UStageManager>(TEXT("StageManager"));
 }
 
 void AMainMapGameMode::BeginPlay()
@@ -137,11 +140,11 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	bool ResultFlag;
 	CharacterInfo* character_info = nullptr;
 
-	if (StorageManager::GetInstance()->GetFront(Data))
+	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
-		switch (Data->protocol)
+		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
 		{
-		case PLOGIN_IDOVERLAP_RESULT:			// ID 중복체크 결과
+		case PLOGIN_IDOVERLAP_RESULT: // ID 중복체크 결과
 			StorageManager::GetInstance()->ChangeData(Data->data, isOverlap);
 			StorageManager::GetInstance()->PopData();
 			if (isOverlap == true)
@@ -234,7 +237,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			{
 				CharacterManager::GetInstance()->Character_Req_Slot();
 				NetworkClient_main::NetworkManager::GetInstance()->Send();
-				
+
 			}
 			else
 			{
@@ -273,7 +276,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 				MainMapSpawnCharacterPossess(Warrior);
 			}
-				break;
+			break;
 			case CHARACTER_JOB::MAGICIAN:
 				break;
 			case CHARACTER_JOB::GUNNER:
@@ -282,7 +285,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 				MainMapSpawnCharacterPossess(Gunner);
 			}
-				break;
+			break;
 			}
 			break;
 
@@ -388,6 +391,7 @@ void AMainMapGameMode::LoadingWidgetViewScreen()
 
 void AMainMapGameMode::MapLoadComplete()
 {
+	SelectCharacterDestroy();
 	GLog->Log(FString::Printf(TEXT("맵 로드 완료")));
 	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
 }
@@ -401,7 +405,8 @@ void AMainMapGameMode::MainMapSpawnCharacterPossess(AMyCharacter* _MyCharacter)
 		if (MainMapPlayerController)
 		{
 			MainMapPlayerController->bShowMouseCursor = false;
-			//bShowMouseCursor = true;
+			MainMapPlayerController->bEnableClickEvents = false;
+			MainMapPlayerController->bEnableMouseOverEvents = false;
 			MainMapPlayerController->Possess(_MyCharacter);
 		}
 		else
@@ -412,5 +417,45 @@ void AMainMapGameMode::MainMapSpawnCharacterPossess(AMyCharacter* _MyCharacter)
 	else
 	{
 		GLog->Log(FString::Printf(TEXT("메인 스테이지 월드에 캐릭터가 스폰 안됨")));
+	}
+}
+
+void AMainMapGameMode::SelectCharacterSpawn(CHARACTER_JOB _SelectJob)
+{
+	ATanker* SelectTankerCharacter = nullptr;
+	AWarrior* SelectWarriorCharacter = nullptr;
+	AGunner* SelectGunnerCharacter = nullptr;
+
+	FActorSpawnParameters SpawnActorOption;
+	SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	SelectCharacterDestroy();
+
+	switch (_SelectJob)
+	{
+	case CHARACTER_JOB::TANKER:
+		SelectCharacter = GetWorld()->SpawnActor<ATanker>(SelectTankerCharacter->StaticClass(), FVector(5.0f, -1150.0f, 155.0f), FRotator::ZeroRotator, SpawnActorOption);
+		break;
+	case CHARACTER_JOB::WARRIOR:
+		SelectCharacter = GetWorld()->SpawnActor<AWarrior>(SelectWarriorCharacter->StaticClass(), FVector(5.0f, -1150.0f, 155.0f), FRotator::ZeroRotator, SpawnActorOption);
+		break;
+	case CHARACTER_JOB::GUNNER:
+		SelectCharacter = GetWorld()->SpawnActor<AGunner>(SelectGunnerCharacter->StaticClass(), FVector(5.0f, -1150.0f, 155.0f), FRotator::ZeroRotator, SpawnActorOption);
+		break;
+	}
+
+	if (SelectCharacter)
+	{
+		GLog->Log(FString::Printf(TEXT("메인맵 게임모드 레벨스타트 몽타주 실행")));
+		SelectCharacter->SetActorRotation(FRotator(0, -90.0f, 0));
+		SelectCharacter->GetMyAnimInstance()->PlayLevelStartMontage();
+	}
+}
+
+void AMainMapGameMode::SelectCharacterDestroy()
+{
+	if (SelectCharacter)
+	{
+		SelectCharacter->Destroy();
 	}
 }
