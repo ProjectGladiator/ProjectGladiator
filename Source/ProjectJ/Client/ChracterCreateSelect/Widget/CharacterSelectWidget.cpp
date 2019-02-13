@@ -55,7 +55,6 @@ void UCharacterSelectWidget::GameStart()
 	{
 		if (MainMapPlayerController->GetSelectIndex() != -1)
 		{
-			MainMapPlayerController->SetSelectIndex(-1);
 			//****
 			//** 게임 시작, 캐릭터 생성 버튼 비활성화
 			//****
@@ -67,6 +66,7 @@ void UCharacterSelectWidget::GameStart()
 			*/
 			CharacterManager::GetInstance()->Character_Req_Enter(MainMapPlayerController->GetSelectIndex());
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
+			MainMapPlayerController->SetSelectIndex(-1);
 		}
 		else
 		{
