@@ -2,7 +2,6 @@
 
 #include "MainMapGameMode.h"
 //클라 헤더
-#include "Client/Title/TitlePlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "Client/Title/Widget/TitleWidgetLogin.h"
@@ -18,7 +17,7 @@
 #include "Client/MyCharacter/Gunner/Gunner.h"
 #include "MainMapPlayerController.h"
 #include "Manager/StageManager.h"
-#include "Client/MyCharacter/Gunner/GunnerAnimInstance.h"
+#include "Client/MyCharacter/MyAnimInstance.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -405,8 +404,9 @@ void AMainMapGameMode::MainMapSpawnCharacterPossess(AMyCharacter* _MyCharacter)
 		if (MainMapPlayerController)
 		{
 			MainMapPlayerController->bShowMouseCursor = false;
-			MainMapPlayerController->bEnableClickEvents = false;
-			MainMapPlayerController->bEnableMouseOverEvents = false;
+			MainMapPlayerController->SetInputMode(FInputModeGameOnly());
+			/*MainMapPlayerController->bEnableClickEvents = false;
+			MainMapPlayerController->bEnableMouseOverEvents = false;*/
 			MainMapPlayerController->Possess(_MyCharacter);
 		}
 		else
@@ -422,6 +422,8 @@ void AMainMapGameMode::MainMapSpawnCharacterPossess(AMyCharacter* _MyCharacter)
 
 void AMainMapGameMode::SelectCharacterSpawn(CHARACTER_JOB _SelectJob)
 {
+	GLog->Log(FString::Printf(TEXT("선택한 캐릭터 스폰")));
+
 	ATanker* SelectTankerCharacter = nullptr;
 	AWarrior* SelectWarriorCharacter = nullptr;
 	AGunner* SelectGunnerCharacter = nullptr;
@@ -449,6 +451,10 @@ void AMainMapGameMode::SelectCharacterSpawn(CHARACTER_JOB _SelectJob)
 		GLog->Log(FString::Printf(TEXT("메인맵 게임모드 레벨스타트 몽타주 실행")));
 		SelectCharacter->SetActorRotation(FRotator(0, -90.0f, 0));
 		SelectCharacter->GetMyAnimInstance()->PlayLevelStartMontage();
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("캐릭터가 스폰되지 않음")));
 	}
 }
 
