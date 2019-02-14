@@ -34,6 +34,8 @@ int StorageManager::NProtocoltoDProtocol(int _networkprotocol)
 		return PCHARACTERDATA_ENTER_RESULT;
 	case SERVER_CHARACTER_ENTER_INFO:
 		return PCHARACTERDATA_ENTER_INFO;
+	case SERVER_CHARACTER_DELETE_RESULT:
+		return PCHARACTERDATA_DELETE_RESULT;
 	}
 
 	return -1;

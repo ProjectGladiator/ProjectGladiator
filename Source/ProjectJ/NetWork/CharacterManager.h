@@ -32,6 +32,7 @@ public:
 	bool Character_Recv_Slot(char* _buf);					// 슬롯에 캐릭터가 있으면 캐릭터를 반환한다
 	bool Character_Recv_Create(char* _buf);					// 캐릭터 생성 결과
 	bool Character_Recv_Enter(char* _buf);					// 캐릭터 접속 결과
+	bool Character_Recv_Delete(char* _buf);					// 캐릭터 삭제 결과
 
 	RESULT CharacterInitRecvResult();						// 
 	RESULT CharacterNewRecvResult();						// 

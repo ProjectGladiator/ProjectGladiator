@@ -80,7 +80,8 @@ void UCharacterSelectWidget::GameStart()
 
 void UCharacterSelectWidget::MyCharacterDelete()
 {
-
+	CharacterManager::GetInstance()->Character_Req_Delete(MainMapPlayerController->GetSelectIndex());
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
 void UCharacterSelectWidget::MyCharacterCreate()
@@ -151,6 +152,14 @@ void UCharacterSelectWidget::MyCharacterSlotUpdate(PacketData * _data)
 		}
 	}
 	StorageManager::GetInstance()->PopData();
+}
+
+void UCharacterSelectWidget::MyCharacterSlotHidden()
+{
+	MainMapPlayerController->ToCharacterSelect();
+	CharacterButtonOne->SetVisibility(ESlateVisibility::Hidden);
+	CharacterButtonTwo->SetVisibility(ESlateVisibility::Hidden);
+	CharacterButtonThree->SetVisibility(ESlateVisibility::Hidden);
 }
 
 UButton * UCharacterSelectWidget::GetGameStartButton()

@@ -365,6 +365,23 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 	}
 }
 
+bool CharacterManager::Character_Recv_Delete(char * _buf)
+{
+	bool check;
+
+	memcpy(&check, _buf, sizeof(bool));
+	if (check)
+	{
+		// 캐릭터 삭제 성공
+		return true;
+	}
+	else
+	{
+		// 캐릭터 삭제 실패
+		return false;
+	}
+}
+
 RESULT CharacterManager::CharacterInitRecvResult()
 {
 	PROTOCOL protocol;
@@ -403,6 +420,10 @@ RESULT CharacterManager::CharacterInitRecvResult()
 		break;
 	case SERVER_CHARACTER_DELETE_RESULT:
 		// 캐릭터 삭제
+		check = Character_Recv_Delete(buf);
+
+		StorageManager::GetInstance()->PushData(protocol, (void*)&check, sizeof(bool));
+
 		result = RT_CHARACTER_DELETE;
 		break;
 	case SERVER_CHARACTER_MENU:

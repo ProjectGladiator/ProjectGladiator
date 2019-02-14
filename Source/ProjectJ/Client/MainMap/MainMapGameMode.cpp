@@ -2,7 +2,6 @@
 
 #include "MainMapGameMode.h"
 //클라 헤더
-#include "Client/Title/TitlePlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "Client/Title/Widget/TitleWidgetLogin.h"
@@ -18,7 +17,7 @@
 #include "Client/MyCharacter/Gunner/Gunner.h"
 #include "MainMapPlayerController.h"
 #include "Manager/StageManager.h"
-#include "Client/MyCharacter/Gunner/GunnerAnimInstance.h"
+#include "Client/MyCharacter/MyAnimInstance.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -198,6 +197,22 @@ void AMainMapGameMode::Tick(float DeltaTime)
 		case PCHARACTERDATA_SLOT_INFO:			// 슬롯 정보
 			CharacterSelectWidget->MyCharacterSlotUpdate(Data);
 			GLog->Log(FString::Printf(TEXT("캐릭터 슬롯 정보 업데이트")));
+			break;
+		case  PCHARACTERDATA_DELETE_RESULT:
+			StorageManager::GetInstance()->ChangeData(Data->data, ResultFlag);
+			StorageManager::GetInstance()->PopData();
+			if (ResultFlag)
+			{
+				SelectCharacterDestroy();
+				CharacterSelectWidget->MyCharacterSlotHidden();
+				GLog->Log(FString::Printf(TEXT("캐릭터 삭제 성공")));
+				CharacterManager::GetInstance()->Character_Req_Slot();
+				NetworkClient_main::NetworkManager::GetInstance()->Send();
+			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("캐릭터 삭제 실패")));
+			}
 			break;
 		case PCHARACTERDATA_ENTER_RESULT:		// 게임 접속 요청 결과
 			StorageManager::GetInstance()->ChangeData(Data->data, ResultFlag);
@@ -405,8 +420,9 @@ void AMainMapGameMode::MainMapSpawnCharacterPossess(AMyCharacter* _MyCharacter)
 		if (MainMapPlayerController)
 		{
 			MainMapPlayerController->bShowMouseCursor = false;
-			MainMapPlayerController->bEnableClickEvents = false;
-			MainMapPlayerController->bEnableMouseOverEvents = false;
+			MainMapPlayerController->SetInputMode(FInputModeGameOnly());
+			/*MainMapPlayerController->bEnableClickEvents = false;
+			MainMapPlayerController->bEnableMouseOverEvents = false;*/
 			MainMapPlayerController->Possess(_MyCharacter);
 		}
 		else
@@ -422,6 +438,8 @@ void AMainMapGameMode::MainMapSpawnCharacterPossess(AMyCharacter* _MyCharacter)
 
 void AMainMapGameMode::SelectCharacterSpawn(CHARACTER_JOB _SelectJob)
 {
+	GLog->Log(FString::Printf(TEXT("선택한 캐릭터 스폰")));
+
 	ATanker* SelectTankerCharacter = nullptr;
 	AWarrior* SelectWarriorCharacter = nullptr;
 	AGunner* SelectGunnerCharacter = nullptr;
@@ -449,6 +467,10 @@ void AMainMapGameMode::SelectCharacterSpawn(CHARACTER_JOB _SelectJob)
 		GLog->Log(FString::Printf(TEXT("메인맵 게임모드 레벨스타트 몽타주 실행")));
 		SelectCharacter->SetActorRotation(FRotator(0, -90.0f, 0));
 		SelectCharacter->GetMyAnimInstance()->PlayLevelStartMontage();
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("캐릭터가 스폰되지 않음")));
 	}
 }
 
