@@ -148,6 +148,7 @@ void UCharacterSelectWidget::MyCharacterSlotUpdate(PacketData * _data)
 
 void UCharacterSelectWidget::MyCharacterSlotHidden()
 {
+	MainMapPlayerController->ToCharacterSelect();
 	CharacterButtonOne->SetVisibility(ESlateVisibility::Hidden);
 	CharacterButtonTwo->SetVisibility(ESlateVisibility::Hidden);
 	CharacterButtonThree->SetVisibility(ESlateVisibility::Hidden);
