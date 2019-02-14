@@ -198,6 +198,20 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			CharacterSelectWidget->MyCharacterSlotUpdate(Data);
 			GLog->Log(FString::Printf(TEXT("캐릭터 슬롯 정보 업데이트")));
 			break;
+		case  PCHARACTERDATA_DELETE_RESULT:
+			StorageManager::GetInstance()->ChangeData(Data->data, ResultFlag);
+			StorageManager::GetInstance()->PopData();
+			if (ResultFlag)
+			{
+				GLog->Log(FString::Printf(TEXT("캐릭터 삭제 성공")));
+				CharacterManager::GetInstance()->Character_Req_Slot();
+				NetworkClient_main::NetworkManager::GetInstance()->Send();
+			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("캐릭터 삭제 실패")));
+			}
+			break;
 		case PCHARACTERDATA_ENTER_RESULT:		// 게임 접속 요청 결과
 			StorageManager::GetInstance()->ChangeData(Data->data, ResultFlag);
 			if (ResultFlag)
