@@ -80,7 +80,8 @@ void UCharacterSelectWidget::GameStart()
 
 void UCharacterSelectWidget::MyCharacterDelete()
 {
-
+	CharacterManager::GetInstance()->Character_Req_Delete(MainMapPlayerController->GetSelectIndex());
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
 void UCharacterSelectWidget::MyCharacterCreate()
