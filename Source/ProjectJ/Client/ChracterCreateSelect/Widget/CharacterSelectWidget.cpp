@@ -146,6 +146,13 @@ void UCharacterSelectWidget::MyCharacterSlotUpdate(PacketData * _data)
 	StorageManager::GetInstance()->PopData();
 }
 
+void UCharacterSelectWidget::MyCharacterSlotHidden()
+{
+	CharacterButtonOne->SetVisibility(ESlateVisibility::Hidden);
+	CharacterButtonTwo->SetVisibility(ESlateVisibility::Hidden);
+	CharacterButtonThree->SetVisibility(ESlateVisibility::Hidden);
+}
+
 UButton * UCharacterSelectWidget::GetGameStartButton()
 {
 	return GameStartButton;

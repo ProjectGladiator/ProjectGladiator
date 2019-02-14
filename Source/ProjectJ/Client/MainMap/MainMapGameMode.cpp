@@ -203,6 +203,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			StorageManager::GetInstance()->PopData();
 			if (ResultFlag)
 			{
+				CharacterSelectWidget->MyCharacterSlotHidden();
 				GLog->Log(FString::Printf(TEXT("캐릭터 삭제 성공")));
 				CharacterManager::GetInstance()->Character_Req_Slot();
 				NetworkClient_main::NetworkManager::GetInstance()->Send();
