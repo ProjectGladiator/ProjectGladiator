@@ -168,7 +168,7 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		ptr_packetdata += sizeof(int);
 	}
 
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&ptrdata, datasize);
+	StorageManager::GetInstance()->PushData(PCHARACTERDATA_SLOT_INFO, (void*)&ptrdata, datasize);
 
 	return true;
 }
@@ -250,7 +250,7 @@ void CharacterManager::Character_Slot_Empty(bool _check)
 	bool check = _check;
 
 	memcpy(ptr, &check, sizeof(bool));
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_SLOT_RESULT, (void*)&buf, size);
+	StorageManager::GetInstance()->PushData(PCHARACTERDATA_SLOT_INFO, (void*)&buf, size);
 
 	//LogManager::GetInstance()->SetTime();
 	//LogManager::GetInstance()->LogWrite(buf);
@@ -305,7 +305,7 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 
 	if (check)
 	{
-		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_RESULT, (void*)&check, sizeof(bool));
+		StorageManager::GetInstance()->PushData(PCHARACTERDATA_ENTER_RESULT, (void*)&check, sizeof(bool));
 	
 		// 캐릭터 코드
 		memcpy(&charterinfo.character_code, ptr, sizeof(int));
@@ -358,7 +358,7 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 		memcpy(ptr_packetdata, &charterinfo.z, sizeof(float));
 		ptr_packetdata += sizeof(float);
 
-		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_INFO, (void*)&ptrdata, datasize);
+		StorageManager::GetInstance()->PushData(PCHARACTERDATA_ENTER_INFO, (void*)&ptrdata, datasize);
 
 		return true;
 	}
@@ -425,7 +425,7 @@ RESULT CharacterManager::CharacterInitRecvResult()
 		// 캐릭터 삭제
 		check = Character_Recv_Delete(buf);
 
-		StorageManager::GetInstance()->PushData(protocol, (void*)&check, sizeof(bool));
+		StorageManager::GetInstance()->PushData(PCHARACTERDATA_DELETE_RESULT, (void*)&check, sizeof(bool));
 
 		result = RT_CHARACTER_DELETE;
 		break;
@@ -453,7 +453,7 @@ RESULT CharacterManager::CharacterNewRecvResult()
 	{
 	case SERVER_CHARACTER_RESULT:
 		check = Character_Recv_Create(buf);
-		StorageManager::GetInstance()->PushData(protocol, (void*)&check, sizeof(bool));
+		StorageManager::GetInstance()->PushData(PCHARACTERDATA_CREATE_RESULT, (void*)&check, sizeof(bool));
 		if (check == true)
 		{
 			result = RT_CHARACTER_CREATE_SUCCESS;

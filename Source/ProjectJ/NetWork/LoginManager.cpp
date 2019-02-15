@@ -187,7 +187,7 @@ RESULT LoginManager::InitRecvResult()
 			// 로그인실패
 			result = RT_LOGINFAIL;
 		}
-		StorageManager::GetInstance()->PushData(protocol, (void*)&isLogin, sizeof(bool));
+		StorageManager::GetInstance()->PushData(PLOGIN_LOGIN_RESULT, (void*)&isLogin, sizeof(bool));
 		break;
 	case SERVER_JOIN:
 		// 회원가입 매뉴
@@ -213,7 +213,7 @@ RESULT LoginManager::JoinRecvResult()
 	{
 	case SERVER_ID_OVERLAP_CHECK:
 		result = IdOverlapCheck(buf);
-		StorageManager::GetInstance()->PushData(protocol, (void*)&result, sizeof(bool));
+		StorageManager::GetInstance()->PushData(PLOGIN_IDOVERLAP_RESULT, (void*)&result, sizeof(bool));
 		if (result == true)
 		{
 			// ID 중복체크 결과 중복없을때
@@ -227,7 +227,7 @@ RESULT LoginManager::JoinRecvResult()
 		break;
 	case SERVER_JOIN_SUCCESS:
 		result = Join(buf);
-		StorageManager::GetInstance()->PushData(protocol, (void*)&result, sizeof(bool));
+		StorageManager::GetInstance()->PushData(PLOGIN_JOIN_RESULT, (void*)&result, sizeof(bool));
 		if (result == true)
 		{
 			// 회원가입 성공일때
@@ -272,7 +272,7 @@ bool LoginManager::Login(char * _buf)
 	bool check;
 
 	memcpy(&check, _buf, sizeof(bool));
-	StorageManager::GetInstance()->PushData(SERVER_LOGIN_SUCCESS, &check, sizeof(bool));
+	StorageManager::GetInstance()->PushData(PLOGIN_LOGIN_RESULT, &check, sizeof(bool));
 
 	if (check)
 	{
