@@ -71,17 +71,21 @@ void UCharacterSelectButton::CharacterSelect()
 
 		str = ClassName->GetText().ToString();
 
-		if (str.Compare("TANKER") == 0)
+		if (str.Compare("Tanker") == 0)
 		{
 			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::TANKER);
 		}
-		else if (str.Compare("WARRIOR") == 0)
+		else if (str.Compare("Warrior") == 0)
 		{
 			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::WARRIOR);
 		}
-		else if (str.Compare("GUNNER") == 0)
+		else if (str.Compare("Gunner") == 0)
 		{
 			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::GUNNER);
+		}
+		else
+		{
+			GLog->Log(FString::Printf(TEXT("선택한 버튼의 클래스 이름이 존재하지 않음")));
 		}
 
 		MainMapPlayerController->ToCharacterZoomInCamera();
