@@ -32,7 +32,7 @@ private:
 	StorageManager();
 	~StorageManager();
 
-	int NProtocoltoDProtocol(int _networkprotocol);
+	//int NProtocoltoDProtocol(int _networkprotocol);
 public:
 	static void CreateInstance();
 	static StorageManager* GetInstance();
@@ -46,7 +46,7 @@ public:
 	void ChangeData(void* data, bool& type);
 	void ChangeData(void* data, int& _count);
 	void ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot);
-	void ChangeData(void* data, int _count, CharacterInfo*& _charinfo);
+	void ChangeData(void* data, CharacterInfo*& _charinfo);
 	bool PopData();
 };
 

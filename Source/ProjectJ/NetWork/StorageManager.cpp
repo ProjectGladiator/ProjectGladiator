@@ -11,35 +11,35 @@ StorageManager::~StorageManager()
 {
 }
 
-int StorageManager::NProtocoltoDProtocol(int _networkprotocol)
-{
-	switch (_networkprotocol)
-	{
-	case SERVER_JOIN:
-	case SERVER_LOGIN:
-	case SERVER_LOGOUT:
-		return CONFIRM;
-	case SERVER_ID_OVERLAP_CHECK:
-		return PLOGIN_IDOVERLAP_RESULT;
-	case SERVER_JOIN_SUCCESS:
-		return PLOGIN_JOIN_RESULT;
-	case SERVER_LOGIN_SUCCESS:
-		return PLOGIN_LOGIN_RESULT;
-
-	case SERVER_CHARACTER_SLOT_RESULT:
-		return PCHARACTERDATA_SLOT_INFO;
-	case SERVER_CHARACTER_RESULT:
-		return PCHARACTERDATA_CREATE_RESULT;
-	case SERVER_CHARACTER_ENTER_RESULT:
-		return PCHARACTERDATA_ENTER_RESULT;
-	case SERVER_CHARACTER_ENTER_INFO:
-		return PCHARACTERDATA_ENTER_INFO;
-	case SERVER_CHARACTER_DELETE_RESULT:
-		return PCHARACTERDATA_DELETE_RESULT;
-	}
-
-	return -1;
-}
+//int StorageManager::NProtocoltoDProtocol(int _networkprotocol)
+//{
+//	switch (_networkprotocol)
+//	{
+//	case SERVER_JOIN:
+//	case SERVER_LOGIN:
+//	case SERVER_LOGOUT:
+//		return CONFIRM;
+//	case SERVER_ID_OVERLAP_CHECK:
+//		return PLOGIN_IDOVERLAP_RESULT;
+//	case SERVER_JOIN_SUCCESS:
+//		return PLOGIN_JOIN_RESULT;
+//	case SERVER_LOGIN_SUCCESS:
+//		return PLOGIN_LOGIN_RESULT;
+//
+//	case SERVER_CHARACTER_SLOT_RESULT:
+//		return PCHARACTERDATA_SLOT_INFO;
+//	case SERVER_CHARACTER_RESULT:
+//		return PCHARACTERDATA_CREATE_RESULT;
+//	case SERVER_CHARACTER_ENTER_RESULT:
+//		return PCHARACTERDATA_ENTER_RESULT;
+//	case SERVER_CHARACTER_ENTER_INFO:
+//		return PCHARACTERDATA_ENTER_INFO;
+//	case SERVER_CHARACTER_DELETE_RESULT:
+//		return PCHARACTERDATA_DELETE_RESULT;
+//	}
+//
+//	return -1;
+//}
 
 void StorageManager::CreateInstance()
 {
@@ -173,30 +173,28 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 	}
 }
 
-void StorageManager::ChangeData(void * data, int _count, CharacterInfo *& _charinfo)
+// 캐릭터 정보
+void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
 {
 	char* ptr = (char*)data;
 	
 	int nicksize = 0;
 		
-	for (int i = 0; i < _count; i++)
-	{
-		memcpy(&_charinfo[i].character_code, ptr, sizeof(int));
-		ptr += sizeof(int);
+	memcpy(&_charinfo->job_code, ptr, sizeof(int));
+	ptr += sizeof(int);
 
-		memcpy(&nicksize, ptr, sizeof(int));
-		ptr += sizeof(int);
+	memcpy(&nicksize, ptr, sizeof(int));
+	ptr += sizeof(int);
 
-		memcpy(_charinfo[i].nick, ptr, nicksize);
-		ptr += nicksize;
+	memcpy(_charinfo->nick, ptr, nicksize);
+	ptr += nicksize;
 
-		memcpy(&_charinfo[i].x, ptr, sizeof(float));
-		ptr += sizeof(float);
-		memcpy(&_charinfo[i].y, ptr, sizeof(float));
-		ptr += sizeof(float);
-		memcpy(&_charinfo[i].z, ptr, sizeof(float));
-		ptr += sizeof(float);
-	}
+	memcpy(&_charinfo->xyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+
+	memcpy(&_charinfo->rot_xyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+
 }
 
 // Front 삭제
