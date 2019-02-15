@@ -70,36 +70,46 @@ void ATanker::ClickedReactionMontagePlay()
 void ATanker::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	//GLog->Log(FString::Printf(TEXT("%d"), IsRightClick));
 }
 
 void ATanker::LeftClick()
 {
-	if (IsAttack)
+	if (!IsRightClick)
 	{
-		IsCombo = true;
-	}
-	else
-	{
-		GLog->Log(FString::Printf(TEXT("탱커 상태에서 왼쪽 클릭")));
-		IsAttack = true;
-
-		if (MyAnimInstance)
+		if (IsAttack)
 		{
-			MyAnimInstance->PlayAttackMontage();
-			CurrentCombo += 1;
-			MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
+			IsCombo = true;
+		}
+		else
+		{
+			GLog->Log(FString::Printf(TEXT("탱커 상태에서 왼쪽 클릭")));
+			IsAttack = true;
+
+			if (MyAnimInstance)
+			{
+				MyAnimInstance->PlayAttackMontage();
+				CurrentCombo += 1;
+				MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
+			}
 		}
 	}
 }
 
 void ATanker::RightClickOn()
 {
+	Super::RightClickOn();
+
+	GLog->Log(FString::Printf(TEXT("오른쪽 클릭")));
 	MyAnimInstance->PlayRightClickAbilityMontage();
 }
 
 void ATanker::RightClickOff()
 {
+	Super::RightClickOff();
 
+	MyAnimInstance->StopRightClickAbilityMontage();
 }
 
 void ATanker::OnComboMontageSave()

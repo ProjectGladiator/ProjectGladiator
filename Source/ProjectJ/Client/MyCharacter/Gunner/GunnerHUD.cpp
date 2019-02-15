@@ -35,7 +35,7 @@ void AGunnerHUD::DrawHUD()
 
 	if (Gunner)
 	{
-		if (Gunner->GetRightClickFlag())
+		if (Gunner->GetIsRightClick())
 		{
 			float CrossHairSpread = Gunner->GetCrossHairSpread();
 

@@ -48,7 +48,7 @@ AMyCharacter::AMyCharacter()
 	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
-	RightClickFlag = false;
+	IsRightClick = false;
 	IsAttack = false;
 
 	MaxHP = 100.0f;
@@ -165,12 +165,12 @@ void AMyCharacter::ViewReduce()
 
 void AMyCharacter::RightClickOn()
 {
-	RightClickFlag = true;
+	IsRightClick = true;
 }
 
 void AMyCharacter::RightClickOff()
 {
-	RightClickFlag = false;
+	IsRightClick = false;
 }
 
 void AMyCharacter::SightOff()
@@ -254,9 +254,9 @@ void AMyCharacter::OnAttackMontageEnded()
 	CurrentCombo = 0; //콤보수 0으로 초기화
 }
 
-bool AMyCharacter::GetRightClickFlag()
+bool AMyCharacter::GetIsRightClick()
 {
-	return RightClickFlag;
+	return IsRightClick;
 }
 
 void AMyCharacter::OnComboMontageSave()

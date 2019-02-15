@@ -71,7 +71,6 @@ void UTankerAnimInstance::PlayClickedReactionMontage()
 
 void UTankerAnimInstance::PlayLevelStartMontage()
 {
-	GLog->Log(FString::Printf(TEXT("탱커 애님 인스턴스 레벨스타트 몽타주")));
 	if (LevelStartMontage)
 	{
 		if (!Montage_IsPlaying(LevelStartMontage))

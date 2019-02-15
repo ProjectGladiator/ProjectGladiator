@@ -145,7 +145,7 @@ void AGunner::OnAttackHit()
 
 	FHitResult HitResult; 
 
-	if (RightClickFlag) //오른쪽 마우스 클릭 상태이면
+	if (IsRightClick) //오른쪽 마우스 클릭 상태이면
 	{
 		//카메라에서 라인트레이스를 쏜다.
 		

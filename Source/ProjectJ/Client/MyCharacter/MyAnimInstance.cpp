@@ -33,6 +33,8 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		//캐릭터가 현재 점프중인지 아닌지 확인해준다.
 		//true면 점프중, false면 지상
 		IsJump = MyCharacter->GetCharacterMovement()->IsFalling();
+
+		IsRightClick = MyCharacter->GetIsRightClick();
 		//캐릭터의 속력이 0이상이면 가속중이라고 판단하고 0보다 작으면 비가속중이라고 판단한다.
 		if (MyCharacter->GetCharacterMovement()->GetCurrentAcceleration().Size() > 0)
 		{
@@ -52,19 +54,7 @@ void UMyAnimInstance::PlayClickedReactionMontage()
 
 void UMyAnimInstance::PlayLevelStartMontage()
 {
-	GLog->Log(FString::Printf(TEXT("레벨 스타트 몽타주 실행1")));
-
-	if (LevelStartMontage) //레벨시작 애니메이션 몽타주가 잇는지 확인하고
-	{
-		if (!Montage_IsPlaying(LevelStartMontage)) //현재 플레이 중이 아니면
-		{
-			Montage_Play(LevelStartMontage, 1.0f); //몽타주를 실행한다.
-		}
-	}
-	else
-	{
-		GLog->Log(FString::Printf(TEXT("레벨 스타트 몽타주가 존재하지 않음")));
-	}
+	//캐릭터 선택창에서 슬롯 선택시 출력해줄 애니메이션 자식 함수에서 따로 구현
 }
 
 void UMyAnimInstance::PlayAttackMontage()
@@ -74,11 +64,23 @@ void UMyAnimInstance::PlayAttackMontage()
 
 void UMyAnimInstance::PlayRightClickAbilityMontage()
 {
+	
+}
+
+void UMyAnimInstance::StopRightClickAbilityMontage()
+{
+	GLog->Log(FString::Printf(TEXT("스탑 몽타주 실행 0")));
 	if (RightClickAbilityMontage)
 	{
-		if (!Montage_IsPlaying(RightClickAbilityMontage))
+		FName RMB_End(TEXT("RMB_End"));
+
+		Montage_JumpToSection(RMB_End, RightClickAbilityMontage);
+
+		if (Montage_IsPlaying(RightClickAbilityMontage))
 		{
-			Montage_Play(RightClickAbilityMontage, 1.0f);
+			GLog->Log(FString::Printf(TEXT("스탑 몽타주 실행 1")));
+			Montage_Play(RightClickAbilityMontage, 1.0f); //몽타주를 실행한다.
+			Montage_Stop(1.0f, RightClickAbilityMontage);
 		}
 	}
 	else

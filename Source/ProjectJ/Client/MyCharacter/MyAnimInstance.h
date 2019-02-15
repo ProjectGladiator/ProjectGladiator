@@ -26,6 +26,8 @@ private:
 		bool IsAccelerating; //가속 중인지 아닌지
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsJump, Meta = (AllowPrivateAccess = true))
 		bool IsJump; //점프 중인지 아닌지
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsRightClick, Meta = (AllowPrivateAccess = true))
+		bool IsRightClick; //점프 중인지 아닌지
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = Montage)
 		class UAnimMontage* ClickedReactionMontage; //캐릭터 생성창에서 선택시 출력해줄 애니메이션
@@ -40,9 +42,14 @@ protected:
 
 public:
 	virtual void PlayClickedReactionMontage(); //캐릭터 생성창 선택 애니메이션 실행
+	
 	virtual void PlayLevelStartMontage(); //캐릭터 선택창 슬롯 선택 애니메이션 실행
+	
 	virtual void PlayAttackMontage(); //공격 애니메이션 실행
+	
 	virtual void PlayRightClickAbilityMontage();
+	void StopRightClickAbilityMontage();
+	
 	virtual void JumpAttackMontageSection(int32 NewSection); //공격 애니메이션 몽타주 섹션 점프 해주는 함수
 
 	FOnAttackEndedDelegate OnAttackEnded; //공격 애니메이션 끝 델리게이트 변수
