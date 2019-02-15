@@ -48,8 +48,8 @@ public:
 	virtual void PlayAttackMontage(); //공격 애니메이션 실행
 	
 	virtual void PlayRightClickAbilityMontage();
-	void StopRightClickAbilityMontage();
-	
+	virtual void PlayStopRightClickAbilityMontage();
+
 	virtual void JumpAttackMontageSection(int32 NewSection); //공격 애니메이션 몽타주 섹션 점프 해주는 함수
 
 	FOnAttackEndedDelegate OnAttackEnded; //공격 애니메이션 끝 델리게이트 변수

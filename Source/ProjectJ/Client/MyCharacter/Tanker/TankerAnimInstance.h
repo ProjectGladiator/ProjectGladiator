@@ -22,10 +22,14 @@ private:
 		void AnimNotify_AttackHit(UAnimNotify* Notify);
 	UFUNCTION()
 		void AnimNotify_AttackEnded(UAnimNotify* Notify);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Montage, Meta = (AllowPrivateAccess = true))
+		class UAnimMontage* StopRightClickAbilityMontage; //캐릭터 공격애니메이션
 public:
 	virtual void PlayClickedReactionMontage() override;
 	virtual void PlayLevelStartMontage() override;
 	virtual void PlayAttackMontage() override;
 	virtual void PlayRightClickAbilityMontage() override;
+	virtual void PlayStopRightClickAbilityMontage() override;
 	virtual void JumpAttackMontageSection(int32 NewSection) override;
 };

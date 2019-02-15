@@ -27,6 +27,13 @@ UWarriorAnimInstance::UWarriorAnimInstance()
 	{
 		AttackMontage = Attack_Montage.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>RightClickAbility_Montage(TEXT("AnimMontage'/Game/Blueprints/MyCharacter/User/Warrior/Animation/RMB_Montage.RMB_Montage'"));
+
+	if (RightClickAbility_Montage.Succeeded())
+	{
+		RightClickAbilityMontage = RightClickAbility_Montage.Object;
+	}
 }
 
 void UWarriorAnimInstance::AnimNotify_SaveAttack(UAnimNotify * Notify)

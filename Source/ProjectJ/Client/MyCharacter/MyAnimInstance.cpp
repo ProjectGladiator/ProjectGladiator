@@ -67,26 +67,9 @@ void UMyAnimInstance::PlayRightClickAbilityMontage()
 	
 }
 
-void UMyAnimInstance::StopRightClickAbilityMontage()
+void UMyAnimInstance::PlayStopRightClickAbilityMontage()
 {
-	GLog->Log(FString::Printf(TEXT("스탑 몽타주 실행 0")));
-	if (RightClickAbilityMontage)
-	{
-		FName RMB_End(TEXT("RMB_End"));
 
-		Montage_JumpToSection(RMB_End, RightClickAbilityMontage);
-
-		if (Montage_IsPlaying(RightClickAbilityMontage))
-		{
-			GLog->Log(FString::Printf(TEXT("스탑 몽타주 실행 1")));
-			Montage_Play(RightClickAbilityMontage, 1.0f); //몽타주를 실행한다.
-			Montage_Stop(1.0f, RightClickAbilityMontage);
-		}
-	}
-	else
-	{
-		GLog->Log(FString::Printf(TEXT("오른쪽 특수능력 몽타주가 존재하지 않음")));
-	}
 }
 
 void UMyAnimInstance::JumpAttackMontageSection(int32 NewSection)

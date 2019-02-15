@@ -83,6 +83,11 @@ void AWarrior::LeftClick()
 	}
 }
 
+void AWarrior::RightClickOn()
+{
+
+}
+
 void AWarrior::OnComboMontageSave()
 {
 	if (IsCombo)

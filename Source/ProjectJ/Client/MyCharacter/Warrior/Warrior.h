@@ -22,6 +22,8 @@ public:
 	UFUNCTION()
 		virtual void LeftClick() override;
 	UFUNCTION()
+		virtual void RightClickOn() override;
+	UFUNCTION()
 		virtual void OnComboMontageSave() override;
 	UFUNCTION()
 		virtual void OnAttackHit() override;

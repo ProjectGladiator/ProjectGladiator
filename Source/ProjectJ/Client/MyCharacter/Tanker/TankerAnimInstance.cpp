@@ -34,6 +34,13 @@ UTankerAnimInstance::UTankerAnimInstance()
 	{
 		RightClickAbilityMontage = RightClickAbility_Montage.Object;
 	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>StopRightClickAbility_Montage(TEXT("AnimMontage'/Game/Blueprints/MyCharacter/User/Tanker/Animations/RMB_end_Montage.RMB_end_Montage'"));
+
+	if (StopRightClickAbility_Montage.Succeeded())
+	{
+		StopRightClickAbilityMontage = StopRightClickAbility_Montage.Object;
+	}
 }
 
 void UTankerAnimInstance::AnimNotify_SaveAttack(UAnimNotify* Notify)
@@ -114,8 +121,25 @@ void UTankerAnimInstance::PlayRightClickAbilityMontage()
 	}
 }
 
+void UTankerAnimInstance::PlayStopRightClickAbilityMontage()
+{
+	if (StopRightClickAbilityMontage)
+	{
+		if (!Montage_IsPlaying(StopRightClickAbilityMontage))
+		{
+			GLog->Log(FString::Printf(TEXT("스탑 몽타주 실행 1")));
+			Montage_Play(StopRightClickAbilityMontage, 1.0f);
+		}
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("오른쪽 특수능력 몽타주가 존재하지 않음")));
+	}
+}
+
 void UTankerAnimInstance::JumpAttackMontageSection(int32 NewSection)
 {
 	FName AttackMontageSection = GetAttackMontageSection(NewSection);
 	Montage_JumpToSection(AttackMontageSection, AttackMontage);
 }
+
