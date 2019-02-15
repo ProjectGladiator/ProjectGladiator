@@ -67,7 +67,7 @@ bool InGameManager::InGame_Recv_UserList(char * _buf)
 	int size = 0;
 	int jobcode;
 	int len;
-	char* nick;
+	char nick[20];
 	float xyz[3];
 	float rot_xyz[3];
 
@@ -79,6 +79,7 @@ bool InGameManager::InGame_Recv_UserList(char * _buf)
 	for (int i = 0; i < count; i++)
 	{
 		memset(data, 0, sizeof(data));
+		memset(nick, 0, sizeof(nick));
 		ptr_data = data;
 		size = 0;
 		len = 0;

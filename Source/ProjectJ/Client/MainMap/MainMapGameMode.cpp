@@ -23,6 +23,7 @@
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
 #include "NetWork/StorageManager.h"
+#include "NetWork/InGameManager.h"
 
 AMainMapGameMode::AMainMapGameMode()
 {
@@ -138,6 +139,10 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	bool isOverlap = false;
 	bool ResultFlag;
 	CharacterInfo* character_info = nullptr;
+	float x, y, z; float rx, ry, rz;				// 위치, 회전 넣을 변수
+	FVector SpawnLocation;
+	FRotator SpawnRotation;
+	FActorSpawnParameters SpawnActorOption;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -266,17 +271,67 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			memset(character_info, 0, sizeof(CharacterInfo));
 
 			// 캐릭터 정보 서버에서 받은거 넣어줌
-			StorageManager::GetInstance()->ChangeData(Data->data, 1, character_info);
+			StorageManager::GetInstance()->ChangeData(Data->data, character_info);
 
 			StorageManager::GetInstance()->PopData();
 
-			FVector SpawnLocation(character_info->x, character_info->y, character_info->z);
+			x = character_info->xyz[0]; y = character_info->xyz[1]; z = character_info->xyz[2];
 
-			FActorSpawnParameters SpawnActorOption;
+			SpawnLocation = FVector(x, y, z);
 
 			SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-			switch (character_info->character_code)
+			switch (character_info->job_code)
+			{
+				case CHARACTER_JOB::TANKER:
+				{// 지역 변수이용하기 위함
+					ATanker* Tanker = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+
+					MainMapSpawnCharacterPossess(Tanker);
+				}
+				break;
+				case CHARACTER_JOB::WARRIOR:
+				{
+					AWarrior* Warrior = GetWorld()->SpawnActor<AWarrior>(Warrior->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+
+					MainMapSpawnCharacterPossess(Warrior);
+				}
+				break;
+				case CHARACTER_JOB::MAGICIAN:
+					break;
+				case CHARACTER_JOB::GUNNER:
+				{
+					AGunner* Gunner = GetWorld()->SpawnActor<AGunner>(Gunner->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+
+					MainMapSpawnCharacterPossess(Gunner);
+				}
+				break;
+			}
+
+			// 필요없어진 캐릭터정보 구조체 해제
+			delete character_info;
+
+			break;
+
+		case PGAMEDATA_USERLIST_USER:
+			// 캐릭터 정보 받을 구조체 할당
+			character_info = new CharacterInfo;
+
+			memset(character_info, 0, sizeof(CharacterInfo));
+
+			// 캐릭터 정보 서버에서 받은거 넣어줌
+			StorageManager::GetInstance()->ChangeData(Data->data, character_info);
+			StorageManager::GetInstance()->PopData();
+			
+			x = character_info->xyz[0]; y = character_info->xyz[1]; z = character_info->xyz[2];
+			rx = character_info->rot_xyz[0]; ry = character_info->rot_xyz[1]; rz = character_info->rot_xyz[2];
+
+			SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+			SpawnLocation = FVector(x, y, z);
+			SpawnRotation = FRotator(rx, ry, rz);
+
+			switch (character_info->job_code)
 			{
 			case CHARACTER_JOB::TANKER:
 			{// 지역 변수이용하기 위함
@@ -302,10 +357,10 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			}
 			break;
 			}
-			break;
 
 			// 필요없어진 캐릭터정보 구조체 해제
 			delete character_info;
+			break;
 		}
 	}
 }
@@ -409,6 +464,9 @@ void AMainMapGameMode::MapLoadComplete()
 	SelectCharacterDestroy();
 	GLog->Log(FString::Printf(TEXT("맵 로드 완료")));
 	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
+	
+	// 서버에 다른 유저리스트 요청
+	InGameManager::GetInstance()->InGame_Req_UserList();
 }
 
 void AMainMapGameMode::MainMapSpawnCharacterPossess(AMyCharacter* _MyCharacter)

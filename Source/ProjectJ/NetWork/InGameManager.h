@@ -21,7 +21,6 @@ public:
 	void EndManager();
 
 	void InGame_Req_UserList();						// 현재 접속중인 유저리스트 요청
-
 	bool InGame_Recv_UserList(char* _buf);			// 현재 접속중인 유저리스트 받음
 
 	RESULT InGameInitRecvResult(User* _user);		// 인게임 

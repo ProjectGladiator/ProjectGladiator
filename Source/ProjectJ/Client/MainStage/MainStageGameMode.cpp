@@ -42,74 +42,74 @@ void AMainStageGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	PacketData* Data;
-	CharacterInfo* character_info = nullptr;
-	//bool ResultFlag;
-	if (StorageManager::GetInstance()->GetFront(Data))
-	{
-		switch (Data->protocol)
-		{
-		case PCHARACTERDATA_ENTER_RESULT:
-			/*StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
+	//PacketData* Data;
+	//CharacterInfo* character_info = nullptr;
+	////bool ResultFlag;
+	//if (StorageManager::GetInstance()->GetFront(Data))
+	//{
+	//	switch (Data->protocol)
+	//	{
+	//	case PCHARACTERDATA_ENTER_RESULT:
+	//		/*StorageManager::GetInstance()->ChangeData(Data, ResultFlag);
 
-			if (ResultFlag)
-			{
-				StorageManager::GetInstance()->PopData();
-			}*/
-			break;
-		case PCHARACTERDATA_ENTER_INFO:
-			// 캐릭터 정보 받을 구조체 할당
-			character_info = new CharacterInfo;
+	//		if (ResultFlag)
+	//		{
+	//			StorageManager::GetInstance()->PopData();
+	//		}*/
+	//		break;
+	//	case PCHARACTERDATA_ENTER_INFO:
+	//		// 캐릭터 정보 받을 구조체 할당
+	//		character_info = new CharacterInfo;
 
-			memset(character_info, 0, sizeof(CharacterInfo));
+	//		memset(character_info, 0, sizeof(CharacterInfo));
 
-			// 캐릭터 정보 서버에서 받은거 넣어줌
-			StorageManager::GetInstance()->ChangeData(Data->data, 1, character_info);
+	//		// 캐릭터 정보 서버에서 받은거 넣어줌
+	//		StorageManager::GetInstance()->ChangeData(Data->data, character_info);
 
-			StorageManager::GetInstance()->PopData();
+	//		StorageManager::GetInstance()->PopData();
 
-			FVector SpawnLocation(character_info->x, character_info->y, character_info->z);
+	//		FVector SpawnLocation(character_info->x, character_info->y, character_info->z);
 
-			FActorSpawnParameters SpawnActorOption;
-	
-			SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	//		FActorSpawnParameters SpawnActorOption;
+	//
+	//		SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-			switch (character_info->character_code)
-			{
-			case CHARACTER_JOB::TANKER:
-				{// 지역 변수이용하기 위함
-					ATanker * Tanker = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+	//		switch (character_info->job_code)
+	//		{
+	//		case CHARACTER_JOB::TANKER:
+	//			{// 지역 변수이용하기 위함
+	//				ATanker * Tanker = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
 
-					if (Tanker)
-					{
-						auto MainStagePlayerController = Cast<AMainStagePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	//				if (Tanker)
+	//				{
+	//					auto MainStagePlayerController = Cast<AMainStagePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-						if (MainStagePlayerController)
-						{
-							MainStagePlayerController->Possess(Tanker);
-						}
-						else
-						{
-							GLog->Log(FString::Printf(TEXT("메인 스테이지 월드에 메인스테이지 플레이어컨트롤러가 스폰 안됨")));
-						}
-					}
-					else
-					{
-						GLog->Log(FString::Printf(TEXT("메인 스테이지 월드에 탱커가 스폰 안됨")));
-					}
-				}
-				break;
-			case CHARACTER_JOB::WARRIOR:
-				break;
-			case CHARACTER_JOB::MAGICIAN:
-				break;
-			case CHARACTER_JOB::GUNNER:
-				break;
-			}
-			break;
+	//					if (MainStagePlayerController)
+	//					{
+	//						MainStagePlayerController->Possess(Tanker);
+	//					}
+	//					else
+	//					{
+	//						GLog->Log(FString::Printf(TEXT("메인 스테이지 월드에 메인스테이지 플레이어컨트롤러가 스폰 안됨")));
+	//					}
+	//				}
+	//				else
+	//				{
+	//					GLog->Log(FString::Printf(TEXT("메인 스테이지 월드에 탱커가 스폰 안됨")));
+	//				}
+	//			}
+	//			break;
+	//		case CHARACTER_JOB::WARRIOR:
+	//			break;
+	//		case CHARACTER_JOB::MAGICIAN:
+	//			break;
+	//		case CHARACTER_JOB::GUNNER:
+	//			break;
+	//		}
+	//		break;
 
-			// 필요없어진 캐릭터정보 구조체 해제
-			delete character_info;
-		}
-	}	
+	//		// 필요없어진 캐릭터정보 구조체 해제
+	//		delete character_info;
+	//	}
+	//}	
 }
