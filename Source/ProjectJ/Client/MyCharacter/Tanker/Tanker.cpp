@@ -10,6 +10,7 @@
 #include "Kismet/KismetSystemLibrary.h"  //라인 트레이스 헤더 관련 헤더
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
+#include "GameFramework/CharacterMovementComponent.h" //캐릭터 속력 관련 헤더파일
 //서버 헤더
 
 ATanker::ATanker()
@@ -71,7 +72,7 @@ void ATanker::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//GLog->Log(FString::Printf(TEXT("%d"), IsRightClick));
+	//GLog->Log(FString::Printf(TEXT("IsRightClick :%d \n IsAttack : %d"), IsRightClick,IsAttack));
 }
 
 void ATanker::LeftClick()
@@ -100,7 +101,7 @@ void ATanker::LeftClick()
 void ATanker::RightClickOn()
 {
 	Super::RightClickOn();
-
+	GetCharacterMovement()->MaxWalkSpeed = 250.0f;
 	GLog->Log(FString::Printf(TEXT("오른쪽 클릭")));
 	MyAnimInstance->PlayRightClickAbilityMontage();
 }
@@ -108,8 +109,8 @@ void ATanker::RightClickOn()
 void ATanker::RightClickOff()
 {
 	Super::RightClickOff();
-
-	MyAnimInstance->StopRightClickAbilityMontage();
+	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
+	MyAnimInstance->PlayStopRightClickAbilityMontage();
 }
 
 void ATanker::OnComboMontageSave()
