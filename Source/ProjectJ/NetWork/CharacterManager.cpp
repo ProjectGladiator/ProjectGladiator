@@ -308,7 +308,7 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 		StorageManager::GetInstance()->PushData(PCHARACTERDATA_ENTER_RESULT, (void*)&check, sizeof(bool));
 	
 		// 캐릭터 코드
-		memcpy(&charterinfo.character_code, ptr, sizeof(int));
+		memcpy(&charterinfo.job_code, ptr, sizeof(int));
 		ptr += sizeof(int);
 		datasize += sizeof(int);
 
@@ -323,24 +323,16 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 		datasize += nicklen;
 
 		// x, y, z
-		memcpy(&charterinfo.x, ptr, sizeof(float));
-		ptr += sizeof(float);
-		datasize += sizeof(float);
-
-		memcpy(&charterinfo.y, ptr, sizeof(float));
-		ptr += sizeof(float);
-		datasize += sizeof(float);
-
-		memcpy(&charterinfo.z, ptr,sizeof(float));
-		ptr += sizeof(float);
-		datasize += sizeof(float);
+		memcpy(&charterinfo.xyz, ptr, sizeof(float) * 3);
+		ptr += sizeof(float) * 3;
+		datasize += sizeof(float) * 3;
 
 		// ptrdata 초기화
 		memset(ptrdata, 0, sizeof(ptrdata));
 		char* ptr_packetdata = ptrdata;
 
 		// data에 넣는 작업
-		memcpy(ptr_packetdata, &charterinfo.character_code, sizeof(int));
+		memcpy(ptr_packetdata, &charterinfo.job_code, sizeof(int));
 		ptr_packetdata += sizeof(int);
 
 		memcpy(ptr_packetdata, &nicklen, sizeof(int));
@@ -349,14 +341,8 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 		memcpy(ptr_packetdata, charterinfo.nick, nicklen);
 		ptr_packetdata += nicklen;
 
-		memcpy(ptr_packetdata, &charterinfo.x, sizeof(float));
-		ptr_packetdata += sizeof(float);
-
-		memcpy(ptr_packetdata, &charterinfo.y, sizeof(float));
-		ptr_packetdata += sizeof(float);
-
-		memcpy(ptr_packetdata, &charterinfo.z, sizeof(float));
-		ptr_packetdata += sizeof(float);
+		memcpy(ptr_packetdata, &charterinfo.xyz, sizeof(float) * 3);
+		ptr_packetdata += sizeof(float) * 3;
 
 		StorageManager::GetInstance()->PushData(PCHARACTERDATA_ENTER_INFO, (void*)&ptrdata, datasize);
 

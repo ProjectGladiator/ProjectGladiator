@@ -194,7 +194,6 @@ void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
 
 	memcpy(&_charinfo->rot_xyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
-
 }
 
 // Front ªË¡¶
