@@ -73,14 +73,14 @@ void StorageManager::EndManager()
 }
 
 // 데이터 큐에 넣음
-void StorageManager::PushData(PROTOCOL p, void * data, int data_size)
+void StorageManager::PushData(int _protocol, void* _data, int _data_size)
 {
 	PacketData* temppacket = new PacketData();
-	char* store_data = new char[data_size];
-	memcpy(store_data, data, data_size);
+	char* store_data = new char[_data_size];
+	memcpy(store_data, _data, _data_size);
 	temppacket->data = store_data;
-	temppacket->protocol = NProtocoltoDProtocol(p);
-	temppacket->datasize = data_size;
+	temppacket->protocol = _protocol;
+	temppacket->datasize = _data_size;
 	DataStorage.push(temppacket);
 }
 

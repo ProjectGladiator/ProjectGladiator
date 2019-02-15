@@ -41,7 +41,7 @@ public:
 	bool InitializeManager();
 	void EndManager();
 
-	void PushData(PROTOCOL p, void* data, int data_size);
+	void PushData(int _protocol, void* _data, int _data_size);
 	bool GetFront(PacketData*& data);
 	void ChangeData(void* data, bool& type);
 	void ChangeData(void* data, int& _count);

@@ -289,6 +289,7 @@ bool CharacterManager::Character_Recv_Create(char * _buf)
 	}
 }
 
+// 접속시 캐릭터 정보 받기
 bool CharacterManager::Character_Recv_Enter(char * _buf)
 {
 	char ptrdata[BUFSIZE];
@@ -296,7 +297,6 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 	int datasize = 0;
 
 	CharacterInfo charterinfo;
-	
 	int nicklen = 0;
 	bool check;
 
@@ -307,19 +307,22 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 	{
 		StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_RESULT, (void*)&check, sizeof(bool));
 	
-		// 분해하기
+		// 캐릭터 코드
 		memcpy(&charterinfo.character_code, ptr, sizeof(int));
 		ptr += sizeof(int);
 		datasize += sizeof(int);
 
+		// 닉네임 사이즈
 		memcpy(&nicklen, ptr, sizeof(int));
 		ptr += sizeof(int);
 		datasize += sizeof(int);
 
+		// 닉네임
 		memcpy(charterinfo.nick, ptr, nicklen);
 		ptr += nicklen;
 		datasize += nicklen;
 
+		// x, y, z
 		memcpy(&charterinfo.x, ptr, sizeof(float));
 		ptr += sizeof(float);
 		datasize += sizeof(float);

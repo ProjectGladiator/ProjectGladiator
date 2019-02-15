@@ -20,12 +20,14 @@ namespace DataProtocol {
 	// 인게임 프로토콜
 	enum PGAMEDATA {
 		PGAMEDATA_PLAYER_MOVE_INFO = 200,
-		PGAMEDATA_USERLIST,				// 유저리스트
-		PGAMEDATA_USERLIST_EMPTY
+		PGAMEDATA_USERLIST_USER,			// 유저 정보
+		PGAMEDATA_USERLIST_EMPTY,
+		PGAMEDATA_USERLIST_COUNT			// 유저리스트 카운트
 	};
 	// 공통 프로토콜
 	enum PGLOBAL { 
 		CONFIRM = 0 
 	};
+
 }
 #endif

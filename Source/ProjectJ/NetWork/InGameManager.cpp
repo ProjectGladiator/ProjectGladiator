@@ -60,13 +60,67 @@ void InGameManager::InGame_Req_UserList()
 bool InGameManager::InGame_Recv_UserList(char * _buf)
 {
 	int count;
-	char* ptr = _buf;
+	char* ptr_buf = _buf;
+   
+	char data[BUFSIZE];
+	char* ptr_data = data;
+	int size = 0;
+	int jobcode;
+	int len;
+	char* nick;
+	float xyz[3];
+	float rot_xyz[3];
 
-	memcpy(&count, ptr, sizeof(int));
-	ptr += sizeof(int);
+	memcpy(&count, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
 
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_RESULT, (void*)&count, sizeof(bool));
-	StorageManager::GetInstance()->PushData(SERVER_CHARACTER_ENTER_RESULT, (void*)ptr, strlen(ptr));
+	StorageManager::GetInstance()->PushData(PGAMEDATA_USERLIST_COUNT, (void*)&count, sizeof(int));
+
+	for (int i = 0; i < count; i++)
+	{
+		memset(data, 0, sizeof(data));
+		ptr_data = data;
+		size = 0;
+		len = 0;
+		jobcode = 0;
+
+		// 캐릭터 직업코드
+		memcpy(&jobcode, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		size += sizeof(int);
+		memcpy(ptr_data, &jobcode, sizeof(int));
+		ptr_data += sizeof(int);
+
+		// 닉네임 사이즈
+		memcpy(&len, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		size += sizeof(int);
+		memcpy(ptr_data, &len, sizeof(int));
+		ptr_data += sizeof(int);
+
+		// 닉네임
+		memcpy(nick, ptr_buf, len);
+		ptr_buf += len;
+		size += len;
+		memcpy(ptr_data, nick, len);
+		ptr_data += len;
+
+		// position x, y, z
+		memcpy(xyz, ptr_buf, sizeof(float) * 3);
+		ptr_buf += sizeof(float) * 3;
+		size += sizeof(float) * 3;
+		memcpy(ptr_data, xyz, sizeof(float) * 3);
+		ptr_data += sizeof(float) * 3;
+
+		// rotation x, y, z
+		memcpy(rot_xyz, ptr_buf, sizeof(float) * 3);
+		ptr_buf += sizeof(float) * 3;
+		size += sizeof(float) * 3;
+		memcpy(ptr_data, rot_xyz, sizeof(float) * 3);
+		ptr_data += sizeof(float) * 3;
+
+		StorageManager::GetInstance()->PushData(PGAMEDATA_USERLIST_USER, data, size);
+	}
 
 	return true;
 }
