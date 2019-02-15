@@ -45,10 +45,11 @@ void UCharacterCreateWidget::ChracterCreate()
 	// 캐릭터가 선택 되었다면
 	if (ChracterCreateButton && MainMapPlayerController->GetJobCode() != 0)
 	{
+		// 닉네임 인풋박으에서 뽑아오기
 		FString id = NickNameInputBox->Text.ToString();
 		if (!id.IsEmpty())
 		{
-			CharacterManager::GetInstance()->Character_Req_Character(TCHAR_TO_ANSI(*id), MainMapPlayerController->GetJobCode());
+			CharacterManager::GetInstance()->Character_Req_Character(TCHAR_TO_UTF8(*id), MainMapPlayerController->GetJobCode());
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
 			//NetworkClient_main::NetworkManager::GetInstance()->Wait();
 

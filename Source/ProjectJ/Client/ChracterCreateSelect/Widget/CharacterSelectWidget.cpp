@@ -126,6 +126,13 @@ void UCharacterSelectWidget::MyCharacterSlotUpdate(PacketData * _data)
 			FString level = FString::FromInt(characterslot[i].level);
 			FString nick = characterslot[i].nick;
 
+			const wchar_t* ptr = *nick;
+			char* con_nick = new char[128];
+			//WideCharToMultiByte(CP_ACP, 0, ptr, -1, con_nick, 128, (LPCCH)'?', NULL);
+			//MultiByteToWideChar(CP_UTF8, 0, pszCode, lstrlen(pszCode) + 1, bstrWide,nLength);
+
+			
+
 			if (i == 0)
 			{
 				CharacterButtonOne->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
@@ -141,6 +148,7 @@ void UCharacterSelectWidget::MyCharacterSlotUpdate(PacketData * _data)
 				CharacterButtonThree->CharacterInfoInput(FText::FromString(nick), FText::FromString(level), FText::FromString(name));
 				CharacterButtonThree->SetVisibility(ESlateVisibility::Visible);
 			}
+			delete[] con_nick;
 		}
 	}
 	StorageManager::GetInstance()->PopData();
