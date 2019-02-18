@@ -467,6 +467,7 @@ void AMainMapGameMode::MapLoadComplete()
 	
 	// 서버에 다른 유저리스트 요청
 	InGameManager::GetInstance()->InGame_Req_UserList();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
 void AMainMapGameMode::MainMapSpawnCharacterPossess(AMyCharacter* _MyCharacter)
