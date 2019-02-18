@@ -226,7 +226,7 @@ bool InGameManager::InGame_Recv_MoveResult(char * _buf)
 		ptr_data += sizeof(float) * 3;
 	}
 
-	StorageManager::GetInstance()->PushData(PCHARACTERDATA_MOVERESULT, data, size);
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_MOVE_RESULT, data, size);
 
 	return result;
 }
@@ -273,7 +273,7 @@ void InGameManager::InGame_Recv_OtherUserMoveInfo(char * _buf)
 	memcpy(ptr_data, rot_xyz, sizeof(float) * 3);
 	ptr_data += sizeof(float) * 3;
 
-	StorageManager::GetInstance()->PushData(PCHARACTERDATA_OTHERMOVEINFO, data, size);
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_OTHERMOVEINFO, data, size);
 }
 
 RESULT InGameManager::InGameInitRecvResult(User * _user)

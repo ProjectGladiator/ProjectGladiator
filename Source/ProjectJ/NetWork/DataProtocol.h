@@ -10,7 +10,7 @@ namespace DataProtocol {
 	};
 	// 캐릭터 프로토콜
 	enum PCHARACTERDATA {
-		PCHARACTERDATA_SLOT_INFO,				// 슬롯 결과
+		PCHARACTERDATA_SLOT_INFO = 100,			// 슬롯 결과
 		PCHARACTERDATA_CREATE_RESULT,			// 캐릭터 생성 결과
 		PCHARACTERDATA_DELETE_RESULT,			// 캐릭터 삭제 결과
 		PCHARACTERDATA_ENTER_RESULT,			// 접속 결과
