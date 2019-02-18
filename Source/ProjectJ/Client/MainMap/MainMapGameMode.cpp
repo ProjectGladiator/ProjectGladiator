@@ -283,23 +283,23 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			switch (character_info->job_code)
 			{
-				case CHARACTER_JOB::TANKER:
+				case CHARACTER_JOB::Tanker:
 				{// 지역 변수이용하기 위함
 					ATanker* Tanker = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
 
 					MainMapSpawnCharacterPossess(Tanker);
 				}
 				break;
-				case CHARACTER_JOB::WARRIOR:
+				case CHARACTER_JOB::Warrior:
 				{
 					AWarrior* Warrior = GetWorld()->SpawnActor<AWarrior>(Warrior->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
 
 					MainMapSpawnCharacterPossess(Warrior);
 				}
 				break;
-				case CHARACTER_JOB::MAGICIAN:
+				case CHARACTER_JOB::Magician:
 					break;
-				case CHARACTER_JOB::GUNNER:
+				case CHARACTER_JOB::Gunner:
 				{
 					AGunner* Gunner = GetWorld()->SpawnActor<AGunner>(Gunner->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
 
@@ -333,23 +333,23 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			switch (character_info->job_code)
 			{
-			case CHARACTER_JOB::TANKER:
+			case CHARACTER_JOB::Tanker:
 			{// 지역 변수이용하기 위함
 				ATanker* Tanker = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
 
 				MainMapSpawnCharacterPossess(Tanker);
 			}
 			break;
-			case CHARACTER_JOB::WARRIOR:
+			case CHARACTER_JOB::Warrior:
 			{
 				AWarrior* Warrior = GetWorld()->SpawnActor<AWarrior>(Warrior->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
 
 				MainMapSpawnCharacterPossess(Warrior);
 			}
 			break;
-			case CHARACTER_JOB::MAGICIAN:
+			case CHARACTER_JOB::Magician:
 				break;
-			case CHARACTER_JOB::GUNNER:
+			case CHARACTER_JOB::Gunner:
 			{
 				AGunner* Gunner = GetWorld()->SpawnActor<AGunner>(Gunner->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
 
@@ -509,13 +509,13 @@ void AMainMapGameMode::SelectCharacterSpawn(CHARACTER_JOB _SelectJob)
 
 	switch (_SelectJob)
 	{
-	case CHARACTER_JOB::TANKER:
+	case CHARACTER_JOB::Tanker:
 		SelectCharacter = GetWorld()->SpawnActor<ATanker>(SelectTankerCharacter->StaticClass(), FVector(5.0f, -1150.0f, 155.0f), FRotator::ZeroRotator, SpawnActorOption);
 		break;
-	case CHARACTER_JOB::WARRIOR:
+	case CHARACTER_JOB::Warrior:
 		SelectCharacter = GetWorld()->SpawnActor<AWarrior>(SelectWarriorCharacter->StaticClass(), FVector(5.0f, -1150.0f, 155.0f), FRotator::ZeroRotator, SpawnActorOption);
 		break;
-	case CHARACTER_JOB::GUNNER:
+	case CHARACTER_JOB::Gunner:
 		SelectCharacter = GetWorld()->SpawnActor<AGunner>(SelectGunnerCharacter->StaticClass(), FVector(5.0f, -1150.0f, 155.0f), FRotator::ZeroRotator, SpawnActorOption);
 		break;
 	}

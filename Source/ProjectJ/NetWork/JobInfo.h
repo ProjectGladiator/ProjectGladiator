@@ -4,9 +4,9 @@
 // 직업코드
 enum CHARACTER_JOB
 {
-	TANKER = 1000,
-	WARRIOR = 2000,
-	MAGICIAN = 3000,
-	GUNNER = 4000
+	Tanker = 1000,
+	Warrior = 2000,
+	Magician = 3000,
+	Gunner = 4000
 };
 #endif
