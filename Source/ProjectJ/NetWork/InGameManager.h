@@ -21,6 +21,8 @@ public:
 	void EndManager();
 
 	void InGame_Req_UserList();							// 현재 접속중인 유저리스트 요청
+	// 이동요청 서버에 전송
+	void InGame_Req_Move(float _px, float _py, float _pz, float _rx, float _ry, float _rz);							
 	bool InGame_Recv_UserList(char* _buf);				// 현재 접속중인 유저리스트 받음
 	bool InGame_Recv_MoveResult(char* _buf);			// 이동 결과
 	void InGame_Recv_OtherUserMoveInfo(char* _buf);		// 다른 유저 이동 정보

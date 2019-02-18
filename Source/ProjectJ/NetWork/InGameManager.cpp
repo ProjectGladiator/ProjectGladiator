@@ -55,6 +55,37 @@ void InGameManager::InGame_Req_UserList()
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_OTHERPLAYERLIST, buf, 0);
 
 }
+// 이동요청
+void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, float _ry, float _rz)
+{
+	char buf[BUFSIZE];
+	char* ptr = buf;
+	int datasize;
+	memset(buf, 0, sizeof(buf));
+
+	memcpy(ptr, &_px, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	memcpy(ptr, &_py, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	memcpy(ptr, &_pz, sizeof(float));
+	datasize += sizeof(float);
+
+	memcpy(ptr, &_rx, sizeof(float));
+	datasize += sizeof(float);
+
+	memcpy(ptr, &_ry, sizeof(float));
+	datasize += sizeof(float);
+
+	memcpy(ptr, &_rz, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MOVE, buf, datasize);
+}
 
 // 현재 접속중인 유저리스트 받음
 bool InGameManager::InGame_Recv_UserList(char * _buf)
