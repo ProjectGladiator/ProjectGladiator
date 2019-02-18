@@ -22,6 +22,8 @@ public:
 
 	void InGame_Req_UserList();						// 현재 접속중인 유저리스트 요청
 	bool InGame_Recv_UserList(char* _buf);			// 현재 접속중인 유저리스트 받음
+	bool InGame_Recv_MoveResult(char* _buf);		// 이동 결과
+	bool InGame_Recv_OtherUserMoveInfo(char* _buf);		// 이동 결과
 
 	RESULT InGameInitRecvResult(User* _user);		// 인게임 
 };
