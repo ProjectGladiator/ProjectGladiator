@@ -196,6 +196,21 @@ void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
 	ptr += sizeof(float) * 3;
 }
 
+// 이동정보 결과용
+void StorageManager::ChangeData(void * data, bool& _result, float*& _posxyz, float*& _rotxyz)
+{
+	char* ptr = (char*)data;
+
+	memcpy(&_result, ptr, sizeof(bool));
+	ptr += sizeof(float) * 3;
+
+	memcpy(_posxyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+
+	memcpy(_rotxyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+}
+
 // Front 삭제
 bool StorageManager::PopData()
 {

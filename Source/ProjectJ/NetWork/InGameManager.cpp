@@ -150,33 +150,26 @@ bool InGameManager::InGame_Recv_MoveResult(char * _buf)
 
 	if (result)
 	{
-		//// 닉네임 사이즈
-		//memcpy(&len, ptr_buf, sizeof(int));
-		//ptr_buf += sizeof(int);
-		//size += sizeof(int);
-		//memcpy(ptr_data, &len, sizeof(int));
-		//ptr_data += sizeof(int);
+		// 닉네임 사이즈
+		memcpy(&len, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
 
-		//// 닉네임
-		//memcpy(nick, ptr_buf, len);
-		//ptr_buf += len;
-		//size += len;
-		//memcpy(ptr_data, nick, len);
-		//ptr_data += len;
+		// 닉네임
+		ptr_buf += len;
 
-		//// position x, y, z
-		//memcpy(xyz, ptr_buf, sizeof(float) * 3);
-		//ptr_buf += sizeof(float) * 3;
-		//size += sizeof(float) * 3;
-		//memcpy(ptr_data, xyz, sizeof(float) * 3);
-		//ptr_data += sizeof(float) * 3;
+		// position x, y, z
+		memcpy(xyz, ptr_buf, sizeof(float) * 3);
+		ptr_buf += sizeof(float) * 3;
+		size += sizeof(float) * 3;
+		memcpy(ptr_data, xyz, sizeof(float) * 3);
+		ptr_data += sizeof(float) * 3;
 
-		//// rotation x, y, z
-		//memcpy(rot_xyz, ptr_buf, sizeof(float) * 3);
-		//ptr_buf += sizeof(float) * 3;
-		//size += sizeof(float) * 3;
-		//memcpy(ptr_data, rot_xyz, sizeof(float) * 3);
-		//ptr_data += sizeof(float) * 3;
+		// rotation x, y, z
+		memcpy(rot_xyz, ptr_buf, sizeof(float) * 3);
+		ptr_buf += sizeof(float) * 3;
+		size += sizeof(float) * 3;
+		memcpy(ptr_data, rot_xyz, sizeof(float) * 3);
+		ptr_data += sizeof(float) * 3;
 	}
 	else
 	{
@@ -202,11 +195,12 @@ bool InGameManager::InGame_Recv_MoveResult(char * _buf)
 		ptr_data += sizeof(float) * 3;
 	}
 
-	StorageManager::GetInstance()->PushData(PGAMEDATA_USERLIST_USER, data, size);
+	StorageManager::GetInstance()->PushData(PCHARACTERDATA_MOVERESULT, data, size);
 
 	return result;
 }
 
+// 다른 유저 이동 정보
 void InGameManager::InGame_Recv_OtherUserMoveInfo(char * _buf)
 {
 	bool result;
@@ -248,7 +242,7 @@ void InGameManager::InGame_Recv_OtherUserMoveInfo(char * _buf)
 	memcpy(ptr_data, rot_xyz, sizeof(float) * 3);
 	ptr_data += sizeof(float) * 3;
 
-	StorageManager::GetInstance()->PushData(PGAMEDATA_USERLIST_USER, data, size);
+	StorageManager::GetInstance()->PushData(PCHARACTERDATA_OTHERMOVEINFO, data, size);
 }
 
 RESULT InGameManager::InGameInitRecvResult(User * _user)
