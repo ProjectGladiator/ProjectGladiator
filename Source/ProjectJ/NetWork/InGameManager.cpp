@@ -60,7 +60,7 @@ void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, 
 {
 	char buf[BUFSIZE];
 	char* ptr = buf;
-	int datasize;
+	int datasize = 0;
 	memset(buf, 0, sizeof(buf));
 
 	memcpy(ptr, &_px, sizeof(float));
