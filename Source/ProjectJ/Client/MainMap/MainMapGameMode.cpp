@@ -314,6 +314,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			break;
 
 		case PGAMEDATA_USERLIST_USER:
+			GLog->Log(FString::Printf(TEXT("유저 틱 진입")));
 			// 캐릭터 정보 받을 구조체 할당
 			character_info = new CharacterInfo;
 
@@ -336,15 +337,11 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			case CHARACTER_JOB::TANKER:
 			{// 지역 변수이용하기 위함
 				ATanker* Tanker = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
-
-				MainMapSpawnCharacterPossess(Tanker);
 			}
 			break;
 			case CHARACTER_JOB::WARRIOR:
 			{
 				AWarrior* Warrior = GetWorld()->SpawnActor<AWarrior>(Warrior->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
-
-				MainMapSpawnCharacterPossess(Warrior);
 			}
 			break;
 			case CHARACTER_JOB::MAGICIAN:
@@ -352,8 +349,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			case CHARACTER_JOB::GUNNER:
 			{
 				AGunner* Gunner = GetWorld()->SpawnActor<AGunner>(Gunner->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
-
-				MainMapSpawnCharacterPossess(Gunner);
 			}
 			break;
 			}
