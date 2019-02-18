@@ -73,15 +73,15 @@ void UCharacterSelectButton::CharacterSelect()
 
 		if (str.Compare("Tanker") == 0)
 		{
-			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::TANKER);
+			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::Tanker);
 		}
 		else if (str.Compare("Warrior") == 0)
 		{
-			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::WARRIOR);
+			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::Warrior);
 		}
 		else if (str.Compare("Gunner") == 0)
 		{
-			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::GUNNER);
+			MainMapGameMode->SelectCharacterSpawn(CHARACTER_JOB::Gunner);
 		}
 		else
 		{
