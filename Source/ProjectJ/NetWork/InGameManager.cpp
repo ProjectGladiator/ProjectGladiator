@@ -234,7 +234,7 @@ bool InGameManager::InGame_Recv_MoveResult(char * _buf)
 // 다른 유저 이동 정보
 void InGameManager::InGame_Recv_OtherUserMoveInfo(char * _buf)
 {
-	bool result;
+	//bool result;
 	char* ptr_buf = _buf;
 
 	char data[BUFSIZE];
