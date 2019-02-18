@@ -143,6 +143,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	FVector SpawnLocation;
 	FRotator SpawnRotation;
 	FActorSpawnParameters SpawnActorOption;
+	int UserCount=-1;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -312,7 +313,11 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			delete character_info;
 
 			break;
-
+		case PGAMEDATA_USERLIST_COUNT:
+			StorageManager::GetInstance()->ChangeData(Data->data, UserCount);
+			StorageManager::GetInstance()->PopData();
+			GLog->Log(FString::Printf(TEXT("접속한 유저 수 : %d"), UserCount));
+			break;
 		case PGAMEDATA_USERLIST_USER:
 			GLog->Log(FString::Printf(TEXT("유저 틱 진입")));
 			// 캐릭터 정보 받을 구조체 할당
