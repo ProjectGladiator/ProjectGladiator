@@ -219,7 +219,7 @@ void AMyCharacter::CharacterSelect()
 		{
 			Character->ClickedReactionMontagePlay();
 			GLog->Log(FString::Printf(TEXT("전사 클릭")));
-			MainMapPlayerController->SelectCharacter(CHARACTER_JOB::WARRIOR);
+			MainMapPlayerController->SelectCharacter(CHARACTER_JOB::Warrior);
 		}
 		else
 		{
@@ -229,7 +229,7 @@ void AMyCharacter::CharacterSelect()
 			{
 				Character->ClickedReactionMontagePlay();
 				GLog->Log(FString::Printf(TEXT("탱커 클릭")));
-				MainMapPlayerController->SelectCharacter(CHARACTER_JOB::TANKER);
+				MainMapPlayerController->SelectCharacter(CHARACTER_JOB::Tanker);
 			}
 			else
 			{
@@ -239,7 +239,7 @@ void AMyCharacter::CharacterSelect()
 				{
 					Character->ClickedReactionMontagePlay();
 					GLog->Log(FString::Printf(TEXT("총잡이 클릭")));
-					MainMapPlayerController->SelectCharacter(CHARACTER_JOB::GUNNER);
+					MainMapPlayerController->SelectCharacter(CHARACTER_JOB::Gunner);
 				}
 			}
 		}
