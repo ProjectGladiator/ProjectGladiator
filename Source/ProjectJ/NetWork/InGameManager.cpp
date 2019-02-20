@@ -106,7 +106,7 @@ void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, 
 }
 
 // 이동 시작 요청
-void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry)
+void InGameManager::InGame_Req_MoveStart(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry)
 {
 	char buf[BUFSIZE];
 	char* ptr = buf;
@@ -257,6 +257,12 @@ bool InGameManager::InGame_Recv_MoveResult(char * _buf)
 	memcpy(ptr_data, &result, sizeof(bool));
 	ptr_data += sizeof(bool);
 
+	// 이동결과 스토리지에 넣음
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_MOVE_RESULT, data, size);
+
+	memset(data, 0, sizeof(data));
+	ptr_data = data;
+
 	// 실패 시 
 	if (result == false)
 	{
@@ -286,9 +292,10 @@ bool InGameManager::InGame_Recv_MoveResult(char * _buf)
 		size += sizeof(float);
 		memcpy(ptr_data, &diry, sizeof(float));
 		ptr_data += sizeof(float);
-	}
 
-	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_MOVE_RESULT, data, size);
+		// 실패 시 예전 이동결과
+		StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_MOVE_INFO, data, size);
+	}
 
 	return result;
 }
@@ -367,18 +374,20 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 		check = InGame_Recv_MoveResult(buf);
 		if (check)	// 이동 성공
 		{
-
+			result = RT_INGAME_MOVE;
 		}
 		else		// 이동 실패
 		{
-
+			result = RT_INGAME_MOVE;
 		}
 		break;
 	case SEVER_INGAME_MOVE_ORDER:
 		InGame_Recv_OtherUserMoveInfo(buf, PGAMEDATA_PLAYER_OTHERMOVEORDER);
+		result = RT_INGAME_OTHERPLAYER_INFO;
 		break;
 	case SEVER_INGAME_MOVE_OTHERPLAYERINFO:
 		InGame_Recv_OtherUserMoveInfo(buf, PGAMEDATA_PLAYER_OTHERMOVEINFO);
+		result = RT_INGAME_OTHERPLAYER_INFO;
 		break;
 	case SEVER_INGAME_OTHERPLAYERLIST_RESULT:
 		check = InGame_Recv_UserList(buf);
