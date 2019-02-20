@@ -253,12 +253,9 @@ bool InGameManager::InGame_Recv_MoveResult(char * _buf)
 	// 이동결과
 	memcpy(&result, ptr_buf, sizeof(bool));
 	ptr_buf += sizeof(bool);
-	size += sizeof(bool);
-	memcpy(ptr_data, &result, sizeof(bool));
-	ptr_data += sizeof(bool);
 
 	// 이동결과 스토리지에 넣음
-	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_MOVE_RESULT, data, size);
+	//StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_MOVE_RESULT, data, size);
 
 	memset(data, 0, sizeof(data));
 	ptr_data = data;
