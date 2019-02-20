@@ -60,6 +60,7 @@ enum class EDinosaurAttackState : uint8
 UENUM(BlueprintType)
 enum class ESpiderBossState : uint8
 {
+	Start,
 	Idle,
 	Chase,
 	Attack,

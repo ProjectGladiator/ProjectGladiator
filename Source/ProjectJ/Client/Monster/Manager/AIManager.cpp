@@ -160,6 +160,10 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 				);
 			}*/
 	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("공격 하는 몬스터가 존재하지 않음")));
+	}
 
 	return HitResult;
 }

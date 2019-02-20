@@ -8,6 +8,8 @@
 #include "Client/Monster/Manager/AIManager.h" //AI담당 컴포넌트 헤더
 #include "SpiderBossAnimInstance.h" //거미 보스 애님 인스턴스 헤더
 #include "GameFrameWork/CharacterMovementComponent.h" //캐릭터 속도 관련 헤더
+#include "Kismet/KismetMathLibrary.h" //수학 관련 헤더
+#include "Client/MyCharacter/MyCharacter.h" //캐릭터들 부모
 
 //서버 헤더
 
@@ -62,10 +64,15 @@ void ASpiderBoss::BeginPlay()
 
 	if (SpiderBossAnimInstance)
 	{
-
+		SpiderBossAnimInstance->OnMonsterAttackHit.AddDynamic(this, &ASpiderBoss::AttackHit);
+		SpiderBossAnimInstance->OnMonsterComboSave.AddDynamic(this, &ASpiderBoss::OnComboSave);
+		SpiderBossAnimInstance->OnMonsterAttackEnded.AddDynamic(this, &ASpiderBoss::OnMonsterAttackEnded);
+		SpiderBossAnimInstance->OnDeath.AddDynamic(this, &ASpiderBoss::Death);
 	}
 
 	Target = AIManager->GetTarget();
+
+	StartLocation = GetActorLocation();
 }
 
 void ASpiderBoss::Tick(float DeltaTime)
@@ -86,6 +93,7 @@ void ASpiderBoss::Tick(float DeltaTime)
 			switch (GoalResult)
 			{
 			case EPathFollowingRequestResult::AlreadyAtGoal:
+				CurrentState = ESpiderBossState::Attack;
 				break;
 			case EPathFollowingRequestResult::Failed:
 				//GLog->Log(FString::Printf(TEXT("요청 실패")));
@@ -98,6 +106,32 @@ void ASpiderBoss::Tick(float DeltaTime)
 		}
 			break;
 		case ESpiderBossState::Attack:
+		{
+			if (IsAttack)
+			{
+				IsCombo = true;
+			}
+			else
+			{
+				IsAttack = true;
+
+				if (SpiderBossAnimInstance)
+				{
+					SpiderBossAnimInstance->PlayAttackMontage(0);
+					CurrentCombo += 1;
+					SpiderBossAnimInstance->JumpAttackMontageSection(0, CurrentCombo);
+				}
+			}
+
+			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
+			SetActorRotation(LooAtRotation);
+
+			if (Distance > TargetLimitDistance * 2.0f)
+			{
+				IsCombo = false;
+				CurrentState = ESpiderBossState::Chase;
+			}
+		}
 			break;
 		case ESpiderBossState::Summon:
 			break;
@@ -128,8 +162,35 @@ ESpiderBossState ASpiderBoss::GetCurrentState()
 	return CurrentState;
 }
 
+void ASpiderBoss::AttackHit()
+{
+	AIManager->AttackMeleeHitCreate(this, AttackInfo, false);
+}
+
+void ASpiderBoss::OnComboSave()
+{
+	GLog->Log(FString::Printf(TEXT("거미 보스 콤보 공격 시작")));
+	if (IsCombo)
+	{
+		IsCombo = false;
+
+		if (SpiderBossAnimInstance)
+		{
+			SpiderBossAnimInstance->PlayAttackMontage(0);
+			CurrentCombo += 1;
+			SpiderBossAnimInstance->JumpAttackMontageSection(0, CurrentCombo);
+		}
+	}
+}
+
+void ASpiderBoss::OnMonsterAttackEnded()
+{
+	Super::OnMonsterAttackEnded();
+}
+
 void ASpiderBoss::Death()
 {
+	GLog->Log(FString::Printf(TEXT("거미 보스 사망")));
 	DeathFlag = true;
 }
 

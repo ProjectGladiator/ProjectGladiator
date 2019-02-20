@@ -21,7 +21,7 @@ private:
 		class UBehaviorTreeComponent* BTComponent;	
 
 public:
-	AMonsterAIController();
+	AMonsterAIController(const FObjectInitializer& ObjectInitializer);
 	
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;
