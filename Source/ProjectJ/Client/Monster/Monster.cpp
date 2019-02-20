@@ -24,6 +24,8 @@ AMonster::AMonster()
 	bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true; //몬스터가 가속하는 방향으로 회전 시킨다.
+	GetCharacterMovement()->bUseRVOAvoidance = true;
+
 	Tags.Add(TEXT("Monster"));
 }
 

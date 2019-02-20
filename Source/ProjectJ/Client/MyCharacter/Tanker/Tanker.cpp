@@ -72,6 +72,7 @@ void ATanker::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	//GLog->Log(FString::Printf(TEXT("TimeSeconds : %f\nUnpausedTimeSeconds : %f\nRealTimeSeconds : %f\nDeltaTimeSeconds : %f"), GetWorld()->TimeSeconds, GetWorld()->UnpausedTimeSeconds, GetWorld()->RealTimeSeconds, GetWorld()->DeltaTimeSeconds));
 	//GLog->Log(FString::Printf(TEXT("IsRightClick :%d \n IsAttack : %d"), IsRightClick,IsAttack));
 }
 

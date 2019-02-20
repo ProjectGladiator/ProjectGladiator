@@ -106,6 +106,7 @@ void ABear::Tick(float DeltaTime)
 				CurrentState = EBearState::Chase;
 				break;
 			}
+
 		}
 		break;
 		case EBearState::Attack:
@@ -127,9 +128,15 @@ void ABear::Tick(float DeltaTime)
 				}
 			}
 
+			FRotator BearRotator = GetActorRotation();
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
+
+			FRotator ToCharacterRotator = UKismetMathLibrary::NormalizedDeltaRotator(LooAtRotation, BearRotator);
+
+			GLog->Log(FString::Printf(TEXT("ToCharacterRotator Yaw :%f\n"), ToCharacterRotator.Yaw));
+
 			//GLog->Log(FString::Printf(TEXT("Pitch : %f Yaw : %f"), LooAtRotation.Pitch, LooAtRotation.Yaw));
-			SetActorRotation(LooAtRotation);
+			//SetActorRotation(LooAtRotation);
 
 			if (Distance > TargetLimitDistance*2.0f)
 			{

@@ -3,6 +3,7 @@
 #include "BearAIController.h"
 //클라 헤더
 #include "Bear.h"
+
 //서버 헤더
 
 void ABearAIController::Possess(APawn * InPawn)
