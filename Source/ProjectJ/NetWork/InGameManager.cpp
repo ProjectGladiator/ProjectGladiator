@@ -246,7 +246,6 @@ bool InGameManager::InGame_Recv_MoveResult(char * _buf)
 	char data[BUFSIZE];
 	char* ptr_data = data;
 	int size = 0;
-	int len;
 	float xyz[3];
 	float rot_xyz[3];
 	float dirx = 0; float diry = 0;
