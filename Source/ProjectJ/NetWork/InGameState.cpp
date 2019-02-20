@@ -15,11 +15,11 @@ bool InGameState::Read(User * _user)
 		result = ingamemanger->GetInstance()->InGameInitRecvResult(_user);
 		if (result == RT_INGAME_MOVE)
 		{
-
+			state = INGAME_INIT_RECV;
 		}
 		else if (result == RT_INGAME_OTHERPLAYER_INFO)
 		{
-
+			state = INGAME_INIT_RECV;
 		}
 		else if (result == RT_INGAME_OTHERPLAYER_LIST)
 		{

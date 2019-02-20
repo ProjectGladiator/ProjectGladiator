@@ -48,6 +48,8 @@ public:
 	void ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot);
 	void ChangeData(void* data, CharacterInfo*& _charinfo);
 	void ChangeData(void* data, bool& _result, float*& _posxyz, float*& _rotxyz);
+	void ChangeData(void* data, float*& _posxyz, float*& _rotxyz, float& _dirx, float& _diry);
+	void ChangeData(void* data, char*& _code, float*& _posxyz, float*& _rotxyz, float& _dirx, float& _diry);
 	bool PopData();
 };
 

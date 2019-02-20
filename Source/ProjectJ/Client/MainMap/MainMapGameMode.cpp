@@ -358,8 +358,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			delete character_info;
 			OtherUserCharacter = nullptr;
 			break;
-		case PGAMEDATA_PLAYER_MOVE_RESULT:
-			break;
 		}
 	}
 }

@@ -178,16 +178,22 @@ void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
 {
 	char* ptr = (char*)data;
 	
-	int nicksize = 0;
-		
+	int len = 0;
+	
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_charinfo->code, ptr, len);
+	ptr += len;
+
 	memcpy(&_charinfo->job_code, ptr, sizeof(int));
 	ptr += sizeof(int);
 
-	memcpy(&nicksize, ptr, sizeof(int));
-	ptr += sizeof(int);
+	memcpy(&len, ptr, sizeof(int));
+	ptr += len;
 
-	memcpy(_charinfo->nick, ptr, nicksize);
-	ptr += nicksize;
+	memcpy(_charinfo->nick, ptr, len);
+	ptr += len;
 
 	memcpy(&_charinfo->xyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
@@ -209,6 +215,47 @@ void StorageManager::ChangeData(void * data, bool& _result, float*& _posxyz, flo
 
 	memcpy(_rotxyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
+}
+
+void StorageManager::ChangeData(void * data, float *& _posxyz, float *& _rotxyz, float & _dirx, float & _diry)
+{
+	char* ptr = (char*)data;
+
+	memcpy(_posxyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+
+	memcpy(_rotxyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+
+	memcpy(&_dirx, ptr, sizeof(float));
+	ptr += sizeof(float);
+
+	memcpy(&_diry, ptr, sizeof(float));
+	ptr += sizeof(float);
+}
+
+void StorageManager::ChangeData(void * data, char *& _code, float *& _posxyz, float *& _rotxyz, float & _dirx, float & _diry)
+{
+	int len = 0;
+	char* ptr = (char*)data;
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_code, ptr, len);
+	ptr += len;
+
+	memcpy(_posxyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+
+	memcpy(_rotxyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+
+	memcpy(&_dirx, ptr, sizeof(float));
+	ptr += sizeof(float);
+
+	memcpy(&_diry, ptr, sizeof(float));
+	ptr += sizeof(float);
 }
 
 // Front ªË¡¶
