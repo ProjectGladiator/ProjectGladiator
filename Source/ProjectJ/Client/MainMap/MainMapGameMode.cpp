@@ -143,7 +143,12 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	FVector SpawnLocation;
 	FRotator SpawnRotation;
 	FActorSpawnParameters SpawnActorOption;
-	int UserCount=-1;
+	int UserCount = -1;
+	AMyCharacter* MyCharacter = nullptr;
+	AMyCharacter* OtherUserCharacter = nullptr;
+	ATanker* Tanker = nullptr;
+	AWarrior* Warrior = nullptr;
+	AGunner* Gunner = nullptr;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -284,34 +289,26 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			switch (character_info->job_code)
 			{
-				case CHARACTER_JOB::Tanker:
-				{// 지역 변수이용하기 위함
-					ATanker* Tanker = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
-
-					MainMapSpawnCharacterPossess(Tanker);
-				}
+			case CHARACTER_JOB::Tanker:
+				MyCharacter = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
 				break;
-				case CHARACTER_JOB::Warrior:
-				{
-					AWarrior* Warrior = GetWorld()->SpawnActor<AWarrior>(Warrior->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
-
-					MainMapSpawnCharacterPossess(Warrior);
-				}
+			case CHARACTER_JOB::Warrior:
+				MyCharacter = GetWorld()->SpawnActor<AWarrior>(Warrior->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
 				break;
-				case CHARACTER_JOB::Magician:
-					break;
-				case CHARACTER_JOB::Gunner:
-				{
-					AGunner* Gunner = GetWorld()->SpawnActor<AGunner>(Gunner->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
-
-					MainMapSpawnCharacterPossess(Gunner);
-				}
+			case CHARACTER_JOB::Magician:
+				break;
+			case CHARACTER_JOB::Gunner:
+				MyCharacter = GetWorld()->SpawnActor<AGunner>(Gunner->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
 				break;
 			}
 
+			if (MyCharacter)
+			{
+				MainMapSpawnCharacterPossess(MyCharacter);
+			}
 			// 필요없어진 캐릭터정보 구조체 해제
 			delete character_info;
-
+			MyCharacter = nullptr;
 			break;
 		case PGAMEDATA_USERLIST_COUNT:
 			StorageManager::GetInstance()->ChangeData(Data->data, UserCount);
@@ -328,7 +325,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			// 캐릭터 정보 서버에서 받은거 넣어줌
 			StorageManager::GetInstance()->ChangeData(Data->data, character_info);
 			StorageManager::GetInstance()->PopData();
-			
+
 			x = character_info->xyz[0]; y = character_info->xyz[1]; z = character_info->xyz[2];
 			rx = character_info->rot_xyz[0]; ry = character_info->rot_xyz[1]; rz = character_info->rot_xyz[2];
 
@@ -340,26 +337,26 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			switch (character_info->job_code)
 			{
 			case CHARACTER_JOB::Tanker:
-			{// 지역 변수이용하기 위함
-				ATanker* Tanker = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
-			}
-			break;
+				OtherUserCharacter = GetWorld()->SpawnActor<ATanker>(Tanker->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+				break;
 			case CHARACTER_JOB::Warrior:
-			{
-				AWarrior* Warrior = GetWorld()->SpawnActor<AWarrior>(Warrior->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
-			}
-			break;
+				OtherUserCharacter = GetWorld()->SpawnActor<AWarrior>(Warrior->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+				break;
 			case CHARACTER_JOB::Magician:
 				break;
 			case CHARACTER_JOB::Gunner:
-			{
-				AGunner* Gunner = GetWorld()->SpawnActor<AGunner>(Gunner->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+				OtherUserCharacter = GetWorld()->SpawnActor<AGunner>(Gunner->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+				break;
 			}
-			break;
+
+			if (OtherUserCharacter)
+			{
+				OtherLoginUserList.Add(OtherUserCharacter);
 			}
 
 			// 필요없어진 캐릭터정보 구조체 해제
 			delete character_info;
+			OtherUserCharacter = nullptr;
 			break;
 		case PGAMEDATA_PLAYER_MOVE_RESULT:
 			break;
@@ -466,7 +463,7 @@ void AMainMapGameMode::MapLoadComplete()
 	SelectCharacterDestroy();
 	GLog->Log(FString::Printf(TEXT("맵 로드 완료")));
 	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
-	
+
 	// 서버에 다른 유저리스트 요청
 	InGameManager::GetInstance()->InGame_Req_UserList();
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
@@ -541,4 +538,14 @@ void AMainMapGameMode::SelectCharacterDestroy()
 	{
 		SelectCharacter->Destroy();
 	}
+}
+
+AMyCharacter * AMainMapGameMode::GetLoginUser()
+{
+	for (int i = 0; i < OtherLoginUserList.Num(); i++)
+	{
+		
+	}
+
+	return nullptr;
 }

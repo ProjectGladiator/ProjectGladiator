@@ -24,7 +24,6 @@ private:
 		class UCharacterSelectWidget* CharacterSelectWidget;//캐릭터 선택 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterCreateSelectWidget, Meta = (AllowPrivateAccess = true))
 		class UCharacterCreateWidget* ChracterCreateWidget; //캐릭터 생성 위젯
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ErrorWidget, Meta = (AllowPrivateAccess = true))
 		class UWidgetCancel* CancelWidget; //에러 다시시도,취소 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ErrorWidget, Meta = (AllowPrivateAccess = true))
@@ -35,6 +34,8 @@ private:
 		class UStageManager* StageManager;
 	UPROPERTY()
 		class AMyCharacter* SelectCharacter;
+	UPROPERTY()
+		TArray<class AMyCharacter*> OtherLoginUserList;
 public:
 	AMainMapGameMode();
 
@@ -57,4 +58,6 @@ public:
 
 	void SelectCharacterSpawn(CHARACTER_JOB _SelectJob);
 	void SelectCharacterDestroy();
+
+	AMyCharacter* GetLoginUser();
 };
