@@ -5,7 +5,7 @@ struct CharacterSlot
 {
 	char name[255];
 	int level;
-	char nick[255];
+	char nick[NICKNAMESIZE];
 	int charavercode;
 	~CharacterSlot()
 	{
@@ -15,6 +15,7 @@ struct CharacterSlot
 
 struct CharacterInfo
 {
+	char code[CHARACTERCODESIZE];
 	int job_code;
 	char nick[NICKNAMESIZE];
 	float xyz[3];

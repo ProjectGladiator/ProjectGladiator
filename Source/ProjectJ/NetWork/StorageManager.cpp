@@ -178,16 +178,22 @@ void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
 {
 	char* ptr = (char*)data;
 	
-	int nicksize = 0;
-		
+	int len = 0;
+	
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_charinfo->code, ptr, len);
+	ptr += len;
+
 	memcpy(&_charinfo->job_code, ptr, sizeof(int));
 	ptr += sizeof(int);
 
-	memcpy(&nicksize, ptr, sizeof(int));
-	ptr += sizeof(int);
+	memcpy(&len, ptr, sizeof(int));
+	ptr += len;
 
-	memcpy(_charinfo->nick, ptr, nicksize);
-	ptr += nicksize;
+	memcpy(_charinfo->nick, ptr, len);
+	ptr += len;
 
 	memcpy(&_charinfo->xyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
