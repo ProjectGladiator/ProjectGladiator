@@ -361,8 +361,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			// 필요없어진 캐릭터정보 구조체 해제
 			delete character_info;
 			break;
-		case PGAMEDATA_PLAYER_MOVE_RESULT:
-			break;
 		}
 	}
 }
