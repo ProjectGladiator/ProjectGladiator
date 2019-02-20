@@ -9,7 +9,32 @@
 
 USpiderBossAnimInstance::USpiderBossAnimInstance()
 {
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>SpiderBossAttack_Montage(TEXT("AnimMontage'/Game/Blueprints/Monster/StageOne/SpiderBoss/Animations/SpiderBossAttackMontage.SpiderBossAttackMontage'"));
 
+	if (SpiderBossAttack_Montage.Succeeded())
+	{
+		AttackMontages.Add(SpiderBossAttack_Montage.Object);
+	}
+}
+
+void USpiderBossAnimInstance::AnimNotify_MonsterAttackHit()
+{
+	OnMonsterAttackHit.Broadcast();
+}
+
+void USpiderBossAnimInstance::AnimNotify_MonsterSaveAttack()
+{
+	OnMonsterComboSave.Broadcast();
+}
+
+void USpiderBossAnimInstance::AnimNotify_MonsterAttackEnded()
+{
+	OnMonsterAttackEnded.Broadcast();
+}
+
+void USpiderBossAnimInstance::AnimNotify_Death()
+{
+	OnDeath.Broadcast();
 }
 
 void USpiderBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
@@ -22,4 +47,14 @@ void USpiderBossAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	{
 		CurrentState = SpiderBoss->GetCurrentState();
 	}
+}
+
+void USpiderBossAnimInstance::PlayAttackMontage(int32 MontageSequence)
+{
+	Super::PlayAttackMontage(MontageSequence);
+}
+
+void USpiderBossAnimInstance::JumpAttackMontageSection(int32 MontageSequence, int32 NewSection)
+{
+	Super::JumpAttackMontageSection(MontageSequence, NewSection);
 }

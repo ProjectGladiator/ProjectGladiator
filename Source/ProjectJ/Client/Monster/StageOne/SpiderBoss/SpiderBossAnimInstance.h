@@ -19,8 +19,18 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
 		ESpiderBossState CurrentState;
+	UFUNCTION()
+		void AnimNotify_MonsterAttackHit();
+	UFUNCTION()
+		void AnimNotify_MonsterSaveAttack();
+	UFUNCTION()
+		void AnimNotify_MonsterAttackEnded();
+	UFUNCTION()
+		void AnimNotify_Death();
 public:
 	UFUNCTION()
 		virtual void NativeUpdateAnimation(float DeltaSeconds) override; // 틱 함수	
 	
+	virtual void PlayAttackMontage(int32 MontageSequence) override;
+	virtual void JumpAttackMontageSection(int32 MontageSequence, int32 NewSection) override;
 };

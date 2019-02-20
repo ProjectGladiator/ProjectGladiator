@@ -23,6 +23,8 @@ private:
 		ESpiderBossState CurrentState;
 	UPROPERTY()
 		class USpiderBossAnimInstance* SpiderBossAnimInstance;
+	UPROPERTY()
+		FVector StartLocation;
 protected:
 	virtual void BeginPlay() override;
 public:
@@ -32,6 +34,12 @@ public:
 
 	ESpiderBossState GetCurrentState();
 
+	UFUNCTION()
+		virtual void AttackHit() override;
+	UFUNCTION()
+		virtual void OnComboSave() override;
+	UFUNCTION()
+		virtual void OnMonsterAttackEnded() override;
 	UFUNCTION()
 		virtual void Death() override;
 

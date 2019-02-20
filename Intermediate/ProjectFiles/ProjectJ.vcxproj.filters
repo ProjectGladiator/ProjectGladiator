@@ -696,4 +696,25 @@
       <Filter>Source\ProjectJ\Client\Monster\StageOne\Bear</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source\ProjectJ\Client\MyCharacter\Healer">
+      <UniqueIdentifier>{f38bd54e-72d4-4360-a3bf-5b230313f3ce}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Healer\Healer.h">
+      <Filter>Source\ProjectJ\Client\MyCharacter\Healer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectJ\Client\MyCharacter\Healer\HealerAnimInstance.h">
+      <Filter>Source\ProjectJ\Client\MyCharacter\Healer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Healer\Healer.cpp">
+      <Filter>Source\ProjectJ\Client\MyCharacter\Healer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectJ\Client\MyCharacter\Healer\HealerAnimInstance.cpp">
+      <Filter>Source\ProjectJ\Client\MyCharacter\Healer</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>
