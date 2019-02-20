@@ -19,6 +19,8 @@ private:
 		int32 Level; //현재 레벨
 	UPROPERTY()
 		bool IsClick;
+	float CurrentValue;
+	float PreviousValue;
 public:
 	// Sets default values for this character's properties
 	AMyCharacter(); //생성자
@@ -107,4 +109,7 @@ public:
 
 	bool GetIsClick();
 	void SetIsClick(bool _IsClick);
+
+	UFUNCTION()
+		void MoveConfirmServer();
 };

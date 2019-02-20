@@ -17,8 +17,12 @@
 #include "MyAnimInstance.h"
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
 #include "Client/MainMap/MainMapPlayerController.h"
+#include "TimerManager.h"
+
 //서버 헤더
 #include "NetWork/JobInfo.h"
+#include "NetWork/InGameManager.h"
+#include "NetWork/StorageManager.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -81,7 +85,7 @@ void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	
+
 }
 
 // Called to bind functionality to input
@@ -109,10 +113,55 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMyCharacter::MoveForward(float Value)
 {
+	CurrentValue = Value;
+
+	if (CurrentValue == 1 || CurrentValue == -1)
+	{
+		if (PreviousValue == 0)
+		{
+			float X = GetActorLocation().X;
+			float Y = GetActorLocation().Y;
+			float Z = GetActorLocation().Z;
+			float Roll = GetActorRotation().Roll;
+			float Pitch = GetActorRotation().Pitch;
+			float Yaw = GetActorRotation().Yaw;
+
+			InGameManager::GetInstance()->InGame_Req_MoveStart(X, Y, Z, Roll, Pitch, Yaw, Value, 0);
+
+			GLog->Log(FString::Printf(TEXT("움직임 시작")));
+		}
+	}
+
+	if (CurrentValue == 1 || CurrentValue == -1)
+	{
+		if (PreviousValue == 1)
+		{
+			GLog->Log(FString::Printf(TEXT("움직이는 중")));
+		}
+	}
+
+	if (CurrentValue == 0)
+	{
+		if (PreviousValue == 1)
+		{
+			GLog->Log(FString::Printf(TEXT("멈춤")));
+		}
+	}
+
+	if (CurrentValue == 0)
+	{
+		if (PreviousValue == 0)
+		{
+			GLog->Log(FString::Printf(TEXT("멈춰있음")));
+		}
+	}
+
 	if (Value != 0)
 	{
 		AddMovementInput(GetActorForwardVector(), Value);
 	}
+
+	PreviousValue = CurrentValue;
 }
 
 void AMyCharacter::MoveRight(float Value)
@@ -284,4 +333,20 @@ bool AMyCharacter::GetIsClick()
 void AMyCharacter::SetIsClick(bool _IsClick)
 {
 	IsClick = _IsClick;
+}
+
+void AMyCharacter::MoveConfirmServer()
+{
+	PacketData* Data;
+	FVector Location;
+	FRotator Rotation;
+
+	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
+	{
+		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
+		{
+		case PGAMEDATA_PLAYER_MOVE_INFO:
+			break;
+		}
+	}
 }
