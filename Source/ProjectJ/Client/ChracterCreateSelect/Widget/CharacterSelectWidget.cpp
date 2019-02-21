@@ -50,7 +50,7 @@ void UCharacterSelectWidget::NativeConstruct()
 
 void UCharacterSelectWidget::GameStart()
 {
-	GLog->Log(FString::Printf(TEXT("%d"), MainMapPlayerController->GetSelectIndex()));
+	GLog->Log(FString::Printf(TEXT("선택한 슬롯 : %d"), MainMapPlayerController->GetSelectIndex()));
 	if (MainMapPlayerController)
 	{
 		if (MainMapPlayerController->GetSelectIndex() != -1)
@@ -80,8 +80,18 @@ void UCharacterSelectWidget::GameStart()
 
 void UCharacterSelectWidget::MyCharacterDelete()
 {
-	CharacterManager::GetInstance()->Character_Req_Delete(MainMapPlayerController->GetSelectIndex());
-	NetworkClient_main::NetworkManager::GetInstance()->Send();
+	if (MainMapPlayerController->GetSelectIndex() != -1)
+	{
+		CharacterManager::GetInstance()->Character_Req_Delete(MainMapPlayerController->GetSelectIndex());
+		NetworkClient_main::NetworkManager::GetInstance()->Send();
+	}
+	else
+	{
+		if (MainMapGameMode)
+		{
+			MainMapGameMode->CancelWidgetToggle(FText(FText::FromString("Please select a character to delete")));
+		}
+	}
 }
 
 void UCharacterSelectWidget::MyCharacterCreate()

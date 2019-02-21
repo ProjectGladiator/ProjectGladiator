@@ -316,7 +316,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			GLog->Log(FString::Printf(TEXT("접속한 유저 수 : %d"), UserCount));
 			break;
 		case PGAMEDATA_USERLIST_USER:
-			GLog->Log(FString::Printf(TEXT("유저 틱 진입")));
+			GLog->Log(FString::Printf(TEXT("접속한 다른 유저 월드에 스폰")));
 			// 캐릭터 정보 받을 구조체 할당
 			character_info = new CharacterInfo;
 
