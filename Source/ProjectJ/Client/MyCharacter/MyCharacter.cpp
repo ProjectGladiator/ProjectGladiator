@@ -126,33 +126,9 @@ void AMyCharacter::MoveForward(float Value)
 			float Pitch = GetActorRotation().Pitch;
 			float Yaw = GetActorRotation().Yaw;
 
-			InGameManager::GetInstance()->InGame_Req_MoveStart(X, Y, Z, Roll, Pitch, Yaw, Value, 0);
+			//InGameManager::GetInstance()->InGame_Req_MoveStart(X, Y, Z, Roll, Pitch, Yaw, Value, 0);
 
-			GLog->Log(FString::Printf(TEXT("움직임 시작")));
-		}
-	}
-
-	if (CurrentValue == 1 || CurrentValue == -1)
-	{
-		if (PreviousValue == 1)
-		{
-			GLog->Log(FString::Printf(TEXT("움직이는 중")));
-		}
-	}
-
-	if (CurrentValue == 0)
-	{
-		if (PreviousValue == 1)
-		{
-			GLog->Log(FString::Printf(TEXT("멈춤")));
-		}
-	}
-
-	if (CurrentValue == 0)
-	{
-		if (PreviousValue == 0)
-		{
-			GLog->Log(FString::Printf(TEXT("멈춰있음")));
+			GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
 		}
 	}
 
