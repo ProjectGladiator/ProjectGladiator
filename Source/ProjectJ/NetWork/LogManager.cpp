@@ -45,49 +45,50 @@ void LogManager::EndManager()
 
 void LogManager::SetTime()
 {
-	//GetLocalTime(&time);
+	GetLocalTime(&time);
 }
 
 void LogManager::LogWrite(char* _msg)
 {
 
-	//ofstream w_log("Log.txt");
-
-	////w_log.open("Log.txt", ofstream::app);
-	//if (w_log.is_open())
+	ofstream w_log("Log.txt", ios::out);
+	
+	//if (w_log.is_open() == false)
 	//{
-	//	SetTime();
-	//	char buf[12];
-	//	sprintf(buf, "[%d:%d:%d]", time.wHour, time.wMinute, time.wSecond);
-	//	w_log << buf << ":" << _msg << endl;
-
-	//	w_log.close();
+	//	w_log.open("Log.txt", ofstream::app);
 	//}
 	//else
 	//{
-	//	//w_log.open("Log.txt", ofstream::app);
+	//	w_log.open("Log.txt", ofstream::app);
 	//}
+
+	SetTime();
+	char buf[12];
+	sprintf(buf, "[%d:%d:%d]", time.wHour, time.wMinute, time.wSecond);
+	w_log << buf << ":" << _msg << endl;
+
+	w_log.close();
 }
 
 void LogManager::LogRead()
 {
-	//fstream r_log;
-	//char temp[BUFSIZE];
+	fstream r_log;
+	char temp[BUFSIZE];
 
-	//if (r_log.is_open())
-	//{
-	//	return;
-	//}
-	//else
-	//{
-	//	r_log.open("Log.txt", fstream::in);
-	//}
-	//
-	//while (!r_log.eof())	//다 읽을때까지 돌음
-	//{
-	//	r_log >> temp;
-	//	cout << temp << endl;
-	//}
+	if (r_log.is_open())
+	{
+		return;
+	}
+	else
+	{
+		r_log.open("D:\Log.txt", fstream::in);
+	}
+	
+	while (!r_log.eof())	//다 읽을때까지 돌음
+	{
+		r_log >> temp;
+		cout << temp << endl;
+	}
 
-	//r_log.close();
+	r_log.close();
 }

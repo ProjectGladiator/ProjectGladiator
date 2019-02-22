@@ -87,7 +87,7 @@ void StorageManager::PushData(int _protocol, void* _data, int _data_size)
 	char log[BUFSIZE];
 	memset(log, 0, sizeof(log));
 	sprintf(log, "Push DataSize : %d store_data size : %d", _data_size, 
-		sizeof(*store_data));
+		strlen(store_data));
 	LogManager::GetInstance()->LogWrite(log);
 }
 
