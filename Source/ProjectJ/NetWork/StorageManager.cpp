@@ -84,11 +84,11 @@ void StorageManager::PushData(int _protocol, void* _data, int _data_size)
 	temppacket->datasize = _data_size;
 	DataStorage.push(temppacket);
 
-	char log[BUFSIZE];
-	memset(log, 0, sizeof(log));
-	sprintf(log, "Push DataSize : %d store_data size : %d", _data_size, 
-		strlen(store_data));
-	LogManager::GetInstance()->LogWrite(log);
+	//char log[BUFSIZE];
+	//memset(log, 0, sizeof(log));
+	//sprintf(log, "Push DataSize : %d store_data size : %d", _data_size, 
+	//	strlen(store_data));
+	//LogManager::GetInstance()->LogWrite(log);
 }
 
 // 큐의 앞부분 반환

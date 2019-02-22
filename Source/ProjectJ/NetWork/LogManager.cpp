@@ -81,7 +81,7 @@ void LogManager::LogRead()
 	}
 	else
 	{
-		r_log.open("D:\Log.txt", fstream::in);
+		r_log.open("Log.txt", fstream::in);
 	}
 	
 	while (!r_log.eof())	//다 읽을때까지 돌음
