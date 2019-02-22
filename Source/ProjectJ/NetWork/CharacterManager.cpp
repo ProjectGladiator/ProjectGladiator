@@ -333,8 +333,13 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 		ptr += nicklen;
 		datasize += nicklen;
 
-		// x, y, z
+		// position x, y, z
 		memcpy(&charterinfo.xyz, ptr, sizeof(float) * 3);
+		ptr += sizeof(float) * 3;
+		datasize += sizeof(float) * 3;
+
+		// rotatuin x, y, z
+		memcpy(&charterinfo.rot_xyz, ptr, sizeof(float) * 3);
 		ptr += sizeof(float) * 3;
 		datasize += sizeof(float) * 3;
 
@@ -343,6 +348,12 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 		char* ptr_packetdata = ptrdata;
 
 		// data에 넣는 작업
+		memcpy(ptr_packetdata, &codelen, sizeof(int));
+		ptr_packetdata += sizeof(int);
+
+		memcpy(ptr_packetdata, charterinfo.code, codelen);
+		ptr_packetdata += codelen;
+
 		memcpy(ptr_packetdata, &charterinfo.job_code, sizeof(int));
 		ptr_packetdata += sizeof(int);
 
@@ -353,6 +364,9 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 		ptr_packetdata += nicklen;
 
 		memcpy(ptr_packetdata, &charterinfo.xyz, sizeof(float) * 3);
+		ptr_packetdata += sizeof(float) * 3;
+
+		memcpy(ptr_packetdata, &charterinfo.rot_xyz, sizeof(float) * 3);
 		ptr_packetdata += sizeof(float) * 3;
 
 		StorageManager::GetInstance()->PushData(PCHARACTERDATA_ENTER_INFO, (void*)&ptrdata, datasize);

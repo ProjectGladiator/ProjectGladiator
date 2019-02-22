@@ -177,10 +177,10 @@ bool InGameManager::InGame_Recv_UserList(char * _buf)
 		ptr_data += sizeof(int);
 
 		// 코드
-		memcpy(nick, ptr_buf, len);
+		memcpy(code, ptr_buf, len);
 		ptr_buf += len;
 		size += len;
-		memcpy(ptr_data, nick, len);
+		memcpy(ptr_data, code, len);
 		ptr_data += len;
 
 		// 캐릭터 직업코드

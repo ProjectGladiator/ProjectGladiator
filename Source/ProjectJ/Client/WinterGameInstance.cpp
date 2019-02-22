@@ -13,7 +13,6 @@ void UWinterGameInstance::Init()
 	NetworkManager::GetInstance()->MangerInitialize();
 	NetworkManager::GetInstance()->Initialize();
 	NetworkManager::GetInstance()->InitializeSocket();
-	//NetworkManager::GetInstance()->Connect();
 }
 
 void UWinterGameInstance::Shutdown()
