@@ -22,7 +22,7 @@ public:
 
 	void InGame_Req_UserList();							// 현재 접속중인 유저리스트 요청
 	// 이동요청 서버에 전송
-	void InGame_Req_Move(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry, float _delay_time);
+	void InGame_Req_Move(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry);
 	// 이동시작 서버에 전송
 	void InGame_Req_MoveStart(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry);
 	bool InGame_Recv_UserList(char* _buf);				// 현재 접속중인 유저리스트 받음

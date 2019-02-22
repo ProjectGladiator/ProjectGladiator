@@ -56,7 +56,7 @@ void InGameManager::InGame_Req_UserList()
 }
 
 // 이동 요청
-void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry, float _delay_time)
+void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry)
 {
 	char buf[BUFSIZE];
 	char* ptr = buf;
@@ -95,10 +95,6 @@ void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, 
 	ptr += sizeof(float);
 
 	memcpy(ptr, &_diry, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-	
-	memcpy(ptr, &_delay_time, sizeof(float));
 	datasize += sizeof(float);
 	ptr += sizeof(float);
 
