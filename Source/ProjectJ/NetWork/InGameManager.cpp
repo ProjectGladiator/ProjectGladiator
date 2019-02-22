@@ -56,7 +56,7 @@ void InGameManager::InGame_Req_UserList()
 }
 
 // 이동 요청
-void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry)
+void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, float _ry, float _rz)
 {
 	char buf[BUFSIZE];
 	char* ptr = buf;
@@ -86,15 +86,6 @@ void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, 
 	ptr += sizeof(float);
 
 	memcpy(ptr, &_rz, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-
-	// 방향값
-	memcpy(ptr, &_dirx, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-
-	memcpy(ptr, &_diry, sizeof(float));
 	datasize += sizeof(float);
 	ptr += sizeof(float);
 
@@ -102,50 +93,50 @@ void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, 
 }
 
 // 이동 시작 요청
-void InGameManager::InGame_Req_MoveStart(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry)
-{
-	char buf[BUFSIZE];
-	char* ptr = buf;
-	int datasize = 0;
-	memset(buf, 0, sizeof(buf));
-
-	// 위치값
-	memcpy(ptr, &_px, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-
-	memcpy(ptr, &_py, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-
-	memcpy(ptr, &_pz, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-
-	// 회전값
-	memcpy(ptr, &_rx, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-
-	memcpy(ptr, &_ry, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-
-	memcpy(ptr, &_rz, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-
-	// 방향값
-	memcpy(ptr, &_dirx, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-
-	memcpy(ptr, &_diry, sizeof(float));
-	datasize += sizeof(float);
-	ptr += sizeof(float);
-
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MOVE_START, buf, datasize);
-}
+//void InGameManager::InGame_Req_MoveStart(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry)
+//{
+//	char buf[BUFSIZE];
+//	char* ptr = buf;
+//	int datasize = 0;
+//	memset(buf, 0, sizeof(buf));
+//
+//	// 위치값
+//	memcpy(ptr, &_px, sizeof(float));
+//	datasize += sizeof(float);
+//	ptr += sizeof(float);
+//
+//	memcpy(ptr, &_py, sizeof(float));
+//	datasize += sizeof(float);
+//	ptr += sizeof(float);
+//
+//	memcpy(ptr, &_pz, sizeof(float));
+//	datasize += sizeof(float);
+//	ptr += sizeof(float);
+//
+//	// 회전값
+//	memcpy(ptr, &_rx, sizeof(float));
+//	datasize += sizeof(float);
+//	ptr += sizeof(float);
+//
+//	memcpy(ptr, &_ry, sizeof(float));
+//	datasize += sizeof(float);
+//	ptr += sizeof(float);
+//
+//	memcpy(ptr, &_rz, sizeof(float));
+//	datasize += sizeof(float);
+//	ptr += sizeof(float);
+//
+//	// 방향값
+//	memcpy(ptr, &_dirx, sizeof(float));
+//	datasize += sizeof(float);
+//	ptr += sizeof(float);
+//
+//	memcpy(ptr, &_diry, sizeof(float));
+//	datasize += sizeof(float);
+//	ptr += sizeof(float);
+//
+//	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MOVE_START, buf, datasize);
+//}
 
 // 현재 접속중인 유저리스트 받음
 bool InGameManager::InGame_Recv_UserList(char * _buf)
@@ -273,19 +264,6 @@ bool InGameManager::InGame_Recv_MoveResult(char * _buf)
 		memcpy(ptr_data, rot_xyz, sizeof(float) * 3);
 		ptr_data += sizeof(float) * 3;
 
-		// 방향 x y
-		memcpy(&dirx, ptr_buf, sizeof(float));
-		ptr_buf += sizeof(float);
-		size += sizeof(float);
-		memcpy(ptr_data, &dirx, sizeof(float));
-		ptr_data += sizeof(float);
-
-		memcpy(&diry, ptr_buf, sizeof(float));
-		ptr_buf += sizeof(float);
-		size += sizeof(float);
-		memcpy(ptr_data, &diry, sizeof(float));
-		ptr_data += sizeof(float);
-
 		// 실패 시 예전 이동결과
 		StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_MOVE_INFO, data, size);
 	}
@@ -334,19 +312,6 @@ void InGameManager::InGame_Recv_OtherUserMoveInfo(char * _buf, int _dataprotocol
 	size += sizeof(float) * 3;
 	memcpy(ptr_data, rot_xyz, sizeof(float) * 3);
 	ptr_data += sizeof(float) * 3;
-
-	// 방향 x y
-	memcpy(&dirx, ptr_buf, sizeof(float));
-	ptr_buf += sizeof(float);
-	size += sizeof(float);
-	memcpy(ptr_data, &dirx, sizeof(float));
-	ptr_data += sizeof(float);
-
-	memcpy(&diry, ptr_buf, sizeof(float));
-	ptr_buf += sizeof(float);
-	size += sizeof(float);
-	memcpy(ptr_data, &diry, sizeof(float));
-	ptr_data += sizeof(float);
 
 	StorageManager::GetInstance()->PushData(_dataprotocol, data, size);
 }

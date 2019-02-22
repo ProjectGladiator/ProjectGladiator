@@ -4,6 +4,7 @@
 #include "global.h"
 #include "DataProtocol.h"
 #include "StorageDataType.h"
+#include "LogManager.h"
 #include <queue>
 
 using namespace std;
@@ -17,7 +18,15 @@ struct PacketData
 
 	~PacketData()
 	{
-		delete[] data;
+		if (datasize == 1)
+		{
+			delete data;
+		}
+		else
+		{
+			delete[] data;
+		}
+
 	}
 };
 
@@ -48,8 +57,8 @@ public:
 	void ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot);
 	void ChangeData(void* data, CharacterInfo*& _charinfo);
 	void ChangeData(void* data, bool& _result, float*& _posxyz, float*& _rotxyz);
-	void ChangeData(void* data, float*& _posxyz, float*& _rotxyz, float& _dirx, float& _diry);
-	void ChangeData(void* data, char*& _code, float*& _posxyz, float*& _rotxyz, float& _dirx, float& _diry);
+	void ChangeData(void* data, float*& _posxyz, float*& _rotxyz);
+	void ChangeData(void* data, char*& _code, float*& _posxyz, float*& _rotxyz);
 	bool PopData();
 };
 

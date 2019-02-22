@@ -77,11 +77,18 @@ void StorageManager::PushData(int _protocol, void* _data, int _data_size)
 {
 	PacketData* temppacket = new PacketData();
 	char* store_data = new char[_data_size];
+	memset(store_data, 0, _data_size);
 	memcpy(store_data, _data, _data_size);
 	temppacket->data = store_data;
 	temppacket->protocol = _protocol;
 	temppacket->datasize = _data_size;
 	DataStorage.push(temppacket);
+
+	char log[BUFSIZE];
+	memset(log, 0, sizeof(log));
+	sprintf(log, "Push DataSize : %d store_data size : %d", _data_size, 
+		sizeof(*store_data));
+	LogManager::GetInstance()->LogWrite(log);
 }
 
 // 큐의 앞부분 반환
@@ -195,10 +202,10 @@ void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
 	memcpy(_charinfo->nick, ptr, len);
 	ptr += len;
 
-	memcpy(&_charinfo->xyz, ptr, sizeof(float) * 3);
+	memcpy(_charinfo->xyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
 
-	memcpy(&_charinfo->rot_xyz, ptr, sizeof(float) * 3);
+	memcpy(_charinfo->rot_xyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
 }
 
@@ -217,7 +224,7 @@ void StorageManager::ChangeData(void * data, bool& _result, float*& _posxyz, flo
 	ptr += sizeof(float) * 3;
 }
 
-void StorageManager::ChangeData(void * data, float *& _posxyz, float *& _rotxyz, float & _dirx, float & _diry)
+void StorageManager::ChangeData(void * data, float *& _posxyz, float *& _rotxyz)
 {
 	char* ptr = (char*)data;
 
@@ -226,15 +233,9 @@ void StorageManager::ChangeData(void * data, float *& _posxyz, float *& _rotxyz,
 
 	memcpy(_rotxyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
-
-	memcpy(&_dirx, ptr, sizeof(float));
-	ptr += sizeof(float);
-
-	memcpy(&_diry, ptr, sizeof(float));
-	ptr += sizeof(float);
 }
 
-void StorageManager::ChangeData(void * data, char *& _code, float *& _posxyz, float *& _rotxyz, float & _dirx, float & _diry)
+void StorageManager::ChangeData(void * data, char *& _code, float *& _posxyz, float *& _rotxyz)
 {
 	int len = 0;
 	char* ptr = (char*)data;
@@ -250,12 +251,6 @@ void StorageManager::ChangeData(void * data, char *& _code, float *& _posxyz, fl
 
 	memcpy(_rotxyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
-
-	memcpy(&_dirx, ptr, sizeof(float));
-	ptr += sizeof(float);
-
-	memcpy(&_diry, ptr, sizeof(float));
-	ptr += sizeof(float);
 }
 
 // Front 삭제

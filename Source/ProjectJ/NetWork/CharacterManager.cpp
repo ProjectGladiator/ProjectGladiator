@@ -88,7 +88,7 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 		int temp_job_code;
 	}slottemp[3];
 
-	memset(slottemp, 0, sizeof(slottemp));
+	memset(slottemp, 0, sizeof(SlotTemp) * 3);
 
 	// _buf 길이
 	int datasize = 0;
@@ -298,6 +298,7 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 
 	CharacterInfo charterinfo;
 	int nicklen = 0;
+	int codelen = 0;
 	bool check;
 
 	memcpy(&check, ptr, sizeof(bool));
@@ -306,8 +307,18 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 	if (check)
 	{
 		StorageManager::GetInstance()->PushData(PCHARACTERDATA_ENTER_RESULT, (void*)&check, sizeof(bool));
-	
+
+		// 캐릭터 코드 사이즈
+		memcpy(&codelen, ptr, sizeof(int));
+		ptr += sizeof(int);
+		datasize += sizeof(int);
+
 		// 캐릭터 코드
+		memcpy(&charterinfo.code, ptr, codelen);
+		ptr += codelen;
+		datasize += codelen;
+
+		// 직업 코드
 		memcpy(&charterinfo.job_code, ptr, sizeof(int));
 		ptr += sizeof(int);
 		datasize += sizeof(int);
