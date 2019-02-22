@@ -197,7 +197,7 @@ void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
 	ptr += sizeof(int);
 
 	memcpy(&len, ptr, sizeof(int));
-	ptr += len;
+	ptr += sizeof(int);
 
 	memcpy(_charinfo->nick, ptr, len);
 	ptr += len;
@@ -223,7 +223,7 @@ void StorageManager::ChangeData(void * data, bool& _result, float*& _posxyz, flo
 	memcpy(_rotxyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
 }
-
+// 플레이어 이동정보 결과용
 void StorageManager::ChangeData(void * data, float *& _posxyz, float *& _rotxyz)
 {
 	char* ptr = (char*)data;
@@ -234,7 +234,7 @@ void StorageManager::ChangeData(void * data, float *& _posxyz, float *& _rotxyz)
 	memcpy(_rotxyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
 }
-
+// 다른 플레이어 이동정보 결과용
 void StorageManager::ChangeData(void * data, char *& _code, float *& _posxyz, float *& _rotxyz)
 {
 	int len = 0;
