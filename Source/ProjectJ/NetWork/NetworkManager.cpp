@@ -54,7 +54,7 @@ void NetworkManager::Recvprocess()
 		// Recv
 		if (user->recvMsg() == false)
 		{
-			user->InitState();
+			//user->InitState();
 			break;
 		}
 		else
@@ -68,7 +68,7 @@ void NetworkManager::Recvprocess()
 			// 후속 작업
 			if (user->getState()->Read(user) == false)
 			{
-				user->InitState();
+				//user->InitState();
 			}
 			else
 			{
@@ -173,14 +173,16 @@ void NetworkManager::EndManager()
 {
 	user->stop();
 	delete user;
+	user = nullptr;
+
+	// 윈속 종료
+	WSACleanup();	// 소켓 DLL 메모리 해제
 
 	// 각 매니저들 End 호출
 	LoginManager::GetInstance()->EndManager();
+	StorageManager::GetInstance()->EndManager();
 	EncryptManager::GetInstance()->EndManager();
 	ThreadManager::GetInstance()->EndManager();
 	ErrorManager::GetInstance()->EndManager();
 	//LogManager::GetInstance()->EndManager();
-
-	// 윈속 종료
-	WSACleanup();	// 소켓 DLL 메모리 해제
 }

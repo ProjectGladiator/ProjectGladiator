@@ -70,6 +70,11 @@ bool StorageManager::InitializeManager()
 
 void StorageManager::EndManager()
 {
+	while (DataStorage.empty() != true)
+	{
+		delete DataStorage.front();
+		DataStorage.pop();
+	}
 }
 
 // 데이터 큐에 넣음

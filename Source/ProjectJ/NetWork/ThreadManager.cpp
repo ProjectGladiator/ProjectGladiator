@@ -42,7 +42,11 @@ bool ThreadManager::InitializeManager()
 
 void ThreadManager::EndManager()
 {
-
+	for (list<ThreadData*>::iterator i = threadInfo.begin(); i != threadInfo.end(); i++)
+	{
+		delete (*i);
+	}
+	threadInfo.clear();
 }
 
 HANDLE ThreadManager::addThread(LPTHREAD_START_ROUTINE routine,LPVOID data, LPVOID _pthis)

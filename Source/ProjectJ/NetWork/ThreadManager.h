@@ -6,6 +6,7 @@ using namespace std;
 
 struct ThreadData
 {
+	// 스레드 핸들, 스레드 함수 네임
 	HANDLE thread;
 	void* data;
 };

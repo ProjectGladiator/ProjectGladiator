@@ -11,6 +11,9 @@ User::User()
 	
 	state = nullptr;
 	login = false;
+	loginstate = nullptr;
+	characterstate = nullptr;
+	ingamestate = nullptr;
 }
 // »ý¼ºÀÚ
 User::User(SOCKET _sock, SOCKADDR_IN _addr): Packet(_sock, _addr)
@@ -23,11 +26,19 @@ User::User(SOCKET _sock, SOCKADDR_IN _addr): Packet(_sock, _addr)
 
 	state = nullptr;
 	login = false;
+	loginstate = nullptr;
+	characterstate = nullptr;
+	ingamestate = nullptr;
 }
 
 User::~User()
 {
-	delete loginstate;
+	if(loginstate != nullptr)
+		delete loginstate;
+	if (characterstate != nullptr)
+		delete characterstate;
+	if (ingamestate != nullptr)
+		delete ingamestate;
 }
 
 void User::SetState(UserState * _state)
