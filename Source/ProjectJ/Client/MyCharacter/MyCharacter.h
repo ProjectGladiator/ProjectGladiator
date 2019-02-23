@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "MyCharacter.generated.h"
 
+
+
 UCLASS()
 class PROJECTJ_API AMyCharacter : public ACharacter
 {
@@ -19,8 +21,21 @@ private:
 		int32 Level; //현재 레벨
 	UPROPERTY()
 		bool IsClick;
-	float CurrentValue;
-	float PreviousValue;
+	UPROPERTY()
+		float ForwadBackwardCurrentValue;
+	UPROPERTY()
+		float ForwadBackwardPreviousValue;
+	UPROPERTY()
+		float LeftRightCurrentValue;
+	UPROPERTY()
+		float LeftRightPreviousValue;
+	UPROPERTY()
+		FTimerHandle C2SMoveTimer;
+	UPROPERTY()
+		bool ForwardBackWardMoveFlag;
+	UPROPERTY()
+		bool LeftRightMoveFlag;
+	char CharacterCode[30];
 public:
 	// Sets default values for this character's properties
 	AMyCharacter(); //생성자
@@ -49,8 +64,10 @@ public:
 		class UInventory* Inventory;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		FRotator CurrentRotator;
-
-	class AMainMapPlayerController* MainMapPlayerController = nullptr;
+	UPROPERTY()
+		class AMainMapPlayerController* MainMapPlayerController;
+	UPROPERTY()
+		class AMainMapGameMode* MainMapGameMode;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -111,5 +128,10 @@ public:
 	void SetIsClick(bool _IsClick);
 
 	UFUNCTION()
-		void MoveConfirmServer();
+		void C2S_MoveConfirm();
+
+	char* GetCharacterCode();
+	void SetCharacterCode(char* _NewCharacterCode);
+
+	void ControlOtherCharacterMove(FVector _GoalLocation);
 };

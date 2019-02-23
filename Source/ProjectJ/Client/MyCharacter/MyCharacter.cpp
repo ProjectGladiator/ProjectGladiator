@@ -17,18 +17,20 @@
 #include "MyAnimInstance.h"
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
 #include "Client/MainMap/MainMapPlayerController.h"
+#include "Client/MainMap/MainMapGameMode.h"
 #include "TimerManager.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
 #include "NetWork/InGameManager.h"
 #include "NetWork/StorageManager.h"
+#include "NetWork/NetworkManager.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	bUseControllerRotationYaw = true;
 
@@ -72,7 +74,11 @@ void AMyCharacter::BeginPlay()
 	IsClick = false;
 
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+
+	ForwardBackWardMoveFlag = false;
+	LeftRightMoveFlag = false;
 }
 
 void AMyCharacter::ClickedReactionMontagePlay()
@@ -84,8 +90,23 @@ void AMyCharacter::ClickedReactionMontagePlay()
 void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	PacketData* Data;
+	char* OtherCharacterCode = nullptr; //맵에 접속해 있는 다른 캐릭터 코드
+	float* S2COtherCharacterLocation = nullptr; //서버로부터 받은 다른 캐릭터 위치 정보
+	float* S2COtherCharacterRotation = nullptr; //서버로부터 받은 다른 캐릭터 회전 정보
+	FVector OtherCharacterLocation; //서버로부터 받은 다른 캐릭터 위치 정보 저장용 벡터
+	AMyCharacter* OtherCharacter = nullptr; //맵에 접속해 있는 다른 캐릭터
 
-
+	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
+	{
+		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
+		{
+		case PGAMEDATA_PLAYER_OTHERMOVEINFO:
+			GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
+			break;
+		}
+	}
+	//GLog->Log(FString::Printf(TEXT("%d %d"), ForwardBackWardMoveFlag, LeftRightMoveFlag));
 }
 
 // Called to bind functionality to input
@@ -109,26 +130,48 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AMyCharacter::JumpStart);
 	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &AMyCharacter::LeftClick);
+
 }
 
 void AMyCharacter::MoveForward(float Value)
 {
-	CurrentValue = Value;
+	ForwadBackwardCurrentValue = Value;
 
-	if (CurrentValue == 1 || CurrentValue == -1)
+	if (ForwadBackwardCurrentValue == 1 || ForwadBackwardCurrentValue == -1)
 	{
-		if (PreviousValue == 0)
+		if (ForwadBackwardPreviousValue == 0)
 		{
-			float X = GetActorLocation().X;
-			float Y = GetActorLocation().Y;
-			float Z = GetActorLocation().Z;
-			float Roll = GetActorRotation().Roll;
-			float Pitch = GetActorRotation().Pitch;
-			float Yaw = GetActorRotation().Yaw;
+			ForwardBackWardMoveFlag = true;
 
-			//InGameManager::GetInstance()->InGame_Req_MoveStart(X, Y, Z, Roll, Pitch, Yaw, Value, 0);
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveTimer);
 
+			if (!C2SMoveTimerActive)
+			{
+				GetWorld()->GetTimerManager().SetTimer(C2SMoveTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0.3f);
+			}
 			GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
+		}
+	}
+
+	if (ForwadBackwardCurrentValue == 0)
+	{
+		if (ForwadBackwardPreviousValue == 1 || ForwadBackwardPreviousValue == -1)
+		{
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveTimer);
+
+			if (C2SMoveTimerActive)
+			{
+				if (!LeftRightMoveFlag)
+				{
+					GetWorld()->GetTimerManager().ClearTimer(C2SMoveTimer);
+				}
+				else
+				{
+					GLog->Log(FString::Printf(TEXT("좌우로 움직이는 중임")));
+				}
+			}
+			ForwardBackWardMoveFlag = false;
+			GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 멈춤")));
 		}
 	}
 
@@ -137,16 +180,61 @@ void AMyCharacter::MoveForward(float Value)
 		AddMovementInput(GetActorForwardVector(), Value);
 	}
 
-	PreviousValue = CurrentValue;
+	ForwadBackwardPreviousValue = ForwadBackwardCurrentValue;
 }
 
 void AMyCharacter::MoveRight(float Value)
 {
+	LeftRightCurrentValue = Value;
+
+	if (LeftRightCurrentValue == 1 || LeftRightCurrentValue == -1)
+	{
+		if (LeftRightPreviousValue == 0)
+		{
+			LeftRightMoveFlag = true;
+
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveTimer);
+
+			if (!C2SMoveTimerActive)
+			{
+				GetWorld()->GetTimerManager().SetTimer(C2SMoveTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0.3f);
+			}
+			GLog->Log(FString::Printf(TEXT("좌 우 움직임 시작")));
+		}
+	}
+
+	if (LeftRightCurrentValue == 0)
+	{
+		if (LeftRightPreviousValue == 1 || LeftRightPreviousValue == -1)
+		{
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveTimer);
+
+			if (C2SMoveTimerActive)
+			{
+				if (!ForwardBackWardMoveFlag)
+				{
+					GetWorld()->GetTimerManager().ClearTimer(C2SMoveTimer);
+				}
+				else
+				{
+					GLog->Log(FString::Printf(TEXT("앞뒤로 움직이는 중임")));
+				}
+			}
+
+			LeftRightMoveFlag = false;
+			GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 멈춤")));
+		}
+	}
+
 	if (Value != 0)
 	{
 		AddMovementInput(GetActorRightVector(), Value);
 	}
+
+	LeftRightPreviousValue = LeftRightCurrentValue;
 }
+
+
 
 void AMyCharacter::LookUp(float Value)
 {
@@ -192,6 +280,7 @@ void AMyCharacter::ViewReduce()
 
 void AMyCharacter::RightClickOn()
 {
+	GLog->Log(FString::Printf(TEXT("오른쪽 마우스 클리익")));
 	IsRightClick = true;
 }
 
@@ -311,18 +400,42 @@ void AMyCharacter::SetIsClick(bool _IsClick)
 	IsClick = _IsClick;
 }
 
-void AMyCharacter::MoveConfirmServer()
+void AMyCharacter::C2S_MoveConfirm()
 {
-	PacketData* Data;
-	FVector Location;
-	FRotator Rotation;
+	float X = GetActorLocation().X;
+	float Y = GetActorLocation().Y;
+	float Z = GetActorLocation().Z;
+	float Roll = GetActorRotation().Roll;
+	float Pitch = GetActorRotation().Pitch;
+	float Yaw = GetActorRotation().Yaw;
 
-	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
+	GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.3s")));
+	InGameManager::GetInstance()->InGame_Req_Move(X, Y, Z, Roll, Pitch, Yaw);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
+char * AMyCharacter::GetCharacterCode()
+{
+	return CharacterCode;
+}
+
+void AMyCharacter::SetCharacterCode(char * _NewCharacterCode)
+{
+	memcpy(CharacterCode, _NewCharacterCode, sizeof(CharacterCode));
+}
+
+void AMyCharacter::ControlOtherCharacterMove(FVector _GoalLocation)
+{
+	FVector GoalDirection;
+
+	GoalDirection = _GoalLocation - GetActorLocation();
+
+	bool GoalDirectionNormalizeSuccess = GoalDirection.Normalize();
+
+	if (GoalDirectionNormalizeSuccess)
 	{
-		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
-		{
-		case PGAMEDATA_PLAYER_MOVE_INFO:
-			break;
-		}
+		GLog->Log(FString::Printf(TEXT("GoalDirection X : %f Y : %f Z : %f"), GoalDirection.X, GoalDirection.Y, GoalDirection.Z));
+
+		AddMovementInput(GoalDirection, 1.0f);
 	}
 }

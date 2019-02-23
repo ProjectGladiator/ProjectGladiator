@@ -80,16 +80,19 @@ void UCharacterSelectWidget::GameStart()
 
 void UCharacterSelectWidget::MyCharacterDelete()
 {
-	if (MainMapPlayerController->GetSelectIndex() != -1)
+	if (MainMapPlayerController)
 	{
-		CharacterManager::GetInstance()->Character_Req_Delete(MainMapPlayerController->GetSelectIndex());
-		NetworkClient_main::NetworkManager::GetInstance()->Send();
-	}
-	else
-	{
-		if (MainMapGameMode)
+		if (MainMapPlayerController->GetSelectIndex() != -1)
 		{
-			MainMapGameMode->CancelWidgetToggle(FText(FText::FromString("Please select a character to delete")));
+			CharacterManager::GetInstance()->Character_Req_Delete(MainMapPlayerController->GetSelectIndex());
+			NetworkClient_main::NetworkManager::GetInstance()->Send();
+		}
+		else
+		{
+			if (MainMapGameMode)
+			{
+				MainMapGameMode->CancelWidgetToggle(FText(FText::FromString("Please select a character to delete")));
+			}
 		}
 	}
 }
