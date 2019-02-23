@@ -59,5 +59,5 @@ public:
 	void SelectCharacterSpawn(CHARACTER_JOB _SelectJob);
 	void SelectCharacterDestroy();
 
-	AMyCharacter* GetLoginUser();
+	AMyCharacter* GetLoginUser(char* _OtherCharacterCode);
 };

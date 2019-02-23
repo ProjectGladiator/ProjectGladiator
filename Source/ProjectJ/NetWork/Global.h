@@ -159,8 +159,9 @@ enum RESULT {
 #define PRODUCT_NAMESIZE 50
 #define ENCRYPT_KEY 951324896
 //#define SERVERIP "127.0.0.1"
-#define SERVERIP "192.168.0.154"	// 402ip »£ø¨≥Î∆Æ∫œ
+//define SERVERIP "192.168.0.154"	// 402ip »£ø¨≥Î∆Æ∫œ
+//define SERVERIP "192.168.0.154"	// 402ip »£ø¨≥Î∆Æ∫œ
 //#define SERVERIP "192.168.123.181"
-//#define SERVERIP "182.227.211.86"
+#define SERVERIP "182.227.211.86"
 
 #endif   

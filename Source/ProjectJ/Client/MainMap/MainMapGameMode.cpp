@@ -18,6 +18,7 @@
 #include "MainMapPlayerController.h"
 #include "Manager/StageManager.h"
 #include "Client/MyCharacter/MyAnimInstance.h"
+#include "Client/MyCharacter/MyCharacter.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -304,7 +305,15 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (MyCharacter)
 			{
+				GLog->Log(ANSI_TO_TCHAR(character_info->code));
+			
+				MyCharacter->SetCharacterCode(character_info->code);
+
 				MainMapSpawnCharacterPossess(MyCharacter);
+			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("캐릭터 소환 안됨")));
 			}
 			// 필요없어진 캐릭터정보 구조체 해제
 			delete character_info;
@@ -538,11 +547,15 @@ void AMainMapGameMode::SelectCharacterDestroy()
 	}
 }
 
-AMyCharacter * AMainMapGameMode::GetLoginUser()
+AMyCharacter* AMainMapGameMode::GetLoginUser(char* _OtherCharacterCode)
 {
+	
 	for (int i = 0; i < OtherLoginUserList.Num(); i++)
 	{
-		
+		if (strcmp(OtherLoginUserList[i]->GetCharacterCode(), _OtherCharacterCode) == 0)
+		{
+			return OtherLoginUserList[i];
+		}
 	}
 
 	return nullptr;
