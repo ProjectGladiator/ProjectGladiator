@@ -17,20 +17,18 @@
 #include "MyAnimInstance.h"
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
 #include "Client/MainMap/MainMapPlayerController.h"
-#include "Client/MainMap/MainMapGameMode.h"
 #include "TimerManager.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
 #include "NetWork/InGameManager.h"
-#include "NetWork/StorageManager.h"
 #include "NetWork/NetworkManager.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
 	bUseControllerRotationYaw = true;
 
@@ -74,7 +72,6 @@ void AMyCharacter::BeginPlay()
 	IsClick = false;
 
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 
 	ForwardBackWardMoveFlag = false;
@@ -90,22 +87,7 @@ void AMyCharacter::ClickedReactionMontagePlay()
 void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	PacketData* Data;
-	char* OtherCharacterCode = nullptr; //맵에 접속해 있는 다른 캐릭터 코드
-	float* S2COtherCharacterLocation = nullptr; //서버로부터 받은 다른 캐릭터 위치 정보
-	float* S2COtherCharacterRotation = nullptr; //서버로부터 받은 다른 캐릭터 회전 정보
-	FVector OtherCharacterLocation; //서버로부터 받은 다른 캐릭터 위치 정보 저장용 벡터
-	AMyCharacter* OtherCharacter = nullptr; //맵에 접속해 있는 다른 캐릭터
-
-	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
-	{
-		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
-		{
-		case PGAMEDATA_PLAYER_OTHERMOVEINFO:
-			GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
-			break;
-		}
-	}
+	
 	//GLog->Log(FString::Printf(TEXT("%d %d"), ForwardBackWardMoveFlag, LeftRightMoveFlag));
 }
 
@@ -147,9 +129,9 @@ void AMyCharacter::MoveForward(float Value)
 
 			if (!C2SMoveTimerActive)
 			{
-				GetWorld()->GetTimerManager().SetTimer(C2SMoveTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0.3f);
+				GetWorld()->GetTimerManager().SetTimer(C2SMoveTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
 			}
-			GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
+			//GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
 		}
 	}
 
@@ -167,11 +149,11 @@ void AMyCharacter::MoveForward(float Value)
 				}
 				else
 				{
-					GLog->Log(FString::Printf(TEXT("좌우로 움직이는 중임")));
+					//GLog->Log(FString::Printf(TEXT("좌우로 움직이는 중임")));
 				}
 			}
 			ForwardBackWardMoveFlag = false;
-			GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 멈춤")));
+			//GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 멈춤")));
 		}
 	}
 
@@ -197,9 +179,9 @@ void AMyCharacter::MoveRight(float Value)
 
 			if (!C2SMoveTimerActive)
 			{
-				GetWorld()->GetTimerManager().SetTimer(C2SMoveTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0.3f);
+				GetWorld()->GetTimerManager().SetTimer(C2SMoveTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
 			}
-			GLog->Log(FString::Printf(TEXT("좌 우 움직임 시작")));
+			//GLog->Log(FString::Printf(TEXT("좌 우 움직임 시작")));
 		}
 	}
 
@@ -217,12 +199,12 @@ void AMyCharacter::MoveRight(float Value)
 				}
 				else
 				{
-					GLog->Log(FString::Printf(TEXT("앞뒤로 움직이는 중임")));
+					//GLog->Log(FString::Printf(TEXT("앞뒤로 움직이는 중임")));
 				}
 			}
 
 			LeftRightMoveFlag = false;
-			GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 멈춤")));
+			//GLog->Log(FString::Printf(TEXT("좌 우 움직임 멈춤")));
 		}
 	}
 

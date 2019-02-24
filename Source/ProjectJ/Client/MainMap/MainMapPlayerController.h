@@ -24,12 +24,15 @@ private:
 		class AChracterCreateCamera* CharacterSelectCamera; //캐릭터 선택창 카메라
 	UPROPERTY()
 		class AChracterCreateCamera* CharacterSelectZoomInCamera;
+	UPROPERTY()
+		class AMainMapGameMode* MainMapGameMode;
 	int32 JobCode;
 	int32 Select_index = -1;
 public:
 	CharacterSlot * CharacterSlotInfo;
 
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
 
 	void ToCharacterCreate();
 	void ToCharacterSelect();

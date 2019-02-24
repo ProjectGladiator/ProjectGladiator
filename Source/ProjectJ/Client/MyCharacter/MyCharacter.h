@@ -66,8 +66,6 @@ public:
 		FRotator CurrentRotator;
 	UPROPERTY()
 		class AMainMapPlayerController* MainMapPlayerController;
-	UPROPERTY()
-		class AMainMapGameMode* MainMapGameMode;
 
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

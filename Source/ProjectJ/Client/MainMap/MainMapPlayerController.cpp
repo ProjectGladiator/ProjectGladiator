@@ -8,8 +8,10 @@
 #include "Kismet/KismetStringLibrary.h"
 #include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
 #include "Client/MyCharacter/MyCharacter.h"
+#include "Client/MainMap/MainMapGameMode.h"
 
 //서버 헤더
+#include "NetWork/StorageManager.h"
 
 void AMainMapPlayerController::BeginPlay()
 {
@@ -48,9 +50,50 @@ void AMainMapPlayerController::BeginPlay()
 	bEnableMouseOverEvents = true; //마우스를 가져다 대는 이벤트를 활성화 시키고
 	ClickEventKeys.Add(EKeys::LeftMouseButton); //클릭 이벤트에 마우스 왼쪽 버튼을 추가하고
 	DefaultClickTraceChannel = ECollisionChannel::ECC_Pawn; //클릭 이벤트에 반응하는 채널을 Pawn으로 설정한다.
-
+	
 	SetInputMode(FInputModeGameAndUI()); //게임 입력 모드를 게임,UI모드로 설정한다.
 	SetViewTargetWithBlend(CharacterSelectCamera, 0, EViewTargetBlendFunction::VTBlend_Linear, 0, false); //캐릭터 선택창 카메라로 시점을 돌려준다.
+	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+}
+
+void AMainMapPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	PacketData* Data;
+	char* OtherCharacterCode = nullptr; //맵에 접속해 있는 다른 캐릭터 코드
+	float* S2COtherCharacterLocation = nullptr; //서버로부터 받은 다른 캐릭터 위치 정보
+	float* S2COtherCharacterRotation = nullptr; //서버로부터 받은 다른 캐릭터 회전 정보
+	FVector OtherCharacterLocation; //서버로부터 받은 다른 캐릭터 위치 정보 저장용 벡터
+	AMyCharacter* OtherCharacter = nullptr; //맵에 접속해 있는 다른 캐릭터
+
+	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
+	{
+		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
+		{
+		case PGAMEDATA_PLAYER_OTHERMOVEINFO:
+			GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
+
+			StorageManager::GetInstance()->ChangeData(Data->data, OtherCharacterCode, S2COtherCharacterLocation, S2COtherCharacterRotation);
+
+			StorageManager::GetInstance()->PopData();
+
+			if (MainMapGameMode)
+			{
+				OtherCharacter = MainMapGameMode->GetLoginUser(OtherCharacterCode);
+
+				if (OtherCharacter)
+				{
+					OtherCharacterLocation.X = S2COtherCharacterLocation[0];
+					OtherCharacterLocation.Y = S2COtherCharacterLocation[1];
+					OtherCharacterLocation.Z = S2COtherCharacterLocation[2];
+
+					OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation);
+				}
+			}
+			break;
+		}
+	}
 }
 
 void AMainMapPlayerController::ToCharacterCreate()
