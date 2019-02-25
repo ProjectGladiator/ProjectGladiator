@@ -65,9 +65,7 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	OtherCharacterInfo* otherinfo = new OtherCharacterInfo;
-	memset(otherinfo, 0, sizeof(otherinfo));
-
+	OtherCharacterInfo* otherinfo = nullptr;
 	PacketData* Data;
 	char* OtherCharacterCode = nullptr; //맵에 접속해 있는 다른 캐릭터 코드
 	float* S2COtherCharacterLocation = nullptr; //서버로부터 받은 다른 캐릭터 위치 정보
@@ -80,9 +78,10 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
 		{
 		case PGAMEDATA_PLAYER_OTHERMOVEINFO:
-			GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
+			otherinfo = new OtherCharacterInfo;
+			memset(otherinfo, 0, sizeof(otherinfo));
 
-			//StorageManager::GetInstance()->ChangeData(Data->data, OtherCharacterCode, S2COtherCharacterLocation, S2COtherCharacterRotation);
+			GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
 
 			StorageManager::GetInstance()->ChangeData(Data->data, otherinfo);
 
@@ -112,6 +111,7 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 				GLog->Log(FString::Printf(TEXT("메인맵 게임모드가 null")));
 			}
 
+			delete otherinfo;
 			break;
 		}
 	}
