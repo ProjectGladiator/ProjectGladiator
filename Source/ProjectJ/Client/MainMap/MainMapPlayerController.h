@@ -15,6 +15,8 @@ UCLASS()
 class PROJECTJ_API AMainMapPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+public:
+	AMainMapPlayerController();
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Cameras, Meta = (AllowPrivateAccess = true))
 		TArray <AActor*> Cameras; //캐릭터 선택, 생성 카메라들을 담아둘 배열

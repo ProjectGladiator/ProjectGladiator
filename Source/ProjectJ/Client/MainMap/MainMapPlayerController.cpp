@@ -13,6 +13,11 @@
 //서버 헤더
 #include "NetWork/StorageManager.h"
 
+AMainMapPlayerController::AMainMapPlayerController()
+{
+	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+}
+
 void AMainMapPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -53,7 +58,6 @@ void AMainMapPlayerController::BeginPlay()
 	
 	SetInputMode(FInputModeGameAndUI()); //게임 입력 모드를 게임,UI모드로 설정한다.
 	SetViewTargetWithBlend(CharacterSelectCamera, 0, EViewTargetBlendFunction::VTBlend_Linear, 0, false); //캐릭터 선택창 카메라로 시점을 돌려준다.
-	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 }
 
 void AMainMapPlayerController::Tick(float DeltaTime)
@@ -73,14 +77,20 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 		{
 		case PGAMEDATA_PLAYER_OTHERMOVEINFO:
 			GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
-
+			
 			StorageManager::GetInstance()->ChangeData(Data->data, OtherCharacterCode, S2COtherCharacterLocation, S2COtherCharacterRotation);
 
 			StorageManager::GetInstance()->PopData();
 
+			GLog->Log(ANSI_TO_TCHAR(OtherCharacterCode));
+			GLog->Log(FString::Printf(TEXT("\nX : %f Y : %f Z : %f\n"), S2COtherCharacterLocation[0], S2COtherCharacterLocation[1], S2COtherCharacterLocation[2]));
+			GLog->Log(FString::Printf(TEXT("Roll : %f Pitch : %f Yaw : %f"),S2COtherCharacterRotation[0], S2COtherCharacterRotation[1], S2COtherCharacterRotation[2]));
+
 			if (MainMapGameMode)
 			{
 				OtherCharacter = MainMapGameMode->GetLoginUser(OtherCharacterCode);
+
+				
 
 				if (OtherCharacter)
 				{
@@ -91,6 +101,11 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 					OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation);
 				}
 			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("메인맵 게임모드가 null")));
+			}
+
 			break;
 		}
 	}
