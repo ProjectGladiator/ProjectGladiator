@@ -59,6 +59,7 @@ public:
 	void ChangeData(void* data, bool& _result, float*& _posxyz, float*& _rotxyz);
 	void ChangeData(void* data, float*& _posxyz, float*& _rotxyz);
 	void ChangeData(void* data, char*& _code, float*& _posxyz, float*& _rotxyz);
+	void ChangeData(void* data,OtherCharacterInfo*& _otherinfo);
 	bool PopData();
 };
 

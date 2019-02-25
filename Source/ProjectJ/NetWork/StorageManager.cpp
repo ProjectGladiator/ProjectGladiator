@@ -258,6 +258,26 @@ void StorageManager::ChangeData(void * data, char *& _code, float *& _posxyz, fl
 	ptr += sizeof(float) * 3;
 }
 
+// 다른 플레이어 이동정보 결과용
+void StorageManager::ChangeData(void * data, OtherCharacterInfo*& _otherinfo)
+{
+	int len = 0;
+	char* ptr = (char*)data;
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_otherinfo->code, ptr, len);
+	ptr += len;
+
+	memcpy(_otherinfo->xyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+
+	memcpy(_otherinfo->rot_xyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+}
+
+
 // Front 삭제
 bool StorageManager::PopData()
 {
