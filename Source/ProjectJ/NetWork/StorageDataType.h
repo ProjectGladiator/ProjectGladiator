@@ -22,6 +22,13 @@ struct CharacterInfo
 	float rot_xyz[3];
 };
 
+struct OtherCharacterInfo
+{
+	char code[CHARACTERCODESIZE];
+	float xyz[3];
+	float rot_xyz[3];
+};
+
 class Character
 {
 private:

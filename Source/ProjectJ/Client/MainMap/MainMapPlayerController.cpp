@@ -12,6 +12,7 @@
 
 //서버 헤더
 #include "NetWork/StorageManager.h"
+#include "NetWork/StorageDataType.h"
 
 AMainMapPlayerController::AMainMapPlayerController()
 {
@@ -64,6 +65,9 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	OtherCharacterInfo* otherinfo = new OtherCharacterInfo;
+	memset(otherinfo, 0, sizeof(otherinfo));
+
 	PacketData* Data;
 	char* OtherCharacterCode = nullptr; //맵에 접속해 있는 다른 캐릭터 코드
 	float* S2COtherCharacterLocation = nullptr; //서버로부터 받은 다른 캐릭터 위치 정보
@@ -77,8 +81,10 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 		{
 		case PGAMEDATA_PLAYER_OTHERMOVEINFO:
 			GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
-			
-			StorageManager::GetInstance()->ChangeData(Data->data, OtherCharacterCode, S2COtherCharacterLocation, S2COtherCharacterRotation);
+
+			//StorageManager::GetInstance()->ChangeData(Data->data, OtherCharacterCode, S2COtherCharacterLocation, S2COtherCharacterRotation);
+
+			StorageManager::GetInstance()->ChangeData(Data->data, otherinfo);
 
 			StorageManager::GetInstance()->PopData();
 
@@ -88,15 +94,15 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 
 			if (MainMapGameMode)
 			{
-				OtherCharacter = MainMapGameMode->GetLoginUser(OtherCharacterCode);
+				OtherCharacter = MainMapGameMode->GetLoginUser(otherinfo->code);
 
 				
 
 				if (OtherCharacter)
 				{
-					OtherCharacterLocation.X = S2COtherCharacterLocation[0];
-					OtherCharacterLocation.Y = S2COtherCharacterLocation[1];
-					OtherCharacterLocation.Z = S2COtherCharacterLocation[2];
+					OtherCharacterLocation.X = otherinfo->xyz[0];
+					OtherCharacterLocation.Y = otherinfo->xyz[1];
+					OtherCharacterLocation.Z = otherinfo->xyz[2];
 
 					OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation);
 				}
