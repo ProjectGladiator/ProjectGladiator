@@ -76,7 +76,7 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 		{
 		case PGAMEDATA_PLAYER_OTHERMOVEINFO:
 			otherinfo = new OtherCharacterInfo;
-			memset(otherinfo, 0, sizeof(otherinfo));
+			memset(otherinfo, 0, sizeof(OtherCharacterInfo));
 
 			GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
 

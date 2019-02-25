@@ -360,6 +360,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (OtherUserCharacter)
 			{
+				OtherUserCharacter->SetCharacterCode(character_info->code);
+
 				OtherLoginUserList.Add(OtherUserCharacter);
 			}
 
