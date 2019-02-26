@@ -43,6 +43,8 @@ private:
 		FVector GoalDirection;
 	UPROPERTY()
 		FVector GoalLocation;
+	UPROPERTY()
+		FRotator GoalRotator;
 public:
 	// Sets default values for this character's properties
 	AMyCharacter(); //생성자
@@ -140,5 +142,5 @@ public:
 	char* GetCharacterCode();
 	void SetCharacterCode(char* _NewCharacterCode);
 
-	void ControlOtherCharacterMove(FVector _GoalLocation);
+	void ControlOtherCharacterMove(FVector& _GoalLocation,FRotator& _GoalRotator);
 };
