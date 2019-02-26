@@ -238,6 +238,10 @@ void InGameManager::InGame_Recv_ConnectUserInfo(char * _buf)
 	float xyz[3];
 	float rot_xyz[3];
 
+	memset(data, 0, sizeof(data));
+	memset(code, 0, sizeof(code));
+	memset(nick, 0, sizeof(nick));
+
 	// 코드 사이즈
 	memcpy(&len, ptr_buf, sizeof(int));
 	ptr_buf += sizeof(int);
