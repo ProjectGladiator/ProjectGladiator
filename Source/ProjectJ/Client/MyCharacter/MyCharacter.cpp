@@ -401,11 +401,13 @@ void AMyCharacter::S2C_MoveUpdate()
 {
 	//GLog->Log(FString::Printf(TEXT("GoalLocation X :%f Y : %f Z : %f"),GoalLocation.X,GoalLocation.Y,GoalLocation.Z));
 	
-	if (GetActorLocation().Equals(GoalLocation, 15.0f))
+	if (GetActorLocation().Equals(GoalLocation, 30.0f))
 	{
 		GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
 		GetWorld()->GetTimerManager().ClearTimer(S2CMoveTimer);
 	}
+
+	SetActorRotation(GoalRotator);
 
 	AddMovementInput(GoalDirection, 1.0f);
 }
@@ -420,8 +422,10 @@ void AMyCharacter::SetCharacterCode(char * _NewCharacterCode)
 	memcpy(CharacterCode, _NewCharacterCode, sizeof(CharacterCode));
 }
 
-void AMyCharacter::ControlOtherCharacterMove(FVector _GoalLocation)
+void AMyCharacter::ControlOtherCharacterMove(FVector& _GoalLocation, FRotator& _GoalRotator)
 {
+	GoalRotator = _GoalRotator;
+		
 	GoalLocation = _GoalLocation;
 
 	GoalDirection = GoalLocation - GetActorLocation();
@@ -432,7 +436,7 @@ void AMyCharacter::ControlOtherCharacterMove(FVector _GoalLocation)
 	{
 		if (!GetWorld()->GetTimerManager().IsTimerActive(S2CMoveTimer))
 		{
-			GetWorld()->GetTimerManager().SetTimer(S2CMoveTimer, this, &AMyCharacter::S2C_MoveUpdate, 0.02f, true, 0);
+			GetWorld()->GetTimerManager().SetTimer(S2CMoveTimer, this, &AMyCharacter::S2C_MoveUpdate, 0.01f, true, 0);
 		}
 	}
 	else

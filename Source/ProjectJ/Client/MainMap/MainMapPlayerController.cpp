@@ -70,6 +70,7 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 	OtherCharacterInfo otherinfo;
 	PacketData* Data;
 	FVector OtherCharacterLocation; //서버로부터 받은 다른 캐릭터 위치 정보 저장용 벡터
+	FRotator OtherCharacterRotation;
 	AMyCharacter* OtherCharacter = nullptr; //맵에 접속해 있는 다른 캐릭터
 
 	switch (ClientCurrentState)
@@ -104,7 +105,11 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 						OtherCharacterLocation.Y = otherinfo.xyz[1];
 						OtherCharacterLocation.Z = otherinfo.xyz[2];
 
-						OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation);
+						OtherCharacterRotation.Roll = otherinfo->rot_xyz[0];
+						OtherCharacterRotation.Pitch = otherinfo->rot_xyz[1];
+						OtherCharacterRotation.Yaw = otherinfo->rot_xyz[2];
+
+						OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation,OtherCharacterRotation);
 					}
 					else
 					{
