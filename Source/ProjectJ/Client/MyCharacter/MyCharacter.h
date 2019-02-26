@@ -30,12 +30,19 @@ private:
 	UPROPERTY()
 		float LeftRightPreviousValue;
 	UPROPERTY()
-		FTimerHandle C2SMoveTimer;
+		FTimerHandle C2SMoveUpdateTimer;
+	UPROPERTY()
+		FTimerHandle S2CMoveTimer;
 	UPROPERTY()
 		bool ForwardBackWardMoveFlag;
 	UPROPERTY()
 		bool LeftRightMoveFlag;
 	char CharacterCode[30];
+
+	UPROPERTY()
+		FVector GoalDirection;
+	UPROPERTY()
+		FVector GoalLocation;
 public:
 	// Sets default values for this character's properties
 	AMyCharacter(); //생성자
@@ -127,6 +134,8 @@ public:
 
 	UFUNCTION()
 		void C2S_MoveConfirm();
+	UFUNCTION()
+		void S2C_MoveUpdate();
 
 	char* GetCharacterCode();
 	void SetCharacterCode(char* _NewCharacterCode);

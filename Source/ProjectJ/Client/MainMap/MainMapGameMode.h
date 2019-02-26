@@ -36,6 +36,8 @@ private:
 		class AMyCharacter* SelectCharacter;
 	UPROPERTY()
 		TArray<class AMyCharacter*> OtherLoginUserList;
+	UPROPERTY()
+		class AMainMapPlayerController* MainMapPlayerController;
 public:
 	AMainMapGameMode();
 

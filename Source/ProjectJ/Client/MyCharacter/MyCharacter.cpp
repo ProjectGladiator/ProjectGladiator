@@ -18,6 +18,7 @@
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
 #include "Client/MainMap/MainMapPlayerController.h"
 #include "TimerManager.h"
+#include "Client/Monster/MonsterAIController.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -88,7 +89,7 @@ void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	
-	//GLog->Log(FString::Printf(TEXT("%d %d"), ForwardBackWardMoveFlag, LeftRightMoveFlag));
+	//GLog->Log(FString::Printf(TEXT("%d %d"), ForwardBackWardMoveFlag, LeftRightMoveFlag)); 
 }
 
 // Called to bind functionality to input
@@ -125,11 +126,11 @@ void AMyCharacter::MoveForward(float Value)
 		{
 			ForwardBackWardMoveFlag = true;
 
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveTimer);
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveUpdateTimer);
 
 			if (!C2SMoveTimerActive)
 			{
-				GetWorld()->GetTimerManager().SetTimer(C2SMoveTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
+				GetWorld()->GetTimerManager().SetTimer(C2SMoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
 			}
 			//GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
 		}
@@ -139,13 +140,13 @@ void AMyCharacter::MoveForward(float Value)
 	{
 		if (ForwadBackwardPreviousValue == 1 || ForwadBackwardPreviousValue == -1)
 		{
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveTimer);
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveUpdateTimer);
 
 			if (C2SMoveTimerActive)
 			{
 				if (!LeftRightMoveFlag)
 				{
-					GetWorld()->GetTimerManager().ClearTimer(C2SMoveTimer);
+					GetWorld()->GetTimerManager().ClearTimer(C2SMoveUpdateTimer);
 				}
 				else
 				{
@@ -175,11 +176,11 @@ void AMyCharacter::MoveRight(float Value)
 		{
 			LeftRightMoveFlag = true;
 
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveTimer);
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveUpdateTimer);
 
 			if (!C2SMoveTimerActive)
 			{
-				GetWorld()->GetTimerManager().SetTimer(C2SMoveTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
+				GetWorld()->GetTimerManager().SetTimer(C2SMoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
 			}
 			//GLog->Log(FString::Printf(TEXT("좌 우 움직임 시작")));
 		}
@@ -189,13 +190,13 @@ void AMyCharacter::MoveRight(float Value)
 	{
 		if (LeftRightPreviousValue == 1 || LeftRightPreviousValue == -1)
 		{
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveTimer);
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveUpdateTimer);
 
 			if (C2SMoveTimerActive)
 			{
 				if (!ForwardBackWardMoveFlag)
 				{
-					GetWorld()->GetTimerManager().ClearTimer(C2SMoveTimer);
+					GetWorld()->GetTimerManager().ClearTimer(C2SMoveUpdateTimer);
 				}
 				else
 				{
@@ -396,6 +397,19 @@ void AMyCharacter::C2S_MoveConfirm()
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
+void AMyCharacter::S2C_MoveUpdate()
+{
+	//GLog->Log(FString::Printf(TEXT("GoalLocation X :%f Y : %f Z : %f"),GoalLocation.X,GoalLocation.Y,GoalLocation.Z));
+	
+	if (GetActorLocation().Equals(GoalLocation, 15.0f))
+	{
+		GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
+		GetWorld()->GetTimerManager().ClearTimer(S2CMoveTimer);
+	}
+
+	AddMovementInput(GoalDirection, 1.0f);
+}
+
 char * AMyCharacter::GetCharacterCode()
 {
 	return CharacterCode;
@@ -408,16 +422,21 @@ void AMyCharacter::SetCharacterCode(char * _NewCharacterCode)
 
 void AMyCharacter::ControlOtherCharacterMove(FVector _GoalLocation)
 {
-	FVector GoalDirection;
+	GoalLocation = _GoalLocation;
 
-	GoalDirection = _GoalLocation - GetActorLocation();
+	GoalDirection = GoalLocation - GetActorLocation();
 
 	bool GoalDirectionNormalizeSuccess = GoalDirection.Normalize();
 
 	if (GoalDirectionNormalizeSuccess)
 	{
-		GLog->Log(FString::Printf(TEXT("GoalDirection X : %f Y : %f Z : %f"), GoalDirection.X, GoalDirection.Y, GoalDirection.Z));
-
-		AddMovementInput(GoalDirection, 1.0f);
+		if (!GetWorld()->GetTimerManager().IsTimerActive(S2CMoveTimer))
+		{
+			GetWorld()->GetTimerManager().SetTimer(S2CMoveTimer, this, &AMyCharacter::S2C_MoveUpdate, 0.02f, true, 0);
+		}
+	}
+	else
+	{
+		
 	}
 }

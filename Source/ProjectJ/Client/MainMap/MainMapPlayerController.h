@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Client/State/ClientState/ClientState.h"
 #include "MainMapPlayerController.generated.h"
 
 /**
@@ -18,6 +19,8 @@ class PROJECTJ_API AMainMapPlayerController : public APlayerController
 public:
 	AMainMapPlayerController();
 private:
+	UPROPERTY()
+		EClientState ClientCurrentState;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Cameras, Meta = (AllowPrivateAccess = true))
 		TArray <AActor*> Cameras; //캐릭터 선택, 생성 카메라들을 담아둘 배열
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Cameras, Meta = (AllowPrivateAccess = true))
@@ -46,5 +49,6 @@ public:
 	int32 GetSelectIndex();
 
 	void SetSelectIndex(int32 _SelectIndex);
+	void SetClientState(EClientState _NewClientState);
 
 };

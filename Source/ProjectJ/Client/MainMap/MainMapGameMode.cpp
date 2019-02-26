@@ -19,6 +19,8 @@
 #include "Manager/StageManager.h"
 #include "Client/MyCharacter/MyAnimInstance.h"
 #include "Client/MyCharacter/MyCharacter.h"
+#include "MainMapOtherPlayerController.h"
+#include "Client/State/ClientState/ClientState.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -130,6 +132,7 @@ void AMainMapGameMode::BeginPlay()
 		UE_LOG(LogClass, Warning, TEXT("Server connect success"));
 	}
 
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
 void AMainMapGameMode::Tick(float DeltaTime)
@@ -150,6 +153,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	ATanker* Tanker = nullptr;
 	AWarrior* Warrior = nullptr;
 	AGunner* Gunner = nullptr;
+	AMainMapOtherPlayerController* OtherCharacterController = nullptr;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -343,6 +347,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			SpawnLocation = FVector(x, y, z);
 			SpawnRotation = FRotator(rx, ry, rz);
 
+			OtherCharacterController = GetWorld()->SpawnActor<AMainMapOtherPlayerController>(OtherCharacterController->StaticClass(), SpawnLocation, FRotator::ZeroRotator, SpawnActorOption);
+
 			switch (character_info->job_code)
 			{
 			case CHARACTER_JOB::Tanker:
@@ -360,6 +366,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (OtherUserCharacter)
 			{
+				OtherCharacterController->Possess(OtherUserCharacter);
+
 				OtherUserCharacter->SetCharacterCode(character_info->code);
 
 				OtherLoginUserList.Add(OtherUserCharacter);
@@ -473,6 +481,10 @@ void AMainMapGameMode::MapLoadComplete()
 	GLog->Log(FString::Printf(TEXT("맵 로드 완료")));
 	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
 
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->SetClientState(EClientState::GameStart);
+	}
 	// 서버에 다른 유저리스트 요청
 	InGameManager::GetInstance()->InGame_Req_UserList();
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
@@ -482,8 +494,6 @@ void AMainMapGameMode::MainMapSpawnCharacterPossess(AMyCharacter* _MyCharacter)
 {
 	if (_MyCharacter)
 	{
-		auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
 		if (MainMapPlayerController)
 		{
 			MainMapPlayerController->bShowMouseCursor = false;
