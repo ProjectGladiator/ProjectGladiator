@@ -67,7 +67,7 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	OtherCharacterInfo* otherinfo = nullptr;
+	OtherCharacterInfo otherinfo;
 	PacketData* Data;
 	FVector OtherCharacterLocation; //서버로부터 받은 다른 캐릭터 위치 정보 저장용 벡터
 	AMyCharacter* OtherCharacter = nullptr; //맵에 접속해 있는 다른 캐릭터
@@ -84,28 +84,25 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 			switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
 			{
 			case PGAMEDATA_PLAYER_OTHERMOVEINFO:
-				otherinfo = new OtherCharacterInfo;
-				memset(otherinfo, 0, sizeof(OtherCharacterInfo));
-
 				GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
 
+				memset(&otherinfo, 0, sizeof(otherinfo));
 				StorageManager::GetInstance()->ChangeData(Data->data, otherinfo);
-
 				StorageManager::GetInstance()->PopData();
 
-				GLog->Log(ANSI_TO_TCHAR(otherinfo->code));
-				GLog->Log(FString::Printf(TEXT("\nX : %f Y : %f Z : %f\n"), otherinfo->xyz[0], otherinfo->xyz[1], otherinfo->xyz[2]));
-				GLog->Log(FString::Printf(TEXT("Roll : %f Pitch : %f Yaw : %f"), otherinfo->rot_xyz[0], otherinfo->rot_xyz[1], otherinfo->rot_xyz[2]));
+				GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
+				GLog->Log(FString::Printf(TEXT("\nX : %f Y : %f Z : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
+				GLog->Log(FString::Printf(TEXT("Roll : %f Pitch : %f Yaw : %f"), otherinfo.rot_xyz[0], otherinfo.rot_xyz[1], otherinfo.rot_xyz[2]));
 
 				if (MainMapGameMode)
 				{
-					OtherCharacter = MainMapGameMode->GetLoginUser(otherinfo->code);
+					OtherCharacter = MainMapGameMode->GetLoginUser(otherinfo.code);
 
 					if (OtherCharacter)
 					{
-						OtherCharacterLocation.X = otherinfo->xyz[0];
-						OtherCharacterLocation.Y = otherinfo->xyz[1];
-						OtherCharacterLocation.Z = otherinfo->xyz[2];
+						OtherCharacterLocation.X = otherinfo.xyz[0];
+						OtherCharacterLocation.Y = otherinfo.xyz[1];
+						OtherCharacterLocation.Z = otherinfo.xyz[2];
 
 						OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation);
 					}
@@ -119,7 +116,6 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 					GLog->Log(FString::Printf(TEXT("메인맵 게임모드가 null")));
 				}
 
-				delete otherinfo;
 				break;
 			}
 		}
