@@ -328,7 +328,7 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 
 	switch (protocol)
 	{
-	case SEVER_INGAME_MOVE_RESULT:
+	case SERVER_INGAME_MOVE_RESULT:
 		check = InGame_Recv_MoveResult(buf);
 		if (check)	// 이동 성공
 		{
@@ -339,15 +339,15 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 			result = RT_INGAME_MOVE;
 		}
 		break;
-	case SEVER_INGAME_MOVE_ORDER:
+	case SERVER_INGAME_MOVE_ORDER:
 		InGame_Recv_OtherUserMoveInfo(buf, PGAMEDATA_PLAYER_OTHERMOVEORDER);
 		result = RT_INGAME_OTHERPLAYER_INFO;
 		break;
-	case SEVER_INGAME_MOVE_OTHERPLAYERINFO:
+	case SERVER_INGAME_MOVE_OTHERPLAYERINFO:
 		InGame_Recv_OtherUserMoveInfo(buf, PGAMEDATA_PLAYER_OTHERMOVEINFO);
 		result = RT_INGAME_OTHERPLAYER_INFO;
 		break;
-	case SEVER_INGAME_OTHERPLAYERLIST_RESULT:
+	case SERVER_INGAME_OTHERPLAYERLIST_RESULT:
 		check = InGame_Recv_UserList(buf);
 		if (check)
 		{
