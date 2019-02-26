@@ -223,6 +223,64 @@ bool InGameManager::InGame_Recv_UserList(char * _buf)
 
 	return true;
 }
+// 접속한 다른유저 정보
+void InGameManager::InGame_Recv_ConnectUserInfo(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	char code[CHARACTERCODESIZE];
+	char nick[NICKNAMESIZE];
+	char* ptr_data = data;
+	int size = 0;
+	int len;
+	float xyz[3];
+	float rot_xyz[3];
+
+	// 코드 사이즈
+	memcpy(&len, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &len, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 코드
+	memcpy(code, ptr_buf, len);
+	ptr_buf += len;
+	size += len;
+	memcpy(ptr_data, code, len);
+	ptr_data += len;
+
+	// 닉네임 사이즈
+	memcpy(&len, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &len, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 닉네임
+	memcpy(nick, ptr_buf, len);
+	ptr_buf += len;
+	size += len;
+	memcpy(ptr_data, nick, len);
+	ptr_data += len;
+
+	// position x, y, z
+	memcpy(xyz, ptr_buf, sizeof(float) * 3);
+	ptr_buf += sizeof(float) * 3;
+	size += sizeof(float) * 3;
+	memcpy(ptr_data, xyz, sizeof(float) * 3);
+	ptr_data += sizeof(float) * 3;
+
+	// rotation x, y, z
+	memcpy(rot_xyz, ptr_buf, sizeof(float) * 3);
+	ptr_buf += sizeof(float) * 3;
+	size += sizeof(float) * 3;
+	memcpy(ptr_data, rot_xyz, sizeof(float) * 3);
+	ptr_data += sizeof(float) * 3;
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_CONNECTINFO, data, size);
+}
 
 // 플레이어 이동 결과 
 bool InGameManager::InGame_Recv_MoveResult(char * _buf)
@@ -328,6 +386,10 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 
 	switch (protocol)
 	{
+	case SERVER_INGAME_OTHERPLAYER_CONNECT:
+		InGame_Recv_ConnectUserInfo(buf);
+		result = RT_INGAME_OTHERPLAYER_INFO;
+		break;
 	case SERVER_INGAME_MOVE_RESULT:
 		check = InGame_Recv_MoveResult(buf);
 		if (check)	// 이동 성공

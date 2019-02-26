@@ -13,6 +13,7 @@ private:
 	~InGameManager();
 
 	bool InGame_Recv_UserList(char* _buf);				// 현재 접속중인 유저리스트 받음
+	void InGame_Recv_ConnectUserInfo(char* _buf);				// 접속한 다른 유저정보 받음
 	bool InGame_Recv_MoveResult(char* _buf);			// 이동 결과
 	void InGame_Recv_OtherUserMoveInfo(char* _buf, int _protocol);		// 다른 유저 이동 정보
 public:
