@@ -233,7 +233,8 @@ void InGameManager::InGame_Recv_ConnectUserInfo(char * _buf)
 	char nick[NICKNAMESIZE];
 	char* ptr_data = data;
 	int size = 0;
-	int len;
+	int len = 0;
+	int jobcode = 0;
 	float xyz[3];
 	float rot_xyz[3];
 
@@ -250,6 +251,13 @@ void InGameManager::InGame_Recv_ConnectUserInfo(char * _buf)
 	size += len;
 	memcpy(ptr_data, code, len);
 	ptr_data += len;
+
+	// 직업코드
+	memcpy(&jobcode, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &jobcode, sizeof(int));
+	ptr_data += sizeof(int);
 
 	// 닉네임 사이즈
 	memcpy(&len, ptr_buf, sizeof(int));
@@ -279,7 +287,7 @@ void InGameManager::InGame_Recv_ConnectUserInfo(char * _buf)
 	memcpy(ptr_data, rot_xyz, sizeof(float) * 3);
 	ptr_data += sizeof(float) * 3;
 
-	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_CONNECTINFO, data, size);
+	StorageManager::GetInstance()->PushData(PGAMEDATA_USERLIST_USER, data, size);
 }
 
 // 플레이어 이동 결과 
