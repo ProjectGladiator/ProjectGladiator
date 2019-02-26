@@ -17,6 +17,8 @@
 AMainMapPlayerController::AMainMapPlayerController()
 {
 	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	ClientCurrentState = EClientState::Title;
 }
 
 void AMainMapPlayerController::BeginPlay()
@@ -70,49 +72,58 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 	FVector OtherCharacterLocation; //서버로부터 받은 다른 캐릭터 위치 정보 저장용 벡터
 	AMyCharacter* OtherCharacter = nullptr; //맵에 접속해 있는 다른 캐릭터
 
-	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
+	switch (ClientCurrentState)
 	{
-		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
+	case EClientState::Title:
+		break;
+	case EClientState::CharacterSelectCreate:
+		break;
+	case EClientState::GameStart:
+		if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 		{
-		case PGAMEDATA_PLAYER_OTHERMOVEINFO:
-			otherinfo = new OtherCharacterInfo;
-			memset(otherinfo, 0, sizeof(OtherCharacterInfo));
-
-			GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
-
-			StorageManager::GetInstance()->ChangeData(Data->data, otherinfo);
-
-			StorageManager::GetInstance()->PopData();
-
-			GLog->Log(ANSI_TO_TCHAR(otherinfo->code));
-			GLog->Log(FString::Printf(TEXT("\nX : %f Y : %f Z : %f\n"), otherinfo->xyz[0], otherinfo->xyz[1], otherinfo->xyz[2]));
-			GLog->Log(FString::Printf(TEXT("Roll : %f Pitch : %f Yaw : %f"), otherinfo->rot_xyz[0], otherinfo->rot_xyz[1], otherinfo->rot_xyz[2]));
-
-			if (MainMapGameMode)
+			switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
 			{
-				OtherCharacter = MainMapGameMode->GetLoginUser(otherinfo->code);
+			case PGAMEDATA_PLAYER_OTHERMOVEINFO:
+				otherinfo = new OtherCharacterInfo;
+				memset(otherinfo, 0, sizeof(OtherCharacterInfo));
 
-				if (OtherCharacter)
+				GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
+
+				StorageManager::GetInstance()->ChangeData(Data->data, otherinfo);
+
+				StorageManager::GetInstance()->PopData();
+
+				GLog->Log(ANSI_TO_TCHAR(otherinfo->code));
+				GLog->Log(FString::Printf(TEXT("\nX : %f Y : %f Z : %f\n"), otherinfo->xyz[0], otherinfo->xyz[1], otherinfo->xyz[2]));
+				GLog->Log(FString::Printf(TEXT("Roll : %f Pitch : %f Yaw : %f"), otherinfo->rot_xyz[0], otherinfo->rot_xyz[1], otherinfo->rot_xyz[2]));
+
+				if (MainMapGameMode)
 				{
-					OtherCharacterLocation.X = otherinfo->xyz[0];
-					OtherCharacterLocation.Y = otherinfo->xyz[1];
-					OtherCharacterLocation.Z = otherinfo->xyz[2];
+					OtherCharacter = MainMapGameMode->GetLoginUser(otherinfo->code);
 
-					OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation);
+					if (OtherCharacter)
+					{
+						OtherCharacterLocation.X = otherinfo->xyz[0];
+						OtherCharacterLocation.Y = otherinfo->xyz[1];
+						OtherCharacterLocation.Z = otherinfo->xyz[2];
+
+						OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation);
+					}
+					else
+					{
+						GLog->Log(FString::Printf(TEXT("움직이고 있는 다른 캐릭터를 못 찾음")));
+					}
 				}
 				else
 				{
-					GLog->Log(FString::Printf(TEXT("움직이고 있는 다른 캐릭터를 못 찾음")));
+					GLog->Log(FString::Printf(TEXT("메인맵 게임모드가 null")));
 				}
-			}
-			else
-			{
-				GLog->Log(FString::Printf(TEXT("메인맵 게임모드가 null")));
-			}
 
-			delete otherinfo;
-			break;
+				delete otherinfo;
+				break;
+			}
 		}
+		break;
 	}
 }
 
@@ -165,4 +176,7 @@ void AMainMapPlayerController::SetSelectIndex(int32 _SelectIndex)
 	Select_index = _SelectIndex;
 }
 
-
+void AMainMapPlayerController::SetClientState(EClientState _NewClientState)
+{
+	ClientCurrentState = _NewClientState;
+}
