@@ -105,9 +105,9 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 						OtherCharacterLocation.Y = otherinfo.xyz[1];
 						OtherCharacterLocation.Z = otherinfo.xyz[2];
 
-						OtherCharacterRotation.Roll = otherinfo->rot_xyz[0];
-						OtherCharacterRotation.Pitch = otherinfo->rot_xyz[1];
-						OtherCharacterRotation.Yaw = otherinfo->rot_xyz[2];
+						OtherCharacterRotation.Roll = otherinfo.rot_xyz[0];
+						OtherCharacterRotation.Pitch = otherinfo.rot_xyz[1];
+						OtherCharacterRotation.Yaw = otherinfo.rot_xyz[2];
 
 						OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation,OtherCharacterRotation);
 					}
