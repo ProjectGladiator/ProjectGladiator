@@ -13,6 +13,8 @@
 //서버 헤더
 #include "NetWork/StorageManager.h"
 #include "NetWork/StorageDataType.h"
+#include "NetWork/InGameManager.h"
+#include "NetWork/NetworkManager.h"
 
 AMainMapPlayerController::AMainMapPlayerController()
 {
@@ -109,7 +111,7 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 						OtherCharacterRotation.Pitch = otherinfo.rot_xyz[1];
 						OtherCharacterRotation.Yaw = otherinfo.rot_xyz[2];
 
-						OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation,OtherCharacterRotation);
+						ControlOtherCharacterMove.Broadcast(OtherCharacterLocation, OtherCharacterRotation);
 					}
 					else
 					{
@@ -180,4 +182,10 @@ void AMainMapPlayerController::SetSelectIndex(int32 _SelectIndex)
 void AMainMapPlayerController::SetClientState(EClientState _NewClientState)
 {
 	ClientCurrentState = _NewClientState;
+}
+
+void AMainMapPlayerController::C2SMoveConfirm(FVector & Location, FRotator & Rotation)
+{
+	InGameManager::GetInstance()->InGame_Req_Move(Location.X, Location.Y, Location.Z, Rotation.Roll, Rotation.Pitch, Rotation.Yaw);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }

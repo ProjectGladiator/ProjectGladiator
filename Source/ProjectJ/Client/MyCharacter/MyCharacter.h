@@ -12,6 +12,9 @@ UCLASS()
 class PROJECTJ_API AMyCharacter : public ACharacter
 {
 	GENERATED_BODY()
+public:
+	// Sets default values for this character's properties
+	AMyCharacter(); //생성자
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		float MaxHP; //최대 HP값
@@ -45,9 +48,6 @@ private:
 		FVector GoalLocation;
 	UPROPERTY()
 		FRotator GoalRotator;
-public:
-	// Sets default values for this character's properties
-	AMyCharacter(); //생성자
 protected:
 	UPROPERTY()
 		bool IsRightClick; //마우스 오른쪽 버튼 눌럿는지 안눌럿는지
@@ -134,13 +134,14 @@ public:
 	bool GetIsClick();
 	void SetIsClick(bool _IsClick);
 
+	char* GetCharacterCode();
+	void SetCharacterCode(char* _NewCharacterCode);
+
 	UFUNCTION()
 		void C2S_MoveConfirm();
 	UFUNCTION()
 		void S2C_MoveUpdate();
 
-	char* GetCharacterCode();
-	void SetCharacterCode(char* _NewCharacterCode);
-
 	void ControlOtherCharacterMove(FVector& _GoalLocation,FRotator& _GoalRotator);
+
 };

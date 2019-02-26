@@ -18,12 +18,10 @@
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
 #include "Client/MainMap/MainMapPlayerController.h"
 #include "TimerManager.h"
-#include "Client/Monster/MonsterAIController.h"
+
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
-#include "NetWork/InGameManager.h"
-#include "NetWork/NetworkManager.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -73,6 +71,12 @@ void AMyCharacter::BeginPlay()
 	IsClick = false;
 
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->ControlOtherCharacterMove.AddDynamic(this, &AMyCharacter::ControlOtherCharacterMove);
+	}
+
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 
 	ForwardBackWardMoveFlag = false;
@@ -385,16 +389,12 @@ void AMyCharacter::SetIsClick(bool _IsClick)
 
 void AMyCharacter::C2S_MoveConfirm()
 {
-	float X = GetActorLocation().X;
-	float Y = GetActorLocation().Y;
-	float Z = GetActorLocation().Z;
-	float Roll = GetActorRotation().Roll;
-	float Pitch = GetActorRotation().Pitch;
-	float Yaw = GetActorRotation().Yaw;
+	FVector Location = GetActorLocation();
+	FRotator Rotation = GetActorRotation();
 
 	GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.3s")));
-	InGameManager::GetInstance()->InGame_Req_Move(X, Y, Z, Roll, Pitch, Yaw);
-	NetworkClient_main::NetworkManager::GetInstance()->Send();
+	
+	MainMapPlayerController->C2SMoveConfirm(Location, Rotation);
 }
 
 void AMyCharacter::S2C_MoveUpdate()
@@ -438,9 +438,5 @@ void AMyCharacter::ControlOtherCharacterMove(FVector& _GoalLocation, FRotator& _
 		{
 			GetWorld()->GetTimerManager().SetTimer(S2CMoveTimer, this, &AMyCharacter::S2C_MoveUpdate, 0.01f, true, 0);
 		}
-	}
-	else
-	{
-		
 	}
 }

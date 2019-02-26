@@ -290,7 +290,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			SpawnLocation = FVector(x, y, z);
 
-			SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 			switch (character_info->job_code)
 			{
@@ -313,7 +313,12 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			
 				MyCharacter->SetCharacterCode(character_info->code);
 
-				MainMapSpawnCharacterPossess(MyCharacter);
+				if (MainMapPlayerController)
+				{
+					MainMapPlayerController->bShowMouseCursor = false;
+					MainMapPlayerController->SetInputMode(FInputModeGameOnly());
+					MainMapPlayerController->Possess(MyCharacter);
+				}				
 			}
 			else
 			{
@@ -342,7 +347,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			x = character_info->xyz[0]; y = character_info->xyz[1]; z = character_info->xyz[2];
 			rx = character_info->rot_xyz[0]; ry = character_info->rot_xyz[1]; rz = character_info->rot_xyz[2];
 
-			SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 			SpawnLocation = FVector(x, y, z);
 			SpawnRotation = FRotator(rx, ry, rz);
@@ -366,9 +371,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (OtherUserCharacter)
 			{
-				OtherCharacterController->Possess(OtherUserCharacter);
-
 				OtherUserCharacter->SetCharacterCode(character_info->code);
+
+				OtherCharacterController->Possess(OtherUserCharacter);				
 
 				OtherLoginUserList.Add(OtherUserCharacter);
 			}
@@ -488,29 +493,6 @@ void AMainMapGameMode::MapLoadComplete()
 	// 서버에 다른 유저리스트 요청
 	InGameManager::GetInstance()->InGame_Req_UserList();
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
-}
-
-void AMainMapGameMode::MainMapSpawnCharacterPossess(AMyCharacter* _MyCharacter)
-{
-	if (_MyCharacter)
-	{
-		if (MainMapPlayerController)
-		{
-			MainMapPlayerController->bShowMouseCursor = false;
-			MainMapPlayerController->SetInputMode(FInputModeGameOnly());
-			/*MainMapPlayerController->bEnableClickEvents = false;
-			MainMapPlayerController->bEnableMouseOverEvents = false;*/
-			MainMapPlayerController->Possess(_MyCharacter);
-		}
-		else
-		{
-			GLog->Log(FString::Printf(TEXT("메인 스테이지 월드에 메인스테이지 플레이어컨트롤러가 스폰 안됨")));
-		}
-	}
-	else
-	{
-		GLog->Log(FString::Printf(TEXT("메인 스테이지 월드에 캐릭터가 스폰 안됨")));
-	}
 }
 
 void AMainMapGameMode::SelectCharacterSpawn(CHARACTER_JOB _SelectJob)

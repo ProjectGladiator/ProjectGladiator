@@ -55,9 +55,7 @@ public:
 	void LoadingWidgetViewScreen(); //로딩 위젯 화면에 붙이기
 	
 	UFUNCTION()
-		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수
-	void MainMapSpawnCharacterPossess(class AMyCharacter* _MyCharacter); //게임 시작시 캐릭터 빙의 함수
-
+		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수	
 	void SelectCharacterSpawn(CHARACTER_JOB _SelectJob);
 	void SelectCharacterDestroy();
 

@@ -7,6 +7,8 @@
 #include "Client/State/ClientState/ClientState.h"
 #include "MainMapPlayerController.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FControlOtherCharacterMoveDelegate, FVector&, Location, FRotator&, Rotation);
+
 /**
  *
  */
@@ -34,6 +36,8 @@ private:
 	int32 JobCode;
 	int32 Select_index = -1;
 public:
+	FControlOtherCharacterMoveDelegate ControlOtherCharacterMove;
+
 	CharacterSlot * CharacterSlotInfo;
 
 	virtual void BeginPlay() override;
@@ -51,4 +55,5 @@ public:
 	void SetSelectIndex(int32 _SelectIndex);
 	void SetClientState(EClientState _NewClientState);
 
+	void C2SMoveConfirm(FVector& Location, FRotator& Rotation);
 };
