@@ -9,8 +9,6 @@
 #include "Animation/AnimBlueprint.h" //애니메이션블루프린트 헤더파일
 #include "Engine/World.h"
 #include "kismet/GameplayStatics.h"
-#include "Client/ChracterCreateSelect/ChracterCreateSelectPC.h"
-#include "Client/Title/TitlePlayerController.h"
 #include "Warrior/Warrior.h"
 #include "Tanker/Tanker.h"
 #include "Gunner/Gunner.h"

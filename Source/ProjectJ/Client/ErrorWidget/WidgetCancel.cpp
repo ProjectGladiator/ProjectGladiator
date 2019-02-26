@@ -4,8 +4,6 @@
 //클라 헤더
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
-#include "Client/Title/TitlePlayerController.h"
-#include "Kismet/GameplayStatics.h"
 
 void UWidgetCancel::NativeConstruct()
 {
@@ -39,8 +37,6 @@ void UWidgetCancel::NativeConstruct()
 		CloseButton->OnClicked.AddDynamic(this, &UWidgetCancel::Close);
 	}
 
-	//ATitlePlayerController를 얻는다.
-	PC = Cast<ATitlePlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
 void UWidgetCancel::Retry()

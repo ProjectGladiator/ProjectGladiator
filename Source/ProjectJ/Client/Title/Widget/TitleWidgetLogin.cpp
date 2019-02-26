@@ -4,13 +4,9 @@
 //클라 헤더
 #include "Components/EditableTextBox.h"
 #include "Components/Button.h"
-#include "Client/Title/TitlePlayerController.h"
-#include "Client/Title/TitleGameMode.h"
 #include "Client/MainMap/MainMapGameMode.h"
 #include "Client/MainMap/MainMapPlayerController.h"
 #include "Kismet/GameplayStatics.h"
-#include "TimerManager.h"
-#include "Engine/World.h"
 
 //서버 헤더
 #include "NetWork/NetworkManager.h"

@@ -22,7 +22,6 @@ private:
 		class UButton* CancelButton; //취소 버튼
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Data", Meta = (AllowPrivateAccess = true))
 		class UButton* CloseButton; //닫기 버튼
-	class ATitlePlayerController* PC = nullptr; 
 public:
 	virtual void NativeConstruct() override;
 

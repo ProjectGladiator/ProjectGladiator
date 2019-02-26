@@ -16,10 +16,10 @@
 #include "Client/MyCharacter/Warrior/Warrior.h"
 #include "Client/MyCharacter/Gunner/Gunner.h"
 #include "MainMapPlayerController.h"
+#include "MainMapOtherPlayerController.h"
 #include "Manager/StageManager.h"
 #include "Client/MyCharacter/MyAnimInstance.h"
 #include "Client/MyCharacter/MyCharacter.h"
-#include "MainMapOtherPlayerController.h"
 #include "Client/State/ClientState/ClientState.h"
 
 //서버 헤더
