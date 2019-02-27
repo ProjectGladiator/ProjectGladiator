@@ -26,7 +26,7 @@
 AMyCharacter::AMyCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	bUseControllerRotationYaw = true;
 
@@ -73,13 +73,16 @@ void AMyCharacter::BeginPlay()
 
 	if (MainMapPlayerController)
 	{
-		MainMapPlayerController->ControlOtherCharacterMove.AddDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterMove);
+		MainMapPlayerController->ControlOtherCharacterMove.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterMove);
+		MainMapPlayerController->ControlOtherCharacerRotate.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterRotate);
 	}
 
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 
 	ForwardBackWardMoveFlag = false;
 	LeftRightMoveFlag = false;
+	LookUpFlag = false;
+	TurnFlag = false;
 }
 
 void AMyCharacter::ClickedReactionMontagePlay()
@@ -91,8 +94,7 @@ void AMyCharacter::ClickedReactionMontagePlay()
 void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
-	//GLog->Log(FString::Printf(TEXT("%d %d"), ForwardBackWardMoveFlag, LeftRightMoveFlag)); 
+
 }
 
 // Called to bind functionality to input
@@ -116,7 +118,6 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AMyCharacter::JumpStart);
 	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &AMyCharacter::LeftClick);
-
 }
 
 void AMyCharacter::MoveForward(float Value)
@@ -220,14 +221,29 @@ void AMyCharacter::MoveRight(float Value)
 	LeftRightPreviousValue = LeftRightCurrentValue;
 }
 
-
-
 void AMyCharacter::LookUp(float Value)
 {
 	if (Value != 0)
 	{
-		//GLog->Log(FString::Printf(TEXT("LookUp")));
+		bool C2SRotateTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_RotateUpdateTimer);
+
+		if (!C2SRotateTimerActive)
+		{
+			LookUpFlag = true;
+
+			GetWorld()->GetTimerManager().SetTimer(C2S_RotateUpdateTimer, this, &AMyCharacter::C2S_RotateConfirm, 0.3f, true, 0);
+		}
+
 		AddControllerPitchInput(Value);
+	}
+	else
+	{
+		LookUpFlag = false;
+
+		if (!TurnFlag)
+		{
+			GetWorld()->GetTimerManager().ClearTimer(C2S_RotateUpdateTimer);
+		}
 	}
 }
 
@@ -235,8 +251,25 @@ void AMyCharacter::Turn(float Value)
 {
 	if (Value != 0)
 	{
-		//GLog->Log(FString::Printf(TEXT("Turn")));
+		bool C2SRotateTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_RotateUpdateTimer);
+
+		if (!C2SRotateTimerActive)
+		{
+			TurnFlag = true;
+
+			GetWorld()->GetTimerManager().SetTimer(C2S_RotateUpdateTimer, this, &AMyCharacter::C2S_RotateConfirm, 0.3f, true, 0);
+		}
+
 		AddControllerYawInput(Value);
+	}
+	else
+	{
+		TurnFlag = false;
+
+		if (!LookUpFlag)
+		{
+			GetWorld()->GetTimerManager().ClearTimer(C2S_RotateUpdateTimer);
+		}
 	}
 }
 
@@ -260,7 +293,6 @@ void AMyCharacter::ViewReduce()
 
 void AMyCharacter::RightClickOn()
 {
-	GLog->Log(FString::Printf(TEXT("오른쪽 마우스 클리익")));
 	IsRightClick = true;
 }
 
@@ -430,4 +462,18 @@ void AMyCharacter::S2C_ControlOtherCharacterMove(FVector& _GoalLocation)
 			GetWorld()->GetTimerManager().SetTimer(S2C_MoveTimer, this, &AMyCharacter::S2C_MoveUpdate, 0.01f, true, 0);
 		}
 	}
+}
+
+void AMyCharacter::C2S_RotateConfirm()
+{
+	FRotator Rotation = GetActorRotation();
+
+	GLog->Log(FString::Printf(TEXT("C2S_RotateConfirm 함수 호출 0.3s")));
+
+	MainMapPlayerController->C2S_RotationcConfirm(Rotation);
+}
+
+void AMyCharacter::S2C_ControlOtherCharacterRotate(FRotator & _GoalRotator)
+{
+	GoalRotator = _GoalRotator;
 }

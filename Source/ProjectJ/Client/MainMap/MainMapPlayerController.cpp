@@ -96,8 +96,6 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 				GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
 
 				GLog->Log(FString::Printf(TEXT("\nX : %f Y : %f Z : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
-				//GLog->Log(FString::Printf(TEXT("Roll : %f Pitch : %f Yaw : %f"), otherinfo.rot_xyz[0], otherinfo.rot_xyz[1], otherinfo.rot_xyz[2]));
-
 				if (MainMapGameMode)
 				{
 					OtherCharacter = MainMapGameMode->GetLoginUser(otherinfo.code);
@@ -108,9 +106,8 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 						OtherCharacterLocation.Y = otherinfo.xyz[1];
 						OtherCharacterLocation.Z = otherinfo.xyz[2];
 
-						//ControlOtherCharacterMove.Broadcast(OtherCharacterLocation, OtherCharacterRotation);
-
-						OtherCharacter->S2C_ControlOtherCharacterMove(OtherCharacterLocation);
+						ControlOtherCharacterMove.Execute(OtherCharacterLocation);
+						//OtherCharacter->S2C_ControlOtherCharacterMove(OtherCharacterLocation);
 					}
 					else
 					{
@@ -122,6 +119,43 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 					GLog->Log(FString::Printf(TEXT("메인맵 게임모드가 null")));
 				}
 
+				OtherCharacter = nullptr;
+				break;
+			case PGAMEDATA_PLAYER_OTHERROTATION:
+				GLog->Log(FString::Printf(TEXT("다른 캐릭터 회전 정보 들어옴")));
+
+				memset(&otherinfo, 0, sizeof(otherinfo));
+
+				StorageManager::GetInstance()->ChangeData(Data->data, otherinfo);
+				StorageManager::GetInstance()->PopData();
+
+				GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
+
+				GLog->Log(FString::Printf(TEXT("\nRoll : %f Pitch : %f Yaw : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
+
+				if (MainMapGameMode)
+				{
+					OtherCharacter = MainMapGameMode->GetLoginUser(otherinfo.code);
+
+					if (OtherCharacter)
+					{
+						OtherCharacterRotation.Roll = otherinfo.xyz[0];
+						OtherCharacterRotation.Pitch = otherinfo.xyz[1];
+						OtherCharacterRotation.Yaw = otherinfo.xyz[2];
+
+						ControlOtherCharacerRotate.Execute(OtherCharacterRotation);
+					}
+					else
+					{
+						GLog->Log(FString::Printf(TEXT("회전하고 있는 다른 캐릭터를 못 찾음")));
+					}
+				}
+				else
+				{
+					GLog->Log(FString::Printf(TEXT("메인맵 게임모드가 null")));
+				}
+
+				OtherCharacter = nullptr;
 				break;
 			}
 		}

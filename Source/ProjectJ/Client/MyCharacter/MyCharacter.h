@@ -24,6 +24,7 @@ private:
 		int32 Level; //현재 레벨
 	UPROPERTY()
 		bool IsClick;
+
 	UPROPERTY()
 		float ForwadBackwardCurrentValue;
 	UPROPERTY()
@@ -36,6 +37,12 @@ private:
 		bool ForwardBackWardMoveFlag;
 	UPROPERTY()
 		bool LeftRightMoveFlag;
+
+	UPROPERTY()
+		bool LookUpFlag;
+	UPROPERTY()
+		bool TurnFlag;
+
 	char CharacterCode[30];
 
 	UPROPERTY()
@@ -51,8 +58,6 @@ private:
 		FTimerHandle S2C_MoveTimer;
 	UPROPERTY()
 		FTimerHandle C2S_RotateUpdateTimer;
-	UPROPERTY()
-		FTimerHandle S2C_RotateTimer;
 protected:
 	UPROPERTY()
 		bool IsRightClick; //마우스 오른쪽 버튼 눌럿는지 안눌럿는지
@@ -76,8 +81,6 @@ public:
 		class UCameraComponent* Camera;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class UInventory* Inventory;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		FRotator CurrentRotator;
 	UPROPERTY()
 		class AMainMapPlayerController* MainMapPlayerController;
 
@@ -142,12 +145,16 @@ public:
 	char* GetCharacterCode();
 	void SetCharacterCode(char* _NewCharacterCode);
 
-	UFUNCTION()
-		void C2S_MoveConfirm();
-	UFUNCTION()
-		void S2C_MoveUpdate();
+	void C2S_MoveConfirm();
+	
+	void S2C_MoveUpdate();
 
 	UFUNCTION()
 		void S2C_ControlOtherCharacterMove(FVector& _GoalLocation);
+
+	void C2S_RotateConfirm();
+
+	UFUNCTION()
+		void S2C_ControlOtherCharacterRotate(FRotator& _GoalRotator);
 
 };
