@@ -56,10 +56,10 @@ public:
 	void ChangeData(void* data, int& _count);
 	void ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot);
 	void ChangeData(void* data, CharacterInfo*& _charinfo);
-	void ChangeData(void* data, bool& _result, float*& _posxyz, float*& _rotxyz);
+	void ChangeData(void* data, bool& _result, float*& _posxyz);
 	void ChangeData(void* data, float*& _posxyz, float*& _rotxyz);
-	void ChangeData(void* data, char*& _code, float*& _posxyz, float*& _rotxyz);
-	void ChangeData(void* data,OtherCharacterInfo& _otherinfo);
+	void ChangeData(void* data, char*& _code, float*& _pos_rot_xyz);
+	void ChangeData(void* data, OtherCharacterInfo& _otherinfo);
 	bool PopData();
 };
 

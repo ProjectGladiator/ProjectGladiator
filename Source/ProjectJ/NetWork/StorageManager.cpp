@@ -215,7 +215,7 @@ void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
 }
 
 // 이동정보 결과용
-void StorageManager::ChangeData(void * data, bool& _result, float*& _posxyz, float*& _rotxyz)
+void StorageManager::ChangeData(void * data, bool& _result, float*& _posxyz)
 {
 	char* ptr = (char*)data;
 
@@ -224,10 +224,8 @@ void StorageManager::ChangeData(void * data, bool& _result, float*& _posxyz, flo
 
 	memcpy(_posxyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
-
-	memcpy(_rotxyz, ptr, sizeof(float) * 3);
-	ptr += sizeof(float) * 3;
 }
+
 // 플레이어 이동정보 결과용
 void StorageManager::ChangeData(void * data, float *& _posxyz, float *& _rotxyz)
 {
@@ -239,8 +237,9 @@ void StorageManager::ChangeData(void * data, float *& _posxyz, float *& _rotxyz)
 	memcpy(_rotxyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
 }
+
 // 다른 플레이어 이동정보 결과용
-void StorageManager::ChangeData(void * data, char *& _code, float *& _posxyz, float *& _rotxyz)
+void StorageManager::ChangeData(void * data, char *& _code, float *& _pos_rot_xyz)
 {
 	int len = 0;
 	char* ptr = (char*)data;
@@ -251,10 +250,7 @@ void StorageManager::ChangeData(void * data, char *& _code, float *& _posxyz, fl
 	memcpy(_code, ptr, len);
 	ptr += len;
 
-	memcpy(_posxyz, ptr, sizeof(float) * 3);
-	ptr += sizeof(float) * 3;
-
-	memcpy(_rotxyz, ptr, sizeof(float) * 3);
+	memcpy(_pos_rot_xyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
 }
 
@@ -272,11 +268,7 @@ void StorageManager::ChangeData(void * data, OtherCharacterInfo& _otherinfo)
 
 	memcpy(_otherinfo.xyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
-
-	memcpy(_otherinfo.rot_xyz, ptr, sizeof(float) * 3);
-	ptr += sizeof(float) * 3;
 }
-
 
 // Front 삭제
 bool StorageManager::PopData()
