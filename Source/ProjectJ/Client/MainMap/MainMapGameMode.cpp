@@ -375,7 +375,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 				OtherCharacterController->Possess(OtherUserCharacter);				
 
-				OtherLoginUserList.Add(OtherUserCharacter);
+				AddLoginUser(OtherUserCharacter);
 			}
 
 			// 필요없어진 캐릭터정보 구조체 해제
@@ -541,9 +541,24 @@ void AMainMapGameMode::SelectCharacterDestroy()
 	}
 }
 
+void AMainMapGameMode::AddLoginUser(AMyCharacter * _OtherCharacter)
+{
+	if (_OtherCharacter)
+	{
+		OtherLoginUserList.Add(_OtherCharacter);
+	}	
+}
+
+void AMainMapGameMode::DeleteLoginUser(AMyCharacter * _OtherCharacter)
+{
+	if (_OtherCharacter)
+	{
+		OtherLoginUserList.RemoveSingle(_OtherCharacter);
+	}
+}
+
 AMyCharacter* AMainMapGameMode::GetLoginUser(char* _OtherCharacterCode)
 {
-	
 	for (int i = 0; i < OtherLoginUserList.Num(); i++)
 	{
 		if (strcmp(OtherLoginUserList[i]->GetCharacterCode(), _OtherCharacterCode) == 0)
@@ -553,4 +568,20 @@ AMyCharacter* AMainMapGameMode::GetLoginUser(char* _OtherCharacterCode)
 	}
 
 	return nullptr;
+}
+
+void AMainMapGameMode::LoginUserDestory(char * _OtherCharacterCode)
+{
+	AMyCharacter* DestoryOtherCharacter = GetLoginUser(_OtherCharacterCode);
+
+	if (DestoryOtherCharacter)
+	{
+		DeleteLoginUser(DestoryOtherCharacter);
+		 
+		DestoryOtherCharacter->Destroy();
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("삭제 하려는 캐릭터가 존재하지 않음")));
+	}
 }

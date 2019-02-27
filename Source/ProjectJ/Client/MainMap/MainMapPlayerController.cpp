@@ -106,8 +106,8 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 						OtherCharacterLocation.Y = otherinfo.xyz[1];
 						OtherCharacterLocation.Z = otherinfo.xyz[2];
 
-						ControlOtherCharacterMove.Execute(OtherCharacterLocation);
-						//OtherCharacter->S2C_ControlOtherCharacterMove(OtherCharacterLocation);
+						//ControlOtherCharacterMove.Execute(OtherCharacterLocation);
+						OtherCharacter->S2C_ControlOtherCharacterMove(OtherCharacterLocation);
 					}
 					else
 					{
@@ -143,7 +143,8 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 						OtherCharacterRotation.Pitch = otherinfo.xyz[1];
 						OtherCharacterRotation.Yaw = otherinfo.xyz[2];
 
-						ControlOtherCharacerRotate.Execute(OtherCharacterRotation);
+						//ControlOtherCharacerRotate.Execute(OtherCharacterRotation);
+						OtherCharacter->S2C_ControlOtherCharacterRotate(OtherCharacterRotation);
 					}
 					else
 					{
