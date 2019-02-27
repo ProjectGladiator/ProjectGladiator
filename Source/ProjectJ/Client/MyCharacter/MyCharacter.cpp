@@ -226,7 +226,7 @@ void AMyCharacter::LookUp(float Value)
 {
 	if (Value != 0)
 	{
-		GLog->Log(FString::Printf(TEXT("LookUp")));
+		//GLog->Log(FString::Printf(TEXT("LookUp")));
 		AddControllerPitchInput(Value);
 	}
 }
@@ -235,7 +235,7 @@ void AMyCharacter::Turn(float Value)
 {
 	if (Value != 0)
 	{
-		GLog->Log(FString::Printf(TEXT("Turn")));
+		//GLog->Log(FString::Printf(TEXT("Turn")));
 		AddControllerYawInput(Value);
 	}
 }
