@@ -9,6 +9,7 @@
 #include "Animation/AnimBlueprint.h" //애니메이션블루프린트 헤더파일
 #include "Engine/World.h"
 #include "kismet/GameplayStatics.h"
+#include "kismet/KismetMathLibrary.h"
 #include "Warrior/Warrior.h"
 #include "Tanker/Tanker.h"
 #include "Gunner/Gunner.h"
@@ -72,7 +73,7 @@ void AMyCharacter::BeginPlay()
 
 	if (MainMapPlayerController)
 	{
-		MainMapPlayerController->ControlOtherCharacterMove.AddDynamic(this, &AMyCharacter::ControlOtherCharacterMove);
+		MainMapPlayerController->ControlOtherCharacterMove.AddDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterMove);
 	}
 
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
@@ -128,11 +129,11 @@ void AMyCharacter::MoveForward(float Value)
 		{
 			ForwardBackWardMoveFlag = true;
 
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveUpdateTimer);
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
 
 			if (!C2SMoveTimerActive)
 			{
-				GetWorld()->GetTimerManager().SetTimer(C2SMoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
+				GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
 			}
 			//GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
 		}
@@ -142,13 +143,13 @@ void AMyCharacter::MoveForward(float Value)
 	{
 		if (ForwadBackwardPreviousValue == 1 || ForwadBackwardPreviousValue == -1)
 		{
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveUpdateTimer);
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
 
 			if (C2SMoveTimerActive)
 			{
 				if (!LeftRightMoveFlag)
 				{
-					GetWorld()->GetTimerManager().ClearTimer(C2SMoveUpdateTimer);
+					GetWorld()->GetTimerManager().ClearTimer(C2S_MoveUpdateTimer);
 				}
 				else
 				{
@@ -178,11 +179,11 @@ void AMyCharacter::MoveRight(float Value)
 		{
 			LeftRightMoveFlag = true;
 
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveUpdateTimer);
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
 
 			if (!C2SMoveTimerActive)
 			{
-				GetWorld()->GetTimerManager().SetTimer(C2SMoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
+				GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
 			}
 			//GLog->Log(FString::Printf(TEXT("좌 우 움직임 시작")));
 		}
@@ -192,13 +193,13 @@ void AMyCharacter::MoveRight(float Value)
 	{
 		if (LeftRightPreviousValue == 1 || LeftRightPreviousValue == -1)
 		{
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2SMoveUpdateTimer);
+			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
 
 			if (C2SMoveTimerActive)
 			{
 				if (!ForwardBackWardMoveFlag)
 				{
-					GetWorld()->GetTimerManager().ClearTimer(C2SMoveUpdateTimer);
+					GetWorld()->GetTimerManager().ClearTimer(C2S_MoveUpdateTimer);
 				}
 				else
 				{
@@ -223,24 +224,18 @@ void AMyCharacter::MoveRight(float Value)
 
 void AMyCharacter::LookUp(float Value)
 {
-	/*if (RightClickFlag && Value != 0)
-	{
-		AddControllerPitchInput(Value);
-	}*/
 	if (Value != 0)
 	{
+		GLog->Log(FString::Printf(TEXT("LookUp")));
 		AddControllerPitchInput(Value);
 	}
 }
 
 void AMyCharacter::Turn(float Value)
 {
-	/*if (RightClickFlag && Value != 0)
-	{
-		AddControllerYawInput(Value);
-	}*/
 	if (Value != 0)
 	{
+		GLog->Log(FString::Printf(TEXT("Turn")));
 		AddControllerYawInput(Value);
 	}
 }
@@ -385,31 +380,6 @@ void AMyCharacter::SetIsClick(bool _IsClick)
 	IsClick = _IsClick;
 }
 
-void AMyCharacter::C2S_MoveConfirm()
-{
-	FVector Location = GetActorLocation();
-	FRotator Rotation = GetActorRotation();
-
-	GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.3s")));
-	
-	MainMapPlayerController->C2SMoveConfirm(Location, Rotation);
-}
-
-void AMyCharacter::S2C_MoveUpdate()
-{
-	//GLog->Log(FString::Printf(TEXT("GoalLocation X :%f Y : %f Z : %f"),GoalLocation.X,GoalLocation.Y,GoalLocation.Z));
-	
-	if (GetActorLocation().Equals(GoalLocation, 30.0f))
-	{
-		GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
-		GetWorld()->GetTimerManager().ClearTimer(S2CMoveTimer);
-	}
-
-	SetActorRotation(GoalRotator);
-
-	AddMovementInput(GoalDirection, 1.0f);
-}
-
 char * AMyCharacter::GetCharacterCode()
 {
 	return CharacterCode;
@@ -420,10 +390,33 @@ void AMyCharacter::SetCharacterCode(char * _NewCharacterCode)
 	memcpy(CharacterCode, _NewCharacterCode, sizeof(CharacterCode));
 }
 
-void AMyCharacter::ControlOtherCharacterMove(FVector& _GoalLocation, FRotator& _GoalRotator)
+//클라이언트에서 서버로 위치와 회전값을 보내주는 함수
+void AMyCharacter::C2S_MoveConfirm() 
 {
-	GoalRotator = _GoalRotator;
-		
+	FVector Location = GetActorLocation();
+
+	GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.3s")));
+	
+	MainMapPlayerController->C2S_MoveConfirm(Location);
+}
+
+//서버에서 받은 위치와 회전값으로 내가 아닌 다른 캐릭터들의 위치 회전값을 업데이트 해주는 함수
+void AMyCharacter::S2C_MoveUpdate()
+{
+	//GLog->Log(FString::Printf(TEXT("GoalLocation X :%f Y : %f Z : %f"),GoalLocation.X,GoalLocation.Y,GoalLocation.Z));
+	 
+	if (GetActorLocation().Equals(GoalLocation, 30.0f))
+	{
+		GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
+		GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
+	}
+	
+	AddMovementInput(GoalDirection, 1.0f);
+}
+
+//서버에서 받아온 위치와 회전값을 클라이언트에 필요한 내용으로 바꿔주는 함수
+void AMyCharacter::S2C_ControlOtherCharacterMove(FVector& _GoalLocation)
+{	
 	GoalLocation = _GoalLocation;
 
 	GoalDirection = GoalLocation - GetActorLocation();
@@ -432,9 +425,9 @@ void AMyCharacter::ControlOtherCharacterMove(FVector& _GoalLocation, FRotator& _
 
 	if (GoalDirectionNormalizeSuccess)
 	{
-		if (!GetWorld()->GetTimerManager().IsTimerActive(S2CMoveTimer))
+		if (!GetWorld()->GetTimerManager().IsTimerActive(S2C_MoveTimer))
 		{
-			GetWorld()->GetTimerManager().SetTimer(S2CMoveTimer, this, &AMyCharacter::S2C_MoveUpdate, 0.01f, true, 0);
+			GetWorld()->GetTimerManager().SetTimer(S2C_MoveTimer, this, &AMyCharacter::S2C_MoveUpdate, 0.01f, true, 0);
 		}
 	}
 }

@@ -33,10 +33,6 @@ private:
 	UPROPERTY()
 		float LeftRightPreviousValue;
 	UPROPERTY()
-		FTimerHandle C2SMoveUpdateTimer;
-	UPROPERTY()
-		FTimerHandle S2CMoveTimer;
-	UPROPERTY()
 		bool ForwardBackWardMoveFlag;
 	UPROPERTY()
 		bool LeftRightMoveFlag;
@@ -48,6 +44,15 @@ private:
 		FVector GoalLocation;
 	UPROPERTY()
 		FRotator GoalRotator;
+
+	UPROPERTY()
+		FTimerHandle C2S_MoveUpdateTimer;
+	UPROPERTY()
+		FTimerHandle S2C_MoveTimer;
+	UPROPERTY()
+		FTimerHandle C2S_RotateUpdateTimer;
+	UPROPERTY()
+		FTimerHandle S2C_RotateTimer;
 protected:
 	UPROPERTY()
 		bool IsRightClick; //마우스 오른쪽 버튼 눌럿는지 안눌럿는지
@@ -143,6 +148,6 @@ public:
 		void S2C_MoveUpdate();
 
 	UFUNCTION()
-		void ControlOtherCharacterMove(FVector& _GoalLocation,FRotator& _GoalRotator);
+		void S2C_ControlOtherCharacterMove(FVector& _GoalLocation);
 
 };

@@ -96,7 +96,7 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 				GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
 
 				GLog->Log(FString::Printf(TEXT("\nX : %f Y : %f Z : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
-				GLog->Log(FString::Printf(TEXT("Roll : %f Pitch : %f Yaw : %f"), otherinfo.rot_xyz[0], otherinfo.rot_xyz[1], otherinfo.rot_xyz[2]));
+				//GLog->Log(FString::Printf(TEXT("Roll : %f Pitch : %f Yaw : %f"), otherinfo.rot_xyz[0], otherinfo.rot_xyz[1], otherinfo.rot_xyz[2]));
 
 				if (MainMapGameMode)
 				{
@@ -108,13 +108,9 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 						OtherCharacterLocation.Y = otherinfo.xyz[1];
 						OtherCharacterLocation.Z = otherinfo.xyz[2];
 
-						OtherCharacterRotation.Roll = otherinfo.rot_xyz[0];
-						OtherCharacterRotation.Pitch = otherinfo.rot_xyz[1];
-						OtherCharacterRotation.Yaw = otherinfo.rot_xyz[2];
-
 						//ControlOtherCharacterMove.Broadcast(OtherCharacterLocation, OtherCharacterRotation);
 
-						OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation, OtherCharacterRotation);
+						OtherCharacter->S2C_ControlOtherCharacterMove(OtherCharacterLocation);
 					}
 					else
 					{
@@ -187,8 +183,14 @@ void AMainMapPlayerController::SetClientState(EClientState _NewClientState)
 	ClientCurrentState = _NewClientState;
 }
 
-void AMainMapPlayerController::C2SMoveConfirm(FVector & Location, FRotator & Rotation)
+void AMainMapPlayerController::C2S_MoveConfirm(FVector & Location)
 {
-	InGameManager::GetInstance()->InGame_Req_Move(Location.X, Location.Y, Location.Z, Rotation.Roll, Rotation.Pitch, Rotation.Yaw);
+	InGameManager::GetInstance()->InGame_Req_Move(Location.X, Location.Y, Location.Z);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
+void AMainMapPlayerController::C2S_RotationcConfirm(FRotator & Rotation)
+{
+	InGameManager::GetInstance()->InGame_Req_Rotation(Rotation.Roll, Rotation.Pitch, Rotation.Yaw);
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
