@@ -94,6 +94,7 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 				StorageManager::GetInstance()->PopData();
 
 				GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
+
 				GLog->Log(FString::Printf(TEXT("\nX : %f Y : %f Z : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
 				GLog->Log(FString::Printf(TEXT("Roll : %f Pitch : %f Yaw : %f"), otherinfo.rot_xyz[0], otherinfo.rot_xyz[1], otherinfo.rot_xyz[2]));
 
@@ -111,7 +112,9 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 						OtherCharacterRotation.Pitch = otherinfo.rot_xyz[1];
 						OtherCharacterRotation.Yaw = otherinfo.rot_xyz[2];
 
-						ControlOtherCharacterMove.Broadcast(OtherCharacterLocation, OtherCharacterRotation);
+						//ControlOtherCharacterMove.Broadcast(OtherCharacterLocation, OtherCharacterRotation);
+
+						OtherCharacter->ControlOtherCharacterMove(OtherCharacterLocation, OtherCharacterRotation);
 					}
 					else
 					{
