@@ -468,9 +468,9 @@ void AMyCharacter::C2S_RotateConfirm()
 {
 	FRotator Rotation = GetActorRotation();
 
-	//GLog->Log(FString::Printf(TEXT("C2S_RotateConfirm 함수 호출 0.3s")));
+	GLog->Log(FString::Printf(TEXT("C2S_RotateConfirm 함수 호출 0.3s")));
 
-	//MainMapPlayerController->C2S_RotationcConfirm(Rotation);
+	MainMapPlayerController->C2S_RotationcConfirm(Rotation);
 }
 
 void AMyCharacter::S2C_ControlOtherCharacterRotate(FRotator & _GoalRotator)
