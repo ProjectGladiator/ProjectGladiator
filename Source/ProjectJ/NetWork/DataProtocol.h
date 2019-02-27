@@ -18,7 +18,6 @@ namespace DataProtocol {
 	};
 	// 인게임 프로토콜
 	enum PGAMEDATA {
-		//PGAMEDATA_PLAYER_MOVE_RESULT = 200,		// 이동 결과
 		PGAMEDATA_PLAYER_MOVE_INFO = 200,		// 현재유저 이동 정보
 		PGAMEDATA_PLAYER_OTHERMOVEINFO,			// 다른유저 이동 정보
 		PGAMEDATA_PLAYER_OTHERMOVEORDER,		// 다른유저 이동 명령
