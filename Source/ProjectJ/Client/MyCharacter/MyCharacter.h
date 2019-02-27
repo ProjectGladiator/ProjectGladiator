@@ -142,6 +142,7 @@ public:
 	UFUNCTION()
 		void S2C_MoveUpdate();
 
-	void ControlOtherCharacterMove(FVector& _GoalLocation,FRotator& _GoalRotator);
+	UFUNCTION()
+		void ControlOtherCharacterMove(FVector& _GoalLocation,FRotator& _GoalRotator);
 
 };
