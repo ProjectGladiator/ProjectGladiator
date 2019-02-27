@@ -92,6 +92,30 @@ void InGameManager::InGame_Req_Move(float _px, float _py, float _pz, float _rx, 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MOVE_REPORT, buf, datasize);
 }
 
+// 회전 요청
+void InGameManager::InGame_Req_Rotation(float _rx, float _ry, float _rz)
+{
+	char buf[BUFSIZE];
+	char* ptr = buf;
+	int datasize = 0;
+	memset(buf, 0, sizeof(buf));
+
+	// 회전값
+	memcpy(ptr, &_rx, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	memcpy(ptr, &_ry, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	memcpy(ptr, &_rz, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MOVE_ROTATION, buf, datasize);
+}
+
 // 이동 시작 요청
 //void InGameManager::InGame_Req_MoveStart(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry)
 //{
@@ -350,10 +374,12 @@ void InGameManager::InGame_Recv_OtherUserMoveInfo(char * _buf, int _dataprotocol
 	char code[CHARACTERCODESIZE];
 	char* ptr_data = data;
 	int size = 0;
-	int len;
+	int len = 0;
 	float xyz[3];
 	float rot_xyz[3];
-	float dirx = 0; float diry = 0;
+
+	memset(data, 0, CHARACTERCODESIZE);
+	memset(code, 0, BUFSIZE);
 
 	// 코드 사이즈
 	memcpy(&len, ptr_buf, sizeof(int));
@@ -385,6 +411,45 @@ void InGameManager::InGame_Recv_OtherUserMoveInfo(char * _buf, int _dataprotocol
 
 	StorageManager::GetInstance()->PushData(_dataprotocol, data, size);
 }
+
+// 다른 유저 회전
+void InGameManager::InGame_Recv_OtherUserRotation(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	char code[CHARACTERCODESIZE];
+	char* ptr_data = data;
+	int size = 0;
+	int len = 0;
+	float rot_xyz[3];
+
+	memset(code, 0, CHARACTERCODESIZE);
+
+	// 코드 사이즈
+	memcpy(&len, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &len, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 코드
+	memcpy(code, ptr_buf, len);
+	ptr_buf += len;
+	size += len;
+	memcpy(ptr_data, code, len);
+	ptr_data += len;
+
+	// rotation x, y, z
+	memcpy(rot_xyz, ptr_buf, sizeof(float) * 3);
+	ptr_buf += sizeof(float) * 3;
+	size += sizeof(float) * 3;
+	memcpy(ptr_data, rot_xyz, sizeof(float) * 3);
+	ptr_data += sizeof(float) * 3;
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_OTHERROTATION, data, size);
+}
+
 
 RESULT InGameManager::InGameInitRecvResult(User * _user)
 {
@@ -427,6 +492,10 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 		{
 			result = RT_INGAME_OTHERPLAYER_LIST;
 		}
+		break;
+	case SERVER_INGAME_MOVE_ROTATION:
+		InGame_Recv_OtherUserRotation(buf);
+		result = RT_INGAME_MOVE;
 		break;
 	default:
 		break;

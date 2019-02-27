@@ -63,9 +63,11 @@ enum PROTOCOL {
 	CLIENT_INGAME_MOVE_START,				// 클라 이동 시작					[프로토콜]
 	CLIENT_INGAME_MOVE_REPORT,				// 클라 이동중 보고					[프로토콜]
 	CLIENT_INGAME_MOVE_END,					// 클라 이동 끝					[프로토콜]
+	CLIENT_INGAME_MOVE_ROTATION,			// 클라 회전
 	SERVER_INGAME_MOVE_ORDER,				// 서버 이동 명령				[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간]
 	SERVER_INGAME_MOVE_RESULT,				// 서버 이동 결과				[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간]
-	SERVER_INGAME_MOVE_OTHERPLAYERINFO,			// 다른플레이어 정보			[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간][닉네임사이즈][닉네임]
+	SERVER_INGAME_MOVE_OTHERPLAYERINFO,		// 다른플레이어 정보			[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간][닉네임사이즈][닉네임]
+	SERVER_INGAME_MOVE_ROTATION,			// 클라 회전
 	SERVER_INGAME_OTHERPLAYERLIST_RESULT,	// 플레이어 리스트 			[프로토콜][INT:카운트][INT:닉네임사이즈][CHAR:닉네임][VECTOR:위치]...
 	SERVER_INGAME_OTHERPLAYER_CONNECT,		// 접속한 플레이어 정보
 
@@ -164,5 +166,6 @@ enum RESULT {
 //#define SERVERIP "192.168.0.154"	// 402ip 호연노트북
 //#define SERVERIP "192.168.123.181"
 //#define SERVERIP "182.227.211.86"
+//#define SERVERIP "192.168.0.134"
 
 #endif   
