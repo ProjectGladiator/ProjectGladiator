@@ -7,6 +7,7 @@
 #include "Client/State/ClientState/ClientState.h"
 #include "MainMapPlayerController.generated.h"
 
+//DECLARE_DELEGATE_OneParam
 DECLARE_DYNAMIC_DELEGATE_OneParam(FControlOtherCharacterMoveDelegate, FVector&, Location);
 DECLARE_DYNAMIC_DELEGATE_OneParam(FControlOtherCharacterRotateDelegate, FRotator&, Rotation);
 

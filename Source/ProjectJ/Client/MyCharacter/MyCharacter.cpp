@@ -17,7 +17,7 @@
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
 #include "Client/MainMap/MainMapPlayerController.h"
 #include "TimerManager.h"
-
+#include "Client/MainMap/MainMapOtherPlayerController.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -26,7 +26,7 @@
 AMyCharacter::AMyCharacter()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
 
 	bUseControllerRotationYaw = true;
 
@@ -58,6 +58,7 @@ AMyCharacter::AMyCharacter()
 	Level = 0;
 
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
 	Tags.Add(TEXT("Character"));
 }
@@ -69,10 +70,9 @@ void AMyCharacter::BeginPlay()
 
 	IsClick = false;
 
-	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
 	if (MainMapPlayerController)
 	{
+		GLog->Log(FString::Printf(TEXT("메인맵 플레이어 컨트롤러 존재")));
 		MainMapPlayerController->ControlOtherCharacterMove.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterMove);
 		MainMapPlayerController->ControlOtherCharacerRotate.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterRotate);
 	}
@@ -95,6 +95,13 @@ void AMyCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (OtherCharacterController)
+	{
+		FRotator CompleteRotator = FMath::RInterpTo(GetActorRotation(), GoalRotator, DeltaTime, 10.0f);
+
+		GLog->Log(FString::Printf(TEXT("Yaw : %f "), CompleteRotator.Yaw));
+		SetActorRotation(CompleteRotator);
+	}
 }
 
 // Called to bind functionality to input
@@ -134,7 +141,7 @@ void AMyCharacter::MoveForward(float Value)
 
 			if (!C2SMoveTimerActive)
 			{
-				GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
+				GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.1f, true, 0);
 			}
 			//GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
 		}
@@ -184,7 +191,7 @@ void AMyCharacter::MoveRight(float Value)
 
 			if (!C2SMoveTimerActive)
 			{
-				GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.3f, true, 0);
+				GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.1f, true, 0);
 			}
 			//GLog->Log(FString::Printf(TEXT("좌 우 움직임 시작")));
 		}
@@ -231,7 +238,7 @@ void AMyCharacter::LookUp(float Value)
 		{
 			LookUpFlag = true;
 
-			GetWorld()->GetTimerManager().SetTimer(C2S_RotateUpdateTimer, this, &AMyCharacter::C2S_RotateConfirm, 0.3f, true, 0);
+			GetWorld()->GetTimerManager().SetTimer(C2S_RotateUpdateTimer, this, &AMyCharacter::C2S_RotateConfirm, 0.1f, true, 0);
 		}
 
 		AddControllerPitchInput(Value);
@@ -257,7 +264,7 @@ void AMyCharacter::Turn(float Value)
 		{
 			TurnFlag = true;
 
-			GetWorld()->GetTimerManager().SetTimer(C2S_RotateUpdateTimer, this, &AMyCharacter::C2S_RotateConfirm, 0.3f, true, 0);
+			GetWorld()->GetTimerManager().SetTimer(C2S_RotateUpdateTimer, this, &AMyCharacter::C2S_RotateConfirm, 0.1f, true, 0);
 		}
 
 		AddControllerYawInput(Value);
@@ -437,7 +444,7 @@ void AMyCharacter::S2C_MoveUpdate()
 {
 	//GLog->Log(FString::Printf(TEXT("GoalLocation X :%f Y : %f Z : %f"),GoalLocation.X,GoalLocation.Y,GoalLocation.Z));
 	 
-	if (GetActorLocation().Equals(GoalLocation, 30.0f))
+	if (GetActorLocation().Equals(GoalLocation, 10.0f))
 	{
 		GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
 		GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
@@ -473,7 +480,29 @@ void AMyCharacter::C2S_RotateConfirm()
 	MainMapPlayerController->C2S_RotationcConfirm(Rotation);
 }
 
+//void AMyCharacter::S2C_RotateUpdate()
+//{
+//	if (GetActorRotation().Equals(GoalRotator,1.0f))
+//	{
+//		GLog->Log(FString::Printf(TEXT("회전 끝")));
+//		GetWorld()->GetTimerManager().ClearTimer(S2C_RotateTimer);
+//	}	
+//}
+
 void AMyCharacter::S2C_ControlOtherCharacterRotate(FRotator & _GoalRotator)
 {
 	GoalRotator = _GoalRotator;
+
+	//SetActorRotation(GoalRotator);
+
+	GLog->Log(FString::Printf(TEXT("서버에서 온 회전 값 저장")));
+	/*if (!GetWorld()->GetTimerManager().IsTimerActive(S2C_RotateTimer))
+	{
+		GetWorld()->GetTimerManager().SetTimer(S2C_RotateTimer, this, &AMyCharacter::S2C_RotateUpdate, 0.01f, true, 0);
+	}*/
+}
+
+void AMyCharacter::SetOtherCharacterController(AMainMapOtherPlayerController * _OtherCharacterController)
+{
+	OtherCharacterController = _OtherCharacterController;
 }

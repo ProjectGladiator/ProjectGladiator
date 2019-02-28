@@ -373,6 +373,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			{
 				OtherUserCharacter->SetCharacterCode(character_info->code);
 
+				OtherUserCharacter->SetOtherCharacterController(OtherCharacterController);
+
 				OtherCharacterController->Possess(OtherUserCharacter);				
 
 				AddLoginUser(OtherUserCharacter);

@@ -16,6 +16,9 @@ public:
 	// Sets default values for this character's properties
 	AMyCharacter(); //생성자
 private:
+	UPROPERTY()
+		class AMainMapOtherPlayerController* OtherCharacterController;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		float MaxHP; //최대 HP값
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
@@ -58,6 +61,9 @@ private:
 		FTimerHandle S2C_MoveTimer;
 	UPROPERTY()
 		FTimerHandle C2S_RotateUpdateTimer;
+	/*UPROPERTY()
+		FTimerHandle S2C_RotateTimer;*/
+
 protected:
 	UPROPERTY()
 		bool IsRightClick; //마우스 오른쪽 버튼 눌럿는지 안눌럿는지
@@ -154,7 +160,10 @@ public:
 
 	void C2S_RotateConfirm();
 
+	//void S2C_RotateUpdate();
+
 	UFUNCTION()
 		void S2C_ControlOtherCharacterRotate(FRotator& _GoalRotator);
 
+	void SetOtherCharacterController(class AMainMapOtherPlayerController* _OtherCharacterController);
 };

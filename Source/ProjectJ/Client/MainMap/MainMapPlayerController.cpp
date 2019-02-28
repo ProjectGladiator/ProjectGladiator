@@ -131,7 +131,7 @@ void AMainMapPlayerController::Tick(float DeltaTime)
 
 				GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
 
-				GLog->Log(FString::Printf(TEXT("\nOther Character Rotation Roll : %f Pitch : %f Yaw : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
+				GLog->Log(FString::Printf(TEXT("\nOther Character Rotation : Roll : %f Pitch : %f Yaw : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
 
 				if (MainMapGameMode)
 				{
