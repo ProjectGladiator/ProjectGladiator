@@ -99,8 +99,13 @@ void AMyCharacter::Tick(float DeltaTime)
 	{
 		FRotator CompleteRotator = FMath::RInterpTo(GetActorRotation(), GoalRotator, DeltaTime, 10.0f);
 
-		GLog->Log(FString::Printf(TEXT("Yaw : %f "), CompleteRotator.Yaw));
 		SetActorRotation(CompleteRotator);
+
+		if (GetActorLocation().Equals(GoalLocation, 40.0f))
+		{
+			GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
+			GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
+		}
 	}
 }
 
@@ -434,7 +439,7 @@ void AMyCharacter::C2S_MoveConfirm()
 {
 	FVector Location = GetActorLocation();
 
-	GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.3s")));
+	//GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.1s")));
 	
 	MainMapPlayerController->C2S_MoveConfirm(Location);
 }
@@ -443,12 +448,6 @@ void AMyCharacter::C2S_MoveConfirm()
 void AMyCharacter::S2C_MoveUpdate()
 {
 	//GLog->Log(FString::Printf(TEXT("GoalLocation X :%f Y : %f Z : %f"),GoalLocation.X,GoalLocation.Y,GoalLocation.Z));
-	 
-	if (GetActorLocation().Equals(GoalLocation, 10.0f))
-	{
-		GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
-		GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
-	}
 	
 	AddMovementInput(GoalDirection, 1.0f);
 }
@@ -469,13 +468,15 @@ void AMyCharacter::S2C_ControlOtherCharacterMove(FVector& _GoalLocation)
 			GetWorld()->GetTimerManager().SetTimer(S2C_MoveTimer, this, &AMyCharacter::S2C_MoveUpdate, 0.01f, true, 0);
 		}
 	}
+
+	GLog->Log(FString::Printf(TEXT("X : %f Y : %f Z : %f"), GoalDirection.X, GoalDirection.Y, GoalDirection.Z));
 }
 
 void AMyCharacter::C2S_RotateConfirm()
 {
 	FRotator Rotation = GetActorRotation();
 
-	GLog->Log(FString::Printf(TEXT("C2S_RotateConfirm 함수 호출 0.3s")));
+	//GLog->Log(FString::Printf(TEXT("C2S_RotateConfirm 함수 호출 0.1s")));
 
 	MainMapPlayerController->C2S_RotationcConfirm(Rotation);
 }
@@ -495,7 +496,7 @@ void AMyCharacter::S2C_ControlOtherCharacterRotate(FRotator & _GoalRotator)
 
 	//SetActorRotation(GoalRotator);
 
-	GLog->Log(FString::Printf(TEXT("서버에서 온 회전 값 저장")));
+	//GLog->Log(FString::Printf(TEXT("서버에서 온 회전 값 저장")));
 	/*if (!GetWorld()->GetTimerManager().IsTimerActive(S2C_RotateTimer))
 	{
 		GetWorld()->GetTimerManager().SetTimer(S2C_RotateTimer, this, &AMyCharacter::S2C_RotateUpdate, 0.01f, true, 0);

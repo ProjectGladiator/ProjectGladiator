@@ -81,6 +81,8 @@ void AGunner::BeginPlay()
 
 void AGunner::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+
 	//화면 중앙 크로스헤어 퍼짐이 0보다 크면
 	if (CrossHairSpread > 0)
 	{

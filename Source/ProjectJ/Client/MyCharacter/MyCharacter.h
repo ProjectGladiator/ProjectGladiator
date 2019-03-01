@@ -16,7 +16,7 @@ public:
 	// Sets default values for this character's properties
 	AMyCharacter(); //생성자
 private:
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		class AMainMapOtherPlayerController* OtherCharacterController;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
