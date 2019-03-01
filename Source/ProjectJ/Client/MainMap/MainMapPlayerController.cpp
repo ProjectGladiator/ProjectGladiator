@@ -7,7 +7,7 @@
 #include "Engine/World.h"
 #include "Kismet/KismetStringLibrary.h"
 #include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
-#include "Client/MyCharacter/MyCharacter.h"
+#include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MainMap/MainMapGameMode.h"
 
 //서버 헤더

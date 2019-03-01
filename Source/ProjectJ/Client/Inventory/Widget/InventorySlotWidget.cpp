@@ -19,6 +19,11 @@ void UInventorySlotWidget::NativeConstruct()
 	InventorySlotButton = Cast<UButton>(GetWidgetFromName(TEXT("InventorySlotButton")));
 	ItemImage = Cast<UImage>(GetWidgetFromName(TEXT("ItemImage")));
 	ItemAmount = Cast<UTextBlock>(GetWidgetFromName(TEXT("ItemAmount")));
+
+	if (InventorySlotButton)
+	{
+		InventorySlotButton->OnClicked.AddDynamic(this, &UInventorySlotWidget::SlotClick);
+	}	
 }
 
 void UInventorySlotWidget::UpdateInventorySlot(FSInventorySlot SlotInfo)
@@ -46,6 +51,11 @@ void UInventorySlotWidget::UpdateInventorySlot(FSInventorySlot SlotInfo)
 void UInventorySlotWidget::SlotIndexInit(int Index)
 {
 	SlotIndex = Index;
+}
+
+void UInventorySlotWidget::SlotClick()
+{
+	GLog->Log(FString::Printf(TEXT("Slot Index : %d"), SlotIndex));
 }
 
 

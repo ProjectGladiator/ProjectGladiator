@@ -8,7 +8,7 @@
 #include "DinosaurAnimInstance.h" //공룡 애님인스턴스 헤더
 #include "DinosaurAIController.h"
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
-#include "Client/MyCharacter/MyCharacter.h" //캐릭터들 부모
+#include "Client/MyCharacter/PC/MyCharacter.h" //캐릭터들 부모
 #include "Kismet/GameplayStatics.h" //각종 유틸 헤더
 #include "Client/Monster/Manager/AIManager.h" //AI담당 컴포넌트 헤더
 #include "Components/CapsuleComponent.h" //캡슐 컴포넌트 헤더

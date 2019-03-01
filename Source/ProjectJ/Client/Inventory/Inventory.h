@@ -9,31 +9,38 @@
 #include "Inventory.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PROJECTJ_API UInventory : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UInventory();
-
+private:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
+		class UInventoryWidget* InventoryWidget;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Info, Meta = (AllowPrivateAccess = true))
+		int32 InventoryMaxCount;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	
-	
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Slots")
 		TArray<FSInventorySlot> Slots;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Slots")
-		int InventoryMaxCount;
+
 
 	bool IsSlotEmpty(int Index);
 	void GetItemInfo(int Index, FItemDataTable& ItemInfo, bool& IsEmpty);
 	void SearchEmptySlot(bool& Success, int& EmptySlotIndex);
 
+	void InventoryWidgetToggle();
+
+	int32 GetInventoryMaxCount();
+
+	void InventoryCreate(int32 _NewInventoryMaxCount);
 };

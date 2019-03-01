@@ -4,7 +4,7 @@
 //클라 헤더
 #include "Components/Button.h"
 #include "Components/UniformGridPanel.h"
-#include "Client/MyCharacter/MyCharacter.h"
+#include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/Inventory/Inventory.h"
 #include "Client/Inventory/Widget/InventorySlotWidget.h"
 #include "kismet/KismetMathLibrary.h"
@@ -36,7 +36,7 @@ void UInventoryWidget::CreateInventorySlots()
 		InventorySlots.Empty();
 		
 		float Column;
-		for (float i = 0; i < Inventory->InventoryMaxCount; i=i+1.0f)
+		for (float i = 0; i < Inventory->GetInventoryMaxCount(); i=i+1.0f)
 		{
 			FStringClassReference InventorySlotWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Inventory/Widget/W_InventorySlot.W_InventorySlot_C'"));
 
@@ -48,11 +48,10 @@ void UInventoryWidget::CreateInventorySlots()
 				{
 					InventorySlot->SlotIndexInit(i);
 					InventorySlots.Add(InventorySlot);
-					UUniformGridSlot* InputGridSlot =InventoryGrid->AddChildToUniformGrid(InventorySlot);
+					UUniformGridSlot* InputGridSlot = InventoryGrid->AddChildToUniformGrid(InventorySlot);
 
 					if (InputGridSlot)
 					{
-
 						InputGridSlot->SetRow(UKismetMathLibrary::FTrunc(i / RowColumnValue));
 						UKismetMathLibrary::FMod(i, RowColumnValue, Column);
 						InputGridSlot->SetColumn(UKismetMathLibrary::FTrunc(Column));
