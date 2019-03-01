@@ -7,7 +7,7 @@
 #include "Animation/AnimBlueprint.h" // 애님 블루프린트
 #include "WormAnimInstance.h" //벌레 애님인스턴스 헤더
 #include "WormAIController.h" //벌레 AI 컨트롤러 헤더
-#include "Client/MyCharacter/MyCharacter.h" //캐릭터들 부모 헤더
+#include "Client/MyCharacter/PC/MyCharacter.h" //캐릭터들 부모 헤더
 #include "Client/Monster/Manager/AIManager.h" //AI담당 컴포넌트 헤더
 #include "Kismet/GameplayStatics.h" //각종 유틸 헤더
 #include "Navigation/PathFollowingComponent.h" //AI관련 헤더

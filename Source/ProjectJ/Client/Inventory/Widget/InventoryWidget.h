@@ -20,11 +20,11 @@ public:
 		class UUniformGridPanel* InventoryGrid;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		TArray<class UInventorySlotWidget*> InventorySlots;
+
 	float RowColumnValue;
+
 	virtual void NativeConstruct() override;
 
 	void CreateInventorySlots(); //인벤토리 슬롯위젯을 생성해주는 함수
-	
-	
 	
 };

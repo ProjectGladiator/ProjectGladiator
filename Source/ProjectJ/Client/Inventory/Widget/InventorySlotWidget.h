@@ -36,5 +36,6 @@ public:
 	
 	void SlotIndexInit(int Index);
 	
-	
+	UFUNCTION()
+		void SlotClick();
 };

@@ -4,6 +4,11 @@
 //클라 헤더
 #include "Client/Item/MasterItem.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Client/Inventory/Widget/InventoryWidget.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
+
+//서버 헤더
 
 
 // Sets default values for this component's properties
@@ -14,6 +19,7 @@ UInventory::UInventory()
 	PrimaryComponentTick.bCanEverTick = true;
 
 	InventoryMaxCount = 20;
+
 }
 
 
@@ -22,8 +28,15 @@ void UInventory::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	FStringClassReference InventoryWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Inventory/Widget/W_Inventory.W_Inventory_C'"));
+
+	if (UClass* MyInventoryWidgetClass = InventoryWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		InventoryWidget = Cast<UInventoryWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyInventoryWidgetClass));
+		
+		InventoryWidget->AddToViewport(); //화면에 붙인다.
+		InventoryWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+	}	
 }
 
 
@@ -78,6 +91,36 @@ void UInventory::SearchEmptySlot(bool& Success,int& EmptySlotIndex)
 			EmptySlotIndex = -1;
 			Success = false;
 		}
+	}
+}
+
+void UInventory::InventoryWidgetToggle()
+{
+	if (InventoryWidget)
+	{
+		if (InventoryWidget->GetVisibility() == ESlateVisibility::Hidden)
+		{
+			InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+}
+
+int32 UInventory::GetInventoryMaxCount()
+{
+	return InventoryMaxCount;
+}
+
+void UInventory::InventoryCreate(int32 _NewInventoryMaxCount)
+{
+	InventoryMaxCount = _NewInventoryMaxCount;
+
+	if (InventoryWidget)
+	{
+		InventoryWidget->CreateInventorySlots();
 	}
 }
 

@@ -3,7 +3,7 @@
 #include "AIManager.h"
 //클라헤더
 #include "Client/Monster/Monster.h" //몬스터 관련 헤더
-#include "Client/MyCharacter/MyCharacter.h" //캐릭터 부모 관련 헤더
+#include "Client/MyCharacter/PC/MyCharacter.h" //캐릭터 부모 관련 헤더
 #include "Kismet/KismetMathLibrary.h" //수학 관련 헤더
 #include "Client/Monster/MonsterAIController.h" //몬스터 AI 컨트롤러 관련 헤더
 #include "Kismet/KismetSystemLibrary.h" //라인 트레이스 관련 헤더

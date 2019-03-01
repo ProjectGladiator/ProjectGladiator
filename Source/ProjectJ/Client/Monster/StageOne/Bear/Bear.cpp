@@ -8,7 +8,7 @@
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
 #include "Kismet/GameplayStatics.h" //각종 유틸 헤더
 #include "Client/Monster/Manager/AIManager.h" //AI담당 컴포넌트 헤더
-#include "Client/MyCharacter/MyCharacter.h" //캐릭터들 부모
+#include "Client/MyCharacter/PC/MyCharacter.h" //캐릭터들 부모
 #include "GameFrameWork/CharacterMovementComponent.h" //캐릭터 속도 관련 헤더
 #include "BearAnimInstance.h" //곰 애님 인스턴스 헤더
 #include "Kismet/KismetSystemLibrary.h"  //라인 트레이스 헤더 관련 헤더

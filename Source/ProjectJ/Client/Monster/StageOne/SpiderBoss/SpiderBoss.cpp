@@ -9,7 +9,7 @@
 #include "SpiderBossAnimInstance.h" //거미 보스 애님 인스턴스 헤더
 #include "GameFrameWork/CharacterMovementComponent.h" //캐릭터 속도 관련 헤더
 #include "Kismet/KismetMathLibrary.h" //수학 관련 헤더
-#include "Client/MyCharacter/MyCharacter.h" //캐릭터들 부모
+#include "Client/MyCharacter/PC/MyCharacter.h" //캐릭터들 부모
 
 //서버 헤더
 
