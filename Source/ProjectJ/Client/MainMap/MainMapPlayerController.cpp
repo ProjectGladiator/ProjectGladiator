@@ -9,7 +9,6 @@
 #include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MainMap/MainMapGameMode.h"
-#include "Client/MyCharacter/Widget/MainWiget.h"
 
 //서버 헤더
 #include "NetWork/StorageManager.h"
@@ -27,14 +26,6 @@ AMainMapPlayerController::AMainMapPlayerController()
 void AMainMapPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
-	FStringClassReference MainWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Main/W_MainWidget.W_MainWidget_C'"));
-
-	if (UClass* MyMainWidgetClass = MainWidgetClass.TryLoadClass<UUserWidget>())
-	{
-		//MyWidgetClass를 토대로 OkWidget을 생성한다.
-		MainWiget = Cast<UMainWiget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyMainWidgetClass));
-	}
 
 	AMainMapGameMode* MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
@@ -226,11 +217,6 @@ void AMainMapPlayerController::SetSelectIndex(int32 _SelectIndex)
 void AMainMapPlayerController::SetClientState(EClientState _NewClientState)
 {
 	ClientCurrentState = _NewClientState;
-}
-
-UMainWiget * AMainMapPlayerController::GetMainWiget()
-{
-	return MainWiget;
 }
 
 void AMainMapPlayerController::C2S_MoveConfirm(FVector & Location)

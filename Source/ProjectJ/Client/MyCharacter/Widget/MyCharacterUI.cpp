@@ -2,7 +2,9 @@
 
 #include "MyCharacterUI.h"
 //클라 헤더
+#include "Kismet/GameplayStatics.h"
 #include "Client/MyCharacter/Widget/Inventory/Inventory.h"
+#include "Client/MyCharacter/Widget/Party/Party.h"
 //서버 헤더
 
 // Sets default values for this component's properties
@@ -12,7 +14,8 @@ UMyCharacterUI::UMyCharacterUI()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
-	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
+	InventoryComponent = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
+	PartyComponent = CreateDefaultSubobject<UParty>(TEXT("Party"));
 }
 
 
@@ -21,8 +24,7 @@ void UMyCharacterUI::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	// ...	
 }
 
 
@@ -34,3 +36,20 @@ void UMyCharacterUI::TickComponent(float DeltaTime, ELevelTick TickType, FActorC
 	// ...
 }
 
+void UMyCharacterUI::SetMyCharacterUI()
+{
+	if (InventoryComponent)
+	{
+		InventoryComponent->InventoryCreate(20);
+	}
+}
+
+UInventory* UMyCharacterUI::GetInventoryComponent()
+{
+	return InventoryComponent;
+}
+
+UParty * UMyCharacterUI::GetPartyComponent()
+{
+	return PartyComponent;
+}

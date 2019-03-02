@@ -204,6 +204,8 @@ float ATanker::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, 
 		FPointDamageEvent* PointDamageEvent = (FPointDamageEvent*)(&DamageEvent);
 
 		GLog->Log(FString::Printf(TEXT("탱커 데미지 포인트 데미지 받음 : %f"), ActualDamage));
+
+		CurrentHP -= ActualDamage;
 	}
 	return DamageAmount;
 }

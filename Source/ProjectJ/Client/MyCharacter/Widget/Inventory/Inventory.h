@@ -22,6 +22,8 @@ private:
 		class UInventoryWidget* InventoryWidget;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Info, Meta = (AllowPrivateAccess = true))
 		int32 InventoryMaxCount;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
+		TArray<FInventorySlot> Slots;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -30,14 +32,15 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Slots")
-		TArray<FInventorySlot> Slots;
-
 	bool IsSlotEmpty(int Index);
+
 	void GetItemInfo(int Index, FItemDataTable& ItemInfo, bool& IsEmpty);
+
 	void SearchEmptySlot(bool& Success, int& EmptySlotIndex);
 
 	void InventoryWidgetToggle();
+
+	UInventoryWidget* GetInventoryWidget();
 
 	int32 GetInventoryMaxCount();
 

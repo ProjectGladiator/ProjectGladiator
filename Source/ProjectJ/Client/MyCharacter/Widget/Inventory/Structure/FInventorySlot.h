@@ -10,8 +10,8 @@ struct PROJECTJ_API FInventorySlot
 {
 	GENERATED_USTRUCT_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemInfo)
 		class AMasterItem* ItemClass;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ItemInfo")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = ItemInfo)
 		int Amount;
 };

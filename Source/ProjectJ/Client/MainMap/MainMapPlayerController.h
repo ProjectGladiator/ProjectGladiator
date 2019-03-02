@@ -35,8 +35,6 @@ private:
 		class AChracterCreateCamera* CharacterSelectZoomInCamera;
 	UPROPERTY()
 		class AMainMapGameMode* MainMapGameMode;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Cameras, Meta = (AllowPrivateAccess = true))
-		class UMainWiget* MainWiget;
 	int32 JobCode;
 	int32 Select_index = -1;
 public:
@@ -59,9 +57,7 @@ public:
 
 	void SetSelectIndex(int32 _SelectIndex);
 	void SetClientState(EClientState _NewClientState);
-
-	UMainWiget* GetMainWiget();
-
+	   
 	void C2S_MoveConfirm(FVector& Location);
 	void C2S_RotationcConfirm(FRotator& Rotation);
 };

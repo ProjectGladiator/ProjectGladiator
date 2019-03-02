@@ -28,24 +28,39 @@ void UInventorySlotWidget::NativeConstruct()
 
 void UInventorySlotWidget::UpdateInventorySlot(FInventorySlot SlotInfo)
 {
-	if (UKismetSystemLibrary::IsValidClass(SlotInfo.ItemClass->StaticClass()))
+	if (SlotInfo.ItemClass)
 	{
-		InventorySlotButton->SetIsEnabled(true);
-		InventorySlotInfo = SlotInfo;
-
-		if (ItemImage)
-		{
-			FStreamableManager AssetLoader;
-
-			ItemImage->SetBrushFromTexture(Cast<UTexture2D>(InventorySlotInfo.ItemClass->ItemInfo.ItemThumbnail));
-			ItemAmount->SetText(FText::FromString(FString::FromInt(InventorySlotInfo.Amount)));
-		}
+		GLog->Log(FString::Printf(TEXT("슬롯 정보 있음")));
 	}
 	else
 	{
 		InventorySlotButton->SetIsEnabled(false);
+		ItemAmount->SetVisibility(ESlateVisibility::Hidden);
 		ItemImage->SetVisibility(ESlateVisibility::Hidden);
 	}
+
+	//if (UKismetSystemLibrary::IsValidClass(SlotInfo.ItemClass->StaticClass()))
+	//{
+	//	
+	//	InventorySlotButton->SetIsEnabled(false);
+	//	ItemImage->SetVisibility(ESlateVisibility::Hidden);
+
+	//	//InventorySlotButton->SetIsEnabled(true);
+	//	//InventorySlotInfo = SlotInfo;
+
+	//	if (ItemImage)
+	//	{
+	//	/*	FStreamableManager AssetLoader;
+
+	//		ItemImage->SetBrushFromTexture(Cast<UTexture2D>(InventorySlotInfo.ItemClass->ItemInfo.ItemThumbnail));
+	//		ItemAmount->SetText(FText::FromString(FString::FromInt(InventorySlotInfo.Amount)));*/
+	//	}
+	//}
+	//else
+	//{
+	//	InventorySlotButton->SetIsEnabled(false);
+	//	ItemImage->SetVisibility(ESlateVisibility::Hidden);
+	//}
 }
 
 void UInventorySlotWidget::SlotIndexInit(int Index)

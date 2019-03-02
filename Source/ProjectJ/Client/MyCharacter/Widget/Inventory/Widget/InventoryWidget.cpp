@@ -10,6 +10,7 @@
 #include "kismet/KismetMathLibrary.h"
 #include "Components/UniformGridSlot.h"
 #include "Client/MyCharacter/Widget/Inventory/Structure/FInventorySlot.h"
+#include "Client/MyCharacter/Widget/MyCharacterUI.h"
 //서버 헤더
 
 void UInventoryWidget::NativeConstruct()
@@ -18,6 +19,10 @@ void UInventoryWidget::NativeConstruct()
 
 	AMyCharacter* MyCharacter = Cast<AMyCharacter>(GetOwningPlayerPawn());
 	
+	if (MyCharacter)
+	{
+		Inventory = MyCharacter->MyCharacterUI->GetInventoryComponent();
+	}
 	InventoryGrid = Cast<UUniformGridPanel>(GetWidgetFromName(TEXT("SlotGridPanel")));
 
 	RowColumnValue = 5.0f;
@@ -35,9 +40,9 @@ void UInventoryWidget::CreateInventorySlots()
 		{
 			FStringClassReference InventorySlotWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Inventory/Widget/W_InventorySlot.W_InventorySlot_C'"));
 
-			if (UClass* MyWidgetClass = InventorySlotWidgetClass.TryLoadClass<UUserWidget>())
+			if (UClass* MyInventorySlotWidgetClass = InventorySlotWidgetClass.TryLoadClass<UUserWidget>())
 			{				
-				UInventorySlotWidget* InventorySlot = Cast<UInventorySlotWidget>(CreateWidget<UUserWidget>(GetOwningPlayer(), MyWidgetClass));
+				UInventorySlotWidget* InventorySlot = Cast<UInventorySlotWidget>(CreateWidget<UUserWidget>(GetOwningPlayer(), MyInventorySlotWidgetClass));
 
 				if (InventorySlot)
 				{
@@ -50,7 +55,7 @@ void UInventoryWidget::CreateInventorySlots()
 						InputGridSlot->SetRow(UKismetMathLibrary::FTrunc(i / RowColumnValue));
 						UKismetMathLibrary::FMod(i, RowColumnValue, Column);
 						InputGridSlot->SetColumn(UKismetMathLibrary::FTrunc(Column));
-						//InventorySlot->UpdateInventorySlot();
+						InventorySlot->UpdateInventorySlot(InventorySlots[i]->InventorySlotInfo);
 					}
 				}
 			}

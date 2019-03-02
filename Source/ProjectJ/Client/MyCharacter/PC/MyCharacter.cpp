@@ -17,6 +17,9 @@
 #include "Client/MainMap/MainMapPlayerController.h"
 #include "TimerManager.h"
 #include "Client/MainMap/MainMapOtherPlayerController.h"
+#include "Client/MyCharacter/Widget/MyCharacterUI.h"
+#include "Client/MyCharacter/Widget/Inventory/Inventory.h"
+#include "Client/MyCharacter/Widget/Party/Party.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -58,6 +61,8 @@ AMyCharacter::AMyCharacter()
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
+	MyCharacterUI = CreateDefaultSubobject<UMyCharacterUI>(TEXT("MyCharacterUI"));
+
 	Tags.Add(TEXT("Character"));
 }
 
@@ -75,6 +80,11 @@ void AMyCharacter::BeginPlay()
 		MainMapPlayerController->ControlOtherCharacerRotate.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterRotate);
 	}
 
+	if (MyCharacterUI)
+	{
+		MyCharacterUI->SetMyCharacterUI();
+		MyCharacterUI->GetPartyComponent()->PartyJoin(this);
+	}
 	
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 }
@@ -126,6 +136,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &AMyCharacter::LeftClick);
 
 	PlayerInputComponent->BindAction(TEXT("Inventory"), IE_Pressed, this, &AMyCharacter::InventoryToggle);
+
+	PlayerInputComponent->BindAction(TEXT("Party"), IE_Pressed, this, &AMyCharacter::PartyToggle);
 }
 
 void AMyCharacter::MoveForward(float Value)
@@ -313,6 +325,11 @@ void AMyCharacter::JumpStart()
 	Jump();
 }
 
+float AMyCharacter::GetCurrentHP()
+{
+	return CurrentHP;
+}
+
 void AMyCharacter::LeftClick()
 {
 	GLog->Log(FString::Printf(TEXT("캐릭터 부모 상태에서 클릭")));
@@ -424,7 +441,7 @@ void AMyCharacter::C2S_MoveConfirm()
 {
 	FVector Location = GetActorLocation();
 
-	GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.3s")));
+	//GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.3s")));
 
 	MainMapPlayerController->C2S_MoveConfirm(Location);
 }
@@ -499,5 +516,16 @@ void AMyCharacter::SetOtherCharacterController(AMainMapOtherPlayerController * _
 
 void AMyCharacter::InventoryToggle()
 {
-	
+	if (MyCharacterUI)
+	{
+		MyCharacterUI->GetInventoryComponent()->InventoryWidgetToggle();
+	}
+}
+
+void AMyCharacter::PartyToggle()
+{
+	if (MyCharacterUI)
+	{
+		MyCharacterUI->GetPartyComponent()->PartyWidgetToggle();
+	}
 }

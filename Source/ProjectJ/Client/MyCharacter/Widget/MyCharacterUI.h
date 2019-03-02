@@ -16,8 +16,10 @@ public:
 	// Sets default values for this component's properties
 	UMyCharacterUI();
 private:
-	UPROPERTY()
-		class UInventory* Inventory;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = WidgetActorComponent, Meta = (AllowPrivateAccess = true))
+		class UInventory* InventoryComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = WidgetActorComponent, Meta = (AllowPrivateAccess = true))
+		class UParty* PartyComponent;	
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -25,7 +27,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+			
+	void SetMyCharacterUI();
 
-		
-	
+	UInventory* GetInventoryComponent();
+
+	UParty* GetPartyComponent();
 };

@@ -19,7 +19,6 @@ UInventory::UInventory()
 	PrimaryComponentTick.bCanEverTick = false;
 
 	InventoryMaxCount = 20;
-
 }
 
 
@@ -27,7 +26,6 @@ UInventory::UInventory()
 void UInventory::BeginPlay()
 {
 	Super::BeginPlay();
-
 	FStringClassReference InventoryWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Inventory/Widget/W_Inventory.W_Inventory_C'"));
 
 	if (UClass* MyInventoryWidgetClass = InventoryWidgetClass.TryLoadClass<UUserWidget>())
@@ -107,6 +105,11 @@ void UInventory::InventoryWidgetToggle()
 			InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
+}
+
+UInventoryWidget * UInventory::GetInventoryWidget()
+{
+	return InventoryWidget;
 }
 
 int32 UInventory::GetInventoryMaxCount()

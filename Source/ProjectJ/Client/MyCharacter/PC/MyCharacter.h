@@ -19,10 +19,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		class AMainMapOtherPlayerController* OtherCharacterController;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
-		float MaxHP; //최대 HP값
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
-		float CurrentHP; //현재 HP값
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		int32 Level; //현재 레벨
 	UPROPERTY()
 		bool IsClick;
@@ -60,6 +56,10 @@ private:
 		FTimerHandle S2C_RotateTimer;*/
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
+		float MaxHP; //최대 HP값
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
+		float CurrentHP; //현재 HP값
 	UPROPERTY()
 		bool IsRightClick; //마우스 오른쪽 버튼 눌럿는지 안눌럿는지
 
@@ -76,6 +76,8 @@ protected:
 	UPROPERTY()
 		class UMyAnimInstance* MyAnimInstance;
 public:
+	UPROPERTY()
+		class UMyCharacterUI* MyCharacterUI;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class USpringArmComponent* SpringArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -114,6 +116,8 @@ public:
 
 	UFUNCTION()
 		void JumpStart();
+
+	float GetCurrentHP();
 
 	UFUNCTION()
 		virtual void LeftClick();
@@ -160,4 +164,5 @@ public:
 	void SetOtherCharacterController(class AMainMapOtherPlayerController* _OtherCharacterController);
 
 	void InventoryToggle();
+	void PartyToggle();
 };
