@@ -80,8 +80,6 @@ public:
 		class USpringArmComponent* SpringArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class UCameraComponent* Camera;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		class UInventory* Inventory;
 	UPROPERTY()
 		class AMainMapPlayerController* MainMapPlayerController;
 	// Called every frame

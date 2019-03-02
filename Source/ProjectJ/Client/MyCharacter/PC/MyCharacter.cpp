@@ -4,7 +4,6 @@
 //클라 헤더
 #include "GameFramework/SpringArmComponent.h" //스프링암 컴포넌트 헤더파일
 #include "Camera/CameraComponent.h" //카메라 컴포넌트 헤더파일
-#include "Client/Inventory/Inventory.h" //인벤토리 헤더파일
 #include "GameFramework/CharacterMovementComponent.h" //캐릭터 속력 관련 헤더파일
 #include "Animation/AnimBlueprint.h" //애니메이션블루프린트 헤더파일
 #include "Engine/World.h"
@@ -47,8 +46,6 @@ AMyCharacter::AMyCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 
-	Inventory = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
-
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 
 	IsRightClick = false;
@@ -78,11 +75,7 @@ void AMyCharacter::BeginPlay()
 		MainMapPlayerController->ControlOtherCharacerRotate.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterRotate);
 	}
 
-	if (Inventory)
-	{
-		Inventory->InventoryCreate(20);
-	}
-
+	
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
@@ -506,8 +499,5 @@ void AMyCharacter::SetOtherCharacterController(AMainMapOtherPlayerController * _
 
 void AMyCharacter::InventoryToggle()
 {
-	if (Inventory)
-	{
-		Inventory->InventoryWidgetToggle();
-	}
+	
 }

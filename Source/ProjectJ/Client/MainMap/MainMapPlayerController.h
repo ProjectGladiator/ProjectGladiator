@@ -60,6 +60,8 @@ public:
 	void SetSelectIndex(int32 _SelectIndex);
 	void SetClientState(EClientState _NewClientState);
 
+	UMainWiget* GetMainWiget();
+
 	void C2S_MoveConfirm(FVector& Location);
 	void C2S_RotationcConfirm(FRotator& Rotation);
 };
