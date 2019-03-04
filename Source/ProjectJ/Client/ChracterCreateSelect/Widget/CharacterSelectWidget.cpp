@@ -100,7 +100,6 @@ void UCharacterSelectWidget::MyCharacterCreate()
 {
 	CharacterManager::GetInstance()->Character_Req_New_Character();
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
-	NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
 	if (MainMapGameMode && MainMapPlayerController)
 	{
