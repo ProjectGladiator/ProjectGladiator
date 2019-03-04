@@ -47,7 +47,7 @@ public:
 	bool InitializeManager();
 	void EndManager();
 
-	void logoutMenuChoice(int _select);			// 로그인/회원가입 매뉴 선택
+	void logoutMenuChoice();			// 로그인/회원가입 매뉴 선택
 	void exitJoin();							// 회원가입 취소 선택
 	void reqIdOverlapCheck(char* _id);			// 아이디 중복체크 요청
 	bool IdOverlapCheck(char* _buf);			// 아이디 중복체크 결과
