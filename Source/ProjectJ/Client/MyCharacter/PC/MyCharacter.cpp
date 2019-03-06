@@ -20,6 +20,7 @@
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/Inventory/Inventory.h"
 #include "Client/MyCharacter/Widget/Party/Party.h"
+#include "Client/State/ClientState/ClientCharacterSelectState.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -30,7 +31,12 @@ AMyCharacter::AMyCharacter()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	ClientCharacterSelectState CharacterSelectState;
+	ClientCharacterState = new ClientCharacterSelectState();
+
 	bUseControllerRotationYaw = true;
+
+	memset(nick, 0, sizeof(nick));
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
@@ -59,6 +65,7 @@ AMyCharacter::AMyCharacter()
 	Level = 0;
 
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
+
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
 	MyCharacterUI = CreateDefaultSubobject<UMyCharacterUI>(TEXT("MyCharacterUI"));
@@ -80,13 +87,21 @@ void AMyCharacter::BeginPlay()
 		MainMapPlayerController->ControlOtherCharacerRotate.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterRotate);
 	}
 
-	if (MyCharacterUI)
-	{
-		MyCharacterUI->SetMyCharacterUI();
-		MyCharacterUI->GetPartyComponent()->PartyJoin(this);
-	}
-	
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+}
+
+void AMyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	switch (EndPlayReason)
+	{
+	case EEndPlayReason::RemovedFromWorld:
+		if (ClientCharacterState)
+		{
+			delete ClientCharacterState;
+			ClientCharacterState = nullptr;
+		}
+		break;
+	}
 }
 
 void AMyCharacter::ClickedReactionMontagePlay()
@@ -111,6 +126,8 @@ void AMyCharacter::Tick(float DeltaTime)
 			GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
 		}
 	}
+
+	ClientCharacterState->Tick(DeltaTime);
 }
 
 // Called to bind functionality to input
@@ -129,8 +146,7 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("RightClick"), IE_Pressed, this, &AMyCharacter::RightClickOn);
 	PlayerInputComponent->BindAction(TEXT("RightClick"), IE_Released, this, &AMyCharacter::RightClickOff);
 
-	PlayerInputComponent->BindAction(TEXT("Alt"), IE_Pressed, this, &AMyCharacter::SightOff);
-	PlayerInputComponent->BindAction(TEXT("Alt"), IE_Released, this, &AMyCharacter::SightOn);
+	PlayerInputComponent->BindAction(TEXT("Alt"), IE_Pressed, this, &AMyCharacter::MouseToggle);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AMyCharacter::JumpStart);
 	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &AMyCharacter::LeftClick);
@@ -310,14 +326,24 @@ void AMyCharacter::RightClickOff()
 	IsRightClick = false;
 }
 
-void AMyCharacter::SightOff()
+void AMyCharacter::MouseToggle()
 {
-	bUseControllerRotationYaw = false;
-}
-
-void AMyCharacter::SightOn()
-{
-	bUseControllerRotationYaw = true;
+	if (MainMapPlayerController)
+	{
+		if (!MainMapPlayerController->bShowMouseCursor)
+		{
+			MainMapPlayerController->bShowMouseCursor = true;
+			MainMapPlayerController->bEnableClickEvents = true;
+			MainMapPlayerController->SetInputMode(FInputModeGameAndUI());
+		}
+		else
+		{
+			MainMapPlayerController->bShowMouseCursor = false;
+			MainMapPlayerController->bEnableClickEvents = false;
+			MainMapPlayerController->SetInputMode(FInputModeGameOnly());
+		}
+	}
+	//bUseControllerRotationYaw = false;
 }
 
 void AMyCharacter::JumpStart()
@@ -330,60 +356,22 @@ float AMyCharacter::GetCurrentHP()
 	return CurrentHP;
 }
 
+float AMyCharacter::GetMaxHP()
+{
+	return MaxHP;
+}
+
 void AMyCharacter::LeftClick()
 {
-	GLog->Log(FString::Printf(TEXT("캐릭터 부모 상태에서 클릭")));
 	if (MainMapPlayerController)
 	{
 		if (IsClick)
 		{
-			CharacterSelect();
+			ClientCharacterState->Click(MainMapPlayerController);
 		}
 		else
 		{
 			GLog->Log(FString::Printf(TEXT("IsClick가 false")));
-		}
-	}
-}
-
-void AMyCharacter::CharacterSelect()
-{
-	GLog->Log(FString::Printf(TEXT("캐릭터 클릭 true")));
-	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
-	FHitResult HitResult;
-	ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery3); //Pawn타입으로 결정
-
-	if (MainMapPlayerController->GetHitResultUnderCursorForObjects(ObjectTypes, true, HitResult))
-	{
-		auto Character = Cast<AWarrior>(HitResult.Actor);
-
-		if (Character)
-		{
-			Character->ClickedReactionMontagePlay();
-			GLog->Log(FString::Printf(TEXT("전사 클릭")));
-			MainMapPlayerController->SelectCharacter(CHARACTER_JOB::Warrior);
-		}
-		else
-		{
-			auto Character = Cast<ATanker>(HitResult.Actor);
-
-			if (Character)
-			{
-				Character->ClickedReactionMontagePlay();
-				GLog->Log(FString::Printf(TEXT("탱커 클릭")));
-				MainMapPlayerController->SelectCharacter(CHARACTER_JOB::Tanker);
-			}
-			else
-			{
-				auto Character = Cast<AGunner>(HitResult.Actor);
-
-				if (Character)
-				{
-					Character->ClickedReactionMontagePlay();
-					GLog->Log(FString::Printf(TEXT("총잡이 클릭")));
-					MainMapPlayerController->SelectCharacter(CHARACTER_JOB::Gunner);
-				}
-			}
 		}
 	}
 }
@@ -431,9 +419,10 @@ char * AMyCharacter::GetCharacterCode()
 	return CharacterCode;
 }
 
-void AMyCharacter::SetCharacterCode(char * _NewCharacterCode)
+void AMyCharacter::SetCharacterCode(char * _NewCharacterCode, char* _NewNickName)
 {
 	memcpy(CharacterCode, _NewCharacterCode, sizeof(CharacterCode));
+	memcpy(nick, _NewNickName, sizeof(nick));
 }
 
 //클라이언트에서 서버로 위치와 회전값을 보내주는 함수
@@ -453,7 +442,7 @@ void AMyCharacter::S2C_MoveUpdate()
 
 	if (GetActorLocation().Equals(GoalLocation, 20.0f))
 	{
-		GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
+		//GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
 		GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
 	}
 
@@ -528,4 +517,29 @@ void AMyCharacter::PartyToggle()
 	{
 		MyCharacterUI->GetPartyComponent()->PartyWidgetToggle();
 	}
+}
+
+void AMyCharacter::SetClientCharacterState(ClientState * _NewClientCharacterState)
+{
+	if (!ClientCharacterState)
+	{
+		delete ClientCharacterState;
+		ClientCharacterState = nullptr;
+	}
+
+	ClientCharacterState = _NewClientCharacterState;
+}
+
+void AMyCharacter::SetDefaultCharacter()
+{
+	if (MyCharacterUI)
+	{
+		MyCharacterUI->SetMyCharacterUI();
+		MyCharacterUI->GetPartyComponent()->PartyJoin(this);
+	}
+}
+
+char * AMyCharacter::GetCharacterNickName()
+{
+	return nick;
 }

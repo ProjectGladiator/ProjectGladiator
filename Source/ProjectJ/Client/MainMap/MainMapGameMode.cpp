@@ -21,6 +21,7 @@
 #include "Client/MyCharacter/PC/MyAnimInstance.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/State/ClientState/ClientState.h"
+#include "Client/State/ClientState/ClientInGameState.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -309,9 +310,13 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (MyCharacter)
 			{
+				ClientInGameState InGameState;
 				GLog->Log(ANSI_TO_TCHAR(character_info->code));
 			
-				MyCharacter->SetCharacterCode(character_info->code);
+				MyCharacter->SetCharacterCode(character_info->code,character_info->nick);
+				MyCharacter->SetDefaultCharacter();
+				MyCharacter->SetClientCharacterState(new ClientInGameState());
+				MyCharacter->SetIsClick(true);
 
 				if (MainMapPlayerController)
 				{
@@ -371,7 +376,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (OtherUserCharacter)
 			{
-				OtherUserCharacter->SetCharacterCode(character_info->code);
+				OtherUserCharacter->SetCharacterCode(character_info->code, character_info->nick);
 
 				OtherUserCharacter->SetOtherCharacterController(OtherCharacterController);
 

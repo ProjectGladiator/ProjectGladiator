@@ -35,7 +35,5 @@ public:
 
 	virtual void NativeConstruct() override;
 
-	void SetPartySlotIndex(int32 _Index);
-	void SetPartySlotInfo(FPartySlot& _PartySlotInfo);
-	void PartySlotUpdate();
+	void PartySlotUpdate(FPartySlot _PartySlot, int32 _Index);
 };

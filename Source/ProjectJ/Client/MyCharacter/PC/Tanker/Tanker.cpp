@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 #include "GameFramework/CharacterMovementComponent.h" //캐릭터 속력 관련 헤더파일
+#include "Client/MainMap/MainMapPlayerController.h"
 //서버 헤더
 
 ATanker::ATanker()
@@ -78,7 +79,9 @@ void ATanker::Tick(float DeltaTime)
 
 void ATanker::LeftClick()
 {
-	if (!IsRightClick)
+	Super::LeftClick();
+
+	if (!IsRightClick && !MainMapPlayerController->bShowMouseCursor)
 	{
 		if (IsAttack)
 		{
@@ -102,16 +105,30 @@ void ATanker::LeftClick()
 void ATanker::RightClickOn()
 {
 	Super::RightClickOn();
-	GetCharacterMovement()->MaxWalkSpeed = 250.0f;
-	GLog->Log(FString::Printf(TEXT("오른쪽 클릭")));
-	MyAnimInstance->PlayRightClickAbilityMontage();
+
+	if (MainMapPlayerController)
+	{
+		if (!MainMapPlayerController->bShowMouseCursor)
+		{
+			GetCharacterMovement()->MaxWalkSpeed = 250.0f;
+			GLog->Log(FString::Printf(TEXT("오른쪽 클릭")));
+			MyAnimInstance->PlayRightClickAbilityMontage();
+		}
+	}
 }
 
 void ATanker::RightClickOff()
 {
 	Super::RightClickOff();
-	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
-	MyAnimInstance->PlayStopRightClickAbilityMontage();
+
+	if (MainMapPlayerController)
+	{
+		if (!MainMapPlayerController->bShowMouseCursor)
+		{
+			GetCharacterMovement()->MaxWalkSpeed = 500.0f;
+			MyAnimInstance->PlayStopRightClickAbilityMontage();
+		}
+	}
 }
 
 void ATanker::OnComboMontageSave()

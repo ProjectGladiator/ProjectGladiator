@@ -21,5 +21,5 @@ private:
 public:
 	virtual void NativeConstruct() override;
 		
-	UPartySlotWiget* PartySlotCreate(class AMyCharacter* _MyCharacter);
+	UPartySlotWiget* PartySlotCreate();
 };

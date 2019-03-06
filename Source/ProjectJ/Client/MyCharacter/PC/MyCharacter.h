@@ -6,7 +6,8 @@
 #include "GameFramework/Character.h"
 #include "MyCharacter.generated.h"
 
-
+#define NICKNAMESIZE 20
+#define CHARACTERCODE 30
 
 UCLASS()
 class PROJECTJ_API AMyCharacter : public ACharacter
@@ -16,6 +17,9 @@ public:
 	// Sets default values for this character's properties
 	AMyCharacter(); //생성자
 private:
+	char nick[NICKNAMESIZE];
+	char CharacterCode[CHARACTERCODE];
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		class AMainMapOtherPlayerController* OtherCharacterController;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
@@ -37,8 +41,6 @@ private:
 	UPROPERTY()
 		float TurnCurrentValue;
 
-	char CharacterCode[30];
-
 	UPROPERTY()
 		FVector GoalDirection;
 	UPROPERTY()
@@ -56,6 +58,8 @@ private:
 		FTimerHandle S2C_RotateTimer;*/
 
 protected:
+	class ClientState* ClientCharacterState;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 		float MaxHP; //최대 HP값
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
@@ -65,6 +69,7 @@ protected:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason)override;
 	virtual void ClickedReactionMontagePlay();
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
@@ -109,15 +114,13 @@ public:
 		void ViewReduce();
 
 	UFUNCTION()
-		void SightOff();
-
-	UFUNCTION()
-		void SightOn();
+		void MouseToggle();
 
 	UFUNCTION()
 		void JumpStart();
 
 	float GetCurrentHP();
+	float GetMaxHP();
 
 	UFUNCTION()
 		virtual void LeftClick();
@@ -127,8 +130,6 @@ public:
 
 	UFUNCTION()
 		virtual void RightClickOff();
-
-	void CharacterSelect();
 
 	UFUNCTION()
 		virtual void OnAttackHit();
@@ -145,7 +146,8 @@ public:
 	void SetIsClick(bool _IsClick);
 
 	char* GetCharacterCode();
-	void SetCharacterCode(char* _NewCharacterCode);
+
+	void SetCharacterCode(char* _NewCharacterCode, char* _NewNickName);
 
 	void C2S_MoveConfirm();
 	
@@ -165,4 +167,10 @@ public:
 
 	void InventoryToggle();
 	void PartyToggle();
+
+	void SetClientCharacterState(ClientState* _NewClientCharacterState);
+
+	void SetDefaultCharacter();
+
+	char* GetCharacterNickName();
 };

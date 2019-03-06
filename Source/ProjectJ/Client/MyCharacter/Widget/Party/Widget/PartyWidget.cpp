@@ -14,7 +14,7 @@ void UPartyWidget::NativeConstruct()
 	VerticalPartySlots = Cast<UVerticalBox>(GetWidgetFromName(TEXT("PartySlots")));
 }
 
-UPartySlotWiget* UPartyWidget::PartySlotCreate(AMyCharacter* _MyCharacter)
+UPartySlotWiget* UPartyWidget::PartySlotCreate()
 {
 	FStringClassReference PartySlotWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Party/W_PartySlot.W_PartySlot_C'"));
 
@@ -24,14 +24,8 @@ UPartySlotWiget* UPartyWidget::PartySlotCreate(AMyCharacter* _MyCharacter)
 
 		if (PartySlot)
 		{
-			int32 Index = PartySlotWigets.Num();
-			FPartySlot SlotInfo;
-			SlotInfo.MyCharacter = _MyCharacter;
-			PartySlot->SetPartySlotIndex(Index);
-			PartySlot->SetPartySlotInfo(SlotInfo);
 			PartySlotWigets.Add(PartySlot);
 			VerticalPartySlots->AddChild(PartySlot);
-
 			return PartySlot;
 		}
 		else

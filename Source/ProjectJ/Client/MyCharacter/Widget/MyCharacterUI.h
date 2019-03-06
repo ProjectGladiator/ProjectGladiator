@@ -20,6 +20,10 @@ private:
 		class UInventory* InventoryComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = WidgetActorComponent, Meta = (AllowPrivateAccess = true))
 		class UParty* PartyComponent;	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = WidgetActorComponent, Meta = (AllowPrivateAccess = true))
+		class UClickCharacterInteraction* ClickCharacterIntreaciton;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MyCharacterInfoWidget, Meta = (AllowPrivateAccess = true))
+		class UMyCharacterWidget* MyCharacterWidget;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -33,4 +37,9 @@ public:
 	UInventory* GetInventoryComponent();
 
 	UParty* GetPartyComponent();
+
+	UClickCharacterInteraction* GetClickCharacterInteractionComponent();
+
+	void MyCharacterWidgetVisible();
+	void MyCharacterWidgetHidden();
 };

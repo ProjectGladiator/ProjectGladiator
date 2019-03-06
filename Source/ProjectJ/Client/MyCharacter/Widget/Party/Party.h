@@ -20,7 +20,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PartyWidget, Meta = (AllowPrivateAccess = true))
 		class UPartyWidget* PartyWidget;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PartyWidget, Meta = (AllowPrivateAccess = true))
-		TArray<FPartySlot> Slots;
+		class UPartyAcceptRejectWidget* PartyAcceptRejectWidget;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PartyWidget, Meta = (AllowPrivateAccess = true))
+		TArray<FPartySlot> PartySlots;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Info, Meta = (AllowPrivateAccess = true))
 		int32 PartyMaxCount;
 protected:
@@ -32,8 +34,10 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void PartyWidgetToggle();
+	void PartyAcceptRejectWidgetVisible();
+	void PArtyAcceptRejectWidgetHidden();
 
 	UPartyWidget* GetPartyWidget();
 
-	void PartyJoin(AMyCharacter* _MyCharacter);
+	bool PartyJoin(AMyCharacter* _MyCharacter);
 };

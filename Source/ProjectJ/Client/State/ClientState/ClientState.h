@@ -12,3 +12,11 @@ enum class EClientState : uint8
 	CharacterSelectCreate,
 	GameStart
 };
+
+class ClientState
+{
+public:
+	virtual void Click(class AMainMapPlayerController* _MainMapPlayerController) = 0;
+	virtual void Tick(float _DeltaTime) = 0;
+	virtual ~ClientState() {};
+};
