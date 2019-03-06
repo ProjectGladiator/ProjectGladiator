@@ -17,7 +17,7 @@ struct SendQueue
 class Packet : public TCPClient
 {
 private:
-	queue<SendQueue*>sendQue;
+	queue<SendQueue*>sendQueue;
 
 	char sendBuf[BUFSIZE];
 	char recvBuf[BUFSIZE];

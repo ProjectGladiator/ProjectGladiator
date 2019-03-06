@@ -149,7 +149,7 @@ void Packet::Quepack(PROTOCOL p, void * data, int size)
 										// 암호화
 	EncryptManager::GetInstance()->encoding(sendBuf + sizeof(PROTOCOL), sendSize);
 	// 큐에 넣기
-	sendQue.push(temp);
+	sendQueue.push(temp);
 
 }
 
@@ -157,7 +157,7 @@ bool Packet::isQueue()
 {
 	// sendQue.pop();
 
-	if (sendQue.size() == 0)
+	if (sendQueue.size() == 0)
 	{
 		return true;
 	}
@@ -167,13 +167,13 @@ bool Packet::isQueue()
 
 bool Packet::isQueueSendSuccess(int _sentbyte)
 {
-	sendQue.front()->sentSize += _sentbyte;
-	if (sendQue.front()->sentSize == sendQue.front()->sendSize)
+	sendQueue.front()->sentSize += _sentbyte;
+	if (sendQueue.front()->sentSize == sendQueue.front()->sendSize)
 	{
-		sendQue.front()->sentSize = 0;
-		sendQue.front()->sendSize = 0;
+		sendQueue.front()->sentSize = 0;
+		sendQueue.front()->sendSize = 0;
 
-		sendQue.pop();
+		sendQueue.pop();
 
 		return true;
 	}
