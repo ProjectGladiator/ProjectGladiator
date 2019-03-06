@@ -54,9 +54,8 @@ void UTitleWidgetUserIn::Cancel()
 	if (MainMapPlayerController)
 	{
 		LoginManager::GetInstance()->exitJoin();
-		// 패킷 전송 - Send , 서버 응답 대기 - Wait
+		// 패킷 전송 - Send
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
-		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
 		MainMapGameMode->LoginWidgetToggle(); //로그인 위젯을 켜고
 		MainMapGameMode->UserInWidgetToggle(); //회원가입 위젯을 끈다

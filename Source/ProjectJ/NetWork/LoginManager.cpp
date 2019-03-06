@@ -52,16 +52,12 @@ void LoginManager::EndManager()
 }
 
 // 로그인/회원가입 매뉴 선택
-void LoginManager::logoutMenuChoice(int _select)
+void LoginManager::logoutMenuChoice()
 {
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
-	int size = sizeof(int);
-
-	memcpy(buf, &_select, sizeof(int));
-
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_LOGOUT_MENU_CHOICE, buf, size);
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_JOIN_MENU_CHOICE, buf, 0);
 }
 
 void LoginManager::exitJoin()

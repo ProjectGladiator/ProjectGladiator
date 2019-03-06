@@ -9,7 +9,7 @@
 // 문자열 데이터 [strlen(문자열)+1 4Byte][문자열]
 enum PROTOCOL {
 	EXIT = -1,
-	CLIENT_LOGOUT_MENU_CHOICE = 0,			// 로그아웃 메뉴 선택			[프로토콜][int]
+	CLIENT_JOIN_MENU_CHOICE = 0,			// 회원가입 메뉴 선택			[프로토콜][int]
 	CLIENT_LOGIN_MENU_CHOICE,				// 로그인 메뉴 선택				[프로토콜][int]
 	CLIENT_REQ_EXIT_JOIN,					// 회원가입 취소 선택			[프로토콜]
 	CLIENT_REQ_ID_OVERLAP_CHECK,			// 회원가입 ID중복체크 요청		[프로토콜][int][char *]
@@ -161,10 +161,14 @@ enum RESULT {
 #define CHARACTERCODESIZE 30
 #define PRODUCT_NAMESIZE 50
 #define ENCRYPT_KEY 951324896
-#define SERVERIP "127.0.0.1"
-//#define SERVERIP "14.36.166.64"
+//#define SERVERIP "127.0.0.1"
+//#define SERVERIP "192.168.0.141"	// 402ip 영준 그램노트북
+//#define SERVERIP "192.168.0.136"	// 202ip 영준 그램노트북
 //#define SERVERIP "192.168.0.134"	// 202ip 호연노트북
 //#define SERVERIP "192.168.0.154"	// 402ip 호연노트북
+//#define SERVERIP "192.168.0.166"	// 302ip 호연노트북
+#define SERVERIP "192.168.43.58"	// 호연핫스팟 호연노트북
+//#define SERVERIP "192.168.43.180"	// 호연핫스팟 영준그램노트북
 //#define SERVERIP "192.168.123.181"
 //#define SERVERIP "182.227.211.86"
 //#define SERVERIP "192.168.0.134"

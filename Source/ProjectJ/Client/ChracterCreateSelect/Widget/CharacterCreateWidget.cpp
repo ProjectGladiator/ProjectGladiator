@@ -49,7 +49,6 @@ void UCharacterCreateWidget::ChracterCreate()
 		{
 			CharacterManager::GetInstance()->Character_Req_Character(TCHAR_TO_UTF8(*id), MainMapPlayerController->GetJobCode());
 			NetworkClient_main::NetworkManager::GetInstance()->Send();
-			//NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
 			NickNameInputBox->SetText(FText::FromString(TEXT("")));
 			MainMapGameMode->CharacterSelectWidgetToggle();
@@ -75,7 +74,6 @@ void UCharacterCreateWidget::Cancel()
 	{
 		CharacterManager::GetInstance()->Character_Exit();
 		NetworkClient_main::NetworkManager::GetInstance()->Send();
-		NetworkClient_main::NetworkManager::GetInstance()->Wait();
 
 		MainMapGameMode->CharacterCreateWidgetToggle();
 		MainMapGameMode->CharacterSelectWidgetToggle();
