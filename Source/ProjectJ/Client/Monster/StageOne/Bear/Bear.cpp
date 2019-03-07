@@ -131,12 +131,13 @@ void ABear::Tick(float DeltaTime)
 			FRotator BearRotator = GetActorRotation();
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
 
+			//곰 에서 바라본 캐릭터의 로테이션
 			FRotator ToCharacterRotator = UKismetMathLibrary::NormalizedDeltaRotator(LooAtRotation, BearRotator);
 
 			//GLog->Log(FString::Printf(TEXT("ToCharacterRotator Yaw :%f\n"), ToCharacterRotator.Yaw));
 
 			//GLog->Log(FString::Printf(TEXT("Pitch : %f Yaw : %f"), LooAtRotation.Pitch, LooAtRotation.Yaw));
-			//SetActorRotation(LooAtRotation);
+			SetActorRotation(LooAtRotation);
 
 			if (Distance > TargetLimitDistance*2.0f)
 			{
