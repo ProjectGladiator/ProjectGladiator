@@ -149,6 +149,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	FRotator SpawnRotation;
 	FActorSpawnParameters SpawnActorOption;
 	int UserCount = -1;
+	int channelnum = 0;
 	AMyCharacter* MyCharacter = nullptr;
 	AMyCharacter* OtherUserCharacter = nullptr;
 	ATanker* Tanker = nullptr;
@@ -283,7 +284,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			memset(character_info, 0, sizeof(CharacterInfo));
 
 			// 캐릭터 정보 서버에서 받은거 넣어줌
-			StorageManager::GetInstance()->ChangeData(Data->data, character_info);
+			StorageManager::GetInstance()->ChangeData(Data->data, character_info,channelnum);
 
 			StorageManager::GetInstance()->PopData();
 

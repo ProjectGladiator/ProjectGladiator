@@ -121,7 +121,7 @@ void StorageManager::ChangeData(void * data, int &_count)
 	memcpy(&_count, ptr, sizeof(int));
 }
 
-// 수정중
+// 캐릭터슬롯정보
 void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot)
 {
  	char* ptr = (char*)data;
@@ -185,13 +185,48 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterS
 	}
 }
 
-// 캐릭터 정보
-void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
+// 캐릭터 정보 + 채널번호
+void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo, int& _channelnum)
 {
 	char* ptr = (char*)data;
 	
 	int len = 0;
-	
+	int channelnum = 0;
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_charinfo->code, ptr, len);
+	ptr += len;
+
+	memcpy(&_charinfo->job_code, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_charinfo->nick, ptr, len);
+	ptr += len;
+
+	memcpy(_charinfo->xyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+
+	memcpy(_charinfo->rot_xyz, ptr, sizeof(float) * 3);
+	ptr += sizeof(float) * 3;
+
+	memcpy(&channelnum, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	_channelnum = channelnum;
+}
+
+// 캐릭터 정보
+void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
+{
+	char* ptr = (char*)data;
+
+	int len = 0;
+
 	memcpy(&len, ptr, sizeof(int));
 	ptr += sizeof(int);
 

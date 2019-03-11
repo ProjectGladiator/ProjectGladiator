@@ -55,6 +55,7 @@ public:
 	void ChangeData(void* data, bool& type);
 	void ChangeData(void* data, int& _count);
 	void ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot);
+	void ChangeData(void* data, CharacterInfo*& _charinfo,int& _channelnum);
 	void ChangeData(void* data, CharacterInfo*& _charinfo);
 	void ChangeData(void* data, bool& _result, float*& _posxyz);
 	void ChangeData(void* data, float*& _posxyz, float*& _rotxyz);
