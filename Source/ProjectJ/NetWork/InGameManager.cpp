@@ -234,6 +234,7 @@ bool InGameManager::InGame_Recv_UserList(char * _buf)
 
 	return true;
 }
+
 // 접속한 다른유저 정보
 void InGameManager::InGame_Recv_ConnectUserInfo(char * _buf)
 {
