@@ -81,22 +81,25 @@ void ATanker::LeftClick()
 {
 	Super::LeftClick();
 
-	if (!IsRightClick && !MainMapPlayerController->bShowMouseCursor)
+	if (MainMapPlayerController)
 	{
-		if (IsAttack)
+		if (!IsRightClick && !MainMapPlayerController->bShowMouseCursor)
 		{
-			IsCombo = true;
-		}
-		else
-		{
-			GLog->Log(FString::Printf(TEXT("탱커 상태에서 왼쪽 클릭")));
-			IsAttack = true;
-
-			if (MyAnimInstance)
+			if (IsAttack)
 			{
-				MyAnimInstance->PlayAttackMontage();
-				CurrentCombo += 1;
-				MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
+				IsCombo = true;
+			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("탱커 상태에서 왼쪽 클릭")));
+				IsAttack = true;
+
+				if (MyAnimInstance)
+				{
+					MyAnimInstance->PlayAttackMontage();
+					CurrentCombo += 1;
+					MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
+				}
 			}
 		}
 	}
@@ -139,7 +142,7 @@ void ATanker::OnComboMontageSave()
 		IsCombo = false;
 		if (MyAnimInstance)
 		{
-			MyAnimInstance->PlayAttackMontage();
+			//MyAnimInstance->PlayAttackMontage();
 			CurrentCombo += 1;
 			MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
 		}

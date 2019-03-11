@@ -11,7 +11,7 @@ UDataTableComponent::UDataTableComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 	//ㅁㄴㅇㄻㄴㅇㄹㅁㄴㅇㅁㄴㅇ
-	static ConstructorHelpers::FObjectFinder<UDataTable>DT_Item(TEXT("DataTable'/Game/Assets/Item/ItemDataTable.ItemDataTable'"));
+	static ConstructorHelpers::FObjectFinder<UDataTable>DT_Item(TEXT("DataTable'/Game/Blueprints/Item/ItemDataTable.ItemDataTable'"));
 
 	if (DT_Item.Succeeded())
 	{

@@ -31,9 +31,6 @@ AMyCharacter::AMyCharacter()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	ClientCharacterSelectState CharacterSelectState;
-	ClientCharacterState = new ClientCharacterSelectState();
-
 	bUseControllerRotationYaw = true;
 
 	memset(nick, 0, sizeof(nick));
@@ -47,7 +44,7 @@ AMyCharacter::AMyCharacter()
 	SpringArm->bInheritPitch = true;
 	SpringArm->bInheritYaw = true;
 	SpringArm->bInheritRoll = false;
-	SpringArm->bDoCollisionTest = true;
+	SpringArm->bDoCollisionTest = false;
 
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
@@ -66,7 +63,7 @@ AMyCharacter::AMyCharacter()
 
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 
-	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	OtherCharacterController = nullptr;
 
 	MyCharacterUI = CreateDefaultSubobject<UMyCharacterUI>(TEXT("MyCharacterUI"));
 
@@ -80,9 +77,15 @@ void AMyCharacter::BeginPlay()
 
 	IsClick = false;
 
+	MainMapPlayerController = Cast<AMainMapPlayerController>(GetController());
+
 	if (MainMapPlayerController)
 	{
-		GLog->Log(FString::Printf(TEXT("메인맵 플레이어 컨트롤러 존재")));
+		ClientCharacterState = new ClientCharacterSelectState();
+	}
+
+	if (MainMapPlayerController)
+	{
 		MainMapPlayerController->ControlOtherCharacterMove.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterMove);
 		MainMapPlayerController->ControlOtherCharacerRotate.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterRotate);
 	}
@@ -127,7 +130,10 @@ void AMyCharacter::Tick(float DeltaTime)
 		}
 	}
 
-	ClientCharacterState->Tick(DeltaTime);
+	if (MainMapPlayerController)
+	{
+		ClientCharacterState->Tick(DeltaTime);
+	}
 }
 
 // Called to bind functionality to input
@@ -542,4 +548,14 @@ void AMyCharacter::SetDefaultCharacter()
 char * AMyCharacter::GetCharacterNickName()
 {
 	return nick;
+}
+
+AMainMapOtherPlayerController * AMyCharacter::GetOtherPlayerController()
+{
+	return OtherCharacterController;
+}
+
+UMyCharacterUI * AMyCharacter::GetMyCharacterUI()
+{
+	return MyCharacterUI;
 }

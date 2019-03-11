@@ -16,6 +16,12 @@ AInGameStartDoor::AInGameStartDoor()
 
 	DoorBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorBody"));
 	SetRootComponent(DoorBody);
+	
+	if (DoorBody)
+	{
+		DoorBody->SetCollisionProfileName(TEXT("OverlapAll"));
+	}
+
 	DoorLeft = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorLeft"));
 	DoorLeft->SetupAttachment(GetRootComponent());
 
@@ -39,8 +45,8 @@ AInGameStartDoor::AInGameStartDoor()
 	}
 
 	DoorLeft->SetRelativeLocation(FVector(-128.0f, 10.0f, 0));
-	DoorLeft->SetRelativeRotation(FRotator(0, 40.0f, 0));
-	//DoorLeft->SetRelativeRotation(FRotator(0, -90.0f, 0));
+	//DoorLeft->SetRelativeRotation(FRotator(0, 40.0f, 0));
+	DoorLeft->SetRelativeRotation(FRotator(0, -90.0f, 0));
 	DoorLeft->SetRelativeScale3D(FVector(1.0f, 2.0f, 1.0f));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>SM_DoorRight(TEXT("StaticMesh'/Game/Assets/MedievalDungeon/Mesh/SM_DoorWay_Large_Door_Right.SM_DoorWay_Large_Door_Right'"));
@@ -51,8 +57,8 @@ AInGameStartDoor::AInGameStartDoor()
 	}
 
 	DoorRight->SetRelativeLocation(FVector(128.0f, 10.0f, 0));
-	DoorRight->SetRelativeRotation(FRotator(0, 120.0f, 0));
-	//DoorRight->SetRelativeRotation(FRotator(0, -90.0f, 0));
+	//DoorRight->SetRelativeRotation(FRotator(0, 120.0f, 0));
+	DoorRight->SetRelativeRotation(FRotator(0, -90.0f, 0));
 	DoorRight->SetRelativeScale3D(FVector(1.0f, 2.0f, 1.0f));
 }
 

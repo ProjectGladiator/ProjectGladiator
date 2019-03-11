@@ -46,21 +46,21 @@ void ClientInGameState::Click(AMainMapPlayerController* _MainMapPlayerController
 					GLog->Log(ANSI_TO_TCHAR(OtherCharacter->GetCharacterNickName()));
 
 					auto OtherController = Cast<AMainMapOtherPlayerController>(OtherCharacter->GetController());
-					MyCharacter->MyCharacterUI->GetClickCharacterInteractionComponent()->ClickCharacterWidgetVisible();
+					MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->ClickCharacterWidgetVisible();
 
 					if (OtherController)
 					{
-						MyCharacter->MyCharacterUI->GetClickCharacterInteractionComponent()->ClickCharacterSetInfo(OtherCharacter);
-						MyCharacter->MyCharacterUI->GetClickCharacterInteractionComponent()->GetClickCharacterWidget()->ClickCharacterUpdate();
-						MyCharacter->MyCharacterUI->GetClickCharacterInteractionComponent()->ClickCharacterWidgetVisible();
+						MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->ClickCharacterSetInfo(OtherCharacter);
+						MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->GetClickCharacterWidget()->ClickCharacterUpdate();
+						MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->ClickCharacterWidgetVisible();
 					}
 				}
 			}
 		}
 		else
 		{
-			MyCharacter->MyCharacterUI->GetClickCharacterInteractionComponent()->GetClickCharacterWidget()->CharacterInteractionWidgetHidden();
-			MyCharacter->MyCharacterUI->GetClickCharacterInteractionComponent()->ClickCharacterWidgetHidden();
+			MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->GetClickCharacterWidget()->CharacterInteractionWidgetHidden();
+			MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->ClickCharacterWidgetHidden();
 		}
 	}
 }

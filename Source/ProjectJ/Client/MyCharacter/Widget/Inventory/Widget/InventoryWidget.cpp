@@ -21,7 +21,7 @@ void UInventoryWidget::NativeConstruct()
 	
 	if (MyCharacter)
 	{
-		Inventory = MyCharacter->MyCharacterUI->GetInventoryComponent();
+		Inventory = MyCharacter->GetMyCharacterUI()->GetInventoryComponent();
 	}
 	InventoryGrid = Cast<UUniformGridPanel>(GetWidgetFromName(TEXT("SlotGridPanel")));
 

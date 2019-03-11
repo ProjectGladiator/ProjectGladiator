@@ -34,6 +34,8 @@ AMainMapGameMode::AMainMapGameMode()
 	PrimaryActorTick.bCanEverTick = true;
 
 	StageManager = CreateDefaultSubobject<UStageManager>(TEXT("StageManager"));
+
+	MaxChannelUserCount = 100;
 }
 
 void AMainMapGameMode::BeginPlay()
@@ -285,7 +287,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			// 캐릭터 정보 서버에서 받은거 넣어줌
 			StorageManager::GetInstance()->ChangeData(Data->data, character_info,channelnum);
-
+			GLog->Log(FString::Printf(TEXT("channelnum %d"), channelnum));
 			StorageManager::GetInstance()->PopData();
 
 			x = character_info->xyz[0]; y = character_info->xyz[1]; z = character_info->xyz[2];
@@ -554,6 +556,7 @@ void AMainMapGameMode::AddLoginUser(AMyCharacter * _OtherCharacter)
 	if (_OtherCharacter)
 	{
 		OtherLoginUserList.Add(_OtherCharacter);
+		CurrentChannelUserCount = OtherLoginUserList.Num();
 	}	
 }
 
@@ -562,6 +565,7 @@ void AMainMapGameMode::DeleteLoginUser(AMyCharacter * _OtherCharacter)
 	if (_OtherCharacter)
 	{
 		OtherLoginUserList.RemoveSingle(_OtherCharacter);
+		CurrentChannelUserCount = OtherLoginUserList.Num();
 	}
 }
 
@@ -605,4 +609,14 @@ void AMainMapGameMode::LoginUserAllDestory()
 	}
 
 	OtherLoginUserList.Empty();
+}
+
+int32 AMainMapGameMode::GetCurrentChannelUserCount()
+{
+	return CurrentChannelUserCount;
+}
+
+int32 AMainMapGameMode::GetMaxChannelUserMaxCount()
+{
+	return MaxChannelUserCount;
 }

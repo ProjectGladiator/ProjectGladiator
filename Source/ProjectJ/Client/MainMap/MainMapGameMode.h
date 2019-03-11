@@ -19,7 +19,6 @@ private:
 		class UTitleWidgetUserIn* UserInWidget; //회원가입 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UserLoginWidget, Meta = (AllowPrivateAccess = true))
 		class UTitleWidgetLogin* LoginWidget; //로그인 위젯
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterCreateSelectWidget, Meta = (AllowPrivateAccess = true))
 		class UCharacterSelectWidget* CharacterSelectWidget;//캐릭터 선택 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = CharacterCreateSelectWidget, Meta = (AllowPrivateAccess = true))
@@ -30,6 +29,10 @@ private:
 		class UWidgetOk* OkWidget; //에러 확인 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
 		class UUserWidget* LoadingWidget; //로딩 위젯
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
+		int32 CurrentChannelUserCount;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
+		int32 MaxChannelUserCount;
 	UPROPERTY()
 		class UStageManager* StageManager;
 	UPROPERTY()
@@ -66,4 +69,7 @@ public:
 
 	void LoginUserDestory(char* _OtherCharacterCode);
 	void LoginUserAllDestory();
+	
+	int32 GetCurrentChannelUserCount();
+	int32 GetMaxChannelUserMaxCount();
 };

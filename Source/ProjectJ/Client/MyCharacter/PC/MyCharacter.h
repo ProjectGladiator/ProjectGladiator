@@ -20,7 +20,7 @@ private:
 	char nick[NICKNAMESIZE];
 	char CharacterCode[CHARACTERCODE];
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = OtherPC, Meta = (AllowPrivateAccess = true))
 		class AMainMapOtherPlayerController* OtherCharacterController;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		int32 Level; //현재 레벨
@@ -79,10 +79,10 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
 		int32 CurrentCombo; //현재 콤보의 단계
 	UPROPERTY()
+		class UMyCharacterUI* MyCharacterUI;
+	UPROPERTY()
 		class UMyAnimInstance* MyAnimInstance;
 public:
-	UPROPERTY()
-		class UMyCharacterUI* MyCharacterUI;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 		class USpringArmComponent* SpringArm;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
@@ -173,4 +173,8 @@ public:
 	void SetDefaultCharacter();
 
 	char* GetCharacterNickName();
+
+	AMainMapOtherPlayerController* GetOtherPlayerController();
+
+	UMyCharacterUI* GetMyCharacterUI();
 };
