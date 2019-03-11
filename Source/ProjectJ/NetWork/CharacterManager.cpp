@@ -299,6 +299,7 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 	CharacterInfo charterinfo;
 	int nicklen = 0;
 	int codelen = 0;
+	int channelnum = 0;
 	bool check;
 
 	memcpy(&check, ptr, sizeof(bool));
@@ -343,6 +344,10 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 		ptr += sizeof(float) * 3;
 		datasize += sizeof(float) * 3;
 
+		memcpy(&channelnum, ptr, sizeof(int));
+		ptr += sizeof(int);
+		datasize += sizeof(int);
+
 		// ptrdata ÃÊ±âÈ­
 		memset(ptrdata, 0, sizeof(ptrdata));
 		char* ptr_packetdata = ptrdata;
@@ -368,6 +373,9 @@ bool CharacterManager::Character_Recv_Enter(char * _buf)
 
 		memcpy(ptr_packetdata, &charterinfo.rot_xyz, sizeof(float) * 3);
 		ptr_packetdata += sizeof(float) * 3;
+
+		memcpy(ptr_packetdata, &channelnum, sizeof(int));
+		ptr_packetdata += sizeof(int);
 
 		StorageManager::GetInstance()->PushData(PCHARACTERDATA_ENTER_INFO, (void*)&ptrdata, datasize);
 
