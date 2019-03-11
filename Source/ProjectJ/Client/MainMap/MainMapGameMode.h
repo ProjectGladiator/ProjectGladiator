@@ -61,7 +61,9 @@ public:
 
 	void AddLoginUser(AMyCharacter* _OtherCharacter);
 	void DeleteLoginUser(AMyCharacter* _OtherCharacter);
+
 	AMyCharacter* GetLoginUser(char* _OtherCharacterCode);
 
 	void LoginUserDestory(char* _OtherCharacterCode);
+	void LoginUserAllDestory();
 };

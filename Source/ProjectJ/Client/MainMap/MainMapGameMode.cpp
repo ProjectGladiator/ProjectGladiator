@@ -579,7 +579,7 @@ AMyCharacter* AMainMapGameMode::GetLoginUser(char* _OtherCharacterCode)
 
 void AMainMapGameMode::LoginUserDestory(char * _OtherCharacterCode)
 {
-	AMyCharacter* DestoryOtherCharacter = GetLoginUser(_OtherCharacterCode);
+	auto DestoryOtherCharacter = GetLoginUser(_OtherCharacterCode);
 
 	if (DestoryOtherCharacter)
 	{
@@ -591,4 +591,17 @@ void AMainMapGameMode::LoginUserDestory(char * _OtherCharacterCode)
 	{
 		GLog->Log(FString::Printf(TEXT("삭제 하려는 캐릭터가 존재하지 않음")));
 	}
+}
+
+void AMainMapGameMode::LoginUserAllDestory()
+{
+	for (int i = 0; i < OtherLoginUserList.Num(); i++)
+	{
+		if (OtherLoginUserList[i])
+		{
+			OtherLoginUserList[i]->Destroy();
+		}
+	}
+
+	OtherLoginUserList.Empty();
 }
