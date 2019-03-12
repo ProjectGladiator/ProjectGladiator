@@ -179,7 +179,9 @@ enum RESULT {
 	// 인게임매니저 결과
 	RT_INGAME_MOVE = 300,				// 이동
 	RT_INGAME_OTHERPLAYER_INFO,			// 다른 플레이어 정보
-	RT_INGAME_OTHERPLAYER_LIST			// 다른 플레이어 리스트
+	RT_INGAME_OTHERPLAYER_LIST,			// 다른 플레이어 리스트
+	RT_INGAME_CHANNEL_INFO,				// 채널 정보
+	RT_INGAME_OTHERPLAYER_LEAVE			//
 };
 
 #define USERCOUNT 200

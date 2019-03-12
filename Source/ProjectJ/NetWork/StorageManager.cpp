@@ -289,6 +289,19 @@ void StorageManager::ChangeData(void * data, char *& _code, float *& _pos_rot_xy
 	ptr += sizeof(float) * 3;
 }
 
+// 다른 플레이어 나간정보용
+void StorageManager::ChangeData(void * data, char *& _code)
+{
+	int len = 0;
+	char* ptr = (char*)data;
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_code, ptr, len);
+	ptr += len;
+}
+
 // 다른 플레이어 이동정보 결과용
 void StorageManager::ChangeData(void * data, OtherCharacterInfo& _otherinfo)
 {
@@ -303,6 +316,31 @@ void StorageManager::ChangeData(void * data, OtherCharacterInfo& _otherinfo)
 
 	memcpy(_otherinfo.xyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;
+}
+
+// 채널 정보
+void StorageManager::ChangeData(void * data, ChannelInfo *& _channelinfo)
+{
+	char* ptr = (char*)data;
+
+	float channelnum = 0;
+	float channelusercount = 0;
+
+	for (int i = 0; i < 6; i++)
+	{
+		memcpy(&channelnum, ptr, sizeof(float));
+		ptr += sizeof(float);
+
+		memcpy(&channelusercount, ptr, sizeof(float));
+		ptr += sizeof(float);
+
+		_channelinfo[i].channelNum = channelnum;
+		_channelinfo[i].channelUsercount = channelusercount;
+
+		// 지역 초기화
+		channelnum = 0;
+		channelusercount = 0;
+	}
 }
 
 // Front 삭제

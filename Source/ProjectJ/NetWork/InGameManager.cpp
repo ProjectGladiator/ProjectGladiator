@@ -103,6 +103,16 @@ void InGameManager::InGame_Req_Rotation(float _rx, float _ry, float _rz)
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MOVE_ROTATION, buf, datasize);
 }
 
+// 채널 정보 요청
+void InGameManager::InGame_Req_ChannelInfo()
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_CHANNEL_INFO, buf, 0);
+
+}
+
 // 이동 시작 요청
 //void InGameManager::InGame_Req_MoveStart(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry)
 //{
@@ -421,6 +431,77 @@ void InGameManager::InGame_Recv_OtherUserRotation(char * _buf)
 	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_OTHERROTATION, data, size);
 }
 
+// 다른 유저 나간정보
+void InGameManager::InGame_Recv_OtherUserLeave(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	char code[CHARACTERCODESIZE];
+	char* ptr_data = data;
+	int size = 0;
+	int len = 0;
+
+	memset(code, 0, CHARACTERCODESIZE);
+
+	// 코드 사이즈
+	memcpy(&len, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &len, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 코드
+	memcpy(code, ptr_buf, len);
+	ptr_buf += len;
+	size += len;
+	memcpy(ptr_data, code, len);
+	ptr_data += len;
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_LEAVE_PLAYER, data, size);
+}
+
+// 채널 정보
+void InGameManager::InGame_Recv_ChannelInfo(char * _buf)
+{
+	char* ptr = _buf;
+
+	char data[BUFSIZE];
+	char* ptr_data = data;
+	int size = 0;
+
+	int channelnum = 0;
+	int channelusercount = 0;
+
+	float f_channelnum = 0;
+	float f_channelusercount = 0;
+
+	for (int i = 0; i < 6; i++)
+	{
+		// 채널번호
+		memcpy(&channelnum, ptr, sizeof(int));
+		ptr += sizeof(int);
+		// 해당 채널 유저수
+		memcpy(&channelusercount, ptr, sizeof(int));
+		ptr += sizeof(int);
+
+		// 형변환
+		f_channelnum = (float)channelnum;
+		f_channelusercount = (float)channelusercount;
+
+		// data에 채널번호 패킹
+		memcpy(ptr_data, &f_channelnum, sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+		// data에 채널 유저수 패킹
+		memcpy(ptr_data, &f_channelusercount, sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+	}
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_CHANNEL_INFO, data, size);
+}
+
 RESULT InGameManager::InGameInitRecvResult(User * _user)
 {
 	PROTOCOL protocol;
@@ -466,6 +547,14 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 	case SERVER_INGAME_MOVE_ROTATION:
 		InGame_Recv_OtherUserRotation(buf);
 		result = RT_INGAME_MOVE;
+		break;
+	case SERVER_INGAME_OTHERPLAYER_LEAVE:
+		InGame_Recv_OtherUserLeave(buf);
+		result = RT_INGAME_OTHERPLAYER_LEAVE;
+		break;
+	case SERVER_INGAME_CHANNLE_INFO_RESULT:
+		InGame_Recv_ChannelInfo(buf);
+		result = RT_INGAME_CHANNEL_INFO;
 		break;
 	default:
 		break;

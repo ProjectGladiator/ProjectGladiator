@@ -28,6 +28,13 @@ struct OtherCharacterInfo
 	float xyz[3];
 };
 
+// 채널 정보
+struct ChannelInfo
+{
+	float channelNum;
+	float channelUsercount;
+};
+
 class Character
 {
 private:

@@ -24,7 +24,9 @@ namespace DataProtocol {
 		PGAMEDATA_PLAYER_OTHERROTATION,			// 다른유저 회전
 		PGAMEDATA_USERLIST_USER,				// 유저 정보
 		PGAMEDATA_USERLIST_EMPTY,
-		PGAMEDATA_USERLIST_COUNT				// 유저리스트 카운트
+		PGAMEDATA_USERLIST_COUNT,				// 유저리스트 카운트
+		PGAMEDATA_CHANNEL_INFO,					// 채널 정보
+		PGAMEDATA_LEAVE_PLAYER					// 다른유저가 게임에서 나갔을때
 	};
 	// 공통 프로토콜
 	enum PGLOBAL { 
