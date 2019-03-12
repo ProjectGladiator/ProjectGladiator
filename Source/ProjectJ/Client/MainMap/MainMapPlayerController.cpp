@@ -230,3 +230,10 @@ void AMainMapPlayerController::C2S_RotationcConfirm(FRotator & Rotation)
 	InGameManager::GetInstance()->InGame_Req_Rotation(Rotation.Roll, Rotation.Pitch, Rotation.Yaw);
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
+
+void AMainMapPlayerController::Possess(APawn * InPawn)
+{
+	Super::Possess(InPawn);
+
+
+}

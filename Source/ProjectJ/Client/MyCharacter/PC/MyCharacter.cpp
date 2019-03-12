@@ -14,8 +14,9 @@
 #include "Gunner/Gunner.h"
 #include "MyAnimInstance.h"
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
-#include "Client/MainMap/MainMapPlayerController.h"
 #include "TimerManager.h"
+#include "client/MainMap/MainMapGameMode.h"
+#include "Client/MainMap/MainMapPlayerController.h"
 #include "Client/MainMap/MainMapOtherPlayerController.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/Inventory/Inventory.h"
@@ -56,6 +57,7 @@ AMyCharacter::AMyCharacter()
 
 	IsRightClick = false;
 	IsAttack = false;
+	IsClick = false;
 
 	MaxHP = 100.0f;
 	CurrentHP = MaxHP;
@@ -75,35 +77,15 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	IsClick = false;
-
-	MainMapPlayerController = Cast<AMainMapPlayerController>(GetController());
-
-	if (MainMapPlayerController)
-	{
-		ClientCharacterState = new ClientCharacterSelectState();
-	}
-
-	if (MainMapPlayerController)
-	{
-		MainMapPlayerController->ControlOtherCharacterMove.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterMove);
-		MainMapPlayerController->ControlOtherCharacerRotate.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterRotate);
-	}
-
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 }
 
 void AMyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	switch (EndPlayReason)
+	if (ClientCharacterState)
 	{
-	case EEndPlayReason::RemovedFromWorld:
-		if (ClientCharacterState)
-		{
-			delete ClientCharacterState;
-			ClientCharacterState = nullptr;
-		}
-		break;
+		delete ClientCharacterState;
+		ClientCharacterState = nullptr;
 	}
 }
 
@@ -160,6 +142,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("Inventory"), IE_Pressed, this, &AMyCharacter::InventoryToggle);
 
 	PlayerInputComponent->BindAction(TEXT("Party"), IE_Pressed, this, &AMyCharacter::PartyToggle);
+
+	PlayerInputComponent->BindAction(TEXT("Menu"), IE_Pressed, this, &AMyCharacter::MenuToggle);
 }
 
 void AMyCharacter::MoveForward(float Value)
@@ -525,6 +509,16 @@ void AMyCharacter::PartyToggle()
 	}
 }
 
+void AMyCharacter::MenuToggle()
+{
+	auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	if (MainMapGameMode)
+	{
+		MainMapGameMode->MenuWidgetToggle();
+	}
+}
+
 void AMyCharacter::SetClientCharacterState(ClientState * _NewClientCharacterState)
 {
 	if (!ClientCharacterState)
@@ -542,6 +536,14 @@ void AMyCharacter::SetDefaultCharacter()
 	{
 		MyCharacterUI->SetMyCharacterUI();
 		MyCharacterUI->GetPartyComponent()->PartyJoin(this);
+	}
+
+	MainMapPlayerController = Cast<AMainMapPlayerController>(GetController());
+
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->ControlOtherCharacterMove.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterMove);
+		MainMapPlayerController->ControlOtherCharacerRotate.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterRotate);
 	}
 }
 

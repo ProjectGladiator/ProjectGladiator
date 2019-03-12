@@ -167,6 +167,7 @@ public:
 
 	void InventoryToggle();
 	void PartyToggle();
+	void MenuToggle();
 
 	void SetClientCharacterState(ClientState* _NewClientCharacterState);
 

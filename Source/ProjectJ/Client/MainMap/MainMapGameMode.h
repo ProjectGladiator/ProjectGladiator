@@ -30,13 +30,17 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
 		class UUserWidget* LoadingWidget; //로딩 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
-		int32 CurrentChannelUserCount;
+		class UMenuWidget* MenuWidget;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
-		int32 MaxChannelUserCount;
+		float CurrentChannelUserCount;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
+		float MaxChannelUserCount;
 	UPROPERTY()
 		class UStageManager* StageManager;
 	UPROPERTY()
 		class AMyCharacter* SelectCharacter;
+	UPROPERTY()
+		class AMyCharacter* CreateSelectCharacter;
 	UPROPERTY()
 		TArray<class AMyCharacter*> OtherLoginUserList;
 	UPROPERTY()
@@ -56,6 +60,7 @@ public:
 	void CancelWidgetToggle(const FText& Message); //에러 다시시도,취소 위젯 보여주기
 	void OkWidgetToggle(const FText& Message); //에러 확인 위젯 보여주기
 	void LoadingWidgetViewScreen(); //로딩 위젯 화면에 붙이기
+	void MenuWidgetToggle();
 	
 	UFUNCTION()
 		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수	
@@ -70,6 +75,6 @@ public:
 	void LoginUserDestory(char* _OtherCharacterCode);
 	void LoginUserAllDestory();
 	
-	int32 GetCurrentChannelUserCount();
-	int32 GetMaxChannelUserMaxCount();
+	float GetCurrentChannelUserCount();
+	float GetMaxChannelUserCount();
 };

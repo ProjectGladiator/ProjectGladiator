@@ -60,4 +60,7 @@ public:
 	   
 	void C2S_MoveConfirm(FVector& Location);
 	void C2S_RotationcConfirm(FRotator& Rotation);
+
+	UFUNCTION()
+		virtual void Possess(APawn* InPawn) override;
 };

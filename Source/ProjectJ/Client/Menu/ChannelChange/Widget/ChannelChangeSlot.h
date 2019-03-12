@@ -31,4 +31,6 @@ public:
 	void SetChannelInfo(class AMainMapGameMode* _MainMapGameMode);
 
 	void InitChannelSlot(int32 _ChannelIndex);
+
+	void ChannelSlotUpdate();
 };
