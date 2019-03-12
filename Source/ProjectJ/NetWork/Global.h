@@ -62,13 +62,13 @@ enum PROTOCOL {
 	CLIENT_INGAME_OTHERPLAYERLIST,			// 클라 다른플레이어 리스트 요청	[프로토콜][]
 	CLIENT_INGAME_MOVE_START,				// 클라 이동 시작					[프로토콜]
 	CLIENT_INGAME_MOVE_REPORT,				// 클라 이동중 보고					[프로토콜]
-	CLIENT_INGAME_MOVE_END,					// 클라 이동 끝					[프로토콜]
+	CLIENT_INGAME_MOVE_END,					// 클라 이동 끝						[프로토콜]
 	CLIENT_INGAME_MOVE_ROTATION,			// 클라 회전
-	SERVER_INGAME_MOVE_ORDER,				// 서버 이동 명령				[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간]
-	SERVER_INGAME_MOVE_RESULT,				// 서버 이동 결과				[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간]
-	SERVER_INGAME_MOVE_OTHERPLAYERINFO,		// 다른플레이어 정보			[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간][닉네임사이즈][닉네임]
+	SERVER_INGAME_MOVE_ORDER,				// 서버 이동 명령					[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간]
+	SERVER_INGAME_MOVE_RESULT,				// 서버 이동 결과					[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간]
+	SERVER_INGAME_MOVE_OTHERPLAYERINFO,		// 다른플레이어 정보				[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간][닉네임사이즈][닉네임]
 	SERVER_INGAME_MOVE_ROTATION,			// 클라 회전
-	SERVER_INGAME_OTHERPLAYERLIST_RESULT,	// 플레이어 리스트 			[프로토콜][INT:카운트][INT:닉네임사이즈][CHAR:닉네임][VECTOR:위치]...
+	SERVER_INGAME_OTHERPLAYERLIST_RESULT,	// 플레이어 리스트 					[프로토콜][INT:카운트][INT:닉네임사이즈][CHAR:닉네임][VECTOR:위치]...
 	SERVER_INGAME_OTHERPLAYER_CONNECT,		// 접속한 플레이어 정보
 
 	CLIENT_INGAME_MENU_REQ_CHARACTER,		// 클라 캐릭터 선택화면으로 요청
@@ -76,6 +76,7 @@ enum PROTOCOL {
 	CLIENT_INGAME_MENU_EXIT,				// 클라 게임종료
 	SERVER_INGAME_MENU_RESULT_CHARACTER,	// 서버 캐릭터 선택화면 결과
 	SERVER_INGAME_MENU_RESULT_LOGOUT,		// 서버 로그아웃 결과
+	SERVER_INGAME_OTHERPLAYER_LEAVE,		// 서버 다른 유저가 인게임에서 나갈때
 
 	CLIENT_INGAME_CHANNEL_INFO,				// 클라 채널 정보 요청
 	CLIENT_INGAME_CHANNEL_CHANGE,			// 클라 채널 이동 요청
@@ -190,13 +191,13 @@ enum RESULT {
 #define CHARACTERCODESIZE 30
 #define PRODUCT_NAMESIZE 50
 #define ENCRYPT_KEY 951324896
-#define SERVERIP "127.0.0.1"
+//#define SERVERIP "127.0.0.1"
 //#define SERVERIP "192.168.0.141"	// 402ip 영준 그램노트북
 //#define SERVERIP "192.168.0.136"	// 202ip 영준 그램노트북
 //#define SERVERIP "192.168.0.134"	// 202ip 호연노트북
 //#define SERVERIP "192.168.0.154"	// 402ip 호연노트북
 //#define SERVERIP "192.168.0.166"	// 302ip 호연노트북
-//#define SERVERIP "192.168.43.58"	// 호연핫스팟 호연노트북
+#define SERVERIP "192.168.43.58"	// 호연핫스팟 호연노트북
 //#define SERVERIP "192.168.43.180"	// 호연핫스팟 영준그램노트북
 //#define SERVERIP "127.0.43.180"
 //#define SERVERIP "192.168.123.181"
