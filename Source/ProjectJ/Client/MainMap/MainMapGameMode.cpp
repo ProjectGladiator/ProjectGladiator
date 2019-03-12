@@ -21,7 +21,11 @@
 #include "Client/MyCharacter/PC/MyAnimInstance.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/State/ClientState/ClientState.h"
+#include "Client/State/ClientState/ClientCharacterSelectState.h"
 #include "Client/State/ClientState/ClientInGameState.h"
+#include "Client/Menu/MenuWidget.h"
+#include "Client/Menu/ChannelChange/Widget/ChannelChange.h"
+#include "client/Menu/ChannelChange/Widget/ChannelChangeSlot.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -41,6 +45,7 @@ AMainMapGameMode::AMainMapGameMode()
 void AMainMapGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	FActorSpawnParameters SpawnActorOption;
 
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AChracterCreateCamera::StaticClass(), Cameras);
 
@@ -125,6 +130,15 @@ void AMainMapGameMode::BeginPlay()
 		LoadingWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass);
 	}
 
+	FStringClassReference MenuWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Menu/W_Menu.W_Menu_C'"));
+
+	if (UClass* MyMenuWidgetClass = MenuWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		MenuWidget = Cast<UMenuWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyMenuWidgetClass));
+		MenuWidget->AddToViewport();
+		MenuWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+	}
+
 	// 서버와 연결 시도
 	if (NetworkClient_main::NetworkManager::GetInstance()->Connect() == false)
 	{
@@ -136,6 +150,18 @@ void AMainMapGameMode::BeginPlay()
 	}
 
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	CreateSelectCharacter = GetWorld()->SpawnActor<AMyCharacter>(CreateSelectCharacter->StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, SpawnActorOption);
+
+	if (CreateSelectCharacter)
+	{
+		CreateSelectCharacter->SetClientCharacterState(new ClientCharacterSelectState());
+
+		if (MainMapPlayerController)
+		{
+			MainMapPlayerController->Possess(CreateSelectCharacter);
+		}
+	}
 }
 
 void AMainMapGameMode::Tick(float DeltaTime)
@@ -151,7 +177,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	FRotator SpawnRotation;
 	FActorSpawnParameters SpawnActorOption;
 	int UserCount = -1;
-	int channelnum = 0;
+	int Channelnum = 0;
 	AMyCharacter* MyCharacter = nullptr;
 	AMyCharacter* OtherUserCharacter = nullptr;
 	ATanker* Tanker = nullptr;
@@ -286,8 +312,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			memset(character_info, 0, sizeof(CharacterInfo));
 
 			// 캐릭터 정보 서버에서 받은거 넣어줌
-			StorageManager::GetInstance()->ChangeData(Data->data, character_info,channelnum);
-			GLog->Log(FString::Printf(TEXT("channelnum %d"), channelnum));
+			StorageManager::GetInstance()->ChangeData(Data->data, character_info, Channelnum);
+			GLog->Log(FString::Printf(TEXT("Channelnum %d"), Channelnum));
 			StorageManager::GetInstance()->PopData();
 
 			x = character_info->xyz[0]; y = character_info->xyz[1]; z = character_info->xyz[2];
@@ -317,7 +343,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				GLog->Log(ANSI_TO_TCHAR(character_info->code));
 			
 				MyCharacter->SetCharacterCode(character_info->code,character_info->nick);
-				MyCharacter->SetDefaultCharacter();
 				MyCharacter->SetClientCharacterState(new ClientInGameState());
 				MyCharacter->SetIsClick(true);
 
@@ -326,6 +351,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 					MainMapPlayerController->bShowMouseCursor = false;
 					MainMapPlayerController->SetInputMode(FInputModeGameOnly());
 					MainMapPlayerController->Possess(MyCharacter);
+					MyCharacter->SetDefaultCharacter();
 				}				
 			}
 			else
@@ -490,6 +516,22 @@ void AMainMapGameMode::LoadingWidgetViewScreen()
 	}
 }
 
+void AMainMapGameMode::MenuWidgetToggle()
+{
+	if (MenuWidget)
+	{
+		if (MenuWidget->GetVisibility() == ESlateVisibility::Hidden)
+		{
+			MenuWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			MenuWidget->SetVisibility(ESlateVisibility::Hidden);
+			MenuWidget->ChannelChangeWidgetHidden();
+		}
+	}
+}
+
 void AMainMapGameMode::MapLoadComplete()
 {
 	SelectCharacterDestroy();
@@ -611,12 +653,12 @@ void AMainMapGameMode::LoginUserAllDestory()
 	OtherLoginUserList.Empty();
 }
 
-int32 AMainMapGameMode::GetCurrentChannelUserCount()
+float AMainMapGameMode::GetCurrentChannelUserCount()
 {
 	return CurrentChannelUserCount;
 }
 
-int32 AMainMapGameMode::GetMaxChannelUserMaxCount()
+float AMainMapGameMode::GetMaxChannelUserCount()
 {
 	return MaxChannelUserCount;
 }

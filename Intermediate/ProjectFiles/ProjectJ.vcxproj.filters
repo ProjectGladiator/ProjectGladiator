@@ -819,6 +819,9 @@
     <ClInclude Include="..\..\Source\ProjectJ\Client\Menu\ChannelChange\Structure\FChannelInfo.h">
       <Filter>Source\ProjectJ\Client\Menu\ChannelChange\Structure</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Source\ProjectJ\Client\Menu\MenuWidget.h">
+      <Filter>Source\ProjectJ\Client\Menu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\ProjectJ\Client\Menu\ChannelChange\Widget\ChannelChangeSlot.cpp">
@@ -829,6 +832,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectJ\Client\Menu\ChannelChange\Structure\FChannelInfo.cpp">
       <Filter>Source\ProjectJ\Client\Menu\ChannelChange\Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ProjectJ\Client\Menu\MenuWidget.cpp">
+      <Filter>Source\ProjectJ\Client\Menu</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
