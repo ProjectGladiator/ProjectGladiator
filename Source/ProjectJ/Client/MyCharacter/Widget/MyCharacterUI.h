@@ -42,4 +42,6 @@ public:
 
 	void MyCharacterWidgetVisible();
 	void MyCharacterWidgetHidden();
+
+	void AllUIWidgetHidden();
 };

@@ -12,4 +12,8 @@ struct PROJECTJ_API FChannelInfo
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMainMapGameMode* MainMapGameMode;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int32 ChannelIndex;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int32 CurrentChannelUserCount;
 };

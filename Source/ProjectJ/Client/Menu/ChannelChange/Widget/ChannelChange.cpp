@@ -61,13 +61,13 @@ void UChannelChange::CreateChannelChange()
 	}
 }
 
-void UChannelChange::ChannelUpdate(int32 _ChannelNum)
+void UChannelChange::ChannelUpdate(int32 _ChannelNum, int32 _CurrentChannelUserCount)
 {
 	auto ChannelSlot = ChannelChangeSlots[_ChannelNum];
 
 	if (ChannelSlot)
 	{
-		ChannelSlot->ChannelSlotUpdate();
+		ChannelSlot->ChannelSlotUpdate(_CurrentChannelUserCount);
 	}
 }
 

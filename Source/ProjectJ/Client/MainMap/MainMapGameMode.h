@@ -8,7 +8,7 @@
 #include "MainMapGameMode.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTJ_API AMainMapGameMode : public AGameModeBase
@@ -61,9 +61,7 @@ public:
 	void OkWidgetToggle(const FText& Message); //에러 확인 위젯 보여주기
 	void LoadingWidgetViewScreen(); //로딩 위젯 화면에 붙이기
 	void MenuWidgetToggle();
-	
-	UFUNCTION()
-		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수	
+
 	void SelectCharacterSpawn(CHARACTER_JOB _SelectJob);
 	void SelectCharacterDestroy();
 
@@ -74,7 +72,22 @@ public:
 
 	void LoginUserDestory(char* _OtherCharacterCode);
 	void LoginUserAllDestory();
-	
+
 	float GetCurrentChannelUserCount();
 	float GetMaxChannelUserCount();
+
+	UFUNCTION()
+		void LogOut();
+	UFUNCTION()
+		void CharacterSelect();
+
+	void ReadyCharacterSelectLogOut(const FName& _BindFunctionName);
+
+	UFUNCTION()
+		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수	
+	UFUNCTION()
+		void MainMapUnLoadCompleteToTitle(); //메인 맵 스트리밍 레벨 언로드 완료시 호출하는 함수
+	UFUNCTION()
+		void MainMapUnLoadCompleteToCharacterSelect(); //메인 맵 스트리밍 레벨 언로드 완료시 호출하는 함수
+
 };

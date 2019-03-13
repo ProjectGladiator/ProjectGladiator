@@ -6,9 +6,9 @@
 #include "Blueprint/UserWidget.h"
 #include "MenuWidget.generated.h"
 
-/**
- *
- */
+DECLARE_DYNAMIC_DELEGATE(FLogOutDelegate);
+DECLARE_DYNAMIC_DELEGATE(FCharacterSelectDelegate);
+
 UCLASS()
 class PROJECTJ_API UMenuWidget : public UUserWidget
 {
@@ -25,6 +25,9 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MenuButton, Meta = (AllowPrivateAccess = true))
 		class UButton* GameExitButton;
 public:
+	FLogOutDelegate OnLogOut;
+	FCharacterSelectDelegate OnCharacterSelect;
+
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()

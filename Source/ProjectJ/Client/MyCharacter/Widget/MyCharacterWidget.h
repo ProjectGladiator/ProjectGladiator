@@ -18,9 +18,21 @@ private:
 		class AMyCharacter* MyCharacter;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
 		class UButton* MyCharacterButton;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
+		class UProgressBar* MyCharacterHPBar;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
+		class UProgressBar* MyCharacterMPBar;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
+		class UTextBlock* MyCharacterHPText;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
+		class UTextBlock* MyCharacterMPText;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
+		class UTextBlock* MyCharacterNickName;
 public:
 	virtual void NativeConstruct() override;
 	
-	
+	void SetInit(class AMyCharacter* _MyCharacter);
+	void HPUpdate();
+	void MPUpdate();
 	
 };

@@ -4,6 +4,9 @@
 //클라 헤더
 #include "Components/Button.h"
 #include "Client/Menu/ChannelChange/Widget/ChannelChange.h"
+#include "Client/MainMap/MainMapPlayerController.h"
+#include "Kismet/GameplayStatics.h"
+
 //서버 헤더
 
 void UMenuWidget::NativeConstruct()
@@ -44,16 +47,47 @@ void UMenuWidget::NativeConstruct()
 
 void UMenuWidget::ChannelChange()
 {
-	ChannelChangeWidgetVisible();
+	auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->C2S_ReqMenuChannelInfo();
+		ChannelChangeWidgetVisible();
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("MenuWidget ChannelChange MainMapPlayerController이 없음")));
+	}
 }
 
 void UMenuWidget::CharacterSelect()
 {
+	auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->C2S_ReqMenuCharacterSelect();
+		OnCharacterSelect.Execute();
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("MenuWidget CharacterSelect MainMapPlayerController이 없음")));
+	}
 }
 
 void UMenuWidget::LogOut()
 {
+	auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->C2S_ReqMenuLogOut();
+		OnLogOut.Execute();
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("MenuWidget LogOut MainMapPlayerController이 없음")));
+	}
 }
 
 void UMenuWidget::GameExit()

@@ -72,7 +72,10 @@ void UTitleWidgetLogin::Login()
 		// 아이디, 패스워드 에디트박스에서 Text 뽑아서 FString 으로 변환
 		FString id = IDInputBox->Text.ToString();
 		FString pw = PWInputBox->Text.ToString();
-	
+
+		IDInputBox->SetText(FText::FromString(TEXT("")));
+		PWInputBox->SetText(FText::FromString(TEXT("")));
+
 		// FString -> ANSI 표준으로 변환 후 인자로 넣어 로그인 요청 메세지 만듦
 		LoginManager::GetInstance()->reqLogin(TCHAR_TO_ANSI(*id), TCHAR_TO_ANSI(*pw));
 		// 패킷 전송 - Send

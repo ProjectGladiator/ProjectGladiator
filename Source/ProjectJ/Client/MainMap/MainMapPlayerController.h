@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "Client/State/ClientState/ClientState.h"
 #include "MainMapPlayerController.generated.h"
 
 //DECLARE_DELEGATE_OneParam
@@ -23,8 +22,6 @@ class PROJECTJ_API AMainMapPlayerController : public APlayerController
 public:
 	AMainMapPlayerController();
 private:
-	UPROPERTY()
-		EClientState ClientCurrentState;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Cameras, Meta = (AllowPrivateAccess = true))
 		TArray <AActor*> Cameras; //캐릭터 선택, 생성 카메라들을 담아둘 배열
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Cameras, Meta = (AllowPrivateAccess = true))
@@ -56,10 +53,12 @@ public:
 	int32 GetSelectIndex();
 
 	void SetSelectIndex(int32 _SelectIndex);
-	void SetClientState(EClientState _NewClientState);
-	   
+
 	void C2S_MoveConfirm(FVector& Location);
 	void C2S_RotationcConfirm(FRotator& Rotation);
+	void C2S_ReqMenuChannelInfo();
+	void C2S_ReqMenuCharacterSelect();
+	void C2S_ReqMenuLogOut();
 
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;

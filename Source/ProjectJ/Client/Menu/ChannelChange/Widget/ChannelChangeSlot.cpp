@@ -27,25 +27,25 @@ void UChannelChangeSlot::SetChannelInfo(AMainMapGameMode * _MainMapGameMode)
 
 void UChannelChangeSlot::InitChannelSlot(int32 _ChannelIndex)
 {
-	ChannelIndex = _ChannelIndex;
-
+	ChannelInfo.ChannelIndex = _ChannelIndex;
+	ChannelInfo.CurrentChannelUserCount = 0;
+	
 	if (ChannelNameText)
 	{
 		ChannelNameText->SetText(FText::FromString(FString::Printf(TEXT("채널 %d"), _ChannelIndex)));
 
 		if (ChannelInfo.MainMapGameMode)
 		{
-			ChannelSlotUpdate();
+			ChannelSlotUpdate(0);
 		}
 	}
 }
 
-void UChannelChangeSlot::ChannelSlotUpdate()
+void UChannelChangeSlot::ChannelSlotUpdate(int32 _CurrentChannelUserCount)
 {
-
-	float CurrentChannelUserCount = ChannelInfo.MainMapGameMode->GetCurrentChannelUserCount();
+	ChannelInfo.CurrentChannelUserCount = _CurrentChannelUserCount;
 	float MaxChannelUserCount = ChannelInfo.MainMapGameMode->GetMaxChannelUserCount();
 
-	float ChannelCongestion = CurrentChannelUserCount / MaxChannelUserCount;
+	float ChannelCongestion = ChannelInfo.CurrentChannelUserCount / MaxChannelUserCount;
 	ChannelCongestionBar->SetPercent(ChannelCongestion);
 }

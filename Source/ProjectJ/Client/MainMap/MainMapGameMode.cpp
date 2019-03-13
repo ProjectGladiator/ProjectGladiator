@@ -26,6 +26,7 @@
 #include "Client/Menu/MenuWidget.h"
 #include "Client/Menu/ChannelChange/Widget/ChannelChange.h"
 #include "client/Menu/ChannelChange/Widget/ChannelChangeSlot.h"
+#include "Client/MyCharacter/Widget/MyCharacterUI.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -162,6 +163,12 @@ void AMainMapGameMode::BeginPlay()
 			MainMapPlayerController->Possess(CreateSelectCharacter);
 		}
 	}
+
+	if (MenuWidget)
+	{
+		MenuWidget->OnLogOut.BindDynamic(this, &AMainMapGameMode::LogOut);
+		MenuWidget->OnCharacterSelect.BindDynamic(this, &AMainMapGameMode::CharacterSelect);
+	}
 }
 
 void AMainMapGameMode::Tick(float DeltaTime)
@@ -184,6 +191,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	AWarrior* Warrior = nullptr;
 	AGunner* Gunner = nullptr;
 	AMainMapOtherPlayerController* OtherCharacterController = nullptr;
+	ChannelInfo tempchanneleInfo[6];
+	ChannelInfo* channelInfo = tempchanneleInfo;
+	char* LeaveCharacterCode;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -226,8 +236,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				LoginWidgetToggle();
 				CharacterSelectWidgetToggle();
 
-				FLatentActionInfo LatentInfo;
-				UGameplayStatics::LoadStreamLevel(this, TEXT("CharacterCreate"), true, true, LatentInfo);
+				FLatentActionInfo CharacterCreateMapLoadInfo;
+				UGameplayStatics::LoadStreamLevel(this, TEXT("CharacterCreate"), true, true, CharacterCreateMapLoadInfo);
 				StorageManager::GetInstance()->PopData();
 				CharacterManager::GetInstance()->Character_Req_Slot();
 				NetworkClient_main::NetworkManager::GetInstance()->Send();
@@ -271,14 +281,14 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 				LoadingWidgetViewScreen();
 
-				FLatentActionInfo LatentInfo;
-				LatentInfo.CallbackTarget = this;
-				LatentInfo.ExecutionFunction = "MapLoadComplete";
-				LatentInfo.UUID = 123;
-				LatentInfo.Linkage = 0;
+				FLatentActionInfo MainMapLoadInfo;
+				MainMapLoadInfo.CallbackTarget = this;
+				MainMapLoadInfo.ExecutionFunction = "MapLoadComplete";
+				MainMapLoadInfo.UUID = 123;
+				MainMapLoadInfo.Linkage = 0;
 
 				StorageManager::GetInstance()->PopData();
-				UGameplayStatics::LoadStreamLevel(this, TEXT("MainStageStartArea"), true, true, LatentInfo);
+				UGameplayStatics::LoadStreamLevel(this, TEXT("MainStageStartArea"), true, true, MainMapLoadInfo);
 			}
 			else
 			{
@@ -339,11 +349,10 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (MyCharacter)
 			{
-				ClientInGameState InGameState;
 				GLog->Log(ANSI_TO_TCHAR(character_info->code));
-			
-				MyCharacter->SetCharacterCode(character_info->code,character_info->nick);
-				MyCharacter->SetClientCharacterState(new ClientInGameState());
+				
+				MyCharacter->SetClientCharacterState(new ClientInGameState(MyCharacter));
+				MyCharacter->SetCharacterCode(character_info->code, character_info->nick);
 				MyCharacter->SetIsClick(true);
 
 				if (MainMapPlayerController)
@@ -352,7 +361,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 					MainMapPlayerController->SetInputMode(FInputModeGameOnly());
 					MainMapPlayerController->Possess(MyCharacter);
 					MyCharacter->SetDefaultCharacter();
-				}				
+				}
 			}
 			else
 			{
@@ -409,7 +418,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 				OtherUserCharacter->SetOtherCharacterController(OtherCharacterController);
 
-				OtherCharacterController->Possess(OtherUserCharacter);				
+				OtherCharacterController->Possess(OtherUserCharacter);
 
 				AddLoginUser(OtherUserCharacter);
 			}
@@ -417,6 +426,32 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			// 필요없어진 캐릭터정보 구조체 해제
 			delete character_info;
 			OtherUserCharacter = nullptr;
+			break;
+		case PGAMEDATA_CHANNEL_INFO:
+			StorageManager::GetInstance()->ChangeData(Data->data, channelInfo);
+			StorageManager::GetInstance()->PopData();
+
+			for (int i = 0; i < 6; i++)
+			{
+				if (MenuWidget)
+				{
+					MenuWidget->GetChannelChangeWidget()->ChannelUpdate(channelInfo[i].channelNum, channelInfo[i].channelUsercount);
+				}
+			}
+			break;
+		case PGAMEDATA_LEAVE_PLAYER:
+			StorageManager::GetInstance()->ChangeData(Data->data, LeaveCharacterCode);
+			StorageManager::GetInstance()->PopData();
+
+			LoginUserDestory(LeaveCharacterCode);
+
+			LeaveCharacterCode = nullptr;
+			break;
+		case PGAMEDATA_MENU_CHARACTER_SELECT:
+			StorageManager::GetInstance()->PopData();
+			break;
+		case PGAMEDATA_MENU_LOGOUT:
+			StorageManager::GetInstance()->PopData();
 			break;
 		}
 	}
@@ -532,21 +567,6 @@ void AMainMapGameMode::MenuWidgetToggle()
 	}
 }
 
-void AMainMapGameMode::MapLoadComplete()
-{
-	SelectCharacterDestroy();
-	GLog->Log(FString::Printf(TEXT("맵 로드 완료")));
-	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
-
-	if (MainMapPlayerController)
-	{
-		MainMapPlayerController->SetClientState(EClientState::GameStart);
-	}
-	// 서버에 다른 유저리스트 요청
-	InGameManager::GetInstance()->InGame_Req_UserList();
-	NetworkClient_main::NetworkManager::GetInstance()->Send();
-}
-
 void AMainMapGameMode::SelectCharacterSpawn(CHARACTER_JOB _SelectJob)
 {
 	GLog->Log(FString::Printf(TEXT("선택한 캐릭터 스폰")));
@@ -599,7 +619,7 @@ void AMainMapGameMode::AddLoginUser(AMyCharacter * _OtherCharacter)
 	{
 		OtherLoginUserList.Add(_OtherCharacter);
 		CurrentChannelUserCount = OtherLoginUserList.Num();
-	}	
+	}
 }
 
 void AMainMapGameMode::DeleteLoginUser(AMyCharacter * _OtherCharacter)
@@ -631,7 +651,7 @@ void AMainMapGameMode::LoginUserDestory(char * _OtherCharacterCode)
 	if (DestoryOtherCharacter)
 	{
 		DeleteLoginUser(DestoryOtherCharacter);
-		 
+
 		DestoryOtherCharacter->Destroy();
 	}
 	else
@@ -661,4 +681,88 @@ float AMainMapGameMode::GetCurrentChannelUserCount()
 float AMainMapGameMode::GetMaxChannelUserCount()
 {
 	return MaxChannelUserCount;
+}
+
+void AMainMapGameMode::LogOut()
+{
+	ReadyCharacterSelectLogOut("MainMapUnLoadCompleteToTitle");
+}
+
+void AMainMapGameMode::CharacterSelect()
+{
+	ReadyCharacterSelectLogOut("MainMapUnLoadCompleteToCharacterSelect");
+}
+
+void AMainMapGameMode::ReadyCharacterSelectLogOut(const FName & _BindFunctionName)
+{
+	if (MainMapPlayerController)
+	{
+		auto MyPlayCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+		if (MyPlayCharacter)
+		{
+			MenuWidgetToggle();
+			MyPlayCharacter->GetMyCharacterUI()->AllUIWidgetHidden();
+			MyPlayCharacter->Destroy();
+		}
+	}
+
+	LoadingWidget->SetVisibility(ESlateVisibility::Visible);
+
+	LoginUserAllDestory();
+
+	FLatentActionInfo CharacterCreateUnLoadInfo;
+
+	UGameplayStatics::UnloadStreamLevel(this, TEXT("CharacterCreate"), CharacterCreateUnLoadInfo);
+
+	FLatentActionInfo MainMapUnLoadInfo;
+	MainMapUnLoadInfo.CallbackTarget = this; // 콜백 타겟 지정
+	MainMapUnLoadInfo.ExecutionFunction = _BindFunctionName; //작업 완료 할시 호출할 함수 이름
+	MainMapUnLoadInfo.UUID = 123; //고유 식별자를 지정
+	MainMapUnLoadInfo.Linkage = 0;
+
+	UGameplayStatics::UnloadStreamLevel(this, TEXT("MainStageStartArea"), MainMapUnLoadInfo);
+}
+
+void AMainMapGameMode::MapLoadComplete()
+{
+	SelectCharacterDestroy();
+	GLog->Log(FString::Printf(TEXT("맵 로드 완료")));
+	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	// 서버에 다른 유저리스트 요청
+	InGameManager::GetInstance()->InGame_Req_UserList();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
+void AMainMapGameMode::MainMapUnLoadCompleteToTitle()
+{
+	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	if (CreateSelectCharacter)
+	{
+		if (MainMapPlayerController)
+		{
+			MainMapPlayerController->Possess(CreateSelectCharacter);
+			MainMapPlayerController->ToCharacterSelect();
+		}
+	}
+
+	LoginWidgetToggle();
+}
+
+void AMainMapGameMode::MainMapUnLoadCompleteToCharacterSelect()
+{
+	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
+
+	if (CreateSelectCharacter)
+	{
+		if (MainMapPlayerController)
+		{
+			MainMapPlayerController->Possess(CreateSelectCharacter);
+			MainMapPlayerController->ToCharacterSelect();
+		}
+	}
+
+	CharacterSelectWidgetToggle();
 }

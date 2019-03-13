@@ -7,6 +7,8 @@
 #include "Client/MyCharacter/Widget/Party/Party.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
 #include "Client/MyCharacter/Widget/MyCharacterWidget.h"
+#include "Client/MyCharacter/Widget/Inventory/Widget/InventoryWidget.h"
+#include "Client/MyCharacter/Widget/Party/Widget/PartyWidget.h"
 //서버 헤더
 
 // Sets default values for this component's properties
@@ -86,5 +88,12 @@ void UMyCharacterUI::MyCharacterWidgetHidden()
 	{
 		MyCharacterWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
+}
+
+void UMyCharacterUI::AllUIWidgetHidden()
+{
+	MyCharacterWidget->RemoveFromParent();
+	InventoryComponent->GetInventoryWidget()->RemoveFromParent();
+	PartyComponent->GetPartyWidget()->RemoveFromParent();
 }
 

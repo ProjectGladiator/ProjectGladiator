@@ -22,6 +22,7 @@
 #include "Client/MyCharacter/Widget/Inventory/Inventory.h"
 #include "Client/MyCharacter/Widget/Party/Party.h"
 #include "Client/State/ClientState/ClientCharacterSelectState.h"
+#include "client/State/ClientState/ClientInGameState.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -148,96 +149,40 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 
 void AMyCharacter::MoveForward(float Value)
 {
-	ForwadBackwardCurrentValue = Value;
-
-	if (ForwadBackwardCurrentValue == 1 || ForwadBackwardCurrentValue == -1)
+	if (ClientCharacterState)
 	{
-		if (ForwadBackwardPreviousValue == 0)
-		{
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
-
-			if (!C2SMoveTimerActive)
-			{
-				GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.1f, true, 0);
-			}
-			//GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
-		}
+		ClientCharacterState->MoveForward(Value);
 	}
+}
 
-	if (ForwadBackwardCurrentValue == 0)
+bool AMyCharacter::MoveTimerActive()
+{
+	bool MoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
+
+	return MoveTimerActive;
+}
+
+void AMyCharacter::MoveImplementation()
+{
+	bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
+
+	if (!C2SMoveTimerActive)
 	{
-		if (ForwadBackwardPreviousValue == 1 || ForwadBackwardPreviousValue == -1)
-		{
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
-
-			if (C2SMoveTimerActive)
-			{
-				if (LeftRightCurrentValue == 0)
-				{
-					GetWorld()->GetTimerManager().ClearTimer(C2S_MoveUpdateTimer);
-				}
-				else
-				{
-					//GLog->Log(FString::Printf(TEXT("좌우로 움직이는 중임")));
-				}
-			}
-			//GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 멈춤")));
-		}
+		GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.1f, true, 0);
 	}
-
-	if (Value != 0)
-	{
-		AddMovementInput(GetActorForwardVector(), Value);
-	}
-
-	ForwadBackwardPreviousValue = ForwadBackwardCurrentValue;
 }
 
 void AMyCharacter::MoveRight(float Value)
 {
-	LeftRightCurrentValue = Value;
-
-	if (LeftRightCurrentValue == 1 || LeftRightCurrentValue == -1)
+	if (ClientCharacterState)
 	{
-		if (LeftRightPreviousValue == 0)
-		{
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
-
-			if (!C2SMoveTimerActive)
-			{
-				GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.1f, true, 0);
-			}
-			//GLog->Log(FString::Printf(TEXT("좌 우 움직임 시작")));
-		}
+		ClientCharacterState->MoveRight(Value);
 	}
+}
 
-	if (LeftRightCurrentValue == 0)
-	{
-		if (LeftRightPreviousValue == 1 || LeftRightPreviousValue == -1)
-		{
-			bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
-
-			if (C2SMoveTimerActive)
-			{
-				if (ForwadBackwardCurrentValue == 0)
-				{
-					GetWorld()->GetTimerManager().ClearTimer(C2S_MoveUpdateTimer);
-				}
-				else
-				{
-					//GLog->Log(FString::Printf(TEXT("앞뒤로 움직이는 중임")));
-				}
-			}
-			//GLog->Log(FString::Printf(TEXT("좌 우 움직임 멈춤")));
-		}
-	}
-
-	if (Value != 0)
-	{
-		AddMovementInput(GetActorRightVector(), Value);
-	}
-
-	LeftRightPreviousValue = LeftRightCurrentValue;
+void AMyCharacter::MoveUpdateTimerKill()
+{
+	GetWorld()->GetTimerManager().ClearTimer(C2S_MoveUpdateTimer);
 }
 
 void AMyCharacter::LookUp(float Value)

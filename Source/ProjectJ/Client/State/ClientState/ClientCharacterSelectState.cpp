@@ -12,7 +12,7 @@
 
 ClientCharacterSelectState::ClientCharacterSelectState()
 {
-	
+
 }
 
 ClientCharacterSelectState::~ClientCharacterSelectState()
@@ -20,7 +20,7 @@ ClientCharacterSelectState::~ClientCharacterSelectState()
 	GLog->Log(FString::Printf(TEXT("클라이언트 캐릭터 선택 상태 소멸자 출력")));
 }
 
-void ClientCharacterSelectState::Click(AMainMapPlayerController* _MainMapPlayerController)	
+void ClientCharacterSelectState::Click(AMainMapPlayerController* _MainMapPlayerController)
 {
 	TArray<TEnumAsByte<EObjectTypeQuery>> ObjectTypes;
 	FHitResult HitResult;
@@ -62,6 +62,16 @@ void ClientCharacterSelectState::Click(AMainMapPlayerController* _MainMapPlayerC
 }
 
 void ClientCharacterSelectState::Tick(float _DeltaTime)
+{
+
+}
+
+void ClientCharacterSelectState::MoveForward(float Value)
+{
+
+}
+
+void ClientCharacterSelectState::MoveRight(float Value)
 {
 
 }

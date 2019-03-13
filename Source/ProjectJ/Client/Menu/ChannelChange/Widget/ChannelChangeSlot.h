@@ -16,8 +16,6 @@ class PROJECTJ_API UChannelChangeSlot : public UUserWidget
 	GENERATED_BODY()
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UserLoginWidget, Meta = (AllowPrivateAccess = true))
-		int32 ChannelIndex;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UserLoginWidget, Meta = (AllowPrivateAccess = true))
 		class UButton* ChannelChangeSlotButton;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = UserLoginWidget, Meta = (AllowPrivateAccess = true))
 		class UTextBlock* ChannelNameText;
@@ -32,5 +30,5 @@ public:
 
 	void InitChannelSlot(int32 _ChannelIndex);
 
-	void ChannelSlotUpdate();
+	void ChannelSlotUpdate(int32 _CurrentChannelUserCount);
 };

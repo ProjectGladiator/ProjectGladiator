@@ -16,4 +16,7 @@ public:
 
 	virtual void Click(class AMainMapPlayerController* _MainMapPlayerController) override;
 	virtual void Tick(float _DeltaTime) override;
+	virtual void MoveForward(float Value) override;
+	virtual void MoveRight(float Value) override;
+
 };

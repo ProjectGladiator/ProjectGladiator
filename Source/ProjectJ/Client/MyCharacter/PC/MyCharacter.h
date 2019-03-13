@@ -26,16 +26,6 @@ private:
 		int32 Level; //현재 레벨
 	UPROPERTY()
 		bool IsClick;
-
-	UPROPERTY()
-		float ForwadBackwardCurrentValue;
-	UPROPERTY()
-		float ForwadBackwardPreviousValue;
-	UPROPERTY()
-		float LeftRightCurrentValue;
-	UPROPERTY()
-		float LeftRightPreviousValue;
-
 	UPROPERTY()
 		float LookUpCurrentValue;
 	UPROPERTY()
@@ -47,7 +37,6 @@ private:
 		FVector GoalLocation;
 	UPROPERTY()
 		FRotator GoalRotator;
-
 	UPROPERTY()
 		FTimerHandle C2S_MoveUpdateTimer;
 	UPROPERTY()
@@ -97,9 +86,12 @@ public:
 
 	UFUNCTION()
 		void MoveForward(float Value);
-
 	UFUNCTION()
 		void MoveRight(float Value);
+
+	bool MoveTimerActive();
+	void MoveImplementation();
+	void MoveUpdateTimerKill();
 
 	UFUNCTION()
 		void LookUp(float Value);
