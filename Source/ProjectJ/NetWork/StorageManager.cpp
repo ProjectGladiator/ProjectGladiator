@@ -318,8 +318,8 @@ void StorageManager::ChangeData(void * data, OtherCharacterInfo& _otherinfo)
 	ptr += sizeof(float) * 3;
 }
 
-// 채널 정보
-void StorageManager::ChangeData(void * data, ChannelInfo *& _channelinfo)
+// 
+void StorageManager::ChangeData(void * data, ChannelInfo*& _channelinfo)
 {
 	char* ptr = (char*)data;
 

@@ -110,7 +110,22 @@ void InGameManager::InGame_Req_ChannelInfo()
 	memset(buf, 0, sizeof(buf));
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_CHANNEL_INFO, buf, 0);
+}
 
+void InGameManager::InGame_Req_Menu_Character()
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MENU_REQ_CHARACTER, buf, 0);
+}
+
+void InGameManager::InGame_Req_Menu_Title()
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MENU_REQ_LOGOUT, buf, 0);
 }
 
 // 이동 시작 요청
@@ -164,7 +179,7 @@ bool InGameManager::InGame_Recv_UserList(char * _buf)
 {
 	int count;
 	char* ptr_buf = _buf;
-   
+
 	char data[BUFSIZE];
 	char* ptr_data = data;
 	int size = 0;
@@ -365,7 +380,7 @@ void InGameManager::InGame_Recv_OtherUserMoveInfo(char * _buf, int _dataprotocol
 	int size = 0;
 	int len = 0;
 	float xyz[3];
-	
+
 	memset(data, 0, BUFSIZE);
 	memset(code, 0, CHARACTERCODESIZE);
 
@@ -502,6 +517,16 @@ void InGameManager::InGame_Recv_ChannelInfo(char * _buf)
 	StorageManager::GetInstance()->PushData(PGAMEDATA_CHANNEL_INFO, data, size);
 }
 
+void InGameManager::InGame_Recv_CharacterSelect()
+{
+	StorageManager::GetInstance()->PushData(PGAMEDATA_MENU_CHARACTER_SELECT, 0, 0);
+}
+
+void InGameManager::InGame_Recv_Logout()
+{
+	StorageManager::GetInstance()->PushData(PGAMEDATA_MENU_LOGOUT, 0, 0);
+}
+
 RESULT InGameManager::InGameInitRecvResult(User * _user)
 {
 	PROTOCOL protocol;
@@ -555,6 +580,14 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 	case SERVER_INGAME_CHANNLE_INFO_RESULT:
 		InGame_Recv_ChannelInfo(buf);
 		result = RT_INGAME_CHANNEL_INFO;
+		break;
+	case SERVER_INGAME_MENU_RESULT_CHARACTER:
+		InGame_Recv_CharacterSelect();
+		result = RT_INGAME_MENU_CHARACTER;
+		break;
+	case SERVER_INGAME_MENU_RESULT_LOGOUT:
+		InGame_Recv_Logout();
+		result = RT_INGAME_MENU_LOGOUT;
 		break;
 	default:
 		break;

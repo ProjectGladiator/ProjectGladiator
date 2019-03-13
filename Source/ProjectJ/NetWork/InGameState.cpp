@@ -33,7 +33,18 @@ bool InGameState::Read(User * _user)
 		{
 			state = INGAME_INIT_RECV;
 		}
-		
+		else if (result == RT_INGAME_MENU_CHARACTER)
+		{
+			state = INGAME_INIT_RECV;
+			_user->SetState(_user->getCharacterState());
+		}
+		else if (result == RT_INGAME_MENU_LOGOUT)
+		{
+			state = INGAME_INIT_RECV;
+			_user->setLogout();
+			_user->SetState(_user->getLoginState());
+		}
+
 		break;
 	}
 	return true;
