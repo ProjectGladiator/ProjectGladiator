@@ -55,7 +55,6 @@ void UMyCharacterUI::SetMyCharacterUI()
 	if (InventoryComponent)
 	{
 		InventoryComponent->InventoryCreate(20);
-		MyCharacterWidgetVisible();
 	}
 }
 
@@ -95,5 +94,10 @@ void UMyCharacterUI::AllUIWidgetHidden()
 	MyCharacterWidget->RemoveFromParent();
 	InventoryComponent->GetInventoryWidget()->RemoveFromParent();
 	PartyComponent->GetPartyWidget()->RemoveFromParent();
+}
+
+UMyCharacterWidget * UMyCharacterUI::GetMyCharacterWidget()
+{
+	return MyCharacterWidget;
 }
 
