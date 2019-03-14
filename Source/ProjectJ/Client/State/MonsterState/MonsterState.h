@@ -24,6 +24,15 @@ enum class EBearState : uint8
 };
 
 UENUM(BlueprintType)
+aenum class EDogState : uint8
+{
+	Idle,
+	Chase,
+	Attack,
+	Death
+};
+
+UENUM(BlueprintType)
 enum class ESpiderState : uint8
 {
 	Idle,
