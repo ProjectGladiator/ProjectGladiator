@@ -57,8 +57,7 @@ void UCharacterSelectWidget::GameStart()
 			//****
 			//** 게임 시작, 캐릭터 생성 버튼 비활성화
 			//****
-			GameStartButton->SetVisibility(ESlateVisibility::HitTestInvisible);
-			CharacterCreateButton->SetVisibility(ESlateVisibility::HitTestInvisible);
+			ButtonDisable();
 
 			/*
 			** 캐릭터 선택한 슬롯번호 서버에 보내면서 접속 요청하기
@@ -181,4 +180,18 @@ UButton * UCharacterSelectWidget::GetGameStartButton()
 UButton * UCharacterSelectWidget::GetChracterCreateButton()
 {
 	return CharacterCreateButton;
+}
+
+void UCharacterSelectWidget::ButtonEnable()
+{
+	GameStartButton->SetVisibility(ESlateVisibility::Visible);
+	CharacterCreateButton->SetVisibility(ESlateVisibility::Visible);
+	CharacterDeleteButton->SetVisibility(ESlateVisibility::Visible);
+}
+
+void UCharacterSelectWidget::ButtonDisable()
+{
+	GameStartButton->SetVisibility(ESlateVisibility::HitTestInvisible);
+	CharacterCreateButton->SetVisibility(ESlateVisibility::HitTestInvisible);
+	CharacterDeleteButton->SetVisibility(ESlateVisibility::HitTestInvisible);
 }

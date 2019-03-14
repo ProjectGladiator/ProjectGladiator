@@ -47,4 +47,7 @@ public:
 
 	class UButton* GetGameStartButton();
 	class UButton* GetChracterCreateButton();
+
+	void ButtonEnable();
+	void ButtonDisable();
 };

@@ -26,12 +26,36 @@ void UMyCharacterWidget::SetInit(AMyCharacter* _MyCharacter)
 
 	if (MyCharacterNickName)
 	{
-		
+		char* NickName = MyCharacter->GetCharacterNickName();
+
+		MyCharacterNickName->SetText(FText::FromString(ANSI_TO_TCHAR(NickName)));
+
+		if (MyCharacter)
+		{
+			HPUpdate();
+			MPUpdate();
+		}
 	}
+
+	SetVisibility(ESlateVisibility::Visible);
 }
 
 void UMyCharacterWidget::HPUpdate()
 {
+	float CurrentHP = MyCharacter->GetCurrentHP();
+	float MaxHP = MyCharacter->GetMaxHP();
+
+	if (MyCharacterHPText)
+	{
+		MyCharacterHPText->SetText(FText::FromString(FString::FromInt((int32)(CurrentHP))));
+
+		if (MyCharacterHPBar)
+		{
+			float HPPercent = CurrentHP / MaxHP;
+
+			MyCharacterHPBar->SetPercent(HPPercent);
+		}
+	}
 
 }
 

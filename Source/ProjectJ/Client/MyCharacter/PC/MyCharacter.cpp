@@ -21,8 +21,9 @@
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/Inventory/Inventory.h"
 #include "Client/MyCharacter/Widget/Party/Party.h"
+#include "Client/MyCharacter/Widget/MyCharacterWidget.h"
 #include "Client/State/ClientState/ClientCharacterSelectState.h"
-#include "client/State/ClientState/ClientInGameState.h"
+#include "Client/State/ClientState/ClientInGameState.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -155,6 +156,14 @@ void AMyCharacter::MoveForward(float Value)
 	}
 }
 
+void AMyCharacter::MoveRight(float Value)
+{
+	if (ClientCharacterState)
+	{
+		ClientCharacterState->MoveRight(Value);
+	}
+}
+
 bool AMyCharacter::MoveTimerActive()
 {
 	bool MoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
@@ -169,14 +178,6 @@ void AMyCharacter::MoveImplementation()
 	if (!C2SMoveTimerActive)
 	{
 		GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.1f, true, 0);
-	}
-}
-
-void AMyCharacter::MoveRight(float Value)
-{
-	if (ClientCharacterState)
-	{
-		ClientCharacterState->MoveRight(Value);
 	}
 }
 
@@ -481,6 +482,7 @@ void AMyCharacter::SetDefaultCharacter()
 	{
 		MyCharacterUI->SetMyCharacterUI();
 		MyCharacterUI->GetPartyComponent()->PartyJoin(this);
+		MyCharacterUI->GetMyCharacterWidget()->SetInit(this);
 	}
 
 	MainMapPlayerController = Cast<AMainMapPlayerController>(GetController());

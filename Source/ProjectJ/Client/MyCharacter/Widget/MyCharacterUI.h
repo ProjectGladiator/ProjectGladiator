@@ -44,4 +44,6 @@ public:
 	void MyCharacterWidgetHidden();
 
 	void AllUIWidgetHidden();
+
+	UMyCharacterWidget* GetMyCharacterWidget();
 };
