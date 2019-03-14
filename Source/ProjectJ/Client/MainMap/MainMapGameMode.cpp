@@ -130,6 +130,7 @@ void AMainMapGameMode::BeginPlay()
 		//MyWidgetClass를 토대로 OkWidget을 생성한다.
 		LoadingWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass);
 		LoadingWidget->AddToViewport();
+		LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	FStringClassReference MenuWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Menu/W_Menu.W_Menu_C'"));
