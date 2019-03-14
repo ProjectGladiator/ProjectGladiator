@@ -444,6 +444,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			break;
 		case PGAMEDATA_LEAVE_PLAYER:
 			GLog->Log(FString::Printf(TEXT("다른 유저가 로그아웃 or 캐릭터 선택창으로 이동 함")));
+			memset(TempCharacterCode, 0, sizeof(TempCharacterCode));
+
 			StorageManager::GetInstance()->ChangeData(Data->data, LeaveCharacterCode);
 			StorageManager::GetInstance()->PopData();
 
