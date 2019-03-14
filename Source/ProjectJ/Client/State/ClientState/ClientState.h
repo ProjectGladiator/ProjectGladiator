@@ -15,4 +15,6 @@ public:
 	virtual void Tick(float _DeltaTime) = 0;
 	virtual void MoveForward(float Value) {};
 	virtual void MoveRight(float Value) {};
+	virtual void LookUp(float Value) {};
+	virtual void Turn(float Value) {};
 };

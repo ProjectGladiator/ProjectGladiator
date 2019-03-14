@@ -156,3 +156,57 @@ void ClientCharacterInGameState::MoveRight(float Value)
 		LeftRightPreviousValue = LeftRightCurrentValue;
 	}
 }
+
+void ClientCharacterInGameState::LookUp(float Value)
+{
+	if (MyCharacter)
+	{
+		LookUpCurrentValue = Value;
+
+		if (Value != 0)
+		{
+			bool C2SRotateTimerActive = MyCharacter->RotateTimerActive();
+
+			if (!C2SRotateTimerActive)
+			{
+				MyCharacter->RotateImplementation();
+			}
+
+			MyCharacter->AddControllerPitchInput(Value);
+		}
+		else
+		{
+			if (TurnCurrentValue == 0)
+			{
+				MyCharacter->RotateUpdateTimerKill();
+			}
+		}
+	}
+}
+
+void ClientCharacterInGameState::Turn(float Value)
+{
+	if (MyCharacter)
+	{
+		TurnCurrentValue = Value;
+
+		if (Value != 0)
+		{
+			bool C2SRotateTimerActive = MyCharacter->RotateTimerActive();
+
+			if (!C2SRotateTimerActive)
+			{
+				MyCharacter->RotateImplementation();
+			}
+
+			MyCharacter->AddControllerYawInput(Value);
+		}
+		else
+		{
+			if (LookUpCurrentValue == 0)
+			{
+				MyCharacter->RotateUpdateTimerKill();
+			}
+		}
+	}
+}

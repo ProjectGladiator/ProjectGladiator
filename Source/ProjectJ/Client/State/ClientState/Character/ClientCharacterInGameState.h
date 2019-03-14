@@ -15,6 +15,8 @@ private:
 	float ForwadBackwardPreviousValue;
 	float LeftRightCurrentValue;
 	float LeftRightPreviousValue;
+	float LookUpCurrentValue;
+	float TurnCurrentValue;
 public:
 	ClientCharacterInGameState(class AMyCharacter* _MyCharacter);
 	~ClientCharacterInGameState();
@@ -23,4 +25,6 @@ public:
 	virtual void Tick(float _DeltaTime) override;
 	virtual void MoveForward(float Value) override;
 	virtual void MoveRight(float Value) override;
+	virtual void LookUp(float Value) override;
+	virtual void Turn(float Value) override;
 };

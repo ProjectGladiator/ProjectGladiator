@@ -99,6 +99,10 @@ public:
 	UFUNCTION()
 		void Turn(float Value);
 
+	bool RotateTimerActive();
+	void RotateImplementation();
+	void RotateUpdateTimerKill();
+
 	UFUNCTION()
 		void ViewExpand();
 

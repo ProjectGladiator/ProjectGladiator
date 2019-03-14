@@ -179,7 +179,7 @@ bool AMyCharacter::MoveTimerActive()
 
 void AMyCharacter::MoveImplementation()
 {
-	bool C2SMoveTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_MoveUpdateTimer);
+	bool C2SMoveTimerActive = MoveTimerActive();
 
 	if (!C2SMoveTimerActive)
 	{
@@ -194,50 +194,40 @@ void AMyCharacter::MoveUpdateTimerKill()
 
 void AMyCharacter::LookUp(float Value)
 {
-	LookUpCurrentValue = Value;
-
-	if (Value != 0)
+	if (ClientCharacterState)
 	{
-		bool C2SRotateTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_RotateUpdateTimer);
-
-		if (!C2SRotateTimerActive)
-		{
-			GetWorld()->GetTimerManager().SetTimer(C2S_RotateUpdateTimer, this, &AMyCharacter::C2S_RotateConfirm, 0.1f, true, 0);
-		}
-
-		AddControllerPitchInput(Value);
-	}
-	else
-	{
-		if (TurnCurrentValue == 0)
-		{
-			GetWorld()->GetTimerManager().ClearTimer(C2S_RotateUpdateTimer);
-		}
+		ClientCharacterState->LookUp(Value);
 	}
 }
 
 void AMyCharacter::Turn(float Value)
 {
-	TurnCurrentValue = Value;
-
-	if (Value != 0)
+	if (ClientCharacterState)
 	{
-		bool C2SRotateTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_RotateUpdateTimer);
-
-		if (!C2SRotateTimerActive)
-		{
-			GetWorld()->GetTimerManager().SetTimer(C2S_RotateUpdateTimer, this, &AMyCharacter::C2S_RotateConfirm, 0.1f, true, 0);
-		}
-
-		AddControllerYawInput(Value);
+		ClientCharacterState->Turn(Value);
 	}
-	else
+}
+
+bool AMyCharacter::RotateTimerActive()
+{
+	bool RotateTimerActive = GetWorld()->GetTimerManager().IsTimerActive(C2S_RotateUpdateTimer);
+
+	return RotateTimerActive;
+}
+
+void AMyCharacter::RotateImplementation()
+{
+	bool C2SMoveTimerActive = RotateTimerActive();
+
+	if (!C2SMoveTimerActive)
 	{
-		if (LookUpCurrentValue == 0)
-		{
-			GetWorld()->GetTimerManager().ClearTimer(C2S_RotateUpdateTimer);
-		}
+		GetWorld()->GetTimerManager().SetTimer(C2S_RotateUpdateTimer, this, &AMyCharacter::C2S_RotateConfirm, 0.1f, true, 0);
 	}
+}
+
+void AMyCharacter::RotateUpdateTimerKill()
+{
+	GetWorld()->GetTimerManager().ClearTimer(C2S_RotateUpdateTimer);
 }
 
 void AMyCharacter::ViewExpand()
