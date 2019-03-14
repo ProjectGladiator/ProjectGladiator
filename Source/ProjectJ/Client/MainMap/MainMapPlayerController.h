@@ -6,10 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "MainMapPlayerController.generated.h"
 
-//DECLARE_DELEGATE_OneParam
-DECLARE_DYNAMIC_DELEGATE_OneParam(FControlOtherCharacterMoveDelegate, FVector&, Location);
-DECLARE_DYNAMIC_DELEGATE_OneParam(FControlOtherCharacterRotateDelegate, FRotator&, Rotation);
-
 /**
  *
  */
@@ -34,14 +30,13 @@ private:
 		class AMainMapGameMode* MainMapGameMode;
 	int32 JobCode;
 	int32 Select_index = -1;
-public:
-	FControlOtherCharacterMoveDelegate ControlOtherCharacterMove;
-	FControlOtherCharacterRotateDelegate ControlOtherCharacerRotate;
-
-	CharacterSlot * CharacterSlotInfo;
-
+	class ClientState* ClientCharacterState;
+protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason)override;
 	virtual void Tick(float DeltaTime) override;
+public:
+	CharacterSlot * CharacterSlotInfo;
 
 	void ToCharacterCreate();
 	void ToCharacterSelect();
@@ -62,4 +57,6 @@ public:
 
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;
+
+	void SetClientPCState(ClientState * _NewClientCharacterState);
 };

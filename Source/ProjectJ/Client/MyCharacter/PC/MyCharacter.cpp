@@ -22,8 +22,7 @@
 #include "Client/MyCharacter/Widget/Inventory/Inventory.h"
 #include "Client/MyCharacter/Widget/Party/Party.h"
 #include "Client/MyCharacter/Widget/MyCharacterWidget.h"
-#include "Client/State/ClientState/ClientCharacterSelectState.h"
-#include "Client/State/ClientState/ClientInGameState.h"
+#include "Client/State/ClientState/ClientState.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -80,6 +79,7 @@ void AMyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(),0));
 }
 
 void AMyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -109,14 +109,20 @@ void AMyCharacter::Tick(float DeltaTime)
 
 		if (GetActorLocation().Equals(GoalLocation, 40.0f))
 		{
-			GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
-			GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
+			//GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
+			if (GetWorld()->GetTimerManager().IsTimerActive(S2C_MoveTimer))
+			{
+				GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
+			}
 		}
 	}
 
 	if (MainMapPlayerController)
 	{
-		ClientCharacterState->Tick(DeltaTime);
+		if (ClientCharacterState)
+		{
+			ClientCharacterState->Tick(DeltaTime);
+		}
 	}
 }
 
@@ -303,7 +309,11 @@ void AMyCharacter::LeftClick()
 	{
 		if (IsClick)
 		{
-			ClientCharacterState->Click(MainMapPlayerController);
+
+			if (ClientCharacterState)
+			{
+				ClientCharacterState->Click(MainMapPlayerController);
+			}
 		}
 		else
 		{
@@ -483,14 +493,6 @@ void AMyCharacter::SetDefaultCharacter()
 		MyCharacterUI->SetMyCharacterUI();
 		MyCharacterUI->GetPartyComponent()->PartyJoin(this);
 		MyCharacterUI->GetMyCharacterWidget()->SetInit(this);
-	}
-
-	MainMapPlayerController = Cast<AMainMapPlayerController>(GetController());
-
-	if (MainMapPlayerController)
-	{
-		MainMapPlayerController->ControlOtherCharacterMove.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterMove);
-		MainMapPlayerController->ControlOtherCharacerRotate.BindDynamic(this, &AMyCharacter::S2C_ControlOtherCharacterRotate);
 	}
 }
 

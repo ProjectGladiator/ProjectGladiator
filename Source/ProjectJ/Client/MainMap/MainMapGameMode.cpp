@@ -21,8 +21,10 @@
 #include "Client/MyCharacter/PC/MyAnimInstance.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/State/ClientState/ClientState.h"
-#include "Client/State/ClientState/ClientCharacterSelectState.h"
-#include "Client/State/ClientState/ClientInGameState.h"
+#include "Client/State/ClientState/Character/ClientCharacterInGameState.h"
+#include "Client/State/ClientState/Character/ClientCharacterTitleState.h"
+#include "Client/State/ClientState/PC/ClientPCTitleState.h"
+#include "Client/State/ClientState/PC/ClientPCInGameState.h"
 #include "Client/Menu/MenuWidget.h"
 #include "Client/Menu/ChannelChange/Widget/ChannelChange.h"
 #include "client/Menu/ChannelChange/Widget/ChannelChangeSlot.h"
@@ -158,7 +160,7 @@ void AMainMapGameMode::BeginPlay()
 
 	if (CreateSelectCharacter)
 	{
-		CreateSelectCharacter->SetClientCharacterState(new ClientCharacterSelectState());
+		CreateSelectCharacter->SetClientCharacterState(new ClientCharacterTitleState());
 
 		if (MainMapPlayerController)
 		{
@@ -354,12 +356,13 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			{
 				GLog->Log(ANSI_TO_TCHAR(character_info->code));
 				
-				MyCharacter->SetClientCharacterState(new ClientInGameState(MyCharacter));
+				MyCharacter->SetClientCharacterState(new ClientCharacterInGameState(MyCharacter));
 				MyCharacter->SetCharacterCode(character_info->code, character_info->nick);
 				MyCharacter->SetIsClick(true);
 
 				if (MainMapPlayerController)
 				{
+					MainMapPlayerController->SetClientPCState(new ClientPCInGameState(this));
 					MainMapPlayerController->bShowMouseCursor = false;
 					MainMapPlayerController->SetInputMode(FInputModeGameOnly());
 					MainMapPlayerController->Possess(MyCharacter);
@@ -455,10 +458,14 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			break;
 		case PGAMEDATA_MENU_CHARACTER_SELECT:
 			StorageManager::GetInstance()->PopData();
+			MainMapPlayerController->SetClientPCState(new ClientPCTitleState());
+			MainMapPlayerController->SetSelectIndex(-1);
 			CharacterSelectWidget->ButtonEnable();
 			break;
 		case PGAMEDATA_MENU_LOGOUT:
 			StorageManager::GetInstance()->PopData();
+			MainMapPlayerController->SetClientPCState(new ClientPCTitleState());
+			MainMapPlayerController->SetSelectIndex(-1);
 			CharacterSelectWidget->ButtonEnable();
 			break;
 		}
@@ -718,10 +725,6 @@ void AMainMapGameMode::ReadyCharacterSelectLogOut(const FName & _BindFunctionNam
 	LoadingWidget->SetVisibility(ESlateVisibility::Visible);
 
 	LoginUserAllDestory();
-
-	FLatentActionInfo CharacterCreateUnLoadInfo;
-
-	UGameplayStatics::UnloadStreamLevel(this, TEXT("CharacterCreate"), CharacterCreateUnLoadInfo);
 
 	FLatentActionInfo MainMapUnLoadInfo;
 	MainMapUnLoadInfo.CallbackTarget = this; // 콜백 타겟 지정

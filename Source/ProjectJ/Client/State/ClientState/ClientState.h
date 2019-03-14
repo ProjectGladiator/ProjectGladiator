@@ -8,9 +8,11 @@
 class ClientState
 {
 public:
-	virtual void Click(class AMainMapPlayerController* _MainMapPlayerController) = 0;
-	virtual void Tick(float _DeltaTime) = 0;
-	virtual void MoveForward(float Value) = 0;
-	virtual void MoveRight(float Value) = 0;
+	ClientState() {};
 	virtual ~ClientState() {};
+
+	virtual void Click(class AMainMapPlayerController* _MainMapPlayerController) {};
+	virtual void Tick(float _DeltaTime) = 0;
+	virtual void MoveForward(float Value) {};
+	virtual void MoveRight(float Value) {};
 };
