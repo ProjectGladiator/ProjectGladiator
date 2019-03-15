@@ -68,7 +68,7 @@ void ClientCharacterInGameState::Click(AMainMapPlayerController * _MainMapPlayer
 
 void ClientCharacterInGameState::Tick(float _DeltaTime)
 {
-	
+
 }
 
 void ClientCharacterInGameState::MoveForward(float Value)
@@ -92,12 +92,18 @@ void ClientCharacterInGameState::MoveForward(float Value)
 			{
 				if (LeftRightCurrentValue == 0)
 				{
+					GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 멈춤")));
+
 					bool C2SMoveTimerActive = MyCharacter->MoveTimerActive();
 
 					if (C2SMoveTimerActive)
 					{
 						MyCharacter->MoveUpdateTimerKill();
 					}
+				}
+				else
+				{
+					GLog->Log(FString::Printf(TEXT("좌 우로 움직이는 중임")));
 				}
 			}
 		}
@@ -132,7 +138,7 @@ void ClientCharacterInGameState::MoveRight(float Value)
 			{
 				if (ForwadBackwardCurrentValue == 0)
 				{
-					//GLog->Log(FString::Printf(TEXT("좌 우 움직임 멈춤")));
+					GLog->Log(FString::Printf(TEXT("좌 우 움직임 멈춤")));
 
 					bool C2SMoveTimerActive = MyCharacter->MoveTimerActive();
 
@@ -143,7 +149,7 @@ void ClientCharacterInGameState::MoveRight(float Value)
 				}
 				else
 				{
-					//GLog->Log(FString::Printf(TEXT("앞뒤로 움직이는 중임")));
+					GLog->Log(FString::Printf(TEXT("앞 뒤로 움직이는 중임")));
 				}
 			}
 		}
@@ -165,12 +171,7 @@ void ClientCharacterInGameState::LookUp(float Value)
 
 		if (Value != 0)
 		{
-			bool C2SRotateTimerActive = MyCharacter->RotateTimerActive();
-
-			if (!C2SRotateTimerActive)
-			{
-				MyCharacter->RotateImplementation();
-			}
+			MyCharacter->RotateImplementation();
 
 			MyCharacter->AddControllerPitchInput(Value);
 		}
@@ -178,7 +179,12 @@ void ClientCharacterInGameState::LookUp(float Value)
 		{
 			if (TurnCurrentValue == 0)
 			{
-				MyCharacter->RotateUpdateTimerKill();
+				bool C2SRotateTimerActive = MyCharacter->RotateTimerActive();
+
+				if (C2SRotateTimerActive)
+				{
+					MyCharacter->RotateUpdateTimerKill();
+				}
 			}
 		}
 	}
@@ -192,12 +198,7 @@ void ClientCharacterInGameState::Turn(float Value)
 
 		if (Value != 0)
 		{
-			bool C2SRotateTimerActive = MyCharacter->RotateTimerActive();
-
-			if (!C2SRotateTimerActive)
-			{
-				MyCharacter->RotateImplementation();
-			}
+			MyCharacter->RotateImplementation();
 
 			MyCharacter->AddControllerYawInput(Value);
 		}
@@ -205,7 +206,12 @@ void ClientCharacterInGameState::Turn(float Value)
 		{
 			if (LookUpCurrentValue == 0)
 			{
-				MyCharacter->RotateUpdateTimerKill();
+				bool C2SRotateTimerActive = MyCharacter->RotateTimerActive();
+
+				if (C2SRotateTimerActive)
+				{
+					MyCharacter->RotateUpdateTimerKill();
+				}
 			}
 		}
 	}
