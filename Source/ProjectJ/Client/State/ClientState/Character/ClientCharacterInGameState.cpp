@@ -11,6 +11,7 @@
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/Widget/ClickCharacterWidget.h"
+#include "Client/MyCharacter/Widget/MyCharacterWidget.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 
 //서버 헤더
@@ -51,9 +52,8 @@ void ClientCharacterInGameState::Click(AMainMapPlayerController * _MainMapPlayer
 
 					if (OtherController)
 					{
-						MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->ClickCharacterSetInfo(OtherCharacter);
-						MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->GetClickCharacterWidget()->ClickCharacterUpdate();
-						MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->ClickCharacterWidgetVisible();
+						OtherCharacter->GetMyCharacterUI()->GetMyCharacterWidget()->SetPosition(FVector2D(1250.0f, 740.0f));
+						OtherCharacter->GetMyCharacterUI()->MyCharacterWidgetVisible();
 					}
 				}
 			}

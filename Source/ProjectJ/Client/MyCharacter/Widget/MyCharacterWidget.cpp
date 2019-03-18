@@ -22,28 +22,26 @@ void UMyCharacterWidget::NativeConstruct()
 
 void UMyCharacterWidget::SetInit(AMyCharacter* _MyCharacter)
 {
-	MyCharacter = _MyCharacter;
-
-	if (MyCharacterNickName)
+	if (_MyCharacter)
 	{
-		char* NickName = MyCharacter->GetCharacterNickName();
+		ClickCharacterSlotInfo.ClickCharacter = _MyCharacter;
 
-		MyCharacterNickName->SetText(FText::FromString(ANSI_TO_TCHAR(NickName)));
-
-		if (MyCharacter)
+		if (MyCharacterNickName)
 		{
+			char* NickName = ClickCharacterSlotInfo.ClickCharacter->GetCharacterNickName();
+
+			MyCharacterNickName->SetText(FText::FromString(ANSI_TO_TCHAR(NickName)));
 			HPUpdate();
 			MPUpdate();
 		}
+		SetVisibility(ESlateVisibility::Visible);
 	}
-
-	SetVisibility(ESlateVisibility::Visible);
 }
 
 void UMyCharacterWidget::HPUpdate()
 {
-	float CurrentHP = MyCharacter->GetCurrentHP();
-	float MaxHP = MyCharacter->GetMaxHP();
+	float CurrentHP = ClickCharacterSlotInfo.ClickCharacter->GetCurrentHP();
+	float MaxHP = ClickCharacterSlotInfo.ClickCharacter->GetMaxHP();
 
 	if (MyCharacterHPText)
 	{
@@ -62,5 +60,15 @@ void UMyCharacterWidget::HPUpdate()
 void UMyCharacterWidget::MPUpdate()
 {
 
+}
+
+FClickCharacterInfo UMyCharacterWidget::GetClickCharacterSlotInfo()
+{
+	return ClickCharacterSlotInfo;
+}
+
+void UMyCharacterWidget::SetPosition(FVector2D _Position)
+{
+	SetRenderTranslation(_Position);
 }
 

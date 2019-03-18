@@ -59,14 +59,13 @@ void UChannelChangeSlot::ChannelSlotUpdate(int32 _CurrentChannelUserCount)
 
 void UChannelChangeSlot::ChannelChange()
 {
-	int32 ChannelIndex = ChannelInfo.ChannelIndex;
-
-	GLog->Log(FString::Printf(TEXT("게임모드 채널 번호 : %d"), ChannelInfo.MainMapGameMode->GetChannelNum()));
-	GLog->Log(FString::Printf(TEXT("선택한 채널 번호 : %d"), ChannelIndex));
-
 	if (ChannelInfo.MainMapGameMode)
 	{
 		int32 CurrentChannelNum = ChannelInfo.MainMapGameMode->GetChannelNum();
+		int32 ChannelIndex = ChannelInfo.ChannelIndex;
+
+		GLog->Log(FString::Printf(TEXT("게임모드 채널 번호 : %d"), ChannelInfo.MainMapGameMode->GetChannelNum()));
+		GLog->Log(FString::Printf(TEXT("선택한 채널 번호 : %d"), ChannelIndex));
 
 		if (CurrentChannelNum != ChannelIndex)
 		{
