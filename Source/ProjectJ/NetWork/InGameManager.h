@@ -21,6 +21,7 @@ private:
 	void InGame_Recv_ChannelInfo(char* _buf);							// 채널 정보
 	void InGame_Recv_CharacterSelect();									// 캐릭터 선택화면으로 받았을때
 	void InGame_Recv_Logout();											// 로그아웃 받았을때
+	void InGame_Recv_ChannelChange(char* _buf);							// 채널이동 결과
 
 public:
 	static void CreateInstance();
@@ -34,8 +35,9 @@ public:
 	void InGame_Req_Move(float _px, float _py, float _pz);			    // 이동요청 서버에 전송
 	void InGame_Req_Rotation(float _rx, float _ry, float _rz);		    // 회전정보 서버에 전송
 	void InGame_Req_ChannelInfo();									    // 채널 정보 요청
-	void InGame_Req_Menu_Character();								    // 캐릭터 선택화면으로 요청 서버에 전송
-	void InGame_Req_Menu_Title();									    // 로그아웃 요청 서버에 전송
+	void InGame_Req_ChannelChange(int _channelnum);					    // 채널 이동 요청
+	void InGame_Req_Menu_Character();								    // 캐릭터 선택화면으로 요청
+	void InGame_Req_Menu_Title();									    // 로그아웃 요청
 	// 게임종료 요청 서버에 전송
 
 	RESULT InGameInitRecvResult(User* _user);			// 인게임 

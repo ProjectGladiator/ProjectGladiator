@@ -112,20 +112,47 @@ void InGameManager::InGame_Req_ChannelInfo()
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_CHANNEL_INFO, buf, 0);
 }
 
+// 채널 이동 요청
+void InGameManager::InGame_Req_ChannelChange(int _channelnum)
+{
+	char buf[BUFSIZE];
+	char* ptr = buf;
+	int datasize = 0;
+	memset(buf, 0, sizeof(buf));
+
+	// 채널 번호
+	memcpy(ptr, &_channelnum, sizeof(int));
+	datasize += sizeof(int);
+	ptr += sizeof(int);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_CHANNEL_CHANGE, buf, datasize);
+}
+
+// 캐릭터 선택화면으로 요청
 void InGameManager::InGame_Req_Menu_Character()
 {
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MENU_REQ_CHARACTER, buf, 0);
+	char msg[BUFSIZE];
+	memset(msg, 0, sizeof(msg));
+	//sprintf(msg,"InGame_Req_Menu_Character :: 캐릭터선택화면");
+	LogManager::GetInstance()->LogWrite(msg);
 }
 
+// 로그아웃 요청
 void InGameManager::InGame_Req_Menu_Title()
 {
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MENU_REQ_LOGOUT, buf, 0);
+
+	char msg[BUFSIZE];
+	memset(msg, 0, sizeof(msg));
+	//sprintf(msg, "InGame_Req_Menu_Title :: 로그아웃");
+	LogManager::GetInstance()->LogWrite(msg);
 }
 
 // 이동 시작 요청
@@ -517,14 +544,39 @@ void InGameManager::InGame_Recv_ChannelInfo(char * _buf)
 	StorageManager::GetInstance()->PushData(PGAMEDATA_CHANNEL_INFO, data, size);
 }
 
+// 캐릭터 선택화면으로 받았을때
 void InGameManager::InGame_Recv_CharacterSelect()
 {
 	StorageManager::GetInstance()->PushData(PGAMEDATA_MENU_CHARACTER_SELECT, 0, 0);
 }
 
+// 로그아웃 받았을때
 void InGameManager::InGame_Recv_Logout()
 {
 	StorageManager::GetInstance()->PushData(PGAMEDATA_MENU_LOGOUT, 0, 0);
+}
+
+// 채널이동 결과
+void InGameManager::InGame_Recv_ChannelChange(char * _buf)
+{
+	char* ptr = _buf;
+
+	char data[BUFSIZE];
+	char* ptr_data = data;
+	int size = 0;
+
+	bool result = false;
+
+	// 결과 언팩
+	memcpy(&result, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+
+	// 결과 패킹
+	memcpy(ptr_data, &result, sizeof(bool));
+	ptr_data += sizeof(bool);
+	size += sizeof(bool);
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_CHANNEL_REQ_CHANGE, data, size);
 }
 
 RESULT InGameManager::InGameInitRecvResult(User * _user)
@@ -580,6 +632,10 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 	case SERVER_INGAME_CHANNLE_INFO_RESULT:
 		InGame_Recv_ChannelInfo(buf);
 		result = RT_INGAME_CHANNEL_INFO;
+		break;
+	case SERVER_INGAME_CHANNLE_CHANGE_RESULT:
+		InGame_Recv_ChannelChange(buf);
+		result = RT_INGAME_CHANNEL_CHANGE;
 		break;
 	case SERVER_INGAME_MENU_RESULT_CHARACTER:
 		InGame_Recv_CharacterSelect();

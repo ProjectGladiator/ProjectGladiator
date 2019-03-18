@@ -181,7 +181,8 @@ enum RESULT {
 	RT_INGAME_OTHERPLAYER_INFO,			// 다른 플레이어 정보
 	RT_INGAME_OTHERPLAYER_LIST,			// 다른 플레이어 리스트
 	RT_INGAME_CHANNEL_INFO,				// 채널 정보
-	RT_INGAME_OTHERPLAYER_LEAVE,			//
+	RT_INGAME_CHANNEL_CHANGE,			// 채널 이동
+	RT_INGAME_OTHERPLAYER_LEAVE,		// 다른 유저가 나갔을때
 	RT_INGAME_MENU_CHARACTER,			// 캐릭터 선택화면
 	RT_INGAME_MENU_LOGOUT,				// 로그아웃
 	RT_INGAME_MENU_EXIT					// 종료
@@ -202,8 +203,8 @@ enum RESULT {
 //#define SERVERIP "192.168.0.134"	// 202ip 호연노트북
 //#define SERVERIP "192.168.0.154"	// 402ip 호연노트북
 //#define SERVERIP "192.168.0.166"	// 302ip 호연노트북
-//#define SERVERIP "192.168.43.58"	// 호연핫스팟 호연노트북
-#define SERVERIP "172.30.35.30"	// KT Free Wifi 호연노트북
+#define SERVERIP "192.168.43.58"	// 호연핫스팟 호연노트북
+//#define SERVERIP "172.30.35.30"	// KT Free Wifi 호연노트북
 //#define SERVERIP "192.168.43.180"	// 호연핫스팟 영준그램노트북
 //#define SERVERIP "127.0.43.180"
 //#define SERVERIP "192.168.123.181"
