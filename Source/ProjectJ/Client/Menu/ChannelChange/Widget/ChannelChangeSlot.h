@@ -31,4 +31,7 @@ public:
 	void InitChannelSlot(int32 _ChannelIndex);
 
 	void ChannelSlotUpdate(int32 _CurrentChannelUserCount);
+
+	UFUNCTION()
+		void ChannelChange();
 };

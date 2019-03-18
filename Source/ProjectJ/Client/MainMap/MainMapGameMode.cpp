@@ -188,7 +188,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	FRotator SpawnRotation;
 	FActorSpawnParameters SpawnActorOption;
 	int UserCount = -1;
-	int Channelnum = 0;
 	AMyCharacter* MyCharacter = nullptr;
 	AMyCharacter* OtherUserCharacter = nullptr;
 	ATanker* Tanker = nullptr;
@@ -199,6 +198,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	ChannelInfo* channelInfo = TempchanneleInfo;
 	char TempCharacterCode[30];
 	char* LeaveCharacterCode = TempCharacterCode;
+	bool ChannelChangeFlag;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -237,7 +237,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			GLog->Log(FString::Printf(TEXT("게임모드 틱 로그인 결과")));
 			if (LoginManager::GetInstance()->isLogin())
 			{
-				//LoadingWidget->AddToViewport();
 				LoginWidgetToggle();
 				CharacterSelectWidgetToggle();
 
@@ -246,7 +245,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				StorageManager::GetInstance()->PopData();
 				CharacterManager::GetInstance()->Character_Req_Slot();
 				NetworkClient_main::NetworkManager::GetInstance()->Send();
-				//UGameplayStatics::OpenLevel(GetWorld(), TEXT("CharacterCreateSelect"));
 			}
 			else
 			{
@@ -468,6 +466,19 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			MainMapPlayerController->SetSelectIndex(-1);
 			CharacterSelectWidget->ButtonEnable();
 			break;
+		case PGAMEDATA_CHANNEL_REQ_CHANGE:
+			LoadingWidgetHiddenScreen();
+
+			StorageManager::GetInstance()->ChangeData(Data->data, ChannelChangeFlag);
+			StorageManager::GetInstance()->PopData();
+
+			if (ChannelChangeFlag)
+			{
+				LoginUserAllDestory();
+				InGameManager::GetInstance()->InGame_Req_UserList();
+				NetworkClient_main::NetworkManager::GetInstance()->Send();
+			}
+			break;
 		}
 	}
 }
@@ -563,6 +574,14 @@ void AMainMapGameMode::LoadingWidgetViewScreen()
 	if (LoadingWidget)
 	{
 		LoadingWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void AMainMapGameMode::LoadingWidgetHiddenScreen()
+{
+	if (LoadingWidget)
+	{
+		LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
@@ -698,6 +717,11 @@ float AMainMapGameMode::GetMaxChannelUserCount()
 	return MaxChannelUserCount;
 }
 
+int32 AMainMapGameMode::GetChannelNum()
+{
+	return Channelnum;
+}
+
 void AMainMapGameMode::LogOut()
 {
 	ReadyCharacterSelectLogOut("MainMapUnLoadCompleteToTitle");
@@ -722,7 +746,7 @@ void AMainMapGameMode::ReadyCharacterSelectLogOut(const FName & _BindFunctionNam
 		}
 	}
 
-	LoadingWidget->SetVisibility(ESlateVisibility::Visible);
+	LoadingWidgetViewScreen();
 
 	LoginUserAllDestory();
 
@@ -739,7 +763,7 @@ void AMainMapGameMode::MapLoadComplete()
 {
 	SelectCharacterDestroy();
 	GLog->Log(FString::Printf(TEXT("맵 로드 완료")));
-	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
+	LoadingWidgetHiddenScreen();
 
 	// 서버에 다른 유저리스트 요청
 	InGameManager::GetInstance()->InGame_Req_UserList();
@@ -748,7 +772,7 @@ void AMainMapGameMode::MapLoadComplete()
 
 void AMainMapGameMode::MainMapUnLoadCompleteToTitle()
 {
-	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
+	LoadingWidgetHiddenScreen();
 
 	if (CreateSelectCharacter)
 	{
@@ -764,7 +788,7 @@ void AMainMapGameMode::MainMapUnLoadCompleteToTitle()
 
 void AMainMapGameMode::MainMapUnLoadCompleteToCharacterSelect()
 {
-	LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
+	LoadingWidgetHiddenScreen();
 
 	if (CreateSelectCharacter)
 	{

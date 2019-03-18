@@ -45,6 +45,8 @@ private:
 		TArray<class AMyCharacter*> OtherLoginUserList;
 	UPROPERTY()
 		class AMainMapPlayerController* MainMapPlayerController;
+	UPROPERTY()
+		int32 Channelnum = -1;
 public:
 	AMainMapGameMode();
 
@@ -60,6 +62,7 @@ public:
 	void CancelWidgetToggle(const FText& Message); //에러 다시시도,취소 위젯 보여주기
 	void OkWidgetToggle(const FText& Message); //에러 확인 위젯 보여주기
 	void LoadingWidgetViewScreen(); //로딩 위젯 화면에 붙이기
+	void LoadingWidgetHiddenScreen();
 	void MenuWidgetToggle();
 
 	void SelectCharacterSpawn(CHARACTER_JOB _SelectJob);
@@ -75,6 +78,8 @@ public:
 
 	float GetCurrentChannelUserCount();
 	float GetMaxChannelUserCount();
+
+	int32 GetChannelNum();
 
 	UFUNCTION()
 		void LogOut();

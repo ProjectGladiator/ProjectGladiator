@@ -189,6 +189,7 @@ void AMyCharacter::MoveImplementation()
 
 void AMyCharacter::MoveUpdateTimerKill()
 {
+	//GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 킬")));
 	GetWorld()->GetTimerManager().ClearTimer(C2S_MoveUpdateTimer);
 }
 
@@ -227,6 +228,7 @@ void AMyCharacter::RotateImplementation()
 
 void AMyCharacter::RotateUpdateTimerKill()
 {
+	//GLog->Log(FString::Printf(TEXT("C2S_RotateConfirm 킬")));
 	GetWorld()->GetTimerManager().ClearTimer(C2S_RotateUpdateTimer);
 }
 
@@ -366,7 +368,7 @@ void AMyCharacter::C2S_MoveConfirm()
 {
 	FVector Location = GetActorLocation();
 
-	//GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.3s")));
+	//GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.1s")));
 
 	MainMapPlayerController->C2S_MoveConfirm(Location);
 }

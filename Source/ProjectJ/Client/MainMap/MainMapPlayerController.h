@@ -54,6 +54,7 @@ public:
 	void C2S_ReqMenuChannelInfo();
 	void C2S_ReqMenuCharacterSelect();
 	void C2S_ReqMenuLogOut();
+	void C2S_ReqChannelChange(int32 ChannelIndex);
 
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;
