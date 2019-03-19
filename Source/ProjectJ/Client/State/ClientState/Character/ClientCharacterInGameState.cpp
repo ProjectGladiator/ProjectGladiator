@@ -64,7 +64,10 @@ void ClientCharacterInGameState::Click(AMainMapPlayerController * _MainMapPlayer
 		}
 		else
 		{
-			ClickCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetHidden();
+			if (ClickCharacter)
+			{
+				ClickCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetHidden();
+			}
 		}
 	}
 }

@@ -82,7 +82,7 @@ void UChannelChangeSlot::ChannelChange()
 		else
 		{
 			ChannelInfo.MainMapGameMode->MenuWidgetToggle();
-			ChannelInfo.MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("Same Channel Choose Other Channel"))));
+			ChannelInfo.MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("Same Channel\nChoose Other Channel"))));
 		}
 	}
 }
