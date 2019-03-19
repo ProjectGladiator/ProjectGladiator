@@ -27,4 +27,7 @@ private:
 	//	void ANimNotify_MonsterAttackEnded();
 	UFUNCTION()
 		void AnimNotify_Death(UAnimNotify* Notify);
+public:
+	UFUNCTION()
+		virtual void NativeUpdateAnimation(float DeltaSeconds) override; // Æ½ ÇÔ¼ö
 };
