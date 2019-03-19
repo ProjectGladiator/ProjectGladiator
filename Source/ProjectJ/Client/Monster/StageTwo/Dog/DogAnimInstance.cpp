@@ -27,15 +27,3 @@ void UDogAnimInstance::AnimNotify_Death(UAnimNotify * Notify)
 {
 	OnDeath.Broadcast();
 }
-
-void UDogAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
-{
-	Super::NativeUpdateAnimation(DeltaSeconds);
-
-	auto Dog = Cast<ADog>(TryGetPawnOwner());
-
-	if (Dog && Dog->IsValidLowLevelFast())
-	{
-		CurrentState = Dog->GetCurrentState();
-	}
-}
