@@ -54,6 +54,7 @@ public:
 	bool GetFront(PacketData*& data);
 	void ChangeData(void* data, bool& type);
 	void ChangeData(void* data, int& _count);
+	void ChangeData(void* data, bool& _type, int& _count);
 	void ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot);
 	void ChangeData(void* data, CharacterInfo*& _charinfo,int& _channelnum);
 	void ChangeData(void* data, CharacterInfo*& _charinfo);

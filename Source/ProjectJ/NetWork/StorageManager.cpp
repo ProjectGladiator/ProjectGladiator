@@ -122,6 +122,22 @@ void StorageManager::ChangeData(void * data, int &_count)
 }
 
 // 캐릭터슬롯정보
+void StorageManager::ChangeData(void* data, bool& _type, int& _count)
+{
+	char* ptr = (char*)data;
+
+	memcpy(&_type, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+
+	if (_type == false)
+	{
+		return;
+	}
+
+	memcpy(&_count, ptr, sizeof(int));
+	ptr += sizeof(int);
+}
+// 캐릭터슬롯정보
 void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot)
 {
  	char* ptr = (char*)data;

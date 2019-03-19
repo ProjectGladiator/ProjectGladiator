@@ -566,15 +566,35 @@ void InGameManager::InGame_Recv_ChannelChange(char * _buf)
 	int size = 0;
 
 	bool result = false;
+	int channelnum = 0;
 
 	// 결과 언팩
 	memcpy(&result, ptr, sizeof(bool));
 	ptr += sizeof(bool);
 
-	// 결과 패킹
-	memcpy(ptr_data, &result, sizeof(bool));
-	ptr_data += sizeof(bool);
-	size += sizeof(bool);
+	if (result)
+	{
+		// 바뀐 채널 언팩
+		memcpy(&channelnum, ptr, sizeof(int));
+		ptr += sizeof(int);
+
+		// 결과 패킹
+		memcpy(ptr_data, &result, sizeof(bool));
+		ptr_data += sizeof(bool);
+		size += sizeof(bool);
+
+		// 바뀐 채널 패킹
+		memcpy(ptr_data, &channelnum, sizeof(int));
+		ptr_data += sizeof(int);
+		size += sizeof(int);
+	}
+	else
+	{
+		// 결과 패킹
+		memcpy(ptr_data, &result, sizeof(bool));
+		ptr_data += sizeof(bool);
+		size += sizeof(bool);
+	}
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_CHANNEL_REQ_CHANGE, data, size);
 }
