@@ -27,7 +27,8 @@
 #include "Client/State/ClientState/PC/ClientPCInGameState.h"
 #include "Client/Menu/MenuWidget.h"
 #include "Client/Menu/ChannelChange/Widget/ChannelChange.h"
-#include "client/Menu/ChannelChange/Widget/ChannelChangeSlot.h"
+#include "Client/Menu/ChannelChange/Widget/ChannelChangeSlot.h"
+#include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 
 //서버 헤더
@@ -455,8 +456,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			StorageManager::GetInstance()->ChangeData(Data->data, LeaveCharacterCode);
 			StorageManager::GetInstance()->PopData();
 
-			LoginUserDestory(LeaveCharacterCode);
-
+			LoginUserDestory(LeaveCharacterCode);			
 			LeaveCharacterCode = nullptr;
 			break;
 		case PGAMEDATA_MENU_CHARACTER_SELECT:
@@ -691,6 +691,9 @@ void AMainMapGameMode::LoginUserDestory(char * _OtherCharacterCode)
 	if (DestoryOtherCharacter)
 	{
 		DeleteLoginUser(DestoryOtherCharacter);
+		
+		//안켜져 있는 캐릭터 UI도 끄는 작업을 함 수정필요
+		DestoryOtherCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetHidden();
 
 		DestoryOtherCharacter->Destroy();
 	}

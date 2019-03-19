@@ -29,10 +29,9 @@ private:
 		class UProgressBar* HPBar;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UProgressBar* MPBar;
-public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		FPartySlot PartySlotInfo;
-
+public:
 	virtual void NativeConstruct() override;
 
 	void PartySlotUpdate(FPartySlot _PartySlot, int32 _Index);

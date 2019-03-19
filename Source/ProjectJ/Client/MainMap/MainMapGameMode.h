@@ -30,23 +30,23 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
 		class UUserWidget* LoadingWidget; //로딩 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
-		class UMenuWidget* MenuWidget;
+		class UMenuWidget* MenuWidget; //메뉴 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
-		float CurrentChannelUserCount;
+		float CurrentChannelUserCount; //현재 채널에 있는 유저 수
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
-		float MaxChannelUserCount;
+		float MaxChannelUserCount; //채널에 들어올 수 있는 최대 유저 수
 	UPROPERTY()
 		class UStageManager* StageManager;
 	UPROPERTY()
-		class AMyCharacter* SelectCharacter;
+		class AMyCharacter* SelectCharacter; //슬롯 버튼을 누르면 캐릭터를 소환 할때 저장해둘 캐릭터
 	UPROPERTY()
-		class AMyCharacter* CreateSelectCharacter;
+		class AMyCharacter* CreateSelectCharacter; //캐릭터 선택, 캐릭터 생성, 게임 시작 등을 담당할 캐릭터
 	UPROPERTY()
-		TArray<class AMyCharacter*> OtherLoginUserList;
+		TArray<class AMyCharacter*> OtherLoginUserList; //나를 제외한 현재 채널에 접속해 있는 모든 캐릭터들을 저장해둘 포인터 배열 변수
 	UPROPERTY()
-		class AMainMapPlayerController* MainMapPlayerController;
+		class AMainMapPlayerController* MainMapPlayerController; 
 	UPROPERTY()
-		int32 Channelnum = -1;
+		int32 Channelnum = -1; //속해 있는 채널 번호
 public:
 	AMainMapGameMode();
 
@@ -86,7 +86,7 @@ public:
 	UFUNCTION()
 		void CharacterSelect(); //캐릭터 선택 함수
 
-	void ReadyCharacterSelectLogOut(const FName& _BindFunctionName);
+	void ReadyCharacterSelectLogOut(const FName& _BindFunctionName); //메뉴에서 캐릭터 선택 or 로그아웃 선택시 뒷작업을 해주는 함수
 
 	UFUNCTION()
 		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수	
