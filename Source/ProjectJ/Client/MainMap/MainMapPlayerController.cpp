@@ -169,7 +169,6 @@ void AMainMapPlayerController::C2S_ReqChannelChange(int32 ChannelIndex)
 void AMainMapPlayerController::Possess(APawn * InPawn)
 {
 	Super::Possess(InPawn);
-	//GLog->Log(FString::Printf(TEXT("MainMapPlayerController 포제스")));
 }
 
 void AMainMapPlayerController::SetClientPCState(ClientState * _NewClientCharacterState)

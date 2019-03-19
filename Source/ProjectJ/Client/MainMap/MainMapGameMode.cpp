@@ -199,6 +199,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	char TempCharacterCode[30];
 	char* LeaveCharacterCode = TempCharacterCode;
 	bool ChannelChangeFlag;
+	int32 S2C_ChannelNum=-1;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -325,9 +326,10 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			memset(character_info, 0, sizeof(CharacterInfo));
 
 			// 캐릭터 정보 서버에서 받은거 넣어줌
-			StorageManager::GetInstance()->ChangeData(Data->data, character_info, Channelnum);
-			GLog->Log(FString::Printf(TEXT("Channelnum %d"), Channelnum));
+			StorageManager::GetInstance()->ChangeData(Data->data, character_info, S2C_ChannelNum);
 			StorageManager::GetInstance()->PopData();
+			Channelnum = S2C_ChannelNum;
+			GLog->Log(FString::Printf(TEXT("현재 접속중인 채널 : %d"), Channelnum));
 
 			x = character_info->xyz[0]; y = character_info->xyz[1]; z = character_info->xyz[2];
 
@@ -352,6 +354,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (MyCharacter)
 			{
+				GLog->Log(FString::Printf(TEXT("스폰 위치 X : %f Y : %f Z : %f"), MyCharacter->GetActorLocation().X, MyCharacter->GetActorLocation().Y, MyCharacter->GetActorLocation().Z));
 				GLog->Log(ANSI_TO_TCHAR(character_info->code));
 				
 				MyCharacter->SetClientCharacterState(new ClientCharacterInGameState(MyCharacter));
@@ -364,7 +367,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 					MainMapPlayerController->bShowMouseCursor = false;
 					MainMapPlayerController->SetInputMode(FInputModeGameOnly());
 					MainMapPlayerController->Possess(MyCharacter);
-					MyCharacter->SetDefaultCharacter();
+					MyCharacter->SetDefaultMyCharacter();
 				}
 			}
 			else
@@ -424,6 +427,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 				OtherCharacterController->Possess(OtherUserCharacter);
 
+				OtherUserCharacter->SetDefaultOtherCharacter();
+
 				AddLoginUser(OtherUserCharacter);
 			}
 
@@ -469,12 +474,13 @@ void AMainMapGameMode::Tick(float DeltaTime)
 		case PGAMEDATA_CHANNEL_REQ_CHANGE:
 			LoadingWidgetHiddenScreen();
 
-			StorageManager::GetInstance()->ChangeData(Data->data, ChannelChangeFlag);
+			StorageManager::GetInstance()->ChangeData(Data->data, ChannelChangeFlag,S2C_ChannelNum);
 			StorageManager::GetInstance()->PopData();
 
 			if (ChannelChangeFlag)
 			{
 				LoginUserAllDestory();
+				Channelnum = S2C_ChannelNum;
 				InGameManager::GetInstance()->InGame_Req_UserList();
 				NetworkClient_main::NetworkManager::GetInstance()->Send();
 			}

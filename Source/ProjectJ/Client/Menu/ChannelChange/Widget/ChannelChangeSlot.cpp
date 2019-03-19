@@ -64,7 +64,7 @@ void UChannelChangeSlot::ChannelChange()
 		int32 CurrentChannelNum = ChannelInfo.MainMapGameMode->GetChannelNum();
 		int32 ChannelIndex = ChannelInfo.ChannelIndex;
 
-		GLog->Log(FString::Printf(TEXT("게임모드 채널 번호 : %d"), ChannelInfo.MainMapGameMode->GetChannelNum()));
+		GLog->Log(FString::Printf(TEXT("게임모드 채널 번호 : %d"), CurrentChannelNum));
 		GLog->Log(FString::Printf(TEXT("선택한 채널 번호 : %d"), ChannelIndex));
 
 		if (CurrentChannelNum != ChannelIndex)
@@ -81,6 +81,7 @@ void UChannelChangeSlot::ChannelChange()
 		}
 		else
 		{
+			ChannelInfo.MainMapGameMode->MenuWidgetToggle();
 			ChannelInfo.MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("Same Channel Choose Other Channel"))));
 		}
 	}

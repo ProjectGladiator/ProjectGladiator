@@ -12,4 +12,6 @@ struct PROJECTJ_API FClickCharacterInfo
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMyCharacter* ClickCharacter;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class APlayerController* ClickCharacterPlayerController;
 };

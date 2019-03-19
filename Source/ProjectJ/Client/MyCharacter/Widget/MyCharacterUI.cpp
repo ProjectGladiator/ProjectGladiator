@@ -6,9 +6,9 @@
 #include "Client/MyCharacter/Widget/Inventory/Inventory.h"
 #include "Client/MyCharacter/Widget/Party/Party.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
-#include "Client/MyCharacter/Widget/MyCharacterWidget.h"
 #include "Client/MyCharacter/Widget/Inventory/Widget/InventoryWidget.h"
 #include "Client/MyCharacter/Widget/Party/Widget/PartyWidget.h"
+#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/MyCharacterWidget.h"
 //서버 헤더
 
 // Sets default values for this component's properties
@@ -20,7 +20,7 @@ UMyCharacterUI::UMyCharacterUI()
 
 	InventoryComponent = CreateDefaultSubobject<UInventory>(TEXT("Inventory"));
 	PartyComponent = CreateDefaultSubobject<UParty>(TEXT("Party"));
-	ClickCharacterIntreaciton = CreateDefaultSubobject<UClickCharacterInteraction>(TEXT("ClickCharacterIntreaciton"));
+	MyCharacterInteraction = CreateDefaultSubobject<UClickCharacterInteraction>(TEXT("ClickCharacterIntreaciton"));
 }
 
 
@@ -29,16 +29,6 @@ void UMyCharacterUI::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FStringClassReference MyCharacterInfoWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/W_MyCharacter.W_MyCharacter_C'"));
-
-	if (UClass* MyWidgetClass = MyCharacterInfoWidgetClass.TryLoadClass<UUserWidget>())
-	{
-		MyCharacterWidget = Cast<UMyCharacterWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
-
-		MyCharacterWidget->AddToViewport(); //화면에 붙인다.
-		MyCharacterWidget->SetRenderTranslation(FVector2D(340.0f, 740.0f));
-		MyCharacterWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
-	}
 }
 
 
@@ -68,36 +58,14 @@ UParty * UMyCharacterUI::GetPartyComponent()
 	return PartyComponent;
 }
 
-UClickCharacterInteraction * UMyCharacterUI::GetClickCharacterInteractionComponent()
+UClickCharacterInteraction * UMyCharacterUI::GetMyCharacterInteraction()
 {
-	return ClickCharacterIntreaciton;
-}
-
-void UMyCharacterUI::MyCharacterWidgetVisible()
-{
-	if (MyCharacterWidget)
-	{
-		MyCharacterWidget->SetVisibility(ESlateVisibility::Visible);
-	}
-}
-
-void UMyCharacterUI::MyCharacterWidgetHidden()
-{
-	if (MyCharacterWidget)
-	{
-		MyCharacterWidget->SetVisibility(ESlateVisibility::Hidden);
-	}
+	return MyCharacterInteraction;
 }
 
 void UMyCharacterUI::AllUIWidgetHidden()
 {
-	MyCharacterWidget->RemoveFromParent();
+	MyCharacterInteraction->GetMyCharacterWidget()->RemoveFromParent(); 
 	InventoryComponent->GetInventoryWidget()->RemoveFromParent();
 	PartyComponent->GetPartyWidget()->RemoveFromParent();
 }
-
-UMyCharacterWidget * UMyCharacterUI::GetMyCharacterWidget()
-{
-	return MyCharacterWidget;
-}
-

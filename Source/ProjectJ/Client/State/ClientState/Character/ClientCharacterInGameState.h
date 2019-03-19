@@ -8,8 +8,9 @@
 class ClientCharacterInGameState : public ClientState
 {
 private:
-	class AMyCharacter* MyCharacter;
-	class AMainMapPlayerController* MainMapPlayerController;
+	class AMyCharacter* MyCharacter = nullptr;
+	class AMainMapPlayerController* MainMapPlayerController = nullptr;
+	class AMyCharacter* ClickCharacter = nullptr;
 
 	float ForwadBackwardCurrentValue;
 	float ForwadBackwardPreviousValue;

@@ -10,8 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
-#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/ClickCharacterWidget.h"
-#include "Client/MyCharacter/Widget/MyCharacterWidget.h"
+#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/MyCharacterWidget.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 
 //서버 헤더
@@ -42,26 +41,30 @@ void ClientCharacterInGameState::Click(AMainMapPlayerController * _MainMapPlayer
 			if (MyCharacter)
 			{
 				auto OtherCharacter = Cast<AMyCharacter>(HitResult.Actor);
-
+				
 				if (OtherCharacter)
 				{
+					ClickCharacter = OtherCharacter;
+
 					GLog->Log(ANSI_TO_TCHAR(OtherCharacter->GetCharacterNickName()));
 
 					auto OtherController = Cast<AMainMapOtherPlayerController>(OtherCharacter->GetController());
-					MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->ClickCharacterWidgetVisible();
-
+			
 					if (OtherController)
 					{
-						OtherCharacter->GetMyCharacterUI()->GetMyCharacterWidget()->SetPosition(FVector2D(1250.0f, 740.0f));
-						OtherCharacter->GetMyCharacterUI()->MyCharacterWidgetVisible();
+						OtherCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetPosition(FVector2D(1500.0f, 740.0f));
+						OtherCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
+					}
+					else
+					{
+						GLog->Log(FString::Printf(TEXT("OtherController이 없음")));
 					}
 				}
 			}
 		}
 		else
 		{
-			MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->GetClickCharacterWidget()->CharacterInteractionWidgetHidden();
-			MyCharacter->GetMyCharacterUI()->GetClickCharacterInteractionComponent()->ClickCharacterWidgetHidden();
+			ClickCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetHidden();
 		}
 	}
 }
@@ -82,7 +85,7 @@ void ClientCharacterInGameState::MoveForward(float Value)
 			if (ForwadBackwardPreviousValue == 0)
 			{
 				MyCharacter->MoveImplementation();
-				GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
+				//GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
 			}
 		}
 
@@ -92,7 +95,7 @@ void ClientCharacterInGameState::MoveForward(float Value)
 			{
 				if (LeftRightCurrentValue == 0)
 				{
-					GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 멈춤")));
+					//GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 멈춤")));
 
 					bool C2SMoveTimerActive = MyCharacter->MoveTimerActive();
 
@@ -103,7 +106,7 @@ void ClientCharacterInGameState::MoveForward(float Value)
 				}
 				else
 				{
-					GLog->Log(FString::Printf(TEXT("좌 우로 움직이는 중임")));
+					//GLog->Log(FString::Printf(TEXT("좌 우로 움직이는 중임")));
 				}
 			}
 		}
@@ -128,7 +131,7 @@ void ClientCharacterInGameState::MoveRight(float Value)
 			if (LeftRightPreviousValue == 0)
 			{
 				MyCharacter->MoveImplementation();
-				GLog->Log(FString::Printf(TEXT("좌 우 움직임 시작")));
+				//GLog->Log(FString::Printf(TEXT("좌 우 움직임 시작")));
 			}
 		}
 
@@ -138,7 +141,7 @@ void ClientCharacterInGameState::MoveRight(float Value)
 			{
 				if (ForwadBackwardCurrentValue == 0)
 				{
-					GLog->Log(FString::Printf(TEXT("좌 우 움직임 멈춤")));
+					//GLog->Log(FString::Printf(TEXT("좌 우 움직임 멈춤")));
 
 					bool C2SMoveTimerActive = MyCharacter->MoveTimerActive();
 
@@ -149,7 +152,7 @@ void ClientCharacterInGameState::MoveRight(float Value)
 				}
 				else
 				{
-					GLog->Log(FString::Printf(TEXT("앞 뒤로 움직이는 중임")));
+					//GLog->Log(FString::Printf(TEXT("앞 뒤로 움직이는 중임")));
 				}
 			}
 		}

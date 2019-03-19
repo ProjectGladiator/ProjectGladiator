@@ -167,7 +167,8 @@ public:
 
 	void SetClientCharacterState(ClientState* _NewClientCharacterState);
 
-	void SetDefaultCharacter();
+	void SetDefaultMyCharacter();
+	void SetDefaultOtherCharacter();
 
 	char* GetCharacterNickName();
 
