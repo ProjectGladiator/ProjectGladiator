@@ -17,7 +17,7 @@ public:
 	UClickCharacterInteraction();
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = WidgetActorComponent, Meta = (AllowPrivateAccess = true))
-		class UClickCharacterWidget* ClickCharacterWidget;
+		class UMyCharacterWidget* MyCharacterWidget;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -26,12 +26,12 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	void ClickCharacterWidgetVisible();
-	void ClickCharacterWidgetHidden();
+	void MyCharacterWidgetVisible();
+	void MyCharacterWidgetHidden();
 	
-	UClickCharacterWidget* GetClickCharacterWidget();
+	UMyCharacterWidget* GetMyCharacterWidget();
 
-	void ClickCharacterSetInfo(class AMyCharacter * _ClickCharacter);
+	void MyCharacterSetInfo(class AMyCharacter * _ClickCharacter, APlayerController* _PlayerController);
 
 
 };

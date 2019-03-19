@@ -8,7 +8,7 @@
 #include "CharacterInteractionWidget.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTJ_API UCharacterInteractionWidget : public UUserWidget
@@ -20,9 +20,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UButton* PartyButton;
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data)
-		FClickCharacterInfo ClickCharacterSlotInfo;
-
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()

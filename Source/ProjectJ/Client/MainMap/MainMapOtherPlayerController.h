@@ -22,4 +22,7 @@ public:
 	//FControlOtherCharacterMoveDelegate ControlOtherCharacterMove;
 	//FControlOtherCharacterRotateDelegate ControlOtherCharacerRotate;
 	virtual void Tick(float DeltaTime) override;
+
+	UFUNCTION()
+		virtual void Possess(APawn* InPawn) override;
 };

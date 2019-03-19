@@ -2,7 +2,7 @@
 
 #include "ClickCharacterInteraction.h"
 //클라 헤더
-#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/ClickCharacterWidget.h"
+#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/MyCharacterWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 //서버 헤더
@@ -23,15 +23,15 @@ void UClickCharacterInteraction::BeginPlay()
 {
 	Super::BeginPlay();
 
-	FStringClassReference ClickCharacterWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/CharacterInteraction/W_ClickCharacter.W_ClickCharacter_C'"));
+	FStringClassReference BlueprintMyCharacterWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/CharacterInteraction/W_MyCharacter.W_MyCharacter_C'"));
 
-	if (UClass* MyClickCharacterWidgetClass = ClickCharacterWidgetClass.TryLoadClass<UUserWidget>())
+	if (UClass* MyCharacterWidgetClass = BlueprintMyCharacterWidgetClass.TryLoadClass<UUserWidget>())
 	{
-		ClickCharacterWidget = Cast<UClickCharacterWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyClickCharacterWidgetClass));
+		MyCharacterWidget = Cast<UMyCharacterWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyCharacterWidgetClass));
 
-		ClickCharacterWidget->AddToViewport(); //화면에 붙인다.
-		ClickCharacterWidget->SetRenderTranslation(FVector2D(1250.0f, 740.0f));
-		ClickCharacterWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+		MyCharacterWidget->AddToViewport(); //화면에 붙인다.
+		MyCharacterWidget->SetRenderTranslation(FVector2D(340.0f, 740.0f));
+		MyCharacterWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 }
 
@@ -44,36 +44,32 @@ void UClickCharacterInteraction::TickComponent(float DeltaTime, ELevelTick TickT
 	// ...
 }
 
-void UClickCharacterInteraction::ClickCharacterWidgetVisible()
+void UClickCharacterInteraction::MyCharacterWidgetVisible()
 {
-	if (ClickCharacterWidget)
+	if (MyCharacterWidget)
 	{
-		ClickCharacterWidget->SetVisibility(ESlateVisibility::Visible);
+		MyCharacterWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
-void UClickCharacterInteraction::ClickCharacterWidgetHidden()
+void UClickCharacterInteraction::MyCharacterWidgetHidden()
 {
-	if (ClickCharacterWidget)
+	if (MyCharacterWidget)
 	{
-		ClickCharacterWidget->SetVisibility(ESlateVisibility::Hidden);
+		MyCharacterWidget->SetVisibility(ESlateVisibility::Hidden);
+		MyCharacterWidget->CharacterInteractionWidgetHidden();
 	}
 }
 
-UClickCharacterWidget * UClickCharacterInteraction::GetClickCharacterWidget()
+UMyCharacterWidget * UClickCharacterInteraction::GetMyCharacterWidget()
 {
-	return ClickCharacterWidget;
+	return MyCharacterWidget;
 }
 
-void UClickCharacterInteraction::ClickCharacterSetInfo(AMyCharacter * _ClickCharacter)
+void UClickCharacterInteraction::MyCharacterSetInfo(AMyCharacter * _ClickCharacter, APlayerController* _PlayerController)
 {
-	if (ClickCharacterWidget)
+	if (MyCharacterWidget)
 	{
-		if (_ClickCharacter)
-		{
-			FClickCharacterInfo ClickInfo;
-			ClickInfo.ClickCharacter = _ClickCharacter;
-			ClickCharacterWidget->SetClickCharacterInfo(ClickInfo);
-		}
+
 	}
 }

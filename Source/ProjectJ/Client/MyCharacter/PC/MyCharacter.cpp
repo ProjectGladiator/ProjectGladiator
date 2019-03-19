@@ -21,7 +21,8 @@
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/Inventory/Inventory.h"
 #include "Client/MyCharacter/Widget/Party/Party.h"
-#include "Client/MyCharacter/Widget/MyCharacterWidget.h"
+#include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
+#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/MyCharacterWidget.h"
 #include "Client/State/ClientState/ClientState.h"
 
 //서버 헤더
@@ -478,13 +479,40 @@ void AMyCharacter::SetClientCharacterState(ClientState * _NewClientCharacterStat
 	ClientCharacterState = _NewClientCharacterState;
 }
 
-void AMyCharacter::SetDefaultCharacter()
+void AMyCharacter::SetDefaultMyCharacter()
 {
 	if (MyCharacterUI)
 	{
-		MyCharacterUI->SetMyCharacterUI();
-		MyCharacterUI->GetPartyComponent()->PartyJoin(this);
-		MyCharacterUI->GetMyCharacterWidget()->SetInit(this);
+		auto MyCharacterController = Cast<AMainMapPlayerController>(GetController());
+
+		if (MyCharacterController)
+		{
+			MyCharacterUI->SetMyCharacterUI();
+			MyCharacterUI->GetPartyComponent()->PartyJoin(this);
+			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, MyCharacterController);
+			MyCharacterUI->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
+		}
+		else
+		{
+			GLog->Log(FString::Printf(TEXT("SetDefaultMyCharacter함수 MyCharacterController이 존재 하지 않음")));
+		}
+	}
+}
+
+void AMyCharacter::SetDefaultOtherCharacter()
+{
+	if (MyCharacterUI)
+	{
+		auto OtherCharacterController = Cast<AMainMapOtherPlayerController>(GetController());
+
+		if (OtherCharacterController)
+		{
+			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, OtherCharacterController);
+		}
+		else
+		{
+			GLog->Log(FString::Printf(TEXT("SetDefaultOtherCharacter함수 OtherCharacterController이 존재 하지 않음")));
+		}
 	}
 }
 
@@ -500,5 +528,12 @@ AMainMapOtherPlayerController * AMyCharacter::GetOtherPlayerController()
 
 UMyCharacterUI * AMyCharacter::GetMyCharacterUI()
 {
-	return MyCharacterUI;
+	if (MyCharacterUI)
+	{
+		return MyCharacterUI;
+	}
+	else
+	{
+		return nullptr;
+	}
 }
