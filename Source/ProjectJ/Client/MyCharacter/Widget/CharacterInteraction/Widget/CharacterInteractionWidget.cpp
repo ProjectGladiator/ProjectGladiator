@@ -45,14 +45,14 @@ void UCharacterInteractionWidget::Party()
 
 		if (MyCharacter)
 		{
-			if (MyCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin())
+			/*if (MyCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin())
 			{
 				
 			}
 			else
 			{
 				GLog->Log(FString::Printf(TEXT("파티원이 꽉 참")));
-			}
+			}*/
 		}
 		else
 		{
