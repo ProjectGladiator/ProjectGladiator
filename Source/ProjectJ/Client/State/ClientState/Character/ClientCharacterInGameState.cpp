@@ -32,43 +32,30 @@ void ClientCharacterInGameState::Click(AMainMapPlayerController * _MainMapPlayer
 	FHitResult HitResult;
 	ObjectTypes.Add(EObjectTypeQuery::ObjectTypeQuery3); //Pawn타입으로 결정
 
-	auto MyCharacter = Cast<AMyCharacter>(_MainMapPlayerController->GetPawn());
-
 	if (_MainMapPlayerController->bEnableClickEvents)
 	{
 		if (_MainMapPlayerController->GetHitResultUnderCursorForObjects(ObjectTypes, true, HitResult))
 		{
-			if (MyCharacter)
+			auto OtherCharacter = Cast<AMyCharacter>(HitResult.Actor);
+
+			if (OtherCharacter) //클릭한 캐릭터가 플레이어 캐릭터인데
 			{
-				auto OtherCharacter = Cast<AMyCharacter>(HitResult.Actor);
-				
-				if (OtherCharacter)
+				if (ClickCharacter) //이미 클릭한 캐릭터가 존재하면
 				{
-					ClickCharacter = OtherCharacter;
-
-					GLog->Log(ANSI_TO_TCHAR(OtherCharacter->GetCharacterNickName()));
-
-					auto OtherController = Cast<AMainMapOtherPlayerController>(OtherCharacter->GetController());
-			
-					if (OtherController)
-					{
-						OtherCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetPosition(FVector2D(1500.0f, 740.0f));
-						OtherCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
-					}
-					else
-					{
-						GLog->Log(FString::Printf(TEXT("OtherController이 없음")));
-					}
+					ClickCharacterInfoHidden(); //클릭한 캐릭터의 정보를 숨겨주고
+					ClickCharacterInfoVisible(OtherCharacter); //새로 클릭한 캐릭터의 정보를 보여준다.
+				}
+				else
+				{
+					//이미 클릭한 캐릭터가 없다면
+					ClickCharacterInfoVisible(OtherCharacter); //새로 클릭한 캐릭터의 정보를 보여준다.
 				}
 			}
-		}
-		else
-		{
-			if (ClickCharacter)
+			else //클릭한 캐릭터가 플레이어 캐릭터가 아니면
 			{
-				ClickCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetHidden();
+				ClickCharacterInfoHidden();
 			}
-		}
+		}		
 	}
 }
 
@@ -220,5 +207,36 @@ void ClientCharacterInGameState::Turn(float Value)
 				}
 			}
 		}
+	}
+}
+
+void ClientCharacterInGameState::ClickCharacterInfoVisible(AMyCharacter* _ClickCharacter)
+{
+	if (_ClickCharacter)
+	{
+		ClickCharacter = _ClickCharacter;
+
+		GLog->Log(ANSI_TO_TCHAR(ClickCharacter->GetCharacterNickName()));
+
+		auto OtherController = Cast<AMainMapOtherPlayerController>(ClickCharacter->GetController());
+
+		if (OtherController)
+		{
+			ClickCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetPosition(FVector2D(1500.0f, 740.0f));
+			ClickCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
+		}
+		else
+		{
+			GLog->Log(FString::Printf(TEXT("OtherController이 없음")));
+		}
+	}
+}
+
+void ClientCharacterInGameState::ClickCharacterInfoHidden()
+{
+	if (ClickCharacter)
+	{
+		ClickCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetHidden();
+		ClickCharacter = nullptr;
 	}
 }

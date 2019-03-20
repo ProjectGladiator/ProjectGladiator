@@ -25,12 +25,12 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Cameras, Meta = (AllowPrivateAccess = true))
 		class AChracterCreateCamera* CharacterSelectCamera; //캐릭터 선택창 카메라
 	UPROPERTY()
-		class AChracterCreateCamera* CharacterSelectZoomInCamera;
+		class AChracterCreateCamera* CharacterSelectZoomInCamera; //슬롯 선택시 소환된 캐릭터에게 줌인 되는 카메라
 	UPROPERTY()
 		class AMainMapGameMode* MainMapGameMode;
 	int32 JobCode;
 	int32 Select_index = -1;
-	class ClientState* ClientCharacterState;
+	class ClientState* ClientCharacterState = nullptr; //클라이언트 상태
 protected:
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason)override;

@@ -28,4 +28,7 @@ public:
 	virtual void MoveRight(float Value) override;
 	virtual void LookUp(float Value) override;
 	virtual void Turn(float Value) override;
+
+	void ClickCharacterInfoVisible(class AMyCharacter* _ClickCharacter);
+	void ClickCharacterInfoHidden();
 };
