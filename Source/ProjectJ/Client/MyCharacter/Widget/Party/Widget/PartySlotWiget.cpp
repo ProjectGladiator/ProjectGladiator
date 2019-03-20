@@ -12,6 +12,8 @@
 void UPartySlotWiget::NativeConstruct()
 {
 	Super::NativeConstruct();
+	
+	PartyReader = false;
 
 	PartyCharacterButton = Cast<UButton>(GetWidgetFromName(TEXT("PartyCharacterButton")));
 	NickNameText = Cast<UTextBlock>(GetWidgetFromName(TEXT("CharacterNickName")));
