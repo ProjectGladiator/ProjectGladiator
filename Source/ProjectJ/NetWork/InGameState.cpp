@@ -44,7 +44,14 @@ bool InGameState::Read(User * _user)
 			_user->setLogout();
 			_user->SetState(_user->getLoginState());
 		}
-
+		else if (result == RT_INGAME_PARTY_INVITE)
+		{
+			state = INGAME_INIT_RECV;
+		}
+		else if (result == RT_INGAME_PARTY_INVITE_RESULT)
+		{
+			state = INGAME_INIT_RECV;
+		}
 		break;
 	}
 	return true;

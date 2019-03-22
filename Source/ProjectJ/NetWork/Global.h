@@ -184,7 +184,8 @@ enum RESULT {
 	RT_INGAME_MENU_CHARACTER,			// 캐릭터 선택화면
 	RT_INGAME_MENU_LOGOUT,				// 로그아웃
 	RT_INGAME_MENU_EXIT,				// 종료
-	RT_INGAME_PARTY_INVITE				// 파티 초대
+	RT_INGAME_PARTY_INVITE,				// 파티 초대
+	RT_INGAME_PARTY_INVITE_RESULT		// 파티 초대 결과
 };
 
 #define USERCOUNT 200

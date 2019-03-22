@@ -656,7 +656,6 @@ void InGameManager::InGame_Recv_Invite(char * _buf)
 	size += nicklen;
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_INVITE, data, size);
-
 }
 
 // 파티 초대 결과받음
@@ -671,11 +670,11 @@ void InGameManager::InGame_Recv_Invite_Result(char * _buf)
 
 	bool result = false;
 
-	// 파티번호
+	// 결과
 	memcpy(&result, ptr, sizeof(bool));
 	ptr += sizeof(bool);
 
-	// data에 파티번호 패킹
+	// data에 결과
 	memcpy(ptr_data, &result, sizeof(bool));
 	ptr_data += sizeof(bool);
 	size += sizeof(bool);
@@ -802,6 +801,14 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 	case SERVER_INGAME_MENU_RESULT_LOGOUT:
 		InGame_Recv_Logout();
 		result = RT_INGAME_MENU_LOGOUT;
+		break;
+	case SERVER_INGAME_PARTY_ROOM_INVITE:
+		InGame_Recv_Invite(buf);
+		result = RT_INGAME_PARTY_INVITE;
+		break;
+	case SERVER_INGAME_PARTY_ROOM_INVITE_RESULT:
+		InGame_Recv_Invite_Result(buf);
+		result = RT_INGAME_PARTY_INVITE_RESULT;
 		break;
 	default:
 		break;
