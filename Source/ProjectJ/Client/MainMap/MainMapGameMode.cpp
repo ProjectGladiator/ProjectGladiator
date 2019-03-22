@@ -507,7 +507,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 				if (MyCharacter)
 				{
-					MyCharacter->GetMyCharacterUI()->GetPartyComponent()->GetPartyAcceptRejectWidget()->SetPartyRequestCharacterSetInfo(PartyReqCharacterNickName, PartyReqCharacterCode);
+					MyCharacter->GetMyCharacterUI()->GetPartyComponent()->GetPartyAcceptRejectWidget()->SetPartyRequestCharacterSetInfo(PartyReqCharacterNickName, PartyReqCharacterCode, PartyRoomNum);
 					MyCharacter->GetMyCharacterUI()->GetPartyComponent()->PartyAcceptRejectWidgetVisible();
 				}
 			}

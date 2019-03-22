@@ -7,6 +7,8 @@
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/Party/Party.h"
+#include "Client/MainMap/MainMapPlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
 //서버 헤더
 
@@ -29,23 +31,45 @@ void UPartyAcceptRejectWidget::NativeConstruct()
 	}
 }
 
-void UPartyAcceptRejectWidget::SetPartyRequestCharacterSetInfo(char* _PartyReqCharacterNickName, char* _PartyReqCharacterCode)
+void UPartyAcceptRejectWidget::SetPartyRequestCharacterSetInfo(char* _PartyReqCharacterNickName, char* _PartyReqCharacterCode, int32 _PartyRoomNum)
 {
 	PartyReqCharacterNickName = _PartyReqCharacterNickName;
-	PartyReqCharacterCode = _PartyReqCharacterCode;
+
+	memset(PartyReqCharacterCode, 0, sizeof(PartyReqCharacterCode));
+	memcpy(PartyReqCharacterCode, _PartyReqCharacterCode, strlen(_PartyReqCharacterCode));
+
+	PartyRoomNum = _PartyRoomNum;
 
 	if (PartyInvitedCharacterNick)
 	{
+		GLog->Log(ANSI_TO_TCHAR(PartyReqCharacterCode));
+
 		PartyInvitedCharacterNick->SetText(FText::FromString(ANSI_TO_TCHAR(PartyReqCharacterNickName)));
 	}
 }
 
 void UPartyAcceptRejectWidget::PartyAccept()
 {
+	auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->C2S_ReqPartyAccept(true, PartyReqCharacterCode, PartyRoomNum);
+	}
 	GLog->Log(FString::Printf(TEXT("파티 수락 버튼 누름")));
+
+	SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UPartyAcceptRejectWidget::PartyReject()
 {
+	auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->C2S_ReqPartyAccept(false, PartyReqCharacterCode, PartyRoomNum);
+	}
 	GLog->Log(FString::Printf(TEXT("파티 거절 버튼 누름")));
+
+	SetVisibility(ESlateVisibility::Hidden);
 }

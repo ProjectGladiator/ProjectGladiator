@@ -172,6 +172,12 @@ void AMainMapPlayerController::C2S_ReqPartyJoin(char * ReqCharacterCode)
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
+void AMainMapPlayerController::C2S_ReqPartyAccept(bool _IsAccept, char * ReqCharacterCode, int32 _PartyRoomNum)
+{
+	InGameManager::GetInstance()->InGame_Req_Party_Invite_Result(_IsAccept,ReqCharacterCode, _PartyRoomNum);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
 void AMainMapPlayerController::Possess(APawn * InPawn)
 {
 	Super::Possess(InPawn);

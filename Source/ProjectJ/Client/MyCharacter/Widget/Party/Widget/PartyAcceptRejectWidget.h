@@ -21,13 +21,14 @@ private:
 		class UButton* PartyAcceptButton;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UButton* PartyRejectButton;
+	char PartyReqCharacterCode[30];
 	char* PartyReqCharacterNickName = nullptr;
-	char* PartyReqCharacterCode = nullptr;
+	int32 PartyRoomNum = -1;
 public:
 	virtual void NativeConstruct() override;
 
 	//PartyRequestCharacterSetInfo
-	void SetPartyRequestCharacterSetInfo(char* _PartyReqCharacterNickName,char* _PartyReqCharacterCode);
+	void SetPartyRequestCharacterSetInfo(char* _PartyReqCharacterNickName, char* _PartyReqCharacterCode, int32 _PartyRoomNum);
 
 	UFUNCTION()
 		void PartyAccept();
