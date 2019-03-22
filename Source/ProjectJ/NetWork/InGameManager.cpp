@@ -599,6 +599,144 @@ void InGameManager::InGame_Recv_ChannelChange(char * _buf)
 	StorageManager::GetInstance()->PushData(PGAMEDATA_CHANNEL_REQ_CHANGE, data, size);
 }
 
+// 파티 초대 받음
+void InGameManager::InGame_Recv_Invite(char * _buf)
+{
+	char* ptr = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(BUFSIZE));
+	char* ptr_data = data;
+	int size = 0;
+
+	char code[CHARACTERCODESIZE];
+	char nick[NICKNAMESIZE];
+	int partyroom = 0;
+	int codelen = 0;
+	int nicklen = 0;
+
+	memset(code, 0, CHARACTERCODESIZE);
+	memset(nick, 0, NICKNAMESIZE);
+
+	// 파티번호
+	memcpy(&partyroom, ptr, sizeof(int));
+	ptr += sizeof(int);
+	// 코드길이
+	memcpy(&codelen, ptr, sizeof(int));
+	ptr += sizeof(int);
+	// 코드
+	memcpy(code, ptr, codelen);
+	ptr += codelen;
+	// 닉네임길이
+	memcpy(&nicklen, ptr, sizeof(int));
+	ptr += sizeof(int);
+	//닉네임
+	memcpy(nick, ptr, nicklen);
+	ptr += nicklen;
+
+	// data에 파티번호 패킹
+	memcpy(ptr_data, &partyroom, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
+	// data에 코드길이 패킹
+	memcpy(ptr_data, &codelen, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
+	// data에 코드 패킹
+	memcpy(ptr_data, code, codelen);
+	ptr_data += codelen;
+	size += codelen;
+	// data에 닉네임길이 패킹
+	memcpy(ptr_data, &nicklen, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
+	// data에 닉네임 패킹
+	memcpy(ptr_data, nick, nicklen);
+	ptr_data += nicklen;
+	size += nicklen;
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_INVITE, data, size);
+
+}
+
+// 파티 초대 결과받음
+void InGameManager::InGame_Recv_Invite_Result(char * _buf)
+{
+	char* ptr = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(BUFSIZE));
+	char* ptr_data = data;
+	int size = 0;
+
+	bool result = false;
+
+	// 파티번호
+	memcpy(&result, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+
+	// data에 파티번호 패킹
+	memcpy(ptr_data, &result, sizeof(bool));
+	ptr_data += sizeof(bool);
+	size += sizeof(bool);
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_INVITE_RESULT, data, size);
+}
+
+// 파티 초대 요청
+void InGameManager::InGame_Req_Party_Invite(char * _code)
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+	int codelen = strlen(_code) + 1;
+	int datasize = 0;
+	char* ptr = buf;
+
+	memcpy(ptr, &codelen, sizeof(int));
+	ptr += sizeof(int);
+	datasize += sizeof(int);
+
+	memcpy(ptr, _code, codelen);
+	ptr += codelen;
+	datasize += codelen;
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_ROOM_INVITE, buf, datasize);
+}
+
+// 파티 초대 응답 [_result : 초대수락할지거절할지] [_code : 수락하면 초대보낸사람의 코드를 넣습니다] [_partyroomnum : 수락하면 초대보낸사람의 파티방번호를 넣습니다]
+void InGameManager::InGame_Req_Party_Invite_Result(bool _result, char * _code, int _partyroomnum)
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+	char* ptr = buf;
+	int datasize = 0;
+
+	int codelen = 0;
+
+	memcpy(ptr, &_result, sizeof(bool));
+	ptr += sizeof(bool);
+	datasize += sizeof(bool);
+
+	if (_result)
+	{
+		codelen = strlen(_code) + 1;
+
+		memcpy(ptr, &codelen, sizeof(int));
+		ptr += sizeof(int);
+		datasize += sizeof(int);
+
+		memcpy(ptr, _code, codelen);
+		ptr += codelen;
+		datasize += codelen;
+
+		memcpy(ptr, &_partyroomnum, sizeof(int));
+		ptr += sizeof(int);
+		datasize += sizeof(int);
+	}
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_ROOM_ANSWER_INVITE, buf, datasize);
+}
+
 RESULT InGameManager::InGameInitRecvResult(User * _user)
 {
 	PROTOCOL protocol;

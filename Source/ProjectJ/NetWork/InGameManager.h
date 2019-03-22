@@ -23,6 +23,8 @@ private:
 	void InGame_Recv_Logout();											// 로그아웃 받았을때
 	void InGame_Recv_ChannelChange(char* _buf);							// 채널이동 결과
 
+	void InGame_Recv_Invite(char* _buf);								// 파티 초대 받음
+	void InGame_Recv_Invite_Result(char* _buf);							// 파티 초대 결과받음
 public:
 	static void CreateInstance();
 	static InGameManager* GetInstance();
@@ -40,6 +42,8 @@ public:
 	void InGame_Req_Menu_Title();									    // 로그아웃 요청
 	// 게임종료 요청 서버에 전송
 
+	void InGame_Req_Party_Invite(char* _code);												// 파티 초대 요청
+	void InGame_Req_Party_Invite_Result(bool _result, char* _code, int _partyroomnum);		// 파티 초대 응답
 	RESULT InGameInitRecvResult(User* _user);			// 인게임 
 };
 

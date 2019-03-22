@@ -334,7 +334,7 @@ void StorageManager::ChangeData(void * data, OtherCharacterInfo& _otherinfo)
 	ptr += sizeof(float) * 3;
 }
 
-// 
+// 채널 정보
 void StorageManager::ChangeData(void * data, ChannelInfo*& _channelinfo)
 {
 	char* ptr = (char*)data;
@@ -357,6 +357,33 @@ void StorageManager::ChangeData(void * data, ChannelInfo*& _channelinfo)
 		channelnum = 0;
 		channelusercount = 0;
 	}
+}
+
+// 파티 초대 정보
+void StorageManager::ChangeData(void * data, int& _partyroomnum, char *& _code, char *& _nick)
+{
+	int codelen = 0;
+	int nicklen = 0;
+	int partyroomnum = 0;
+
+	char* ptr = (char*)data;
+
+	memcpy(&partyroomnum, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&codelen, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_code, ptr, codelen);
+	ptr += codelen;
+
+	memcpy(&nicklen, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_nick, ptr, nicklen);
+	ptr += nicklen;
+
+	_partyroomnum = partyroomnum;
 }
 
 // Front 삭제

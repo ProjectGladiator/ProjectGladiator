@@ -56,7 +56,7 @@ public:
 	void ChangeData(void* data, int& _count);
 	void ChangeData(void* data, bool& _type, int& _count);
 	void ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot);
-	void ChangeData(void* data, CharacterInfo*& _charinfo,int& _channelnum);
+	void ChangeData(void* data, CharacterInfo*& _charinfo, int& _channelnum);
 	void ChangeData(void* data, CharacterInfo*& _charinfo);
 	void ChangeData(void* data, bool& _result, float*& _posxyz);
 	void ChangeData(void* data, float*& _posxyz, float*& _rotxyz);
@@ -64,6 +64,7 @@ public:
 	void ChangeData(void* data, char*& _code);
 	void ChangeData(void* data, OtherCharacterInfo& _otherinfo);
 	void ChangeData(void* data, ChannelInfo*& _channelinfo);
+	void ChangeData(void* data, int& _partyroomnum, char*& _code, char*& _nick);
 	bool PopData();
 };
 
