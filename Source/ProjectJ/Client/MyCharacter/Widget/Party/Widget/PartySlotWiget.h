@@ -36,5 +36,5 @@ private:
 public:
 	virtual void NativeConstruct() override;
 
-	void PartySlotUpdate(FPartySlot _PartySlot, int32 _Index);
+	void PartySlotUpdate(FPartySlot _PartySlot, int32 _Index, bool _PartyReader);
 };

@@ -23,12 +23,13 @@ void UPartySlotWiget::NativeConstruct()
 	MPBar = Cast<UProgressBar>(GetWidgetFromName(TEXT("PartyCharacterMPBar")));
 }
 
-void UPartySlotWiget::PartySlotUpdate(FPartySlot _PartySlot, int32 _Index)
+void UPartySlotWiget::PartySlotUpdate(FPartySlot _PartySlot, int32 _Index, bool _PartyReader)
 {
 	if (NickNameText)
 	{
 		PartySlotInfo = _PartySlot;
 		PartySlotIndex = _Index;
+		PartyReader = _PartyReader;
 	}
 	else
 	{

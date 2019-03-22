@@ -166,6 +166,12 @@ void AMainMapPlayerController::C2S_ReqChannelChange(int32 ChannelIndex)
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
+void AMainMapPlayerController::C2S_ReqPartyJoin(char * ReqCharacterCode)
+{
+	InGameManager::GetInstance()->InGame_Req_Party_Invite(ReqCharacterCode);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
 void AMainMapPlayerController::Possess(APawn * InPawn)
 {
 	Super::Possess(InPawn);
