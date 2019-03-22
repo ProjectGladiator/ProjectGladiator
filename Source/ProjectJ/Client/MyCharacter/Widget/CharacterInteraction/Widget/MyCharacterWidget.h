@@ -30,7 +30,7 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UTextBlock* MyCharacterNickName;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
-		FClickCharacterInfo ClickCharacterSlotInfo;
+		FClickCharacterInfo MyCharacterSlotInfo;
 public:
 	virtual void NativeConstruct() override;
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
@@ -40,7 +40,7 @@ public:
 	void HPUpdate();
 	void MPUpdate();
 
-	FClickCharacterInfo GetClickCharacterSlotInfo();
+	FClickCharacterInfo GetMyCharacterSlotInfo();
 
 	void CharacterInteractionWidgetVisible();
 	void CharacterInteractionWidgetHidden();

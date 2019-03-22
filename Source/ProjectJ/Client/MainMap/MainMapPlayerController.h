@@ -55,6 +55,8 @@ public:
 	void C2S_ReqMenuCharacterSelect();
 	void C2S_ReqMenuLogOut();
 	void C2S_ReqChannelChange(int32 ChannelIndex);
+	void C2S_ReqPartyJoin(char* ReqCharacterCode);
+	//void C2S_ReqPartyAccept(char* )
 
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;

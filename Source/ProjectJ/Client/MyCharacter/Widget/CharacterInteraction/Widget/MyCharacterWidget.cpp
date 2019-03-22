@@ -38,7 +38,7 @@ FReply UMyCharacterWidget::NativeOnMouseButtonDown(const FGeometry & InGeometry,
 	
 	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
 	{
-		auto OtherCharacterController = Cast<AMainMapOtherPlayerController>(ClickCharacterSlotInfo.ClickCharacterPlayerController);
+		auto OtherCharacterController = Cast<AMainMapOtherPlayerController>(MyCharacterSlotInfo.ClickCharacterPlayerController);
 
 		if (OtherCharacterController)
 		{
@@ -68,12 +68,12 @@ void UMyCharacterWidget::SetInit(AMyCharacter* _MyCharacter, APlayerController* 
 	GLog->Log(FString::Printf(TEXT("내 캐릭터 위젯 초기화")));	 
 	if (_MyCharacter)
 	{
-		ClickCharacterSlotInfo.ClickCharacter = _MyCharacter;
-		ClickCharacterSlotInfo.ClickCharacterPlayerController = _PlayerController;
+		MyCharacterSlotInfo.ClickCharacter = _MyCharacter;
+		MyCharacterSlotInfo.ClickCharacterPlayerController = _PlayerController;
 
 		if (MyCharacterNickName)
 		{
-			char* NickName = ClickCharacterSlotInfo.ClickCharacter->GetCharacterNickName();
+			char* NickName = MyCharacterSlotInfo.ClickCharacter->GetCharacterNickName();
 
 			MyCharacterNickName->SetText(FText::FromString(ANSI_TO_TCHAR(NickName)));
 			HPUpdate();
@@ -84,8 +84,8 @@ void UMyCharacterWidget::SetInit(AMyCharacter* _MyCharacter, APlayerController* 
 
 void UMyCharacterWidget::HPUpdate()
 {
-	float CurrentHP = ClickCharacterSlotInfo.ClickCharacter->GetCurrentHP();
-	float MaxHP = ClickCharacterSlotInfo.ClickCharacter->GetMaxHP();
+	float CurrentHP = MyCharacterSlotInfo.ClickCharacter->GetCurrentHP();
+	float MaxHP = MyCharacterSlotInfo.ClickCharacter->GetMaxHP();
 
 	if (MyCharacterHPText)
 	{
@@ -106,9 +106,9 @@ void UMyCharacterWidget::MPUpdate()
 
 }
 
-FClickCharacterInfo UMyCharacterWidget::GetClickCharacterSlotInfo()
+FClickCharacterInfo UMyCharacterWidget::GetMyCharacterSlotInfo()
 {
-	return ClickCharacterSlotInfo;
+	return MyCharacterSlotInfo;
 }
 
 void UMyCharacterWidget::CharacterInteractionWidgetVisible()

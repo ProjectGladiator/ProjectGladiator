@@ -20,10 +20,12 @@ private:
 	char nick[NICKNAMESIZE];
 	char CharacterCode[CHARACTERCODE];
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = OtherPC, Meta = (AllowPrivateAccess = true))
-		class AMainMapOtherPlayerController* OtherCharacterController;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		int32 Level; //현재 레벨
+	UPROPERTY()
+		class AMainMapOtherPlayerController* OtherCharacterController;
+	UPROPERTY()
+		class AMyCharacter* ClickCharacter;
 	UPROPERTY()
 		bool IsClick;
 	UPROPERTY()
@@ -175,4 +177,7 @@ public:
 	AMainMapOtherPlayerController* GetOtherPlayerController();
 
 	UMyCharacterUI* GetMyCharacterUI();
+
+	void SetClickCharacter(AMyCharacter* _ClickCharacter);
+	AMyCharacter* GetClickCharacter();
 };

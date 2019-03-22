@@ -34,10 +34,14 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void PartyWidgetToggle();
+
 	void PartyAcceptRejectWidgetVisible();
-	void PArtyAcceptRejectWidgetHidden();
+	void PartyAcceptRejectWidgetHidden();
 
 	UPartyWidget* GetPartyWidget();
+	UPartyAcceptRejectWidget* GetPartyAcceptRejectWidget();
 
-	bool PartyJoin(AMyCharacter* _MyCharacter);
+	void PartyJoin(AMyCharacter* _MyCharacter,bool _PartyReader);
+	bool IsPartyJoin();
+	int32 GetPartySize();
 };

@@ -80,7 +80,7 @@ void AMyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
-	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(),0));
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
 void AMyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -488,7 +488,7 @@ void AMyCharacter::SetDefaultMyCharacter()
 		if (MyCharacterController)
 		{
 			MyCharacterUI->SetMyCharacterUI();
-			MyCharacterUI->GetPartyComponent()->PartyJoin(this);
+			MyCharacterUI->GetPartyComponent()->PartyJoin(this, true);
 			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, MyCharacterController);
 			MyCharacterUI->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
 		}
@@ -531,6 +531,30 @@ UMyCharacterUI * AMyCharacter::GetMyCharacterUI()
 	if (MyCharacterUI)
 	{
 		return MyCharacterUI;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+void AMyCharacter::SetClickCharacter(AMyCharacter* _ClickCharacter)
+{
+	if (_ClickCharacter)
+	{
+		ClickCharacter = _ClickCharacter;
+	}
+	else
+	{
+		ClickCharacter = nullptr;
+	}
+}
+
+AMyCharacter * AMyCharacter::GetClickCharacter()
+{
+	if (ClickCharacter)
+	{
+		return ClickCharacter;
 	}
 	else
 	{

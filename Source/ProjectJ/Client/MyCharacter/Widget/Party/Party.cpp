@@ -40,6 +40,8 @@ void UParty::BeginPlay()
 	if (UClass* MyPartyAcceptRejectWidgetClass = PartyAcceptRejectWidgetClass.TryLoadClass<UUserWidget>())
 	{
 		PartyAcceptRejectWidget = Cast<UPartyAcceptRejectWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(),0),MyPartyAcceptRejectWidgetClass));
+		PartyAcceptRejectWidget->AddToViewport();
+		PartyAcceptRejectWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
@@ -71,15 +73,15 @@ void UParty::PartyAcceptRejectWidgetVisible()
 {
 	if (PartyAcceptRejectWidget)
 	{
-		PartyWidget->SetVisibility(ESlateVisibility::Visible);
+		PartyAcceptRejectWidget->SetVisibility(ESlateVisibility::Visible);
 	}
 }
 
-void UParty::PArtyAcceptRejectWidgetHidden()
+void UParty::PartyAcceptRejectWidgetHidden()
 {
 	if (PartyAcceptRejectWidget)
 	{
-		PartyWidget->SetVisibility(ESlateVisibility::Hidden);
+		PartyAcceptRejectWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 
@@ -88,7 +90,12 @@ UPartyWidget * UParty::GetPartyWidget()
 	return PartyWidget;
 }
 
-bool UParty::PartyJoin(AMyCharacter* _MyCharacter)
+UPartyAcceptRejectWidget * UParty::GetPartyAcceptRejectWidget()
+{
+	return PartyAcceptRejectWidget;
+}
+
+void UParty::PartyJoin(AMyCharacter* _MyCharacter, bool _PartyReader)
 {
 	if (PartyWidget)
 	{
@@ -101,24 +108,39 @@ bool UParty::PartyJoin(AMyCharacter* _MyCharacter)
 				FPartySlot PartySlot;
 				PartySlot.MyCharacter = _MyCharacter;
 				int32 Index = PartySlots.Num();
-				PartySlotWidget->PartySlotUpdate(PartySlot,Index);
+				PartySlotWidget->PartySlotUpdate(PartySlot,Index, _PartyReader);
 				PartySlots.Add(PartySlot);
-
-				return true;
 			}
 			else
 			{
-				return false;
+				
 			}
 		}
 		else
 		{
 			GLog->Log(FString::Printf(TEXT("상대방 캐릭터가 존재 하지 않음")));
-			return false;
+			
 		}
 	}
 	else
 	{
-		return false;
+		
 	}
+}
+
+bool UParty::IsPartyJoin()
+{
+	if (PartySlots.Num() <= 4)
+	{
+		return true; //파티 참여 가능 
+	}
+	else
+	{
+		return false; //파티 인원 초과
+	}
+}
+
+int32 UParty::GetPartySize()
+{
+	return PartySlots.Num();
 }

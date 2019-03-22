@@ -30,6 +30,8 @@
 #include "Client/Menu/ChannelChange/Widget/ChannelChangeSlot.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
+#include "Client/MyCharacter/Widget/Party/Party.h"
+#include "Client/MyCharacter/Widget/Party/Widget/PartyAcceptRejectWidget.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -197,10 +199,16 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	AMainMapOtherPlayerController* OtherCharacterController = nullptr;
 	ChannelInfo TempchanneleInfo[6];
 	ChannelInfo* channelInfo = TempchanneleInfo;
-	char TempCharacterCode[30];
-	char* LeaveCharacterCode = TempCharacterCode;
+	char TempLeaveCharacterCode[30];
+	char* LeaveCharacterCode = TempLeaveCharacterCode;
 	bool ChannelChangeFlag;
-	int32 S2C_ChannelNum=-1;
+	int32 S2C_ChannelNum = -1;
+
+	char TempPartyReqCharacterCode[30];
+	char* PartyReqCharacterCode = TempPartyReqCharacterCode;
+	char TempPartyReqCharacterNickName[20];
+	char* PartyReqCharacterNickName = TempPartyReqCharacterNickName;
+	int32 PartyRoomNum = -1;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -357,7 +365,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			{
 				GLog->Log(FString::Printf(TEXT("스폰 위치 X : %f Y : %f Z : %f"), MyCharacter->GetActorLocation().X, MyCharacter->GetActorLocation().Y, MyCharacter->GetActorLocation().Z));
 				GLog->Log(ANSI_TO_TCHAR(character_info->code));
-				
+
 				MyCharacter->SetClientCharacterState(new ClientCharacterInGameState(MyCharacter));
 				MyCharacter->SetCharacterCode(character_info->code, character_info->nick);
 				MyCharacter->SetIsClick(true);
@@ -451,12 +459,12 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			break;
 		case PGAMEDATA_LEAVE_PLAYER:
 			GLog->Log(FString::Printf(TEXT("다른 유저가 로그아웃 or 캐릭터 선택창으로 이동 함")));
-			memset(TempCharacterCode, 0, sizeof(TempCharacterCode));
+			memset(TempLeaveCharacterCode, 0, sizeof(TempLeaveCharacterCode));
 
 			StorageManager::GetInstance()->ChangeData(Data->data, LeaveCharacterCode);
 			StorageManager::GetInstance()->PopData();
 
-			LoginUserDestory(LeaveCharacterCode);			
+			LoginUserDestory(LeaveCharacterCode);
 			LeaveCharacterCode = nullptr;
 			break;
 		case PGAMEDATA_MENU_CHARACTER_SELECT:
@@ -474,7 +482,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 		case PGAMEDATA_CHANNEL_REQ_CHANGE:
 			LoadingWidgetHiddenScreen();
 
-			StorageManager::GetInstance()->ChangeData(Data->data, ChannelChangeFlag,S2C_ChannelNum);
+			StorageManager::GetInstance()->ChangeData(Data->data, ChannelChangeFlag, S2C_ChannelNum);
 			StorageManager::GetInstance()->PopData();
 
 			if (ChannelChangeFlag)
@@ -483,6 +491,25 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				Channelnum = S2C_ChannelNum;
 				InGameManager::GetInstance()->InGame_Req_UserList();
 				NetworkClient_main::NetworkManager::GetInstance()->Send();
+			}
+			break;
+		case PGAMEDATA_PARTY_INVITE:
+			//void ChangeData(void* data, int& _partyroomnum, char*& _code, char*& _nick);
+			memset(TempPartyReqCharacterCode, 0, sizeof(TempPartyReqCharacterCode));
+			memset(TempPartyReqCharacterNickName, 0, sizeof(TempPartyReqCharacterNickName));
+
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyRoomNum, PartyReqCharacterCode, PartyReqCharacterNickName);
+			StorageManager::GetInstance()->PopData();
+
+			if (MainMapPlayerController)
+			{
+				MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+				if (MyCharacter)
+				{
+					MyCharacter->GetMyCharacterUI()->GetPartyComponent()->GetPartyAcceptRejectWidget()->SetPartyRequestCharacterSetInfo(PartyReqCharacterNickName, PartyReqCharacterCode);
+					MyCharacter->GetMyCharacterUI()->GetPartyComponent()->PartyAcceptRejectWidgetVisible();
+				}
 			}
 			break;
 		}
@@ -691,7 +718,7 @@ void AMainMapGameMode::LoginUserDestory(char * _OtherCharacterCode)
 	if (DestoryOtherCharacter)
 	{
 		DeleteLoginUser(DestoryOtherCharacter);
-		
+
 		//안켜져 있는 캐릭터 UI도 끄는 작업을 함 수정필요
 		DestoryOtherCharacter->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetHidden();
 
