@@ -360,16 +360,13 @@ void StorageManager::ChangeData(void * data, ChannelInfo*& _channelinfo)
 }
 
 // 파티 초대 정보
-void StorageManager::ChangeData(void * data, int& _partyroomnum, char *& _code, char *& _nick)
+void StorageManager::ChangeData(void * data, int & _partyroomnum, char *& _code, char *& _nick)
 {
 	int codelen = 0;
 	int nicklen = 0;
 	int partyroomnum = 0;
 
 	char* ptr = (char*)data;
-
-	memcpy(&partyroomnum, ptr, sizeof(int));
-	ptr += sizeof(int);
 
 	memcpy(&codelen, ptr, sizeof(int));
 	ptr += sizeof(int);
@@ -382,6 +379,9 @@ void StorageManager::ChangeData(void * data, int& _partyroomnum, char *& _code, 
 
 	memcpy(_nick, ptr, nicklen);
 	ptr += nicklen;
+
+	memcpy(&partyroomnum, ptr, sizeof(int));
+	ptr += sizeof(int);
 
 	_partyroomnum = partyroomnum;
 }

@@ -618,9 +618,6 @@ void InGameManager::InGame_Recv_Invite(char * _buf)
 	memset(code, 0, CHARACTERCODESIZE);
 	memset(nick, 0, NICKNAMESIZE);
 
-	// 파티번호
-	memcpy(&partyroom, ptr, sizeof(int));
-	ptr += sizeof(int);
 	// 코드길이
 	memcpy(&codelen, ptr, sizeof(int));
 	ptr += sizeof(int);
@@ -633,11 +630,10 @@ void InGameManager::InGame_Recv_Invite(char * _buf)
 	//닉네임
 	memcpy(nick, ptr, nicklen);
 	ptr += nicklen;
+	// 파티번호
+	memcpy(&partyroom, ptr, sizeof(int));
+	ptr += sizeof(int);
 
-	// data에 파티번호 패킹
-	memcpy(ptr_data, &partyroom, sizeof(int));
-	ptr_data += sizeof(int);
-	size += sizeof(int);
 	// data에 코드길이 패킹
 	memcpy(ptr_data, &codelen, sizeof(int));
 	ptr_data += sizeof(int);
@@ -654,6 +650,10 @@ void InGameManager::InGame_Recv_Invite(char * _buf)
 	memcpy(ptr_data, nick, nicklen);
 	ptr_data += nicklen;
 	size += nicklen;
+	// data에 파티번호 패킹
+	memcpy(ptr_data, &partyroom, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_INVITE, data, size);
 }
@@ -702,7 +702,7 @@ void InGameManager::InGame_Req_Party_Invite(char * _code)
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_ROOM_INVITE, buf, datasize);
 }
 
-// 파티 초대 응답 [_result : 초대수락할지거절할지] [_code : 수락하면 초대보낸사람의 코드를 넣습니다] [_partyroomnum : 수락하면 초대보낸사람의 파티방번호를 넣습니다]
+// 파티 초대 응답 [_result : 초대수락할지거절할지] [_code : 초대보낸사람의 코드를 넣습니다] [_partyroomnum : 초대보낸사람의 파티방번호를 넣습니다]
 void InGameManager::InGame_Req_Party_Invite_Result(bool _result, char * _code, int _partyroomnum)
 {
 	char buf[BUFSIZE];
@@ -711,27 +711,24 @@ void InGameManager::InGame_Req_Party_Invite_Result(bool _result, char * _code, i
 	int datasize = 0;
 
 	int codelen = 0;
+	codelen = strlen(_code) + 1;
 
+	// 초대 결과
 	memcpy(ptr, &_result, sizeof(bool));
 	ptr += sizeof(bool);
 	datasize += sizeof(bool);
-
-	if (_result)
-	{
-		codelen = strlen(_code) + 1;
-
-		memcpy(ptr, &codelen, sizeof(int));
-		ptr += sizeof(int);
-		datasize += sizeof(int);
-
-		memcpy(ptr, _code, codelen);
-		ptr += codelen;
-		datasize += codelen;
-
-		memcpy(ptr, &_partyroomnum, sizeof(int));
-		ptr += sizeof(int);
-		datasize += sizeof(int);
-	}
+	// 코드 길이
+	memcpy(ptr, &codelen, sizeof(int));
+	ptr += sizeof(int);
+	datasize += sizeof(int);
+	// 코드
+	memcpy(ptr, _code, codelen);
+	ptr += codelen;
+	datasize += codelen;
+	// 파티 번호
+	memcpy(ptr, &_partyroomnum, sizeof(int));
+	ptr += sizeof(int);
+	datasize += sizeof(int);
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_ROOM_ANSWER_INVITE, buf, datasize);
 }
