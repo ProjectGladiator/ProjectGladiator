@@ -18,6 +18,8 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = WidgetActorComponent, Meta = (AllowPrivateAccess = true))
 		class UMyCharacterWidget* MyCharacterWidget;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = WidgetActorComponent, Meta = (AllowPrivateAccess = true))
+		class UMyCharacterNickNameWidget* MyCharacterNickNameWidget;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -30,8 +32,4 @@ public:
 	void MyCharacterWidgetHidden();
 	
 	UMyCharacterWidget* GetMyCharacterWidget();
-
-	void MyCharacterSetInfo(class AMyCharacter * _ClickCharacter, APlayerController* _PlayerController);
-
-
 };

@@ -26,6 +26,8 @@ private:
 		class AMainMapOtherPlayerController* OtherCharacterController;
 	UPROPERTY()
 		class AMyCharacter* ClickCharacter;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
+		class UWidgetComponent* CharacterNickWidget;
 	UPROPERTY()
 		bool IsClick;
 	UPROPERTY()

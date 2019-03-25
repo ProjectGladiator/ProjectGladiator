@@ -2,7 +2,8 @@
 
 #include "ClickCharacterInteraction.h"
 //클라 헤더
-#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/MyCharacterWidget.h"
+#include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h"
+#include "Client/MyCharacter/Widget/Info/MyCharacterNickNameWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 //서버 헤더
@@ -22,7 +23,7 @@ UClickCharacterInteraction::UClickCharacterInteraction()
 void UClickCharacterInteraction::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	FStringClassReference BlueprintMyCharacterWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/CharacterInteraction/W_MyCharacter.W_MyCharacter_C'"));
 
 	if (UClass* MyCharacterWidgetClass = BlueprintMyCharacterWidgetClass.TryLoadClass<UUserWidget>())
@@ -32,6 +33,16 @@ void UClickCharacterInteraction::BeginPlay()
 		MyCharacterWidget->AddToViewport(); //화면에 붙인다.
 		MyCharacterWidget->SetRenderTranslation(FVector2D(340.0f, 740.0f));
 		MyCharacterWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+	}
+
+	FStringClassReference BlueprintMyCharacterNickNameWidget(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/CharacterInteraction/W_MyCharacterName.W_MyCharacterName_C'"));
+
+	if (UClass* MyCharacterNickNameWidgetClass = BlueprintMyCharacterNickNameWidget.TryLoadClass<UUserWidget>())
+	{
+		MyCharacterNickNameWidget = Cast<UMyCharacterNickNameWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyCharacterNickNameWidgetClass));
+
+		MyCharacterNickNameWidget->AddToViewport(); //화면에 붙인다.
+		MyCharacterNickNameWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 }
 
@@ -64,12 +75,4 @@ void UClickCharacterInteraction::MyCharacterWidgetHidden()
 UMyCharacterWidget * UClickCharacterInteraction::GetMyCharacterWidget()
 {
 	return MyCharacterWidget;
-}
-
-void UClickCharacterInteraction::MyCharacterSetInfo(AMyCharacter * _ClickCharacter, APlayerController* _PlayerController)
-{
-	if (MyCharacterWidget)
-	{
-
-	}
 }

@@ -10,7 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
-#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/MyCharacterWidget.h"
+#include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 
 //서버 헤더

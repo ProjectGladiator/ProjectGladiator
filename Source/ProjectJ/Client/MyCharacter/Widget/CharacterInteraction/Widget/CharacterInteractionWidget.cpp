@@ -8,7 +8,7 @@
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
-#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/MyCharacterWidget.h"
+#include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h"
 #include "Client/MyCharacter/Widget/Party/Party.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/MainMap/MainMapGameMode.h"
@@ -53,8 +53,6 @@ void UCharacterInteractionWidget::Party()
 
 			if (ClickCharacter)
 			{
-				auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
 				if (MainMapPlayerController)
 				{
 					auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
@@ -94,4 +92,9 @@ void UCharacterInteractionWidget::Party()
 			}
 		}
 	}
+}
+
+void UCharacterInteractionWidget::Init(APlayerController* _MainMapPlayerController)
+{
+	MainMapPlayerController = Cast<AMainMapPlayerController>(_MainMapPlayerController);	
 }

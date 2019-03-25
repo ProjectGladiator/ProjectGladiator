@@ -7,23 +7,27 @@
 #include "GameFramework/CharacterMovementComponent.h" //캐릭터 속력 관련 헤더파일
 #include "Animation/AnimBlueprint.h" //애니메이션블루프린트 헤더파일
 #include "Engine/World.h"
-#include "kismet/GameplayStatics.h"
-#include "kismet/KismetMathLibrary.h"
-#include "Warrior/Warrior.h"
-#include "Tanker/Tanker.h"
-#include "Gunner/Gunner.h"
-#include "MyAnimInstance.h"
+#include "kismet/GameplayStatics.h" //각종 유틸 관련 헤더
+#include "kismet/KismetMathLibrary.h" //수학 관련 헤더
+#include "Warrior/Warrior.h" // 전사 헤더
+#include "Tanker/Tanker.h" //탱커 헤더
+#include "Gunner/Gunner.h" //총잡이 헤더
+#include "MyAnimInstance.h" //애님인스턴스 헤더
 #include "UObject/ConstructorHelpers.h" // 경로 탐색
-#include "TimerManager.h"
-#include "client/MainMap/MainMapGameMode.h"
-#include "Client/MainMap/MainMapPlayerController.h"
-#include "Client/MainMap/MainMapOtherPlayerController.h"
-#include "Client/MyCharacter/Widget/MyCharacterUI.h"
-#include "Client/MyCharacter/Widget/Inventory/Inventory.h"
-#include "Client/MyCharacter/Widget/Party/Party.h"
-#include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
-#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/MyCharacterWidget.h"
-#include "Client/State/ClientState/ClientState.h"
+#include "TimerManager.h" //타이머 헤더
+#include "client/MainMap/MainMapGameMode.h" //메인맵 게임모드 헤더
+#include "Client/MainMap/MainMapPlayerController.h" //메인맵 플레이어 컨트롤러 헤더
+#include "Client/MainMap/MainMapOtherPlayerController.h" //메인맵 다른 유저 플레이어 컨트롤러 헤더
+#include "Client/MyCharacter/Widget/MyCharacterUI.h" //내캐릭터 UI헤더
+#include "Client/MyCharacter/Widget/Inventory/Inventory.h" //인벤토리 헤더
+#include "Client/MyCharacter/Widget/Party/Party.h" //파티 헤더
+#include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"//클릭 상호작용 헤더
+#include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h" //내캐릭터 정보 위젯 헤더
+#include "Client/State/ClientState/ClientState.h" //클라 상태 클래스 헤더
+#include "Components/WidgetComponent.h"
+#include "Client/MyCharacter/Widget/Info/MyCharacterNickNameWidget.h"
+//#include "Client/State/ClientState/Character/ClientCharacterInGameState.h"
+
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -55,6 +59,8 @@ AMyCharacter::AMyCharacter()
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
 
+	CharacterNickWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("CharacterNickWidget"));
+	
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 
 	IsRightClick = false;
@@ -78,6 +84,8 @@ AMyCharacter::AMyCharacter()
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//SetClientCharacterState(new ClientCharacterInGameState(this));
 
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
@@ -491,6 +499,17 @@ void AMyCharacter::SetDefaultMyCharacter()
 			MyCharacterUI->GetPartyComponent()->PartyJoin(this, true);
 			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, MyCharacterController);
 			MyCharacterUI->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
+			
+			if (CharacterNickWidget)
+			{
+				auto MyCharacterNickWidget = Cast<UMyCharacterNickNameWidget>(CharacterNickWidget->GetUserWidgetObject());
+
+				if (MyCharacterNickWidget)
+				{
+					MyCharacterNickWidget->SetCharacterNickNameToWidget(nick);
+				}
+			}
+			//CharacterNickWidget->SetCharacterNickNameToWidget();
 		}
 		else
 		{

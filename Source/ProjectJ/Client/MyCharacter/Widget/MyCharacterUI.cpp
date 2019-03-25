@@ -8,7 +8,7 @@
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
 #include "Client/MyCharacter/Widget/Inventory/Widget/InventoryWidget.h"
 #include "Client/MyCharacter/Widget/Party/Widget/PartyWidget.h"
-#include "Client/MyCharacter/Widget/CharacterInteraction/Widget/MyCharacterWidget.h"
+#include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h"
 //서버 헤더
 
 // Sets default values for this component's properties

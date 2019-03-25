@@ -19,6 +19,8 @@ private:
 		class UButton* TradeButton;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UButton* PartyButton;
+	UPROPERTY()
+		class AMainMapPlayerController* MainMapPlayerController;
 public:
 	virtual void NativeConstruct() override;
 
@@ -26,4 +28,6 @@ public:
 		void Trade();
 	UFUNCTION()
 		void Party();
+
+	void Init(APlayerController* _MainMapPlayerController);
 };
