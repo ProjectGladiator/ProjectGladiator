@@ -511,6 +511,7 @@ void AMyCharacter::SetDefaultOtherCharacter()
 		if (OtherCharacterController)
 		{
 			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, OtherCharacterController);
+			MyCharacterUI->GetMyCharacterInteraction()->SetMyCharacterNickNameWidget(CharacterNickWidget, nick);
 		}
 		else
 		{
