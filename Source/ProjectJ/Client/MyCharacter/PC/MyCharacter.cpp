@@ -60,7 +60,10 @@ AMyCharacter::AMyCharacter()
 	Camera->SetupAttachment(SpringArm);
 
 	CharacterNickWidget = CreateDefaultSubobject<UWidgetComponent>(TEXT("CharacterNickWidget"));
-	
+	CharacterNickWidget->SetupAttachment(RootComponent);
+	CharacterNickWidget->SetWidgetSpace(EWidgetSpace::Screen);
+	CharacterNickWidget->SetRelativeLocation(FVector(0, 0, 120.0f));
+
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 
 	IsRightClick = false;
@@ -423,15 +426,6 @@ void AMyCharacter::C2S_RotateConfirm()
 	MainMapPlayerController->C2S_RotationcConfirm(Rotation);
 }
 
-//void AMyCharacter::S2C_RotateUpdate()
-//{
-//	if (GetActorRotation().Equals(GoalRotator,1.0f))
-//	{
-//		GLog->Log(FString::Printf(TEXT("회전 끝")));
-//		GetWorld()->GetTimerManager().ClearTimer(S2C_RotateTimer);
-//	}	
-//}
-
 void AMyCharacter::S2C_ControlOtherCharacterRotate(FRotator & _GoalRotator)
 {
 	GoalRotator = _GoalRotator;
@@ -499,17 +493,7 @@ void AMyCharacter::SetDefaultMyCharacter()
 			MyCharacterUI->GetPartyComponent()->PartyJoin(this, true);
 			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, MyCharacterController);
 			MyCharacterUI->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
-			
-			if (CharacterNickWidget)
-			{
-				auto MyCharacterNickWidget = Cast<UMyCharacterNickNameWidget>(CharacterNickWidget->GetUserWidgetObject());
-
-				if (MyCharacterNickWidget)
-				{
-					MyCharacterNickWidget->SetCharacterNickNameToWidget(nick);
-				}
-			}
-			//CharacterNickWidget->SetCharacterNickNameToWidget();
+			MyCharacterUI->GetMyCharacterInteraction()->SetMyCharacterNickNameWidget(CharacterNickWidget, nick);
 		}
 		else
 		{

@@ -47,8 +47,6 @@ private:
 		FTimerHandle S2C_MoveTimer;
 	UPROPERTY()
 		FTimerHandle C2S_RotateUpdateTimer;
-	/*UPROPERTY()
-		FTimerHandle S2C_RotateTimer;*/
 
 protected:
 	class ClientState* ClientCharacterState;
@@ -157,8 +155,6 @@ public:
 		void S2C_ControlOtherCharacterMove(FVector& _GoalLocation);
 
 	void C2S_RotateConfirm();
-
-	//void S2C_RotateUpdate();
 
 	UFUNCTION()
 		void S2C_ControlOtherCharacterRotate(FRotator& _GoalRotator);

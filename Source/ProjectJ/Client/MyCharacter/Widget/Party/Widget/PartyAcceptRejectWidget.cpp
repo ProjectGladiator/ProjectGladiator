@@ -42,8 +42,6 @@ void UPartyAcceptRejectWidget::SetPartyRequestCharacterSetInfo(char* _PartyReqCh
 
 	if (PartyInvitedCharacterNick)
 	{
-		GLog->Log(ANSI_TO_TCHAR(PartyReqCharacterCode));
-
 		PartyInvitedCharacterNick->SetText(FText::FromString(ANSI_TO_TCHAR(PartyReqCharacterNickName)));
 	}
 }
