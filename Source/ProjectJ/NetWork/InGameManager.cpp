@@ -730,13 +730,13 @@ void InGameManager::InGame_Recv_Party_User_Info(char * _buf)
 	ptr_buf += sizeof(int);
 	memcpy(ptr_data, &partynum, sizeof(int));
 	ptr_data += sizeof(int);
-	size + sizeof(int);
+	size += sizeof(int);
 
 	memcpy(&count, ptr_buf, sizeof(int));
 	ptr_buf += sizeof(int);
 	memcpy(ptr_data, &count, sizeof(int));
 	ptr_data += sizeof(int);
-	size + sizeof(int);
+	size += sizeof(int);
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_INFO, data, size);
 
