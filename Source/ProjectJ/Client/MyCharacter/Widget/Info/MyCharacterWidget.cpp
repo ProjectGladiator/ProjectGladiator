@@ -9,6 +9,7 @@
 #include "kismet/GameplayStatics.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/Widget/CharacterInteractionWidget.h"
 #include "Client/MainMap/MainMapOtherPlayerController.h"
+#include "Client/MainMap/MainMapPlayerController.h"
 
 
 //서버 헤더
@@ -68,21 +69,26 @@ void UMyCharacterWidget::SetInit(AMyCharacter* _MyCharacter, APlayerController* 
 	GLog->Log(FString::Printf(TEXT("내 캐릭터 위젯 초기화")));	 
 	if (_MyCharacter)
 	{
-		MyCharacterSlotInfo.ClickCharacter = _MyCharacter;
-		MyCharacterSlotInfo.ClickCharacterPlayerController = _PlayerController;
-
-		if (MyCharacterNickName)
+		if (_PlayerController)
 		{
-			char* NickName = MyCharacterSlotInfo.ClickCharacter->GetCharacterNickName();
+			MyCharacterSlotInfo.ClickCharacter = _MyCharacter;
+			MyCharacterSlotInfo.ClickCharacterPlayerController = _PlayerController;
 
-			MyCharacterNickName->SetText(FText::FromString(ANSI_TO_TCHAR(NickName)));
-			HPUpdate();
-			MPUpdate();
-		}
+			if (MyCharacterNickName)
+			{
+				char* NickName = MyCharacterSlotInfo.ClickCharacter->GetCharacterNickName();
 
-		if (CharacterInteraction)
-		{
-			CharacterInteraction->Init(MyCharacterSlotInfo.ClickCharacterPlayerController);
+				MyCharacterNickName->SetText(FText::FromString(ANSI_TO_TCHAR(NickName)));
+				HPUpdate();
+				MPUpdate();
+			}
+
+			auto MyCharacterPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+			 
+			if (MyCharacterPlayerController)
+			{
+				CharacterInteraction->Init(MyCharacterPlayerController);
+			}
 		}
 	}
 }
@@ -108,7 +114,20 @@ void UMyCharacterWidget::HPUpdate()
 
 void UMyCharacterWidget::MPUpdate()
 {
+	float CurrentMP = MyCharacterSlotInfo.ClickCharacter->GetCurrentMP();
+	float MaxMP = MyCharacterSlotInfo.ClickCharacter->GetMaxMP();
 
+	if (MyCharacterMPText)
+	{
+		MyCharacterMPText->SetText(FText::FromString(FString::FromInt((int32)(CurrentMP))));
+
+		if (MyCharacterMPBar)
+		{
+			float MPPercent = CurrentMP / MaxMP;
+
+			MyCharacterMPBar->SetPercent(MPPercent);
+		}
+	}
 }
 
 FClickCharacterInfo UMyCharacterWidget::GetMyCharacterSlotInfo()

@@ -54,18 +54,19 @@ void UParty::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponent
 	// ...
 }
 
-void UParty::PartyWidgetToggle()
+void UParty::PartyWidgetVisible()
 {
 	if (PartyWidget)
 	{
-		if (PartyWidget->GetVisibility() == ESlateVisibility::Hidden)
-		{
-			PartyWidget->SetVisibility(ESlateVisibility::Visible);
-		}
-		else
-		{
-			PartyWidget->SetVisibility(ESlateVisibility::Hidden);
-		}
+		PartyWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void UParty::PartyWidgetHidden()
+{
+	if (PartyWidget)
+	{
+		PartyWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
 

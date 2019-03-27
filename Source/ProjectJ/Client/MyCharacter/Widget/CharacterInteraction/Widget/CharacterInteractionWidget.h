@@ -23,7 +23,6 @@ private:
 		class AMainMapPlayerController* MainMapPlayerController;
 public:
 	virtual void NativeConstruct() override;
-
 	UFUNCTION()
 		void Trade();
 	UFUNCTION()

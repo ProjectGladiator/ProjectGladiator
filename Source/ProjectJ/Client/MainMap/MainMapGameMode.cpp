@@ -209,6 +209,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	char TempPartyReqCharacterNickName[20];
 	char* PartyReqCharacterNickName = TempPartyReqCharacterNickName;
 	int32 PartyRoomNum = -1;
+	int32 PartyUserCout = -1;
+
+	PartyUserInfo* PartyUser_Info = nullptr;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -494,7 +497,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			}
 			break;
 		case PGAMEDATA_PARTY_INVITE:
-			//void ChangeData(void* data, int& _partyroomnum, char*& _code, char*& _nick);
 			memset(TempPartyReqCharacterCode, 0, sizeof(TempPartyReqCharacterCode));
 			memset(TempPartyReqCharacterNickName, 0, sizeof(TempPartyReqCharacterNickName));
 
@@ -511,6 +513,22 @@ void AMainMapGameMode::Tick(float DeltaTime)
 					MyCharacter->GetMyCharacterUI()->GetPartyComponent()->PartyAcceptRejectWidgetVisible();
 				}
 			}
+			break;
+		case PGAMEDATA_PARTY_INFO:
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyRoomNum, PartyUserCout);
+			StorageManager::GetInstance()->PopData();
+			break;
+		case PGAMEDATA_PARTY_USER_INFO:
+			PartyUser_Info = new PartyUserInfo();
+
+			memset(PartyUser_Info, 0, sizeof(PartyUserInfo));
+			
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyUser_Info);
+			StorageManager::GetInstance()->PopData();
+
+			
+
+			delete PartyUser_Info;
 			break;
 		}
 	}

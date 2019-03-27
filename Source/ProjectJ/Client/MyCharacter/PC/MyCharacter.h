@@ -55,6 +55,11 @@ protected:
 		float MaxHP; //최대 HP값
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 		float CurrentHP; //현재 HP값
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
+		float MaxMP;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
+		float CurrentMP;
+
 	UPROPERTY()
 		bool IsRightClick; //마우스 오른쪽 버튼 눌럿는지 안눌럿는지
 
@@ -119,6 +124,9 @@ public:
 
 	float GetCurrentHP();
 	float GetMaxHP();
+
+	float GetCurrentMP();
+	float GetMaxMP();
 
 	UFUNCTION()
 		virtual void LeftClick();

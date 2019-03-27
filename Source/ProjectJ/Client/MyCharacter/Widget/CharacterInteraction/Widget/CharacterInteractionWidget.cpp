@@ -41,11 +41,9 @@ void UCharacterInteractionWidget::Party()
 {
 	GLog->Log(FString::Printf(TEXT("파티맺기 버튼 시작")));
 
-	auto MyPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
-	if (MyPlayerController)
+	if (MainMapPlayerController)
 	{
-		auto MyCharacter = Cast<AMyCharacter>(MyPlayerController->GetPawn());
+		auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
 
 		if (MyCharacter)
 		{
@@ -53,44 +51,40 @@ void UCharacterInteractionWidget::Party()
 
 			if (ClickCharacter)
 			{
-				if (MainMapPlayerController)
+				bool IsOtherCharacterPartyJoin = ClickCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin();
+				bool IsMyCharacterPartyJoin = MyCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin();
+
+				auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+				if (MainMapGameMode)
 				{
-					auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
-
-					if (MyCharacter)
+					if (IsOtherCharacterPartyJoin)
 					{
-						bool IsOtherCharacterPartyJoin = ClickCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin();
-						bool IsMyCharacterPartyJoin = MyCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin();
-
-						auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-
-						if (MainMapGameMode)
+						if (IsMyCharacterPartyJoin)
 						{
-							if (IsOtherCharacterPartyJoin)
-							{
-								if (IsMyCharacterPartyJoin)
-								{
-									MainMapPlayerController->C2S_ReqPartyJoin(ClickCharacter->GetCharacterCode());
-									SetVisibility(ESlateVisibility::Hidden);
-								}
-								else
-								{
-									MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("MyCharacter Party Full"))));
-								}
-							}
-							else
-							{
-								MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("OtherCharacter Party Full"))));
-							}
+							MainMapPlayerController->C2S_ReqPartyJoin(ClickCharacter->GetCharacterCode());
+							SetVisibility(ESlateVisibility::Hidden);
 						}
 						else
 						{
-							GLog->Log(FString::Printf(TEXT("UCharacterInteractionWidget Party MainMapGameMode 없음")));
+							MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("MyCharacter Party Full"))));
 						}
 					}
+					else
+					{
+						MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("OtherCharacter Party Full"))));
+					}
+				}
+				else
+				{
+					GLog->Log(FString::Printf(TEXT("UCharacterInteractionWidget Party MainMapGameMode 없음")));
 				}
 			}
 		}
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("MainMapPlayerController이 없음")));
 	}
 }
 

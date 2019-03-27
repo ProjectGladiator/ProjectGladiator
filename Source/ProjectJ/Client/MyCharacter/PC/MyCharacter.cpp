@@ -72,6 +72,9 @@ AMyCharacter::AMyCharacter()
 
 	MaxHP = 100.0f;
 	CurrentHP = MaxHP;
+	MaxMP = 100.0f;
+	CurrentMP = MaxHP;
+
 	Level = 0;
 
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
@@ -96,6 +99,8 @@ void AMyCharacter::BeginPlay()
 
 void AMyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	//ClientCharacterState->EndPlay(EndPlayReason);
+
 	if (ClientCharacterState)
 	{
 		delete ClientCharacterState;
@@ -307,6 +312,16 @@ float AMyCharacter::GetMaxHP()
 	return MaxHP;
 }
 
+float AMyCharacter::GetCurrentMP()
+{
+	return CurrentMP;
+}
+
+float AMyCharacter::GetMaxMP()
+{
+	return MaxMP;
+}
+
 void AMyCharacter::LeftClick()
 {
 	if (MainMapPlayerController)
@@ -454,10 +469,10 @@ void AMyCharacter::InventoryToggle()
 
 void AMyCharacter::PartyToggle()
 {
-	if (MyCharacterUI)
+	/*if (MyCharacterUI)
 	{
 		MyCharacterUI->GetPartyComponent()->PartyWidgetToggle();
-	}
+	}*/
 }
 
 void AMyCharacter::MenuToggle()
@@ -506,8 +521,6 @@ void AMyCharacter::SetDefaultOtherCharacter()
 {
 	if (MyCharacterUI)
 	{
-		auto OtherCharacterController = Cast<AMainMapOtherPlayerController>(GetController());
-
 		if (OtherCharacterController)
 		{
 			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, OtherCharacterController);
