@@ -31,7 +31,10 @@ namespace DataProtocol {
 		PGAMEDATA_MENU_CHARACTER_SELECT,		// 캐릭터 선택화면으로
 		PGAMEDATA_MENU_LOGOUT,					// 로그아웃일때(타이틀로)
 		PGAMEDATA_PARTY_INVITE,					// 파티 초대
-		PGAMEDATA_PARTY_INVITE_RESULT			// 파티 초대 결과
+		PGAMEDATA_PARTY_INVITE_RESULT,			// 파티 초대 결과
+		PGAMEDATA_PARTY_JOIN_RESULT,			// 파티 참여 결과
+		PGAMEDATA_PARTY_INFO,					// 파티 정보(파티방번호,파티원)
+		PGAMEDATA_PARTY_USER_INFO				// 파티원 정보(캐릭터정보)
 	};
 	// 공통 프로토콜
 	enum PGLOBAL {

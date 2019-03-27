@@ -53,17 +53,17 @@ void LogManager::LogWrite(char* _msg)
 
 	ofstream w_log("Log.txt", ios::out);
 	
-	//if (w_log.is_open() == false)
-	//{
-	//	w_log.open("Log.txt", ofstream::app);
-	//}
-	//else
-	//{
-	//	w_log.open("Log.txt", ofstream::app);
-	//}
+	if (w_log.is_open() == false)
+	{
+		w_log.open("Log.txt", ofstream::app);
+	}
+	else
+	{
+		w_log.open("Log.txt", ofstream::app);
+	}
 
-	SetTime();
-	char buf[12];
+	//SetTime();
+	char buf[50];
 	sprintf(buf, "[%d:%d:%d]", time.wHour, time.wMinute, time.wSecond);
 	w_log << buf << ":" << _msg << endl;
 

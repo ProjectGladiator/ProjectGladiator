@@ -11,36 +11,6 @@ StorageManager::~StorageManager()
 {
 }
 
-//int StorageManager::NProtocoltoDProtocol(int _networkprotocol)
-//{
-//	switch (_networkprotocol)
-//	{
-//	case SERVER_JOIN:
-//	case SERVER_LOGIN:
-//	case SERVER_LOGOUT:
-//		return CONFIRM;
-//	case SERVER_ID_OVERLAP_CHECK:
-//		return PLOGIN_IDOVERLAP_RESULT;
-//	case SERVER_JOIN_SUCCESS:
-//		return PLOGIN_JOIN_RESULT;
-//	case SERVER_LOGIN_SUCCESS:
-//		return PLOGIN_LOGIN_RESULT;
-//
-//	case SERVER_CHARACTER_SLOT_RESULT:
-//		return PCHARACTERDATA_SLOT_INFO;
-//	case SERVER_CHARACTER_RESULT:
-//		return PCHARACTERDATA_CREATE_RESULT;
-//	case SERVER_CHARACTER_ENTER_RESULT:
-//		return PCHARACTERDATA_ENTER_RESULT;
-//	case SERVER_CHARACTER_ENTER_INFO:
-//		return PCHARACTERDATA_ENTER_INFO;
-//	case SERVER_CHARACTER_DELETE_RESULT:
-//		return PCHARACTERDATA_DELETE_RESULT;
-//	}
-//
-//	return -1;
-//}
-
 void StorageManager::CreateInstance()
 {
 	if (Instance == nullptr)
@@ -121,6 +91,18 @@ void StorageManager::ChangeData(void * data, int &_count)
 	memcpy(&_count, ptr, sizeof(int));
 }
 
+// 파티방번호, 파티원숫자
+void StorageManager::ChangeData(void * data, int & _partyroomnum, int & _partyusercount)
+{
+	char* ptr = (char*)data;
+
+	memcpy(&_partyroomnum, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&_partyusercount, ptr, sizeof(int));
+	ptr += sizeof(int);
+}
+
 // 캐릭터슬롯정보
 void StorageManager::ChangeData(void* data, bool& _type, int& _count)
 {
@@ -137,6 +119,7 @@ void StorageManager::ChangeData(void* data, bool& _type, int& _count)
 	memcpy(&_count, ptr, sizeof(int));
 	ptr += sizeof(int);
 }
+
 // 캐릭터슬롯정보
 void StorageManager::ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot)
 {
@@ -384,6 +367,39 @@ void StorageManager::ChangeData(void * data, int & _partyroomnum, char *& _code,
 	ptr += sizeof(int);
 
 	_partyroomnum = partyroomnum;
+}
+
+// 파티 유저 정보
+void StorageManager::ChangeData(void * data, PartyUserInfo *& _partyuserinfo)
+{
+	char* ptr = (char*)data;
+
+	int len = 0;
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_partyuserinfo->code, ptr, len);
+	ptr += len;
+
+	memcpy(&_partyuserinfo->job_code, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_partyuserinfo->nick, ptr, len);
+	ptr += len;
+
+	memcpy(&_partyuserinfo->hp, ptr, sizeof(float));
+	ptr += sizeof(float);
+
+	memcpy(&_partyuserinfo->mp, ptr, sizeof(float));
+	ptr += sizeof(float);
+
+	memcpy(&_partyuserinfo->leader, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+
 }
 
 // Front 삭제

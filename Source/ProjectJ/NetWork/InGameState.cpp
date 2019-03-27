@@ -52,6 +52,14 @@ bool InGameState::Read(User * _user)
 		{
 			state = INGAME_INIT_RECV;
 		}
+		else if (result == RT_INGAME_PARTY_JOIN_RESULT)
+		{
+			state = INGAME_INIT_RECV;
+		}
+		else if (result == RT_INGAME_PARTY_ADD_USER)
+		{
+			state = INGAME_INIT_RECV;
+		}
 		break;
 	}
 	return true;

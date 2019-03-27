@@ -682,6 +682,138 @@ void InGameManager::InGame_Recv_Invite_Result(char * _buf)
 	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_INVITE_RESULT, data, size);
 }
 
+// 파티 참여 결과
+void InGameManager::InGame_Recv_Join_Result(char * _buf)
+{
+	char* ptr = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(BUFSIZE));
+	char* ptr_data = data;
+	int size = 0;
+
+	bool result = false;
+
+	// 결과
+	memcpy(&result, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+
+	// data에 결과
+	memcpy(ptr_data, &result, sizeof(bool));
+	ptr_data += sizeof(bool);
+	size += sizeof(bool);
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_JOIN_RESULT, data, size);
+}
+
+void InGameManager::InGame_Recv_Party_User_Info(char * _buf)
+{
+	int partynum = 0;
+	int count = 0;
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(data));
+	char* ptr_data = data;
+	int size = 0;
+
+	int codelen = 0;
+	int nicklen = 0;	
+	int jobcode = 0;
+	bool leader = false;
+	float hp = 0;
+	float mp = 0;
+	char code[CHARACTERCODESIZE];
+	char nick[NICKNAMESIZE];
+
+	memcpy(&partynum, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	memcpy(ptr_data, &partynum, sizeof(int));
+	ptr_data += sizeof(int);
+	size + sizeof(int);
+
+	memcpy(&count, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	memcpy(ptr_data, &count, sizeof(int));
+	ptr_data += sizeof(int);
+	size + sizeof(int);
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_INFO, data, size);
+
+	for (int i = 0; i < count; i++)
+	{
+		memset(data, 0, sizeof(data));
+		memset(nick, 0, sizeof(nick));
+		memset(code, 0, sizeof(code));
+		ptr_data = data;
+		size = 0;
+		codelen = 0;
+		nicklen = 0;
+		jobcode = 0;
+		hp = 0;
+		mp = 0;
+
+		// 코드 사이즈
+		memcpy(&codelen, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		size += sizeof(int);
+		memcpy(ptr_data, &codelen, sizeof(int));
+		ptr_data += sizeof(int);
+
+		// 코드
+		memcpy(code, ptr_buf, codelen);
+		ptr_buf += codelen;
+		size += codelen;
+		memcpy(ptr_data, code, codelen);
+		ptr_data += codelen;
+
+		// 캐릭터 직업코드
+		memcpy(&jobcode, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		size += sizeof(int);
+		memcpy(ptr_data, &jobcode, sizeof(int));
+		ptr_data += sizeof(int);
+
+		// 닉네임 사이즈
+		memcpy(&nicklen, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		size += sizeof(int);
+		memcpy(ptr_data, &nicklen, sizeof(int));
+		ptr_data += sizeof(int);
+
+		// 닉네임
+		memcpy(nick, ptr_buf, nicklen);
+		ptr_buf += nicklen;
+		size += nicklen;
+		memcpy(ptr_data, nick, nicklen);
+		ptr_data += nicklen;
+
+		// HP
+		memcpy(&hp, ptr_buf, sizeof(float));
+		ptr_buf += sizeof(float);
+		size += sizeof(float);
+		memcpy(ptr_data, &hp, sizeof(float));
+		ptr_data += sizeof(float);
+
+		// MP
+		memcpy(&mp, ptr_buf, sizeof(float));
+		ptr_buf += sizeof(float);
+		size += sizeof(float);
+		memcpy(ptr_data, &mp, sizeof(float));
+		ptr_data += sizeof(float);
+
+		// 방장인지 아닌지
+		memcpy(&leader, ptr_buf, sizeof(bool));
+		ptr_buf += sizeof(bool);
+		size += sizeof(bool);
+		memcpy(ptr_data, &leader, sizeof(bool));
+		ptr_data += sizeof(bool);
+
+		StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_USER_INFO, data, size);
+	}
+	
+}
+
 // 파티 초대 요청
 void InGameManager::InGame_Req_Party_Invite(char * _code)
 {
@@ -806,6 +938,14 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 	case SERVER_INGAME_PARTY_ROOM_INVITE_RESULT:
 		InGame_Recv_Invite_Result(buf);
 		result = RT_INGAME_PARTY_INVITE_RESULT;
+		break;
+	case SERVER_INGAME_PARTY_ROOM_JOIN_RESULT:
+		InGame_Recv_Join_Result(buf);
+		result = RT_INGAME_PARTY_JOIN_RESULT;
+		break;
+	case SERVER_INGAME_PARTY_ROOM_ADD_USER:
+		InGame_Recv_Party_User_Info(buf);
+		result = RT_INGAME_PARTY_ADD_USER;
 		break;
 	default:
 		break;

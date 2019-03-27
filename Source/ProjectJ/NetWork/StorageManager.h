@@ -54,6 +54,7 @@ public:
 	bool GetFront(PacketData*& data);
 	void ChangeData(void* data, bool& type);
 	void ChangeData(void* data, int& _count);
+	void ChangeData(void* data, int& _partyroomnum,int& _partyusercount);
 	void ChangeData(void* data, bool& _type, int& _count);
 	void ChangeData(void* data, bool& _type, int& _count, CharacterSlot*& _slot);
 	void ChangeData(void* data, CharacterInfo*& _charinfo, int& _channelnum);
@@ -65,6 +66,7 @@ public:
 	void ChangeData(void* data, OtherCharacterInfo& _otherinfo);
 	void ChangeData(void* data, ChannelInfo*& _channelinfo);
 	void ChangeData(void* data, int& _partyroomnum, char*& _code, char*& _nick);
+	void ChangeData(void* data, PartyUserInfo*& _partyuserinfo);
 	bool PopData();
 };
 

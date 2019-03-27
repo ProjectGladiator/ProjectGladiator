@@ -35,6 +35,18 @@ struct ChannelInfo
 	float channelUsercount;
 };
 
+// 파티유저 정보
+struct PartyUserInfo
+{
+	char code[CHARACTERCODESIZE];
+	int job_code;
+	char nick[NICKNAMESIZE];
+	float hp;
+	float mp;
+	bool leader;
+};
+
+
 class Character
 {
 private:

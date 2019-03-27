@@ -25,6 +25,8 @@ private:
 
 	void InGame_Recv_Invite(char* _buf);								// 파티 초대 받음
 	void InGame_Recv_Invite_Result(char* _buf);							// 파티 초대 결과받음
+	void InGame_Recv_Join_Result(char* _buf);							// 파티 참여 결과
+	void InGame_Recv_Party_User_Info(char* _buf);						// 파티 유저 추가
 public:
 	static void CreateInstance();
 	static InGameManager* GetInstance();
