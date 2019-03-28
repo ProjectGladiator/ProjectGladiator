@@ -14,7 +14,9 @@ class PROJECTJ_API AGrountAIController : public AMonsterAIController
 {
 	GENERATED_BODY()
 	
-	
-	
-	
+public:
+	UFUNCTION()
+		virtual void Possess(APawn* InPawn) override;
+
+
 };

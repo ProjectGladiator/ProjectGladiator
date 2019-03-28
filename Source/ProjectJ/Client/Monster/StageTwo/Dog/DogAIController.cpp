@@ -14,7 +14,6 @@ void ADogAIController::Possess(APawn * InPawn)
 	if (Dog)
 	{
 		Dog->SetAIController(this);
-		//Dog->SetAIController(this);
 		GLog->Log(FString::Printf(TEXT("Dog Posses Success")));
 	}
 	else
