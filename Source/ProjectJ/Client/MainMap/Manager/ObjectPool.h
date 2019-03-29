@@ -20,8 +20,8 @@ protected:
 	virtual void BeginPlay() override;
 	/** The Pickup to spawn*/
 	UPROPERTY(EditAnywhere, Category = "Spawning")
-	TSubclassOf<class AMonster> whatToSpawn;
-	//	TArray < class TSubclassOf<class AMonster>> whatToSpawn;
+	//TSubclassOf<class AMonster> whatToSpawn;
+	TArray <TSubclassOf<class AMonster>> whatToSpawn;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -52,6 +52,9 @@ private:
 
 	TArray<class AMonster*> Spawn_Array;
 
-	/** SpawnObject_SetActive*/
+	/** SpawnObject Activate*/
 	void SpawnObject_SetActive(AMonster*, bool);
+
+	/** 다사용한 오브젝트*/
+	void ResetObject();
 };
