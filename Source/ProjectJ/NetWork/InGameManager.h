@@ -54,6 +54,11 @@ private:
 	void InGame_Recv_Leave_Result(char* _buf);
 	// 파티방 터진결과
 	void InGame_Recv_PartyRoom_Remove(char* _buf);
+	// 새로운 파티 리더 들어옴
+	void InGame_Recv_PartyRoom_Leader_Info(char* _buf);
+	// 파티 리더 보낸 결과
+	void InGame_Recv_PartyRoom_Leader_Delegate_Result(char* _buf);
+
 
 public:
 	static void CreateInstance();
@@ -84,6 +89,8 @@ public:
 	void InGame_Req_KickUser(char* _code);
 	// 탈퇴요청
 	void InGame_Req_LeaveParty();
+	// 파티 리더 위임하기
+	void InGame_Req_LeaderDelegate(char* _code);
 
 	// 파티 초대 요청
 	void InGame_Req_Party_Invite(char* _code);												

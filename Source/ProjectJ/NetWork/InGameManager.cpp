@@ -184,6 +184,26 @@ void InGameManager::InGame_Req_LeaveParty()
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_USER_LEAVE, buf, 0);
 }
 
+// 파티 리더 위임하기
+void InGameManager::InGame_Req_LeaderDelegate(char * _code)
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+	int codelen = strlen(_code) + 1;
+	int datasize = 0;
+	char* ptr = buf;
+
+	memcpy(ptr, &codelen, sizeof(int));
+	ptr += sizeof(int);
+	datasize += sizeof(int);
+
+	memcpy(ptr, _code, codelen);
+	ptr += codelen;
+	datasize += codelen;
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_LEADER_DELEGATE, buf, datasize);
+}
+
 // 이동 시작 요청
 //void InGameManager::InGame_Req_MoveStart(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry)
 //{
@@ -984,11 +1004,11 @@ void InGameManager::InGame_Recv_Leave_Result(char * _buf)
 	
 	bool result = false;
 
-	// 코드길이
+	// 결과
 	memcpy(&result, ptr, sizeof(bool));
 	ptr += sizeof(bool);
 
-	// data에 코드길이 패킹
+	// data에 결과 패킹
 	memcpy(ptr_data, &result, sizeof(bool));
 	ptr_data += sizeof(bool);
 	size += sizeof(bool);
@@ -1000,6 +1020,95 @@ void InGameManager::InGame_Recv_Leave_Result(char * _buf)
 void InGameManager::InGame_Recv_PartyRoom_Remove(char * _buf)
 {
 	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_PARTYROOM_REMOVE, 0, 0);
+}
+
+// 새로운 파티 리더 들어옴
+void InGameManager::InGame_Recv_PartyRoom_Leader_Info(char * _buf)
+{
+	char* ptr = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(BUFSIZE));
+	char* ptr_data = data;
+	int size = 0;
+
+	char code[CHARACTERCODESIZE];
+	int codelen = 0;
+
+	memset(code, 0, CHARACTERCODESIZE);
+
+	// 코드길이
+	memcpy(&codelen, ptr, sizeof(int));
+	ptr += sizeof(int);
+	// 코드
+	memcpy(code, ptr, codelen);
+	ptr += codelen;
+
+	// data에 코드길이 패킹
+	memcpy(ptr_data, &codelen, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
+	// data에 코드 패킹
+	memcpy(ptr_data, code, codelen);
+	ptr_data += codelen;
+	size += codelen;
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_LEADER_INFO, data, size);
+}
+
+// 파티 리더 보낸 결과
+void InGameManager::InGame_Recv_PartyRoom_Leader_Delegate_Result(char * _buf)
+{
+	char* ptr = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(BUFSIZE));
+	char* ptr_data = data;
+	int size = 0;
+
+	bool result = false;
+	char code[CHARACTERCODESIZE];
+	int codelen = 0;
+
+	memset(code, 0, CHARACTERCODESIZE);
+
+	// 결과
+	memcpy(&result, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+
+	if (result == false)
+	{
+		// data에 결과 패킹
+		memcpy(ptr_data, &result, sizeof(bool));
+		ptr_data += sizeof(bool);
+		size += sizeof(bool);
+
+		StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_LEADER_DELEGATE_RESULT, data, size);
+	}
+	else
+	{
+		// 코드길이
+		memcpy(&codelen, ptr, sizeof(int));
+		ptr += sizeof(int);
+		// 코드
+		memcpy(code, ptr, codelen);
+		ptr += codelen;
+
+		// data에 결과 패킹
+		memcpy(ptr_data, &result, sizeof(bool));
+		ptr_data += sizeof(bool);
+		size += sizeof(bool);
+		// data에 코드길이 패킹
+		memcpy(ptr_data, &codelen, sizeof(int));
+		ptr_data += sizeof(int);
+		size += sizeof(int);
+		// data에 코드 패킹
+		memcpy(ptr_data, code, codelen);
+		ptr_data += codelen;
+		size += codelen;
+
+		StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_LEADER_DELEGATE_RESULT, data, size);
+	}
 }
 
 // 파티 초대 요청
@@ -1164,6 +1273,10 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 		// 파티방 터졌다는 프로토콜만 온다
 		InGame_Recv_PartyRoom_Remove(buf);
 		result = RT_INGAME_PARTY_ROOM_REMOVE;
+		break;
+	case SERVER_INGAME_PARTY_LEADER_DELEGATE:
+		break;
+	case SERVER_INGAME_PARTY_LEADER_DELEGATE_RESULT:
 		break;
 	default:
 		break;

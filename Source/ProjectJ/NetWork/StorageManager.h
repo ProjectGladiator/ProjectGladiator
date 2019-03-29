@@ -72,7 +72,7 @@ public:
 	void ChangeData(void* data, float*& _posxyz, float*& _rotxyz);
 	// 다른 플레이어 이동정보 결과용
 	void ChangeData(void* data, char*& _code, float*& _pos_rot_xyz);
-	// 다른 플레이어 나간정보용
+	// 다른 플레이어 나간정보용, 새로운 파티 리더 정보
 	void ChangeData(void* data, char*& _code);
 	// 다른 플레이어 이동정보 결과용
 	void ChangeData(void* data, OtherCharacterInfo& _otherinfo);
@@ -82,7 +82,7 @@ public:
 	void ChangeData(void* data, int& _partyroomnum, char*& _code, char*& _nick);
 	// 파티 유저 정보
 	void ChangeData(void* data, PartyUserInfo*& _partyuserinfo);
-	// 강퇴 결과 정보(성공이면 코드있고,실패하면 뒤에 코드가없습니다)
+	// 강퇴 결과 정보,파티 리더 위임 결과 정보(성공이면 코드있고,실패하면 뒤에 코드가없습니다)
 	void ChangeData(void* data, bool& _result, char* _code);
 
 

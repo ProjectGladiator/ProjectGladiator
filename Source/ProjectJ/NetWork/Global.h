@@ -84,23 +84,26 @@ enum PROTOCOL {
 	SERVER_INGAME_CHANNLE_CHANGE_RESULT,	// 서버 채널 이동 요청 결과
 	SERVER_INGAME_CHANNLE_USER_CHANGE,		// 서버 채널 이동 요청시 그 유저 이동했다고 통보
 
-	CLIENT_INGAME_PARTY_ROOM_JOIN,			// 클라 파티 참여 요청
-	CLIENT_INGAME_PARTY_ROOM_INVITE,		// 클라 파티 초대 요청
-	CLIENT_INGAME_PARTY_ROOM_ANSWER_INVITE, // 클라 파티 초대 응답
-	CLIENT_INGAME_PARTY_USER_KICK,			// 클라 파티원 강퇴 요청
-	CLIENT_INGAME_PARTY_USER_LEAVE,			// 클라 파티 탈퇴 요청
+	CLIENT_INGAME_PARTY_ROOM_JOIN,				// 클라 파티 참여 요청
+	CLIENT_INGAME_PARTY_ROOM_INVITE,			// 클라 파티 초대 요청
+	CLIENT_INGAME_PARTY_ROOM_ANSWER_INVITE,		// 클라 파티 초대 응답
+	CLIENT_INGAME_PARTY_USER_KICK,				// 클라 파티원 강퇴 요청
+	CLIENT_INGAME_PARTY_USER_LEAVE,				// 클라 파티 탈퇴 요청
+	CLIENT_INGAME_PARTY_LEADER_DELEGATE,		// 클라 파티장 위임
 
-	SERVER_INGAME_PARTY_ROOM_INVITE,		// 서버 파티 초대(특정유저에게)
-	SERVER_INGAME_PARTY_ROOM_INVITE_RESULT,	// 서버 파티 초대 결과
-	SERVER_INGAME_PARTY_ROOM_JOIN_RESULT,	// 서버 파티 참여 결과
-	SERVER_INGAME_PARTY_ROOM_ADD_USER,		// 서버 새로운 파티원이 들어옴
-	SERVER_INGAME_PARTY_USER_KICK,			// 서버 파티 강퇴당한사람에게 보내는 프로토콜
-	SERVER_INGAME_PARTY_USER_KICK_INFO,		// 서버 파티 강퇴당했다는정보 프로토콜 
-	SERVER_INGAME_PARTY_USER_KICK_RESULT,	// 서버 파티 강퇴결과
-	SERVER_INGAME_PARTY_USER_LEAVE_INFO,	// 서버 파티 탈퇴하는 유저 정보
-	SERVER_INGAME_PARTY_USER_LEAVE_RESULT,	// 서버 파티 탈퇴결과
-	SERVER_INGAME_PARTY_ROOM_REMOVE_RESULT,	// 서버 파티방 폭파시 속해있는 유저한테 보내는 프로토콜
-	SERVER_INGAME_PARTY_USER_INFO,			// 서버 파티원정보(파티원숫자,닉네임,HP,MP)
+	SERVER_INGAME_PARTY_ROOM_INVITE,			// 서버 파티 초대(특정유저에게)
+	SERVER_INGAME_PARTY_ROOM_INVITE_RESULT,		// 서버 파티 초대 결과
+	SERVER_INGAME_PARTY_ROOM_JOIN_RESULT,		// 서버 파티 참여 결과
+	SERVER_INGAME_PARTY_ROOM_ADD_USER,			// 서버 새로운 파티원이 들어옴
+	SERVER_INGAME_PARTY_USER_KICK,				// 서버 파티 강퇴당한사람에게 보내는 프로토콜
+	SERVER_INGAME_PARTY_USER_KICK_INFO,			// 서버 파티 강퇴당했다는정보 프로토콜 
+	SERVER_INGAME_PARTY_USER_KICK_RESULT,		// 서버 파티 강퇴결과
+	SERVER_INGAME_PARTY_USER_LEAVE_INFO,		// 서버 파티 탈퇴하는 유저 정보
+	SERVER_INGAME_PARTY_USER_LEAVE_RESULT,		// 서버 파티 탈퇴결과
+	SERVER_INGAME_PARTY_ROOM_REMOVE_RESULT,		// 서버 파티방 폭파시 속해있는 유저한테 보내는 프로토콜
+	SERVER_INGAME_PARTY_LEADER_DELEGATE,		// 서버 파티장 위임 받은 유저 정보
+	SERVER_INGAME_PARTY_LEADER_DELEGATE_RESULT,	// 서버 파티장 위임 결과
+	SERVER_INGAME_PARTY_USER_INFO,				// 서버 파티원정보(파티원숫자,닉네임,HP,MP)
 
 	// 채팅 프로토콜
 	CLIENT_REQ_CHAT_LIST,					// 현재 로그인한 회원리스트 요청 			 프로토콜만
