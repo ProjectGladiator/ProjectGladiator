@@ -61,4 +61,8 @@ public:
 
 	UFUNCTION()
 		float GetHP();
+
+	/** Actor Hidden 확인여부 */
+	UPROPERTY(VisibleAnywhere, Category = isSpawn)
+	bool bisActive;
 };

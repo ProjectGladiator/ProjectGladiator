@@ -27,6 +27,9 @@ AMonster::AMonster()
 	GetCharacterMovement()->bUseRVOAvoidance = true;
 
 	Tags.Add(TEXT("Monster"));
+
+	//활성화 확인용 bool은 처음엔 true로 설정 
+	bisActive = true;
 }
 
 void AMonster::AttackHit()
