@@ -74,8 +74,8 @@ void AObjectPool::PoolSetting()
 
 		UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
 
-		SpawnObject_SetActive(Spawn_Array[i_spawnObject], false);
-		Spawn_Array[i_spawnObject]->bisActive = false;
+		//SpawnObject_SetActive(Spawn_Array[i_spawnObject], false);
+		//Spawn_Array[i_spawnObject]->bisActive = false;
 	}
 }
 
