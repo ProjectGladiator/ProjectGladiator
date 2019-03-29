@@ -67,19 +67,36 @@ void AObjectPool::PoolSetting()
 	
 	for (int i_spawnObject = 0; i_spawnObject < FullPoolVolume; i_spawnObject++)
 	{
-		AMonster* SpawnActor = world->SpawnActor<AMonster>(whatToSpawn, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+		//어떤 Monster를 사용할 건지 정하는 부분을 만들어야함
+
+		AMonster* SpawnActor = world->SpawnActor<AMonster>(whatToSpawn[0], FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		Spawn_Array.Add(SpawnActor);
 
 		UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
 
 		SpawnObject_SetActive(Spawn_Array[i_spawnObject], false);
-		//Spawn_Array[i_spawnObject]->bisActive = false;
+		Spawn_Array[i_spawnObject]->bisActive = false;
 	}
 }
 
-void AObjectPool::Pooling(int)
+void AObjectPool::Pooling(int _counter)
 {
 	// 요기에는 Pooling을 할 내용을 적어주면됩미다.
+	if (_counter > FullPoolVolume)
+	{
+		//Error or FullPoolVolume Use
+		UE_LOG(LogTemp, Warning, TEXT("_counter is over PoolVolume"));
+	}
+	else if (_counter < -1)
+	{
+		//Error not to use ObjectPool
+		UE_LOG(LogTemp, Warning, TEXT("_counter is (-)value"));
+	}
+	else
+	{
+		// Pooling Enter
+		UE_LOG(LogTemp, Warning, TEXT("Pooling Enter"));
+	}
 }
 
 void AObjectPool::SpawnObject_SetActive(AMonster* SpawnObject, bool _bActive)
@@ -99,5 +116,9 @@ void AObjectPool::SpawnObject_SetActive(AMonster* SpawnObject, bool _bActive)
 		// Stops the Actor from ticking
 		SpawnObject->SetActorTickEnabled(false);
 	}
+}
+
+void AObjectPool::ResetObject()
+{
 }
 
