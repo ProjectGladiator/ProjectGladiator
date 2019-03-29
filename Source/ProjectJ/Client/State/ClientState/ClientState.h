@@ -17,4 +17,5 @@ public:
 	virtual void MoveRight(float Value) {};
 	virtual void LookUp(float Value) {};
 	virtual void Turn(float Value) {};
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) {};
 };

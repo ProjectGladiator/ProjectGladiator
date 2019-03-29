@@ -54,7 +54,7 @@ void AMainMapGameMode::BeginPlay()
 	FActorSpawnParameters SpawnActorOption;
 
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AChracterCreateCamera::StaticClass(), Cameras);
-
+	
 	//에디터 상에 있는 블루프린트를 읽어서 TitleUserInWidgetClass에 저장한다.
 	FStringClassReference TitleUserInWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/Widget/W_UserIn.W_UserIn_C'"));
 
@@ -209,9 +209,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	char TempPartyReqCharacterNickName[20];
 	char* PartyReqCharacterNickName = TempPartyReqCharacterNickName;
 	int32 PartyRoomNum = -1;
-	int32 PartyUserCout = -1;
+	int32 PartyUserCount = -1;
 
-	PartyUserInfo* PartyUser_Info = nullptr;
+	PartyUserInfo* PartyUser_Info;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -245,7 +245,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			StorageManager::GetInstance()->PopData();
 
 			break;
-
 		case PLOGIN_LOGIN_RESULT:				// 로그인 결과
 			GLog->Log(FString::Printf(TEXT("게임모드 틱 로그인 결과")));
 			if (LoginManager::GetInstance()->isLogin())
@@ -515,10 +514,21 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			}
 			break;
 		case PGAMEDATA_PARTY_INFO:
-			StorageManager::GetInstance()->ChangeData(Data->data, PartyRoomNum, PartyUserCout);
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyRoomNum, PartyUserCount);
 			StorageManager::GetInstance()->PopData();
+
+			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+			if (MyCharacter)
+			{
+				MyCharacter->GetMyCharacterUI()->GetPartyComponent()->PartyWidgetVisible();
+			}
+
+			GLog->Log(FString::Printf(TEXT("파티 수 : %d"), PartyUserCount));
+
 			break;
 		case PGAMEDATA_PARTY_USER_INFO:
+			GLog->Log(FString::Printf(TEXT("PGAMEDATA_PARTY_USER_INFO"))); 
 			PartyUser_Info = new PartyUserInfo();
 
 			memset(PartyUser_Info, 0, sizeof(PartyUserInfo));
@@ -526,7 +536,17 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			StorageManager::GetInstance()->ChangeData(Data->data, PartyUser_Info);
 			StorageManager::GetInstance()->PopData();
 
-			
+			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+			if (MyCharacter)
+			{
+				MyCharacter->GetMyCharacterUI()->GetPartyComponent()->PartyJoin(PartyUser_Info->code, PartyUser_Info->job_code, PartyUser_Info->nick, PartyUser_Info->hp, PartyUser_Info->mp, PartyUser_Info->leader);
+
+				if (strcmp(MyCharacter->GetCharacterCode(), PartyUser_Info->code) == 0)
+				{
+					MyCharacter->SetPartyLeader(PartyUser_Info->leader);
+				}
+			}
 
 			delete PartyUser_Info;
 			break;
@@ -854,4 +874,9 @@ void AMainMapGameMode::MainMapUnLoadCompleteToCharacterSelect()
 	}
 
 	CharacterSelectWidgetToggle();
+}
+
+AMyCharacter * AMainMapGameMode::GetCreateSelectCharacter()
+{
+	return CreateSelectCharacter;
 }

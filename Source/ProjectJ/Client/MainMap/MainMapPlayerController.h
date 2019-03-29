@@ -54,6 +54,7 @@ public:
 	void C2S_ReqMenuChannelInfo();
 	void C2S_ReqMenuCharacterSelect();
 	void C2S_ReqMenuLogOut();
+	void C2S_ReqUserList();
 	void C2S_ReqChannelChange(int32 ChannelIndex);
 	void C2S_ReqPartyJoin(char* ReqCharacterCode);
 	void C2S_ReqPartyAccept(bool _IsAccept, char* ReqCharacterCode, int32 _PartyRoomNum);

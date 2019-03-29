@@ -4,7 +4,7 @@
 //클라 헤더
 #include "Components/VerticalBox.h"
 #include "PartySlotWiget.h"
-
+#include "Kismet/GameplayStatics.h"
 //서버 헤더
 
 void UPartyWidget::NativeConstruct()
@@ -20,8 +20,8 @@ UPartySlotWiget* UPartyWidget::PartySlotCreate()
 
 	if (UClass* MyPartySlotWidgetClass = PartySlotWidgetClass.TryLoadClass<UUserWidget>())
 	{
-		UPartySlotWiget* PartySlot = Cast<UPartySlotWiget>(CreateWidget<UUserWidget>(GetOwningPlayer(), MyPartySlotWidgetClass));
-
+		UPartySlotWiget* PartySlot = Cast<UPartySlotWiget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyPartySlotWidgetClass));
+		
 		if (PartySlot)
 		{
 			PartySlotWigets.Add(PartySlot);

@@ -41,7 +41,6 @@ void UMenuWidget::NativeConstruct()
 
 	if (ChannelChangeWidget)
 	{
-		ChannelChangeWidget->CreateChannelChange();
 		ChannelChangeWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
@@ -115,4 +114,15 @@ void UMenuWidget::ChannelChangeWidgetHidden()
 UChannelChange * UMenuWidget::GetChannelChangeWidget()
 {
 	return ChannelChangeWidget;
+}
+
+void UMenuWidget::MenuInit(AMyCharacter* _MyCharacter)
+{
+	if (ChannelChangeWidget)
+	{
+		if (_MyCharacter)
+		{
+			ChannelChangeWidget->CreateChannelChange(_MyCharacter);
+		}
+	}
 }

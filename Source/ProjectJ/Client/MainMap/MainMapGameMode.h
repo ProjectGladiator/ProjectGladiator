@@ -54,7 +54,7 @@ public:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-
+	
 	void UserInWidgetToggle(); //회원가입 위젯 보여주기,끄기
 	void LoginWidgetToggle(); //로그인 위젯 보여주기,끄기
 	void CharacterSelectWidgetToggle(); //캐릭터 선택창 위젯 보여주기, 끄기
@@ -63,6 +63,7 @@ public:
 	void OkWidgetToggle(const FText& Message); //에러 확인 위젯 보여주기
 	void LoadingWidgetViewScreen(); //로딩 위젯 화면에 붙이기
 	void LoadingWidgetHiddenScreen(); //로딩 위젯 화면에서 없애기
+	
 	void MenuWidgetToggle(); //메뉴 위젯 키고 끄기
 
 	void SelectCharacterSpawn(CHARACTER_JOB _SelectJob); //캐릭터 선택창에서 선택한 슬롯의 직업에 따라 화면 가운데에 캐릭터를 스폰 시켜주는 함수
@@ -95,4 +96,5 @@ public:
 	UFUNCTION()
 		void MainMapUnLoadCompleteToCharacterSelect(); //메인 맵 스트리밍 레벨 언로드 완료시 호출하는 함수
 
+	AMyCharacter* GetCreateSelectCharacter();
 };

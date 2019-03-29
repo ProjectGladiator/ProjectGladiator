@@ -31,6 +31,9 @@ public:
 	void MyCharacterWidgetVisible();
 	void MyCharacterWidgetHidden();
 
+	//void MyCharacterNickNameWidgetVisible();
+	//void MyCharacterNickNameWidgetHidden();
+
 	UMyCharacterWidget* GetMyCharacterWidget();
 	UMyCharacterNickNameWidget* GetMyCharacterNickNameWidget();
 

@@ -47,7 +47,8 @@ private:
 		FTimerHandle S2C_MoveTimer;
 	UPROPERTY()
 		FTimerHandle C2S_RotateUpdateTimer;
-
+	UPROPERTY()
+		bool IsPartyLeader;
 protected:
 	class ClientState* ClientCharacterState;
 
@@ -186,4 +187,7 @@ public:
 
 	void SetClickCharacter(AMyCharacter* _ClickCharacter);
 	AMyCharacter* GetClickCharacter();
+
+	bool GetPartyLeader();
+	void SetPartyLeader(bool _IsPartyLeader);
 };

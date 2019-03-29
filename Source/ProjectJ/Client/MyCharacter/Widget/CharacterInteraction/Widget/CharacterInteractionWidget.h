@@ -29,4 +29,6 @@ public:
 		void Party();
 
 	void Init(APlayerController* _MainMapPlayerController);
+
+	void PartyInVite(class AMyCharacter* _MyCharacter, class AMainMapGameMode* _MainMapGameMode);
 };

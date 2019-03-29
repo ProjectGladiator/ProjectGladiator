@@ -43,4 +43,6 @@ public:
 	void ChannelChangeWidgetHidden();
 
 	UChannelChange* GetChannelChangeWidget();
+
+	void MenuInit(class AMyCharacter* _MyCharacter);
 };

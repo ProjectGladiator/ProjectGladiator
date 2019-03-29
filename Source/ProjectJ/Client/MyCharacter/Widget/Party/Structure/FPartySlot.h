@@ -10,6 +10,10 @@ struct PROJECTJ_API FPartySlot
 {
 	GENERATED_USTRUCT_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		class AMyCharacter* MyCharacter;
+	char CharacterCode[30];
+	int32 JobCode;
+	char NickName[20];
+	float HP;
+	float MP;
+	bool Leader;
 };

@@ -7,7 +7,7 @@
 
 ClientPCTitleState::ClientPCTitleState()
 {
-
+	GLog->Log(FString::Printf(TEXT("클라이언트 플레이어 컨트롤러 선택 상태 생성자 출력")));
 }
 
 ClientPCTitleState::~ClientPCTitleState()
@@ -17,5 +17,5 @@ ClientPCTitleState::~ClientPCTitleState()
 
 void ClientPCTitleState::Tick(float _DeltaTime)
 {
-
+	//GLog->Log(FString::Printf(TEXT("클라이언트 플레이어 컨트롤러 선택 상태 틱")));
 }

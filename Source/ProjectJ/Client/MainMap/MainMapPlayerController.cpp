@@ -160,6 +160,12 @@ void AMainMapPlayerController::C2S_ReqMenuLogOut()
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
+void AMainMapPlayerController::C2S_ReqUserList()
+{
+	InGameManager::GetInstance()->InGame_Req_UserList();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
 void AMainMapPlayerController::C2S_ReqChannelChange(int32 ChannelIndex)
 {
 	InGameManager::GetInstance()->InGame_Req_ChannelChange(ChannelIndex);

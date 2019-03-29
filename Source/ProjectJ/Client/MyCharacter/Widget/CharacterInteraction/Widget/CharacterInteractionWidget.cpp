@@ -10,6 +10,7 @@
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
 #include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h"
 #include "Client/MyCharacter/Widget/Party/Party.h"
+#include "Client/MyCharacter/Widget/Party/Widget/PartyWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/MainMap/MainMapGameMode.h"
 //서버 헤더
@@ -47,37 +48,24 @@ void UCharacterInteractionWidget::Party()
 
 		if (MyCharacter)
 		{
-			auto ClickCharacter = MyCharacter->GetClickCharacter();
+			auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
-			if (ClickCharacter)
+			if (MainMapGameMode)
 			{
-				bool IsOtherCharacterPartyJoin = ClickCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin();
-				bool IsMyCharacterPartyJoin = MyCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin();
-
-				auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-
-				if (MainMapGameMode)
+				if (MyCharacter->GetMyCharacterUI()->GetPartyComponent()->GetPartyWidget()->GetVisibility() == ESlateVisibility::Visible)
 				{
-					if (IsOtherCharacterPartyJoin)
+					if (MyCharacter->GetPartyLeader())
 					{
-						if (IsMyCharacterPartyJoin)
-						{
-							MainMapPlayerController->C2S_ReqPartyJoin(ClickCharacter->GetCharacterCode());
-							SetVisibility(ESlateVisibility::Hidden);
-						}
-						else
-						{
-							MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("MyCharacter Party Full"))));
-						}
+						PartyInVite(MyCharacter, MainMapGameMode);
 					}
 					else
 					{
-						MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("OtherCharacter Party Full"))));
+						MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("You're Not Leader"))));
 					}
 				}
 				else
 				{
-					GLog->Log(FString::Printf(TEXT("UCharacterInteractionWidget Party MainMapGameMode 없음")));
+					PartyInVite(MyCharacter, MainMapGameMode);
 				}
 			}
 		}
@@ -91,4 +79,32 @@ void UCharacterInteractionWidget::Party()
 void UCharacterInteractionWidget::Init(APlayerController* _MainMapPlayerController)
 {
 	MainMapPlayerController = Cast<AMainMapPlayerController>(_MainMapPlayerController);	
+}
+
+void UCharacterInteractionWidget::PartyInVite(AMyCharacter* _MyCharacter,AMainMapGameMode* _MainMapGameMode)
+{
+	auto ClickCharacter = _MyCharacter->GetClickCharacter();
+
+	if (ClickCharacter)
+	{
+		bool IsOtherCharacterPartyJoin = ClickCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin();
+		bool IsMyCharacterPartyJoin = _MyCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin();
+
+		if (IsOtherCharacterPartyJoin)
+		{
+			if (IsMyCharacterPartyJoin)
+			{
+				MainMapPlayerController->C2S_ReqPartyJoin(ClickCharacter->GetCharacterCode());
+				SetVisibility(ESlateVisibility::Hidden);
+			}
+			else
+			{
+				_MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("MyCharacter Party Full"))));
+			}
+		}
+		else
+		{
+			_MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("OtherCharacter Party Full"))));
+		}
+	}
 }

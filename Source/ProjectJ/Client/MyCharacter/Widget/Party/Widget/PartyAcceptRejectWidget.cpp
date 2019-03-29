@@ -57,23 +57,6 @@ void UPartyAcceptRejectWidget::PartyAccept()
 		MainMapPlayerController->C2S_ReqPartyAccept(true, PartyReqCharacterCode, PartyRoomNum);
 	}
 
-	auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
-
-	if (MyCharacter)
-	{
-		auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-
-		if (MainMapGameMode)
-		{
-			auto PartyReqCharacter = MainMapGameMode->GetLoginUser(PartyReqCharacterCode);
-
-			if (PartyReqCharacter)
-			{
-				MyCharacter->GetMyCharacterUI()->GetPartyComponent()->PartyJoin(PartyReqCharacter, true);
-				MyCharacter->GetMyCharacterUI()->GetPartyComponent()->PartyWidgetVisible();
-			}
-		}
-	}
 	GLog->Log(FString::Printf(TEXT("파티 수락 버튼 누름")));
 
 	SetVisibility(ESlateVisibility::Hidden);

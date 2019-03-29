@@ -25,35 +25,38 @@ void UChannelChange::NativeConstruct()
 	}
 }
 
-void UChannelChange::CreateChannelChange()
+void UChannelChange::CreateChannelChange(AMyCharacter* _MyCharacter)
 {
 	float Column;
 
-	for (int32 i = 0; i < 6; i++)
+	if (_MyCharacter)
 	{
-		FStringClassReference ChannelSlotWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Menu/ChannelChange/W_ChannelChangeSlot.W_ChannelChangeSlot_C'"));
-
-		if (UClass* MyChannelSlotWidgetClass = ChannelSlotWidgetClass.TryLoadClass<UUserWidget>())
+		for (int32 i = 0; i < 6; i++)
 		{
-			UChannelChangeSlot* ChannelChangeSlot = Cast<UChannelChangeSlot>(CreateWidget<UUserWidget>(GetOwningPlayer(), MyChannelSlotWidgetClass));
+			FStringClassReference ChannelSlotWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Menu/ChannelChange/W_ChannelChangeSlot.W_ChannelChangeSlot_C'"));
 
-			if (ChannelChangeSlot)
+			if (UClass* MyChannelSlotWidgetClass = ChannelSlotWidgetClass.TryLoadClass<UUserWidget>())
 			{
-				auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+				UChannelChangeSlot* ChannelChangeSlot = Cast<UChannelChangeSlot>(CreateWidget<UUserWidget>(GetOwningPlayer(), MyChannelSlotWidgetClass));
 
-				if (MainMapGameMode)
+				if (ChannelChangeSlot)
 				{
-					ChannelChangeSlot->SetChannelInfo(MainMapGameMode);
-					ChannelChangeSlot->InitChannelSlot(i);
-					ChannelChangeSlots.Add(ChannelChangeSlot);
+					auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
-					UUniformGridSlot* ChannelChangeGridSlot = ChannelChangeGrid->AddChildToUniformGrid(ChannelChangeSlot);
-
-					if (ChannelChangeGridSlot)
+					if (MainMapGameMode)
 					{
-						ChannelChangeGridSlot->SetRow(UKismetMathLibrary::FTrunc(i / RowColumnValue));
-						UKismetMathLibrary::FMod(i, RowColumnValue, Column);
-						ChannelChangeGridSlot->SetColumn(UKismetMathLibrary::FTrunc(Column));
+						ChannelChangeSlot->SetChannelInfo(MainMapGameMode, _MyCharacter);
+						ChannelChangeSlot->InitChannelSlot(i);
+						ChannelChangeSlots.Add(ChannelChangeSlot);
+
+						UUniformGridSlot* ChannelChangeGridSlot = ChannelChangeGrid->AddChildToUniformGrid(ChannelChangeSlot);
+
+						if (ChannelChangeGridSlot)
+						{
+							ChannelChangeGridSlot->SetRow(UKismetMathLibrary::FTrunc(i / RowColumnValue));
+							UKismetMathLibrary::FMod(i, RowColumnValue, Column);
+							ChannelChangeGridSlot->SetColumn(UKismetMathLibrary::FTrunc(Column));
+						}
 					}
 				}
 			}

@@ -27,9 +27,10 @@ void UChannelChangeSlot::NativeConstruct()
 	ChannelCongestionBar = Cast<UProgressBar>(GetWidgetFromName(TEXT("ChannelCongestionBar")));
 }
 
-void UChannelChangeSlot::SetChannelInfo(AMainMapGameMode * _MainMapGameMode)
+void UChannelChangeSlot::SetChannelInfo(AMainMapGameMode * _MainMapGameMode, AMyCharacter* _MyCharacter)
 {
 	ChannelInfo.MainMapGameMode = _MainMapGameMode;
+	ChannelInfo.MyCharacter = _MyCharacter;
 }
 
 void UChannelChangeSlot::InitChannelSlot(int32 _ChannelIndex)
