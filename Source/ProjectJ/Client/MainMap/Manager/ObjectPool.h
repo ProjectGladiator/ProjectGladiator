@@ -20,8 +20,8 @@ protected:
 	virtual void BeginPlay() override;
 	/** The Pickup to spawn*/
 	UPROPERTY(EditAnywhere, Category = "Spawning")
-	TSubclassOf<class AMonster> whatToSpawn;
-	//	TArray < class TSubclassOf<class AMonster>> whatToSpawn;
+	//TSubclassOf<class AMonster> whatToSpawn;
+	TArray <TSubclassOf<class AMonster>> whatToSpawn;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

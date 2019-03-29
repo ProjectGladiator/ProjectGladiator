@@ -67,7 +67,9 @@ void AObjectPool::PoolSetting()
 	
 	for (int i_spawnObject = 0; i_spawnObject < FullPoolVolume; i_spawnObject++)
 	{
-		AMonster* SpawnActor = world->SpawnActor<AMonster>(whatToSpawn, FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
+		//어떤 Monster를 사용할 건지 정하는 부분을 만들어야함
+
+		AMonster* SpawnActor = world->SpawnActor<AMonster>(whatToSpawn[0], FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
 		Spawn_Array.Add(SpawnActor);
 
 		UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
