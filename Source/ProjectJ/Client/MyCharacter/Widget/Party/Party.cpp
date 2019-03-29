@@ -8,6 +8,7 @@
 #include "Client/MyCharacter/Widget/Party/Widget/PartyAcceptRejectWidget.h"
 
 //서버 헤더
+#include "NetWork/JobInfo.h"
 
 // Sets default values for this component's properties
 UParty::UParty()
@@ -30,8 +31,8 @@ void UParty::BeginPlay()
 	if (UClass* MyPartyWidgetClass = PartyWidgetClass.TryLoadClass<UUserWidget>())
 	{
 		PartyWidget = Cast<UPartyWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyPartyWidgetClass));
-
 		PartyWidget->AddToViewport(); //화면에 붙인다.
+		//PartyWidget->SetRenderTranslation(FVector2D(-900.0f, 0));
 		PartyWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}	
 
@@ -96,36 +97,40 @@ UPartyAcceptRejectWidget * UParty::GetPartyAcceptRejectWidget()
 	return PartyAcceptRejectWidget;
 }
 
-void UParty::PartyJoin(AMyCharacter* _MyCharacter, bool _PartyReader)
+void UParty::PartyJoin(char* _CharacterCode, int32 _JobCode, char* _NickName, float _HP, float _MP, bool _Leader)
 {
 	if (PartyWidget)
 	{
-		if (_MyCharacter)
-		{
-			UPartySlotWiget* PartySlotWidget = PartyWidget->PartySlotCreate(); //파티 슬롯을 만든다.
+		UPartySlotWiget* PartySlotWidget = PartyWidget->PartySlotCreate(); //파티 슬롯을 만든다.
 
-			if (PartySlotWidget) //만든 파티슬롯의 정보를 업데이트 한다.
+		if (PartySlotWidget) //만든 파티슬롯의 정보를 업데이트 한다.
+		{
+			FPartySlot PartySlot;
+			memset(&PartySlot, 0, sizeof(FPartySlot));
+
+			memcpy(PartySlot.CharacterCode, _CharacterCode, strlen(_CharacterCode));
+			PartySlot.JobCode = _JobCode;
+			memcpy(PartySlot.NickName, _NickName, strlen(_NickName));
+			PartySlot.HP = _HP;
+			PartySlot.Leader = _Leader;
+			int32 Index = PartySlots.Num();
+			PartySlots.Add(PartySlot);
+
+			if (_JobCode == CHARACTER_JOB::Gunner)
 			{
-				FPartySlot PartySlot;
-				PartySlot.MyCharacter = _MyCharacter;
-				int32 Index = PartySlots.Num();
-				PartySlotWidget->PartySlotUpdate(PartySlot,Index, _PartyReader);
-				PartySlots.Add(PartySlot);
+				PartySlot.MP = _MP;
 			}
 			else
 			{
-				
+				PartySlot.MP = 0;
 			}
+
+			PartySlotWidget->PartySlotUpdate(PartySlot, Index);
 		}
 		else
 		{
-			GLog->Log(FString::Printf(TEXT("상대방 캐릭터가 존재 하지 않음")));
-			
+			GLog->Log(FString::Printf(TEXT("파티 슬롯 위젯이 만들어지지 않음")));
 		}
-	}
-	else
-	{
-		
 	}
 }
 

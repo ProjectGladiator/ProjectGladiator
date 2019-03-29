@@ -26,7 +26,7 @@ private:
 public:
 	virtual void NativeConstruct() override;
 	
-	void SetChannelInfo(class AMainMapGameMode* _MainMapGameMode);
+	void SetChannelInfo(class AMainMapGameMode* _MainMapGameMode,class AMyCharacter* _MyCharacter);
 
 	void InitChannelSlot(int32 _ChannelIndex);
 

@@ -25,7 +25,7 @@ private:
 public:
 	virtual void NativeConstruct() override;
 
-	void CreateChannelChange();
+	void CreateChannelChange(class AMyCharacter* _MyCharacter);
 	void ChannelUpdate(int32 _ChannelNum, int32 _CurrentChannelUserCount);
 	UFUNCTION()
 		void ChannChangeWidgetHidden();

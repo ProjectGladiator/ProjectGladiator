@@ -11,6 +11,7 @@
 
 ClientPCInGameState::ClientPCInGameState(AMainMapGameMode* _MainMapGameMode)
 {
+	GLog->Log(FString::Printf(TEXT("클라이언트 플레이어 컨트롤러 인게임 상태 생성자 출력")));
 	MainMapGameMode = _MainMapGameMode;
 }
 

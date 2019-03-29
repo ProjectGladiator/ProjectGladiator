@@ -23,9 +23,12 @@
 #include "Client/MyCharacter/Widget/Party/Party.h" //파티 헤더
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"//클릭 상호작용 헤더
 #include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h" //내캐릭터 정보 위젯 헤더
+#include "Client/MyCharacter/Widget/MainWidget.h"
 #include "Client/State/ClientState/ClientState.h" //클라 상태 클래스 헤더
 #include "Components/WidgetComponent.h"
 #include "Client/MyCharacter/Widget/Info/MyCharacterNickNameWidget.h"
+#include "Client/MyCharacter/Widget/MainWidget.h"
+#include "Client/Menu/MenuWidget.h"
 //#include "Client/State/ClientState/Character/ClientCharacterInGameState.h"
 
 
@@ -82,6 +85,8 @@ AMyCharacter::AMyCharacter()
 	OtherCharacterController = nullptr;
 
 	MyCharacterUI = CreateDefaultSubobject<UMyCharacterUI>(TEXT("MyCharacterUI"));
+
+	IsPartyLeader = false;
 
 	Tags.Add(TEXT("Character"));
 }
@@ -469,14 +474,16 @@ void AMyCharacter::InventoryToggle()
 
 void AMyCharacter::PartyToggle()
 {
-	/*if (MyCharacterUI)
+	if (MyCharacterUI)
 	{
-		MyCharacterUI->GetPartyComponent()->PartyWidgetToggle();
-	}*/
+		MyCharacterUI->GetPartyComponent()->PartyWidgetVisible();
+	}
 }
 
 void AMyCharacter::MenuToggle()
 {
+	/*MyCharacterUI->MainWidgetVisible();
+	MyCharacterUI->GetMainWidget()->MenuWidgetToggle();*/
 	auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 
 	if (MainMapGameMode)
@@ -505,10 +512,10 @@ void AMyCharacter::SetDefaultMyCharacter()
 		if (MyCharacterController)
 		{
 			MyCharacterUI->SetMyCharacterUI();
-			MyCharacterUI->GetPartyComponent()->PartyJoin(this, true);
 			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, MyCharacterController);
 			MyCharacterUI->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
 			MyCharacterUI->GetMyCharacterInteraction()->SetMyCharacterNickNameWidget(CharacterNickWidget, nick);
+			MyCharacterUI->GetMainWidget()->GetMenuWidget()->MenuInit(this);
 		}
 		else
 		{
@@ -577,4 +584,14 @@ AMyCharacter * AMyCharacter::GetClickCharacter()
 	{
 		return nullptr;
 	}
+}
+
+bool AMyCharacter::GetPartyLeader()
+{
+	return IsPartyLeader;
+}
+
+void AMyCharacter::SetPartyLeader(bool _IsPartyLeader)
+{
+	IsPartyLeader = _IsPartyLeader;
 }

@@ -9,6 +9,8 @@
 #include "Client/MyCharacter/Widget/Inventory/Widget/InventoryWidget.h"
 #include "Client/MyCharacter/Widget/Party/Widget/PartyWidget.h"
 #include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h"
+#include "Client/Menu/MenuWidget.h"
+#include "Client/MyCharacter/Widget/MainWidget.h"
 //서버 헤더
 
 // Sets default values for this component's properties
@@ -29,6 +31,18 @@ void UMyCharacterUI::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//에디터 상에 있는 블루프린트를 읽어서 TitleLoginWidgetClass에 저장한다.
+	FStringClassReference TitleLoginWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/W_MainWidget.W_MainWidget_C'"));
+
+	//앞에서 읽어 들인 TitleLoginWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
+	if (UClass* MyWidgetClass = TitleLoginWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		//MyWidgetClass를 토대로 MainWidget을 생성한다.
+		MainWidget = Cast<UMainWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
+
+		MainWidget->AddToViewport(); //화면에 붙인다.
+		MainWidget->SetVisibility(ESlateVisibility::Hidden); //보여준다.
+	}
 }
 
 
@@ -68,4 +82,17 @@ void UMyCharacterUI::AllUIWidgetHidden()
 	MyCharacterInteraction->GetMyCharacterWidget()->RemoveFromParent(); 
 	InventoryComponent->GetInventoryWidget()->RemoveFromParent();
 	PartyComponent->GetPartyWidget()->RemoveFromParent();
+}
+
+UMainWidget* UMyCharacterUI::GetMainWidget()
+{
+	return MainWidget;
+}
+
+void UMyCharacterUI::MainWidgetVisible()
+{
+	if (MainWidget)
+	{
+		MainWidget->SetVisibility(ESlateVisibility::Visible);
+	}
 }

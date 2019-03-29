@@ -8,12 +8,12 @@
 #include "Party.generated.h"
 
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class PROJECTJ_API UParty : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UParty();
 private:
@@ -23,13 +23,13 @@ private:
 		class UPartyAcceptRejectWidget* PartyAcceptRejectWidget;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PartyWidget, Meta = (AllowPrivateAccess = true))
 		TArray<FPartySlot> PartySlots;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Info, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PartyWidget, Meta = (AllowPrivateAccess = true))
 		int32 PartyMaxCount;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -42,7 +42,7 @@ public:
 	UPartyWidget* GetPartyWidget();
 	UPartyAcceptRejectWidget* GetPartyAcceptRejectWidget();
 
-	void PartyJoin(AMyCharacter* _MyCharacter,bool _PartyReader);
+	void PartyJoin(char* _CharacterCode, int32 _JobCode, char* _NickName, float _HP, float _MP, bool _Leader);
 	bool IsPartyJoin();
 	int32 GetPartySize();
 };

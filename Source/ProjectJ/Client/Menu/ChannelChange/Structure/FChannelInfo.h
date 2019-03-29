@@ -13,6 +13,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		class AMainMapGameMode* MainMapGameMode;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		class AMyCharacter* MyCharacter;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 ChannelIndex;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int32 CurrentChannelUserCount;
