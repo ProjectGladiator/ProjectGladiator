@@ -38,10 +38,15 @@ public:
 	//UPROPERTY(VisibleAnywhere, Category = "Spawning")
 	//int currentPool_count;
 
+	/** ObjectPool init function*/
 	void PoolSetting();
 
+	/** ObjectPool Pooling*/
 	void Pooling(int);
 
+	/** Send To Server Get Next Pooling Massage */
+
+	/** Get To Server Start Pooling Massage */
 private:
 	/** Box Component to specify where pickups should be spawned*/
 	UPROPERTY(VisibleAnywhere, Category = "Spawning", meta = (AllowPrivateAccess = "true"))
