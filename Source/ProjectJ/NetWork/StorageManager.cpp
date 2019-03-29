@@ -103,7 +103,7 @@ void StorageManager::ChangeData(void * data, int & _partyroomnum, int & _partyus
 	ptr += sizeof(int);
 }
 
-// 캐릭터슬롯정보
+// 채널 이동 결과
 void StorageManager::ChangeData(void* data, bool& _type, int& _count)
 {
 	char* ptr = (char*)data;
@@ -402,9 +402,30 @@ void StorageManager::ChangeData(void * data, PartyUserInfo *& _partyuserinfo)
 
 }
 
+// 강퇴 결과 정보(성공이면 코드있고,실패하면 뒤에 코드가없습니다)
+void StorageManager::ChangeData(void * data, bool & _result, char * _code)
+{
+	int len = 0;
+	bool result = false;
+	char* ptr = (char*)data;
+
+	memcpy(&result, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+	
+	if (result)
+	{
+		memcpy(&len, ptr, sizeof(int));
+		ptr += sizeof(int);
+
+		memcpy(_code, ptr, len);
+		ptr += len;
+	}
+	_result = result;
+}
+
 // Front 삭제
 bool StorageManager::PopData()
-{
+{	
 	if (DataStorage.empty())
 	{
 		return false;
