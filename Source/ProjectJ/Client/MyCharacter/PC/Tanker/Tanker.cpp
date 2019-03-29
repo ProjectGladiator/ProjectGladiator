@@ -45,6 +45,8 @@ ATanker::ATanker()
 	GetMesh()->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
+	MaxHP = 150.0f;
+	CurrentHP = MaxHP;
 	CurrentMP = 0;
 }
 
@@ -219,6 +221,8 @@ float ATanker::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, 
 		FRadialDamageEvent* RadialDamageEvent = (FRadialDamageEvent*)(&DamageEvent);
 		
 		GLog->Log(FString::Printf(TEXT("탱커 데미지 범위 데미지 받음 : %f"), ActualDamage));
+
+		CurrentHP -= ActualDamage;
 	}
 	else if (DamageEvent.IsOfType(FPointDamageEvent::ClassID))
 	{
