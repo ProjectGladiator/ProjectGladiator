@@ -52,6 +52,9 @@ private:
 
 	TArray<class AMonster*> Spawn_Array;
 
-	/** SpawnObject_SetActive*/
+	/** SpawnObject Activate*/
 	void SpawnObject_SetActive(AMonster*, bool);
+
+	/** 다사용한 오브젝트*/
+	void ResetObject();
 };
