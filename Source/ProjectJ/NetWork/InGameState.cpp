@@ -60,6 +60,30 @@ bool InGameState::Read(User * _user)
 		{
 			state = INGAME_INIT_RECV;
 		}
+		else if (result == RT_INGAME_PARTY_KICK)
+		{
+			state = INGAME_INIT_RECV;
+		}
+		else if (result == RT_INGAME_PARTY_KICK_USER_INFO)
+		{
+			state = INGAME_INIT_RECV;
+		}
+		else if (result == RT_INGAME_PARTY_KICK_RESULT)
+		{
+			state = INGAME_INIT_RECV;
+		}
+		else if (result == RT_INGAME_PARTY_LEAVE_INFO)
+		{
+			state = INGAME_INIT_RECV;
+		}
+		else if (result == RT_INGAME_PARTY_LEAVE_RESULT)
+		{
+			state = INGAME_INIT_RECV;
+		}
+		else if (result == RT_INGAME_PARTY_ROOM_REMOVE)
+		{
+			state = INGAME_INIT_RECV;
+		}
 		break;
 	}
 	return true;

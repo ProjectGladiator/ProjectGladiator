@@ -94,9 +94,12 @@ enum PROTOCOL {
 	SERVER_INGAME_PARTY_ROOM_INVITE_RESULT,	// 서버 파티 초대 결과
 	SERVER_INGAME_PARTY_ROOM_JOIN_RESULT,	// 서버 파티 참여 결과
 	SERVER_INGAME_PARTY_ROOM_ADD_USER,		// 서버 새로운 파티원이 들어옴
-	SERVER_INGAME_PARTY_USER_KICK,			// 서버 파티 강퇴
+	SERVER_INGAME_PARTY_USER_KICK,			// 서버 파티 강퇴당한사람에게 보내는 프로토콜
+	SERVER_INGAME_PARTY_USER_KICK_INFO,		// 서버 파티 강퇴당했다는정보 프로토콜 
 	SERVER_INGAME_PARTY_USER_KICK_RESULT,	// 서버 파티 강퇴결과
+	SERVER_INGAME_PARTY_USER_LEAVE_INFO,	// 서버 파티 탈퇴하는 유저 정보
 	SERVER_INGAME_PARTY_USER_LEAVE_RESULT,	// 서버 파티 탈퇴결과
+	SERVER_INGAME_PARTY_ROOM_REMOVE_RESULT,	// 서버 파티방 폭파시 속해있는 유저한테 보내는 프로토콜
 	SERVER_INGAME_PARTY_USER_INFO,			// 서버 파티원정보(파티원숫자,닉네임,HP,MP)
 
 	// 채팅 프로토콜
@@ -187,7 +190,14 @@ enum RESULT {
 	RT_INGAME_PARTY_INVITE,				// 파티 초대
 	RT_INGAME_PARTY_INVITE_RESULT,		// 파티 초대 결과
 	RT_INGAME_PARTY_JOIN_RESULT,		// 파티 참여 결과
-	RT_INGAME_PARTY_ADD_USER			// 파티원 증가
+	RT_INGAME_PARTY_ADD_USER,			// 파티원 증가
+	RT_INGAME_PARTY_KICK,				// 파티 강퇴
+	RT_INGAME_PARTY_KICK_USER_INFO,		// 파티 당한 유저의 정보를 받았을때
+	RT_INGAME_PARTY_KICK_RESULT,		// 파티 강퇴 결과
+	RT_INGAME_PARTY_LEAVE_INFO,			// 탈퇴하는 유저정보
+	RT_INGAME_PARTY_LEAVE_RESULT,		// 탈퇴 결과
+	RT_INGAME_PARTY_ROOM_REMOVE			// 파티방 폭파시
+
 };
 
 #define USERCOUNT 200

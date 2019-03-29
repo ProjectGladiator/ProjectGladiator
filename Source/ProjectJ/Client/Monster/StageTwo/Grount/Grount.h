@@ -3,14 +3,14 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine/TargetPoint.h"
-#include "CharacterSpawnLocation.generated.h"
+#include "Client/Monster/Monster.h"
+#include "Grount.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PROJECTJ_API ACharacterSpawnLocation : public ATargetPoint
+class PROJECTJ_API AGrount : public AMonster
 {
 	GENERATED_BODY()
 	
