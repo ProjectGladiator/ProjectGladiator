@@ -35,12 +35,12 @@ namespace DataProtocol {
 		PGAMEDATA_PARTY_JOIN_RESULT,			// 파티 참여 결과
 		PGAMEDATA_PARTY_INFO,					// 파티 정보(파티방번호,파티원)
 		PGAMEDATA_PARTY_USER_INFO,				// 파티원 정보(캐릭터정보)
-		PGAMEDATA_PARTY_KICK,					// 파티 강퇴 받음
-		PGAMEDATA_PARTY_USER_KICK_INFO,			// 파티 강퇴된 유저 정보 받음
-		PGAMEDATA_PARTY_USER_KICK_RESULT,		// 파티 강퇴 결과 받음
-		PGAMEDATA_PARTY_LEAVE_INFO,				// 파티 탈퇴한 유저 정보 받음
-		PGAMEDATA_PARTY_LEAVE_RESULT,			// 파티 탈퇴 결과 받음
-		PGAMEDATA_PARTY_PARTYROOM_REMOVE		// 파티 터짐
+		PGAMEDATA_PARTY_KICK,					// 파티 강퇴 받음 - (프로토콜만)
+		PGAMEDATA_PARTY_USER_KICK_INFO,			// 파티 강퇴된 유저 정보 받음 - (캐릭터코드)
+		PGAMEDATA_PARTY_USER_KICK_RESULT,		// 파티 강퇴 결과 받음 - (결과,(성공이면)유저코드)
+		PGAMEDATA_PARTY_LEAVE_INFO,				// 파티 탈퇴한 유저 정보 받음 - (캐릭터코드)
+		PGAMEDATA_PARTY_LEAVE_RESULT,			// 파티 탈퇴 결과 받음 - (성공실패)
+		PGAMEDATA_PARTY_PARTYROOM_REMOVE		// 파티 터짐 - (프로토콜만)
 	};
 	// 공통 프로토콜
 	enum PGLOBAL {
