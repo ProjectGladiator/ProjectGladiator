@@ -32,10 +32,10 @@ void UMyCharacterUI::BeginPlay()
 	Super::BeginPlay();
 
 	//에디터 상에 있는 블루프린트를 읽어서 TitleLoginWidgetClass에 저장한다.
-	FStringClassReference TitleLoginWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/W_MainWidget.W_MainWidget_C'"));
+	FStringClassReference MainWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/W_MainWidget.W_MainWidget_C'"));
 
 	//앞에서 읽어 들인 TitleLoginWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
-	if (UClass* MyWidgetClass = TitleLoginWidgetClass.TryLoadClass<UUserWidget>())
+	if (UClass* MyWidgetClass = MainWidgetClass.TryLoadClass<UUserWidget>())
 	{
 		//MyWidgetClass를 토대로 MainWidget을 생성한다.
 		MainWidget = Cast<UMainWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass));
@@ -94,5 +94,13 @@ void UMyCharacterUI::MainWidgetVisible()
 	if (MainWidget)
 	{
 		MainWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void UMyCharacterUI::MainWidgetHidden()
+{
+	if (MainWidget)
+	{
+		MainWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 }

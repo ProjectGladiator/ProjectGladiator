@@ -9,10 +9,10 @@
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
 #include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h"
-#include "Client/MyCharacter/Widget/Party/Party.h"
 #include "Client/MyCharacter/Widget/Party/Widget/PartyWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/MainMap/MainMapGameMode.h"
+#include "Client/MyCharacter/Widget/MainWidget.h"
 //서버 헤더
 
 void UCharacterInteractionWidget::NativeConstruct()
@@ -52,7 +52,9 @@ void UCharacterInteractionWidget::Party()
 
 			if (MainMapGameMode)
 			{
-				if (MyCharacter->GetMyCharacterUI()->GetPartyComponent()->GetPartyWidget()->GetVisibility() == ESlateVisibility::Visible)
+				auto PartyWidget = MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartyWidget();
+
+				if (PartyWidget->GetVisibility() == ESlateVisibility::Visible)
 				{
 					if (MyCharacter->GetPartyLeader())
 					{
@@ -87,8 +89,8 @@ void UCharacterInteractionWidget::PartyInVite(AMyCharacter* _MyCharacter,AMainMa
 
 	if (ClickCharacter)
 	{
-		bool IsOtherCharacterPartyJoin = ClickCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin();
-		bool IsMyCharacterPartyJoin = _MyCharacter->GetMyCharacterUI()->GetPartyComponent()->IsPartyJoin();
+		bool IsOtherCharacterPartyJoin = ClickCharacter->GetMyCharacterUI()->GetMainWidget()->IsPartyJoin();
+		bool IsMyCharacterPartyJoin = _MyCharacter->GetMyCharacterUI()->GetMainWidget()->IsPartyJoin();
 
 		if (IsOtherCharacterPartyJoin)
 		{

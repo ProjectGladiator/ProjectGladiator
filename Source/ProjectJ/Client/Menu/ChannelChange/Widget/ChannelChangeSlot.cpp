@@ -8,6 +8,9 @@
 #include "Client/MainMap/MainMapGameMode.h"
 #include "Client/MainMap/MainMapPlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "Client/MyCharacter/PC/MyCharacter.h"
+#include "Client/MyCharacter/Widget/MyCharacterUI.h"
+#include "Client/MyCharacter/Widget/MainWidget.h"
 
 //서버 헤더
 
@@ -71,7 +74,7 @@ void UChannelChangeSlot::ChannelChange()
 		if (CurrentChannelNum != ChannelIndex)
 		{
 			ChannelInfo.MainMapGameMode->LoadingWidgetViewScreen();
-			ChannelInfo.MainMapGameMode->MenuWidgetToggle();
+			ChannelInfo.MyCharacter->GetMyCharacterUI()->GetMainWidget()->MenuWidgetToggle();
 
 			auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
@@ -82,7 +85,7 @@ void UChannelChangeSlot::ChannelChange()
 		}
 		else
 		{
-			ChannelInfo.MainMapGameMode->MenuWidgetToggle();
+			ChannelInfo.MyCharacter->GetMyCharacterUI()->GetMainWidget()->MenuWidgetToggle();
 			ChannelInfo.MainMapGameMode->OkWidgetToggle(FText::FromString(FString::Printf(TEXT("Same Channel\nChoose Other Channel"))));
 		}
 	}

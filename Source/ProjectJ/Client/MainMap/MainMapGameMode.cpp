@@ -30,8 +30,9 @@
 #include "Client/Menu/ChannelChange/Widget/ChannelChangeSlot.h"
 #include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
-#include "Client/MyCharacter/Widget/Party/Party.h"
+#include "Client/MYCharacter/Widget/Party/Widget/PartyWidget.h"
 #include "Client/MyCharacter/Widget/Party/Widget/PartyAcceptRejectWidget.h"
+#include "Client/MyCharacter/Widget/MainWidget.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -138,14 +139,14 @@ void AMainMapGameMode::BeginPlay()
 		LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
-	FStringClassReference MenuWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Menu/W_Menu.W_Menu_C'"));
+	//FStringClassReference MenuWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Menu/W_Menu.W_Menu_C'"));
 
-	if (UClass* MyMenuWidgetClass = MenuWidgetClass.TryLoadClass<UUserWidget>())
-	{
-		MenuWidget = Cast<UMenuWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyMenuWidgetClass));
-		MenuWidget->AddToViewport();
-		MenuWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
-	}
+	//if (UClass* MyMenuWidgetClass = MenuWidgetClass.TryLoadClass<UUserWidget>())
+	//{
+	//	MenuWidget = Cast<UMenuWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyMenuWidgetClass));
+	//	MenuWidget->AddToViewport();
+	//	MenuWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+	//}
 
 	// 서버와 연결 시도
 	if (NetworkClient_main::NetworkManager::GetInstance()->Connect() == false)
@@ -171,11 +172,11 @@ void AMainMapGameMode::BeginPlay()
 		}
 	}
 
-	if (MenuWidget)
+	/*if (MenuWidget)
 	{
 		MenuWidget->OnLogOut.BindDynamic(this, &AMainMapGameMode::LogOut);
 		MenuWidget->OnCharacterSelect.BindDynamic(this, &AMainMapGameMode::CharacterSelect);
-	}
+	}*/
 }
 
 void AMainMapGameMode::Tick(float DeltaTime)
@@ -451,11 +452,18 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			StorageManager::GetInstance()->ChangeData(Data->data, channelInfo);
 			StorageManager::GetInstance()->PopData();
 
-			for (int i = 0; i < 6; i++)
+			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+			if (MyCharacter)
 			{
-				if (MenuWidget)
+				for (int i = 0; i < 6; i++)
 				{
-					MenuWidget->GetChannelChangeWidget()->ChannelUpdate(channelInfo[i].channelNum, channelInfo[i].channelUsercount);
+					auto MenuWidget = Cast<UMenuWidget>(MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetMenuWidget());
+
+					if (MenuWidget)
+					{
+						MenuWidget->GetChannelChangeWidget()->ChannelUpdate(channelInfo[i].channelNum, channelInfo[i].channelUsercount);
+					}
 				}
 			}
 			break;
@@ -508,8 +516,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 				if (MyCharacter)
 				{
-					MyCharacter->GetMyCharacterUI()->GetPartyComponent()->GetPartyAcceptRejectWidget()->SetPartyRequestCharacterSetInfo(PartyReqCharacterNickName, PartyReqCharacterCode, PartyRoomNum);
-					MyCharacter->GetMyCharacterUI()->GetPartyComponent()->PartyAcceptRejectWidgetVisible();
+					MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartyAcceptRejectWidget()->SetPartyRequestCharacterSetInfo(PartyReqCharacterNickName, PartyReqCharacterCode, PartyRoomNum);
+					MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyAcceptRejectWidgetVisible();
 				}
 			}
 			break;
@@ -521,7 +529,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (MyCharacter)
 			{
-				MyCharacter->GetMyCharacterUI()->GetPartyComponent()->PartyWidgetVisible();
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyWidgetVisible();
 			}
 
 			GLog->Log(FString::Printf(TEXT("파티 수 : %d"), PartyUserCount));
@@ -540,7 +548,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (MyCharacter)
 			{
-				MyCharacter->GetMyCharacterUI()->GetPartyComponent()->PartyJoin(PartyUser_Info->code, PartyUser_Info->job_code, PartyUser_Info->nick, PartyUser_Info->hp, PartyUser_Info->mp, PartyUser_Info->leader);
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyJoin(PartyUser_Info->code, PartyUser_Info->job_code, PartyUser_Info->nick, PartyUser_Info->hp, PartyUser_Info->mp, PartyUser_Info->leader);
 
 				if (strcmp(MyCharacter->GetCharacterCode(), PartyUser_Info->code) == 0)
 				{
@@ -656,21 +664,21 @@ void AMainMapGameMode::LoadingWidgetHiddenScreen()
 	}
 }
 
-void AMainMapGameMode::MenuWidgetToggle()
-{
-	if (MenuWidget)
-	{
-		if (MenuWidget->GetVisibility() == ESlateVisibility::Hidden)
-		{
-			MenuWidget->SetVisibility(ESlateVisibility::Visible);
-		}
-		else
-		{
-			MenuWidget->SetVisibility(ESlateVisibility::Hidden);
-			MenuWidget->ChannelChangeWidgetHidden();
-		}
-	}
-}
+//void AMainMapGameMode::MenuWidgetToggle()
+//{
+//	if (MenuWidget)
+//	{
+//		if (MenuWidget->GetVisibility() == ESlateVisibility::Hidden)
+//		{
+//			MenuWidget->SetVisibility(ESlateVisibility::Visible);
+//		}
+//		else
+//		{
+//			MenuWidget->SetVisibility(ESlateVisibility::Hidden);
+//			MenuWidget->ChannelChangeWidgetHidden();
+//		}
+//	}
+//}
 
 void AMainMapGameMode::SelectCharacterSpawn(CHARACTER_JOB _SelectJob)
 {
@@ -796,84 +804,16 @@ int32 AMainMapGameMode::GetChannelNum()
 	return Channelnum;
 }
 
-void AMainMapGameMode::LogOut()
-{
-	ReadyCharacterSelectLogOut("MainMapUnLoadCompleteToTitle");
-}
-
-void AMainMapGameMode::CharacterSelect()
-{
-	ReadyCharacterSelectLogOut("MainMapUnLoadCompleteToCharacterSelect");
-}
-
-void AMainMapGameMode::ReadyCharacterSelectLogOut(const FName & _BindFunctionName)
-{
-	if (MainMapPlayerController)
-	{
-		auto MyPlayCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
-
-		if (MyPlayCharacter)
-		{
-			MenuWidgetToggle();
-			MyPlayCharacter->GetMyCharacterUI()->AllUIWidgetHidden();
-			MyPlayCharacter->Destroy();
-		}
-	}
-
-	LoadingWidgetViewScreen();
-
-	LoginUserAllDestory();
-
-	FLatentActionInfo MainMapUnLoadInfo;
-	MainMapUnLoadInfo.CallbackTarget = this; // 콜백 타겟 지정
-	MainMapUnLoadInfo.ExecutionFunction = _BindFunctionName; //작업 완료 할시 호출할 함수 이름
-	MainMapUnLoadInfo.UUID = 123; //고유 식별자를 지정
-	MainMapUnLoadInfo.Linkage = 0;
-
-	UGameplayStatics::UnloadStreamLevel(this, TEXT("MainStageStartArea"), MainMapUnLoadInfo);
-}
-
 void AMainMapGameMode::MapLoadComplete()
 {
 	SelectCharacterDestroy();
 	GLog->Log(FString::Printf(TEXT("맵 로드 완료")));
 	LoadingWidgetHiddenScreen();
 
-	// 서버에 다른 유저리스트 요청
-	InGameManager::GetInstance()->InGame_Req_UserList();
-	NetworkClient_main::NetworkManager::GetInstance()->Send();
-}
-
-void AMainMapGameMode::MainMapUnLoadCompleteToTitle()
-{
-	LoadingWidgetHiddenScreen();
-
-	if (CreateSelectCharacter)
+	if (MainMapPlayerController)
 	{
-		if (MainMapPlayerController)
-		{
-			MainMapPlayerController->Possess(CreateSelectCharacter);
-			MainMapPlayerController->ToCharacterSelect();
-		}
+		MainMapPlayerController->C2S_ReqUserList(); //서버에 다른 유저 리스트 요청
 	}
-
-	LoginWidgetToggle();
-}
-
-void AMainMapGameMode::MainMapUnLoadCompleteToCharacterSelect()
-{
-	LoadingWidgetHiddenScreen();
-
-	if (CreateSelectCharacter)
-	{
-		if (MainMapPlayerController)
-		{
-			MainMapPlayerController->Possess(CreateSelectCharacter);
-			MainMapPlayerController->ToCharacterSelect();
-		}
-	}
-
-	CharacterSelectWidgetToggle();
 }
 
 AMyCharacter * AMainMapGameMode::GetCreateSelectCharacter()

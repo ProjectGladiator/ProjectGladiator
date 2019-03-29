@@ -43,5 +43,7 @@ public:
 	void AllUIWidgetHidden();
 
 	UMainWidget* GetMainWidget();
+
 	void MainWidgetVisible();
+	void MainWidgetHidden();
 };

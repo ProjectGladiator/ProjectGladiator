@@ -22,8 +22,6 @@ void UMainWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	MenuWidget = Cast<UMenuWidget>(GetWidgetFromName(TEXT("MenuWidget")));
-	InventoryWidget = Cast<UInventoryWidget>(GetWidgetFromName(TEXT("InventoryWidget")));
-	PartyWidget = Cast<UPartyWidget>(GetWidgetFromName(TEXT("PartyWidget")));
 
 	if (MenuWidget)
 	{
@@ -31,10 +29,26 @@ void UMainWidget::NativeConstruct()
 		MenuWidget->OnLogOut.BindDynamic(this, &UMainWidget::LogOut);
 		MenuWidget->OnCharacterSelect.BindDynamic(this, &UMainWidget::CharacterSelect);
 	}
+
+	InventoryWidget = Cast<UInventoryWidget>(GetWidgetFromName(TEXT("InventoryWidget")));
+
+	if (InventoryWidget)
+	{
+		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	PartyWidget = Cast<UPartyWidget>(GetWidgetFromName(TEXT("PartyWidget")));	
 	
 	if (PartyWidget)
 	{
 		PartyWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	PartyAcceptRejectWidget = Cast<UPartyAcceptRejectWidget>(GetWidgetFromName(TEXT("PartyAcceptReject")));
+
+	if (PartyAcceptRejectWidget)
+	{
+		PartyAcceptRejectWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -74,6 +88,8 @@ void UMainWidget::CharacterSelect()
 
 void UMainWidget::ReadyCharacterSelectLogOut(const FName & _BindFunctionName)
 {
+	SetVisibility(ESlateVisibility::Hidden);
+
 	if (MainMapPlayerController)
 	{
 		auto MyPlayCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());

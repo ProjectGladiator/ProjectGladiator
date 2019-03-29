@@ -30,8 +30,6 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
 		class UUserWidget* LoadingWidget; //로딩 위젯
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
-		class UMenuWidget* MenuWidget; //메뉴 위젯
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
 		float CurrentChannelUserCount; //현재 채널에 있는 유저 수
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = LogdingWidget, Meta = (AllowPrivateAccess = true))
 		float MaxChannelUserCount; //채널에 들어올 수 있는 최대 유저 수
@@ -64,8 +62,6 @@ public:
 	void LoadingWidgetViewScreen(); //로딩 위젯 화면에 붙이기
 	void LoadingWidgetHiddenScreen(); //로딩 위젯 화면에서 없애기
 	
-	void MenuWidgetToggle(); //메뉴 위젯 키고 끄기
-
 	void SelectCharacterSpawn(CHARACTER_JOB _SelectJob); //캐릭터 선택창에서 선택한 슬롯의 직업에 따라 화면 가운데에 캐릭터를 스폰 시켜주는 함수
 	void SelectCharacterDestroy();
 
@@ -83,18 +79,7 @@ public:
 	int32 GetChannelNum();//현재 속한 채널 번호 반환
 
 	UFUNCTION()
-		void LogOut(); //로그 아웃 함수
-	UFUNCTION()
-		void CharacterSelect(); //캐릭터 선택 함수
-
-	void ReadyCharacterSelectLogOut(const FName& _BindFunctionName); //메뉴에서 캐릭터 선택 or 로그아웃 선택시 뒷작업을 해주는 함수
-
-	UFUNCTION()
 		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수	
-	UFUNCTION()
-		void MainMapUnLoadCompleteToTitle(); //메인 맵 스트리밍 레벨 언로드 완료시 호출하는 함수
-	UFUNCTION()
-		void MainMapUnLoadCompleteToCharacterSelect(); //메인 맵 스트리밍 레벨 언로드 완료시 호출하는 함수
 
 	AMyCharacter* GetCreateSelectCharacter();
 };

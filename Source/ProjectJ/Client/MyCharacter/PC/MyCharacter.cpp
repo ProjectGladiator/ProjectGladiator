@@ -482,13 +482,9 @@ void AMyCharacter::PartyToggle()
 
 void AMyCharacter::MenuToggle()
 {
-	/*MyCharacterUI->MainWidgetVisible();
-	MyCharacterUI->GetMainWidget()->MenuWidgetToggle();*/
-	auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
-
-	if (MainMapGameMode)
+	if (MyCharacterUI)
 	{
-		MainMapGameMode->MenuWidgetToggle();
+		MyCharacterUI->GetMainWidget()->MenuWidgetToggle();
 	}
 }
 
@@ -516,6 +512,7 @@ void AMyCharacter::SetDefaultMyCharacter()
 			MyCharacterUI->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
 			MyCharacterUI->GetMyCharacterInteraction()->SetMyCharacterNickNameWidget(CharacterNickWidget, nick);
 			MyCharacterUI->GetMainWidget()->GetMenuWidget()->MenuInit(this);
+			MyCharacterUI->MainWidgetVisible();
 		}
 		else
 		{

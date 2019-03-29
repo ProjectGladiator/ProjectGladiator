@@ -35,8 +35,11 @@ private:
 		class UImage* LeaderImage;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		FPartySlot PartySlotInfo;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
+		class UPartyInteractionWidget* PartyInteraction;
 public:
 	virtual void NativeConstruct() override;
+	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 	void PartySlotUpdate(FPartySlot& _PartySlot, int32 _Index);
 };
