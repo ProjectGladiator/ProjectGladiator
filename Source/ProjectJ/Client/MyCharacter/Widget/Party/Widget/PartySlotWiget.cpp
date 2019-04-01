@@ -7,6 +7,7 @@
 #include "Components/ProgressBar.h"
 #include "Components/Image.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
+#include "Client/MyCharacter/Widget/Party/Widget/PartyWidget.h"
 #include "Client/MyCharacter/Widget/Party/Widget/PartyInteractionWidget.h"
 
 //서버 헤더
@@ -30,13 +31,6 @@ void UPartySlotWiget::NativeConstruct()
 	{
 		LeaderImage->SetVisibility(ESlateVisibility::Hidden);
 	}
-
-	PartyInteraction = Cast<UPartyInteractionWidget>(GetWidgetFromName(TEXT("PartyInteraction")));
-
-	if (PartyInteraction)
-	{
-		PartyInteraction->SetVisibility(ESlateVisibility::Hidden);
-	}
 }
 
 FReply UPartySlotWiget::NativeOnMouseButtonDown(const FGeometry & InGeometry, const FPointerEvent & InMouseEvent)
@@ -45,17 +39,24 @@ FReply UPartySlotWiget::NativeOnMouseButtonDown(const FGeometry & InGeometry, co
 
 	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
 	{
-		/*if (PartyInteraction)
+		if (PartyWidget)
 		{
-			if (PartyInteraction->GetVisibility() == ESlateVisibility::Hidden)
+			PartyWidget->SetPartyInteraction(PartySlotInfo);
+			auto PartyInteractionWidget = PartyWidget->GetPartyInteraction();
+
+			if (PartyInteractionWidget)
 			{
-				PartyInteraction->SetVisibility(ESlateVisibility::Visible);
+				PartyInteractionWidget->SetRenderTranslation(FVector2D(InGeometry.Position.X, InGeometry.Position.Y));
+				PartyWidget->PartyInteractionWidgetVisible();
 			}
-			else
-			{
-				PartyInteraction->SetVisibility(ESlateVisibility::Hidden);
-			}
-		}*/
+		}
+	}
+	else
+	{
+		if (PartyWidget)
+		{
+			PartyWidget->PartyInteractionWidgetHidden();
+		}
 	}
 
 	return FReply::Handled();
@@ -111,4 +112,9 @@ void UPartySlotWiget::PartySlotUpdate(FPartySlot& _PartySlot, int32 _Index)
 			}
 		}
 	}
+}
+
+void UPartySlotWiget::SetPartyWidget(UPartyWidget * _PartyWidget)
+{
+	PartyWidget = _PartyWidget;
 }

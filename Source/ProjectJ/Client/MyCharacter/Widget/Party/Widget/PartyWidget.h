@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Client/MyCharacter/Widget/Party/Structure/FPartySlot.h"
 #include "PartyWidget.generated.h"
 
 /**
@@ -18,8 +19,17 @@ private:
 		TArray<class UPartySlotWiget*> PartySlotWigets;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
 		class UVerticalBox* VerticalPartySlots;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
+		class UPartyInteractionWidget* PartyInteraction;
 public:
 	virtual void NativeConstruct() override;
 		
 	UPartySlotWiget* PartySlotCreate();
+
+	void SetPartyInteraction(FPartySlot& _PartySlotInfo);
+
+	UPartyInteractionWidget* GetPartyInteraction();
+
+	void PartyInteractionWidgetVisible();
+	void PartyInteractionWidgetHidden();
 };
