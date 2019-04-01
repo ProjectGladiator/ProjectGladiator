@@ -10,6 +10,8 @@ struct PROJECTJ_API FPartySlot
 {
 	GENERATED_USTRUCT_BODY()
 public:
+	UPROPERTY()
+		class AMyCharacter* PartyUser;
 	char CharacterCode[30];
 	int32 JobCode;
 	char NickName[20];

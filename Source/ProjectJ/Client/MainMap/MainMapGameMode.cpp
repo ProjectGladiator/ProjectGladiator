@@ -554,6 +554,15 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				{
 					MyCharacter->SetPartyLeader(PartyUser_Info->leader);
 				}
+				else
+				{
+					OtherUserCharacter = GetLoginUser(PartyUser_Info->code);
+
+					if (OtherUserCharacter)
+					{
+						OtherUserCharacter->SetPartyLeader(PartyUser_Info->leader);
+					}
+				}
 			}
 
 			delete PartyUser_Info;
@@ -664,22 +673,6 @@ void AMainMapGameMode::LoadingWidgetHiddenScreen()
 	}
 }
 
-//void AMainMapGameMode::MenuWidgetToggle()
-//{
-//	if (MenuWidget)
-//	{
-//		if (MenuWidget->GetVisibility() == ESlateVisibility::Hidden)
-//		{
-//			MenuWidget->SetVisibility(ESlateVisibility::Visible);
-//		}
-//		else
-//		{
-//			MenuWidget->SetVisibility(ESlateVisibility::Hidden);
-//			MenuWidget->ChannelChangeWidgetHidden();
-//		}
-//	}
-//}
-
 void AMainMapGameMode::SelectCharacterSpawn(CHARACTER_JOB _SelectJob)
 {
 	GLog->Log(FString::Printf(TEXT("선택한 캐릭터 스폰")));
@@ -782,6 +775,7 @@ void AMainMapGameMode::LoginUserAllDestory()
 	{
 		if (OtherLoginUserList[i])
 		{
+			OtherLoginUserList[i]->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetHidden();
 			OtherLoginUserList[i]->Destroy();
 		}
 	}
