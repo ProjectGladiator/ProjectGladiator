@@ -37,11 +37,11 @@ namespace DataProtocol {
 		PGAMEDATA_PARTY_USER_INFO,				// 파티원 정보(캐릭터정보)
 		PGAMEDATA_PARTY_KICK,					// 파티 강퇴 받음 - (프로토콜만)
 		PGAMEDATA_PARTY_USER_KICK_INFO,			// 파티 강퇴된 유저 정보 받음 - (캐릭터코드)
-		PGAMEDATA_PARTY_USER_KICK_RESULT,		// 파티 강퇴 결과 받음 - (결과,(성공이면)유저코드)
+		PGAMEDATA_PARTY_USER_KICK_RESULT,		// 파티 강퇴 결과 받음 - (결과,(성공이면)캐릭터코드)
 		PGAMEDATA_PARTY_LEAVE_INFO,				// 파티 탈퇴한 유저 정보 받음 - (캐릭터코드)
 		PGAMEDATA_PARTY_LEAVE_RESULT,			// 파티 탈퇴 결과 받음 - (성공실패)
 		PGAMEDATA_PARTY_PARTYROOM_REMOVE,		// 파티 터짐 - (프로토콜만)
-		PGAMEDATA_PARTY_LEADER_INFO,			// 새로운 파티 리더 정보 - (코드)
+		PGAMEDATA_PARTY_LEADER_INFO,			// 새로운 파티 리더 정보 - (캐릭터코드)
 		PGAMEDATA_PARTY_LEADER_DELEGATE_RESULT,	// 파티 리더 위임 결과 - (결과,(성공이면)코드)
 	};
 	// 공통 프로토콜

@@ -866,7 +866,7 @@ void InGameManager::InGame_Recv_Party_User_Info(char * _buf)
 // 파티 강퇴 받은
 void InGameManager::InGame_Recv_Kick()
 {
-	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_USER_INFO, 0, 0);
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_KICK, 0, 0);
 }
 
 // 파티 강퇴받은 유저 정보 받은
