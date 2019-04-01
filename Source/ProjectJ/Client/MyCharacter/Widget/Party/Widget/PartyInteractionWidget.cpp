@@ -72,6 +72,18 @@ void UPartyInteractionWidget::SetPartyInteractionWidget(bool _IsMyPartySlot, FPa
 		}
 		else
 		{
+			if (NickNameText)
+			{
+				if (_IsMyPartySlot)
+				{
+					NickNameText->SetVisibility(ESlateVisibility::Collapsed);
+				}
+				else
+				{
+					NickNameText->SetVisibility(ESlateVisibility::Visible);
+				}
+			}
+
 			if (PartyLeaderDelegateButton)
 			{
 				PartyLeaderDelegateButton->SetVisibility(ESlateVisibility::Collapsed);

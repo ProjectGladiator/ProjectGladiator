@@ -187,6 +187,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	bool isOverlap = false;
 	bool ResultFlag;
 	bool PartyLeaveResultFlag;
+	bool PartyKickResultFlag;
+
 	CharacterInfo* character_info = nullptr;
 	float x, y, z; float rx, ry, rz;				// 위치, 회전 넣을 변수
 	FVector SpawnLocation;
@@ -585,7 +587,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				}
 			}
 			break;
-		case PGAMEDATA_PARTY_LEAVE_INFO:
+		case PGAMEDATA_PARTY_LEAVE_INFO:	
+			memset(TempPartyLeaveCharacterCode, 0, sizeof(TempPartyLeaveCharacterCode));
+
 			StorageManager::GetInstance()->ChangeData(Data->data, PartyLeaveCharacterCode);
 			StorageManager::GetInstance()->PopData();
 
@@ -595,7 +599,43 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			{
 				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave(PartyLeaveCharacterCode);
 			}
+			break;
+		case PGAMEDATA_PARTY_KICK:
+			MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
+			if (MyCharacter)
+			{
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave();
+			}
+			break;
+		case PGAMEDATA_PARTY_USER_KICK_INFO:
+			memset(TempPartyLeaveCharacterCode, 0, sizeof(TempPartyLeaveCharacterCode));
+
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyLeaveCharacterCode);
+			StorageManager::GetInstance()->PopData();
+
+			MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+			if (MyCharacter)
+			{
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave(PartyLeaveCharacterCode);
+			}
+			break;
+		case PGAMEDATA_PARTY_USER_KICK_RESULT:
+			memset(TempPartyLeaveCharacterCode, 0, sizeof(TempPartyLeaveCharacterCode));
+
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyKickResultFlag, PartyLeaveCharacterCode);
+			StorageManager::GetInstance()->PopData();
+
+			if (PartyKickResultFlag)
+			{
+				MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+				if (MyCharacter)
+				{
+					MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave(PartyLeaveCharacterCode);
+				}
+			}
 			break;
 		}
 	}
