@@ -56,8 +56,12 @@ public:
 	void C2S_ReqMenuLogOut();
 	void C2S_ReqUserList();
 	void C2S_ReqChannelChange(int32 ChannelIndex);
+	
 	void C2S_ReqPartyJoin(char* ReqCharacterCode);
 	void C2S_ReqPartyAccept(bool _IsAccept, char* ReqCharacterCode, int32 _PartyRoomNum);
+	void C2S_ReqPartyLeave();
+	void C2S_ReqPartyKick(char* _PartyKickUserCode);
+	void C2S_ReqPartyLeaderDelegate(char* _NewPartyLeaderUserCode);
 
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;

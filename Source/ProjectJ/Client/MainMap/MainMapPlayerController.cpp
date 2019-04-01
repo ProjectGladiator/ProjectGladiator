@@ -184,6 +184,24 @@ void AMainMapPlayerController::C2S_ReqPartyAccept(bool _IsAccept, char * ReqChar
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
+void AMainMapPlayerController::C2S_ReqPartyLeave()
+{
+	InGameManager::GetInstance()->InGame_Req_LeaveParty();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
+void AMainMapPlayerController::C2S_ReqPartyKick(char * _PartyKickUserCode)
+{
+	InGameManager::GetInstance()->InGame_Req_KickUser(_PartyKickUserCode);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
+void AMainMapPlayerController::C2S_ReqPartyLeaderDelegate(char * _NewPartyLeaderUserCode)
+{
+	InGameManager::GetInstance()->InGame_Req_LeaderDelegate(_NewPartyLeaderUserCode);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
 void AMainMapPlayerController::Possess(APawn * InPawn)
 {
 	Super::Possess(InPawn);

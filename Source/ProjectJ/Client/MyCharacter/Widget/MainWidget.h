@@ -56,6 +56,10 @@ public:
 	UPartyAcceptRejectWidget* GetPartyAcceptRejectWidget();
 
 	void PartyJoin(char* _CharacterCode, int32 _JobCode, char* _NickName, float _HP, float _MP, bool _Leader);
+	void PartyKick(char* _CharacterCode);
+	void PartyLeave();
+	void PartyLeave(char* _CharacterCode);
+
 	bool IsPartyJoin();
 	int32 GetPartySize();
 

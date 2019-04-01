@@ -230,6 +230,35 @@ void UMainWidget::PartyJoin(char * _CharacterCode, int32 _JobCode, char * _NickN
 	}
 }
 
+void UMainWidget::PartyKick(char * _CharacterCode)
+{
+
+}
+
+void UMainWidget::PartyLeave()
+{
+	if (PartyWidget)
+	{
+		PartyWidget->PartyLeave();
+	}
+}
+
+void UMainWidget::PartyLeave(char * _CharacterCode)
+{
+	if (PartyWidget)
+	{
+		for (int i = 0; i < PartySlots.Num(); i++)
+		{
+			if (strcmp(PartySlots[i].CharacterCode, _CharacterCode) == 0)
+			{
+				PartySlots.RemoveAt(i);
+			}
+		}
+
+		PartyWidget->PartyLeave(_CharacterCode);
+	}
+}
+
 bool UMainWidget::IsPartyJoin()
 {
 	if (PartySlots.Num() <= 4)

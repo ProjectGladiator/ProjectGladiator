@@ -49,9 +49,9 @@ UPartySlotWiget* UPartyWidget::PartySlotCreate()
 	}
 }
 
-void UPartyWidget::SetPartyInteraction(FPartySlot& _PartySlotInfo)
+void UPartyWidget::SetPartyInteraction(bool _IsMyPartySlot, FPartySlot& _PartySlotInfo)
 {
-	PartyInteraction->SetPartyInteractionWidget(_PartySlotInfo);
+	PartyInteraction->SetPartyInteractionWidget(_IsMyPartySlot,_PartySlotInfo);
 }
 
 UPartyInteractionWidget * UPartyWidget::GetPartyInteraction()
@@ -67,4 +67,30 @@ void UPartyWidget::PartyInteractionWidgetVisible()
 void UPartyWidget::PartyInteractionWidgetHidden()
 {
 	PartyInteraction->SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UPartyWidget::PartyLeave()
+{
+	for (int i = 0; i < PartySlotWigets.Num(); i++)
+	{
+		PartySlotWigets[i]->RemoveFromParent();
+	}
+	
+	PartySlotWigets.Empty();
+
+	SetVisibility(ESlateVisibility::Hidden);
+}
+
+void UPartyWidget::PartyLeave(char * _CharacterCode)
+{
+	for (int i = 0; i < PartySlotWigets.Num(); i++)
+	{
+		FPartySlot SlotInfo = PartySlotWigets[i]->GetPartySlotInfo();
+
+		if (strcmp(SlotInfo.CharacterCode, _CharacterCode) == 0)
+		{
+			PartySlotWigets[i]->RemoveFromParent();
+			PartySlotWigets.RemoveAt(i);
+		}
+	}
 }

@@ -9,6 +9,7 @@
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MyCharacter/Widget/Party/Widget/PartyWidget.h"
 #include "Client/MyCharacter/Widget/Party/Widget/PartyInteractionWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -41,22 +42,34 @@ FReply UPartySlotWiget::NativeOnMouseButtonDown(const FGeometry & InGeometry, co
 	{
 		if (PartyWidget)
 		{
-			PartyWidget->SetPartyInteraction(PartySlotInfo);
 			auto PartyInteractionWidget = PartyWidget->GetPartyInteraction();
 
 			if (PartyInteractionWidget)
 			{
-				PartyInteractionWidget->SetRenderTranslation(FVector2D(InGeometry.Position.X, InGeometry.Position.Y));
-				PartyWidget->PartyInteractionWidgetVisible();
+				if (PartyInteractionWidget->GetVisibility() == ESlateVisibility::Hidden)
+				{
+					bool IsMyPartySlotFlag = IsMyPartySlot();
+					PartyWidget->SetPartyInteraction(IsMyPartySlotFlag,PartySlotInfo);
+					PartyInteractionWidget->SetRenderTranslation(FVector2D(InGeometry.Position.X, InGeometry.Position.Y));
+					PartyWidget->PartyInteractionWidgetVisible();
+				}
+				else
+				{
+					PartyWidget->PartyInteractionWidgetHidden();
+				}
 			}
 		}
 	}
-	else
+	else if(InMouseEvent.IsMouseButtonDown(EKeys::LeftMouseButton))
 	{
 		if (PartyWidget)
 		{
 			PartyWidget->PartyInteractionWidgetHidden();
 		}
+	}
+	else
+	{
+
 	}
 
 	return FReply::Handled();
@@ -117,4 +130,30 @@ void UPartySlotWiget::PartySlotUpdate(FPartySlot& _PartySlot, int32 _Index)
 void UPartySlotWiget::SetPartyWidget(UPartyWidget * _PartyWidget)
 {
 	PartyWidget = _PartyWidget;
+}
+
+bool UPartySlotWiget::IsMyPartySlot()
+{
+	auto MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	if (MyCharacter)
+	{
+		if (strcmp(MyCharacter->GetCharacterCode(), PartySlotInfo.CharacterCode) == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
+FPartySlot UPartySlotWiget::GetPartySlotInfo()
+{
+	return PartySlotInfo;
 }

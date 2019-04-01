@@ -43,4 +43,8 @@ public:
 
 	void PartySlotUpdate(FPartySlot& _PartySlot, int32 _Index);
 	void SetPartyWidget(UPartyWidget* _PartyWidget);
+	
+	bool IsMyPartySlot();
+
+	FPartySlot GetPartySlotInfo();
 };

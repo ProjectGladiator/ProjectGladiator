@@ -6,6 +6,7 @@
 #include "Components/TextBlock.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Kismet/GameplayStatics.h"
+#include "Client/MainMap/MainMapPlayerController.h"
 //서버 헤더
 
 void UPartyInteractionWidget::NativeConstruct()
@@ -31,11 +32,11 @@ void UPartyInteractionWidget::NativeConstruct()
 
 	if (PartyExitButton)
 	{
-		PartyExitButton->OnClicked.AddDynamic(this, &UPartyInteractionWidget::PartyExit);
+		PartyExitButton->OnClicked.AddDynamic(this, &UPartyInteractionWidget::PartyLeave);
 	}
 }
 
-void UPartyInteractionWidget::SetPartyInteractionWidget(FPartySlot & _PartySlotInfo)
+void UPartyInteractionWidget::SetPartyInteractionWidget(bool _IsMyPartySlot, FPartySlot & _PartySlotInfo)
 {
 	PartySlotInfo = _PartySlotInfo;
 
@@ -54,7 +55,14 @@ void UPartyInteractionWidget::SetPartyInteractionWidget(FPartySlot & _PartySlotI
 		{
 			if (PartyLeaderDelegateButton)
 			{
-				PartyLeaderDelegateButton->SetVisibility(ESlateVisibility::Visible);
+				if (_IsMyPartySlot)
+				{
+					PartyLeaderDelegateButton->SetVisibility(ESlateVisibility::Collapsed);
+				}
+				else
+				{
+					PartyLeaderDelegateButton->SetVisibility(ESlateVisibility::Visible);
+				}
 			}
 
 			if (PartyKickButton)
@@ -79,15 +87,33 @@ void UPartyInteractionWidget::SetPartyInteractionWidget(FPartySlot & _PartySlotI
 
 void UPartyInteractionWidget::PartyLeaderDelegate()
 {
-	SetVisibility(ESlateVisibility::Hidden);
+	auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->C2S_ReqPartyLeaderDelegate(PartySlotInfo.CharacterCode);
+		SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void UPartyInteractionWidget::PartyKick()
 {
-	SetVisibility(ESlateVisibility::Hidden);
+	auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->C2S_ReqPartyKick(PartySlotInfo.CharacterCode);
+		SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
-void UPartyInteractionWidget::PartyExit()
+void UPartyInteractionWidget::PartyLeave()
 {
-	SetVisibility(ESlateVisibility::Hidden);
+	auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->C2S_ReqPartyLeave();
+		SetVisibility(ESlateVisibility::Hidden);
+	}
 }

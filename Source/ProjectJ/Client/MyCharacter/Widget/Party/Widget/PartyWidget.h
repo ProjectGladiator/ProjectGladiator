@@ -8,7 +8,7 @@
 #include "PartyWidget.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTJ_API UPartyWidget : public UUserWidget
@@ -23,13 +23,16 @@ private:
 		class UPartyInteractionWidget* PartyInteraction;
 public:
 	virtual void NativeConstruct() override;
-		
+
 	UPartySlotWiget* PartySlotCreate();
 
-	void SetPartyInteraction(FPartySlot& _PartySlotInfo);
+	void SetPartyInteraction(bool _IsMyPartySlot, FPartySlot& _PartySlotInfo);
 
 	UPartyInteractionWidget* GetPartyInteraction();
 
 	void PartyInteractionWidgetVisible();
 	void PartyInteractionWidgetHidden();
+
+	void PartyLeave();
+	void PartyLeave(char* _CharacterCode);
 };

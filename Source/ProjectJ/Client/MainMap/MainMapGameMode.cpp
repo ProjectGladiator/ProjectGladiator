@@ -186,6 +186,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	PacketData* Data;
 	bool isOverlap = false;
 	bool ResultFlag;
+	bool PartyLeaveResultFlag;
 	CharacterInfo* character_info = nullptr;
 	float x, y, z; float rx, ry, rz;				// 위치, 회전 넣을 변수
 	FVector SpawnLocation;
@@ -209,6 +210,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	char* PartyReqCharacterCode = TempPartyReqCharacterCode;
 	char TempPartyReqCharacterNickName[20];
 	char* PartyReqCharacterNickName = TempPartyReqCharacterNickName;
+	char TempPartyLeaveCharacterCode[30];
+	char* PartyLeaveCharacterCode = TempPartyLeaveCharacterCode;
+
 	int32 PartyRoomNum = -1;
 	int32 PartyUserCount = -1;
 
@@ -566,6 +570,32 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			}
 
 			delete PartyUser_Info;
+			break;
+		case PGAMEDATA_PARTY_LEAVE_RESULT:
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyLeaveResultFlag);
+			StorageManager::GetInstance()->PopData();
+
+			if (PartyLeaveResultFlag)
+			{
+				MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+				if (MyCharacter)
+				{
+					MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave();
+				}
+			}
+			break;
+		case PGAMEDATA_PARTY_LEAVE_INFO:
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyLeaveCharacterCode);
+			StorageManager::GetInstance()->PopData();
+
+			MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+			if (MyCharacter)
+			{
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave(PartyLeaveCharacterCode);
+			}
+
 			break;
 		}
 	}
