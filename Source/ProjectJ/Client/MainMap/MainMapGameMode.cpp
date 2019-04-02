@@ -489,7 +489,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			MainMapPlayerController->SetSelectIndex(-1);
 			CharacterSelectWidget->ButtonEnable();
 			break;
-		case PGAMEDATA_CHANNEL_REQ_CHANGE:
+		case PGAMEDATA_CHANNEL_REQ_CHANGE: //채널 변경 눌럿을때
 			LoadingWidgetHiddenScreen();
 
 			StorageManager::GetInstance()->ChangeData(Data->data, ChannelChangeFlag, S2C_ChannelNum);
@@ -537,15 +537,14 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (MyCharacter)
 			{
-				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyWidgetVisible();
 				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave();
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyWidgetVisible();
 			}
 
 			GLog->Log(FString::Printf(TEXT("파티 수 : %d"), PartyUserCount));
 
 			break;
 		case PGAMEDATA_PARTY_USER_INFO:
-			GLog->Log(FString::Printf(TEXT("PGAMEDATA_PARTY_USER_INFO"))); 
 			PartyUser_Info = new PartyUserInfo();
 
 			memset(PartyUser_Info, 0, sizeof(PartyUserInfo));
@@ -596,6 +595,14 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			if (MyCharacter)
 			{
 				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave(PartyLeaveCharacterCode);
+			}
+			break;
+		case PGAMEDATA_PARTY_PARTYROOM_REMOVE:
+			MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+			if (MyCharacter)
+			{
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave();
 			}
 			break;
 		case PGAMEDATA_PARTY_KICK:
