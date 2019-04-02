@@ -2,6 +2,7 @@
 
 #include "MainWidget.h"
 //클라 헤더
+#include "Components/TextBlock.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/Menu/MenuWidget.h"
 #include "Client/MyCharacter/Widget/Inventory/Widget/InventoryWidget.h"
@@ -13,6 +14,7 @@
 #include "Client/MainMap/MainMapPlayerController.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
+#include "Public/Animation/WidgetAnimation.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -21,6 +23,9 @@ void UMainWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	InChannelText = Cast<UTextBlock>(GetWidgetFromName(TEXT("InChannelText")));
+
+	
 	MenuWidget = Cast<UMenuWidget>(GetWidgetFromName(TEXT("MenuWidget")));
 
 	if (MenuWidget)
@@ -53,6 +58,35 @@ void UMainWidget::NativeConstruct()
 
 	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	UProperty* prop = GetClass()->PropertyLink;
+
+	while (prop != nullptr)
+	{
+		if (prop->GetClass() == UObjectProperty::StaticClass())
+		{
+			UObjectProperty* objectProp = Cast<UObjectProperty>(prop);
+
+			if (objectProp->PropertyClass == UWidgetAnimation::StaticClass())
+			{
+				UObject* object = objectProp->GetObjectPropertyValue_InContainer(this);
+
+				UWidgetAnimation* widgetAnim = Cast<UWidgetAnimation>(object);
+
+				if (widgetAnim != nullptr)
+				{
+					InChannelTextInVisibleAnimation = widgetAnim;
+				}
+			}
+		}
+
+		prop = prop->PropertyLinkNext;
+	}
+
+	if (InChannelTextInVisibleAnimation)
+	{
+		InChannelTextInVisibleAnimation->OnAnimationFinished.AddDynamic(this, &UMainWidget::InChannelTextHidden);
+	}
 }
 
 UMenuWidget * UMainWidget::GetMenuWidget()
@@ -149,6 +183,24 @@ void UMainWidget::MainMapUnLoadCompleteToCharacterSelect()
 	}
 
 	MainMapGameMode->CharacterSelectWidgetToggle();
+}
+
+void UMainWidget::SetInChannelText(const FText & _ChannelInMessage)
+{
+	if (InChannelText)
+	{
+		InChannelText->SetVisibility(ESlateVisibility::Visible);
+		InChannelText->SetText(_ChannelInMessage);
+		PlayAnimation(InChannelTextInVisibleAnimation);
+	}
+}
+
+void UMainWidget::InChannelTextHidden()
+{
+	if (InChannelText)
+	{
+		InChannelText->SetVisibility(ESlateVisibility::Hidden);
+	}
 }
 
 void UMainWidget::PartyWidgetVisible()

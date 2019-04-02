@@ -16,6 +16,8 @@ class PROJECTJ_API UMainWidget : public UUserWidget
 	GENERATED_BODY()
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Widget, Meta = (AllowPrivateAccess = true))
+		class UTextBlock* InChannelText;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Widget, Meta = (AllowPrivateAccess = true))
 		class UMenuWidget* MenuWidget;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Widget, Meta = (AllowPrivateAccess = true))
 		class UInventoryWidget* InventoryWidget;
@@ -32,6 +34,8 @@ private:
 		class AMainMapGameMode* MainMapGameMode;
 	UPROPERTY()
 		class AMainMapPlayerController* MainMapPlayerController;
+	UPROPERTY()
+		class UWidgetAnimation* InChannelTextInVisibleAnimation;
 public:
 	virtual void NativeConstruct() override;
 
@@ -70,4 +74,10 @@ public:
 		void MainMapUnLoadCompleteToTitle(); //메인 맵 스트리밍 레벨 언로드 완료시 호출하는 함수
 	UFUNCTION()
 		void MainMapUnLoadCompleteToCharacterSelect(); //메인 맵 스트리밍 레벨 언로드 완료시 호출하는 함수
+
+	UFUNCTION()
+		void SetInChannelText(const FText& _ChannelInMessage);
+
+	UFUNCTION()
+		void InChannelTextHidden();
 };

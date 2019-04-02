@@ -269,7 +269,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			CharacterSelectWidget->MyCharacterSlotUpdate(Data);
 			GLog->Log(FString::Printf(TEXT("캐릭터 슬롯 정보 업데이트")));
 			break;
-		case  PCHARACTERDATA_DELETE_RESULT:
+		case  PCHARACTERDATA_DELETE_RESULT:  //캐릭터 삭제 결과
 			StorageManager::GetInstance()->ChangeData(Data->data, ResultFlag);
 			StorageManager::GetInstance()->PopData();
 			if (ResultFlag)
@@ -379,6 +379,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 					MainMapPlayerController->SetInputMode(FInputModeGameOnly());
 					MainMapPlayerController->Possess(MyCharacter);
 					MyCharacter->SetDefaultMyCharacter();
+					MyCharacter->GetMyCharacterUI()->GetMainWidget()->SetInChannelText(FText::FromString(FString::Printf(TEXT("%d 채널에 입장하셨습니다."), Channelnum)));
 				}
 			}
 			else
@@ -447,7 +448,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			delete character_info;
 			OtherUserCharacter = nullptr;
 			break;
-		case PGAMEDATA_CHANNEL_INFO:
+		case PGAMEDATA_CHANNEL_INFO: //채널 정보
 			StorageManager::GetInstance()->ChangeData(Data->data, channelInfo);
 			StorageManager::GetInstance()->PopData();
 
@@ -496,10 +497,18 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (ChannelChangeFlag)
 			{
-				LoginUserAllDestory();
-				Channelnum = S2C_ChannelNum;
-				InGameManager::GetInstance()->InGame_Req_UserList();
-				NetworkClient_main::NetworkManager::GetInstance()->Send();
+				if (MainMapPlayerController)
+				{
+					MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+					if (MyCharacter)
+					{
+						LoginUserAllDestory();
+						Channelnum = S2C_ChannelNum;
+						MyCharacter->GetMyCharacterUI()->GetMainWidget()->SetInChannelText(FText::FromString(FString::Printf(TEXT("%d 채널에 입장하셨습니다."), Channelnum)));
+						MainMapPlayerController->C2S_ReqUserList();
+					}
+				}
 			}
 			break;
 		case PGAMEDATA_PARTY_INVITE:
@@ -529,6 +538,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			if (MyCharacter)
 			{
 				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyWidgetVisible();
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave();
 			}
 
 			GLog->Log(FString::Printf(TEXT("파티 수 : %d"), PartyUserCount));

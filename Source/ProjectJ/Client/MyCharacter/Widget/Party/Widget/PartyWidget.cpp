@@ -18,7 +18,6 @@ void UPartyWidget::NativeConstruct()
 
 	if (PartyInteraction)
 	{
-		GLog->Log(FString::Printf(TEXT("PartyInteraction 잇음")));
 		PartyInteraction->SetVisibility(ESlateVisibility::Hidden);
 	}
 }
