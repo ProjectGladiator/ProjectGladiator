@@ -9,81 +9,84 @@
 // 문자열 데이터 [strlen(문자열)+1 4Byte][문자열]
 enum PROTOCOL {
 	EXIT = -1,
-	CLIENT_JOIN_MENU_CHOICE = 0,			// 회원가입 메뉴 선택			[프로토콜][int]
-	CLIENT_LOGIN_MENU_CHOICE,				// 로그인 메뉴 선택				[프로토콜][int]
-	CLIENT_REQ_EXIT_JOIN,					// 회원가입 취소 선택			[프로토콜]
-	CLIENT_REQ_ID_OVERLAP_CHECK,			// 회원가입 ID중복체크 요청		[프로토콜][int][char *]
-	CLIENT_REQ_JOIN,						// 회원가입 요청				[프로토콜][int][char *]
-	CLIENT_REQ_LOGIN,						// 로그인 요청					[프로토콜][int][char *][int][char *]
+	CLIENT_JOIN_MENU_CHOICE = 0,				// 회원가입 메뉴 선택			[프로토콜][int]
+	CLIENT_LOGIN_MENU_CHOICE,					// 로그인 메뉴 선택				[프로토콜][int]
+	CLIENT_REQ_EXIT_JOIN,						// 회원가입 취소 선택			[프로토콜]
+	CLIENT_REQ_ID_OVERLAP_CHECK,				// 회원가입 ID중복체크 요청		[프로토콜][int][char *]
+	CLIENT_REQ_JOIN,							// 회원가입 요청				[프로토콜][int][char *]
+	CLIENT_REQ_LOGIN,							// 로그인 요청					[프로토콜][int][char *][int][char *]
 
-	SERVER_JOIN,							// 회원가입 메뉴 선택			[프로토콜]
-	SERVER_LOGIN,							// 로그인 메뉴 선택				[프로토콜]
-	SERVER_EXIT_JOIN,						// 회원가입 취소 결과			[프로토콜]
-	SERVER_ID_OVERLAP_CHECK,				// ID중복 결과 보냄				[프로토콜][bool]
-	SERVER_JOIN_SUCCESS,					// 회원가입 결과 메세지			[프로토콜]
-	SERVER_LOGIN_SUCCESS,					// 로그인 성공 여부				[프로토콜][bool]
+	SERVER_JOIN,								// 회원가입 메뉴 선택			[프로토콜]
+	SERVER_LOGIN,								// 로그인 메뉴 선택				[프로토콜]
+	SERVER_EXIT_JOIN,							// 회원가입 취소 결과			[프로토콜]
+	SERVER_ID_OVERLAP_CHECK,					// ID중복 결과 보냄				[프로토콜][bool]
+	SERVER_JOIN_SUCCESS,						// 회원가입 결과 메세지			[프로토콜]
+	SERVER_LOGIN_SUCCESS,						// 로그인 성공 여부				[프로토콜][bool]
 
-	CLIENT_REQ_CHARACTER_SLOT,				// 클라 케릭터 슬롯 요청		[프로토콜]
-	CLIENT_CHARACTER_ENTER,					// 클라 케릭터 접속				[프로토콜][int]
-	CLIENT_CHARACTER_DELETE,				// 클라 케릭터 삭제				[프로토콜][int]
-	CLIENT_NEW_CHARACTER_MENU,				// 클라 케릭터생성 메뉴			[프로토콜]
-	CLIENT_REQ_NICK_OVERLAP_CHECK,			// 클라 닉네임 중복				[프로토콜][int][char*]
-	CLIENT_REQ_CHARACTER,					// 클라 케릭터 생성 요청		[프로토콜][int][char*][int] : [nicknamesize][nickname][charactercode]
-	CLIENT_CHARACTER_EXIT,					// 클라 케릭터 생성 취소		[프로토콜]
-	CLIENT_LOGOUT,							// 클라 로그아웃				[프로토콜]
-	CLIENT_LEAVE,							// 클라 회원탈퇴				[프로토콜]
+	CLIENT_REQ_CHARACTER_SLOT,					// 클라 케릭터 슬롯 요청		[프로토콜]
+	CLIENT_CHARACTER_ENTER,						// 클라 케릭터 접속				[프로토콜][int]
+	CLIENT_CHARACTER_DELETE,					// 클라 케릭터 삭제				[프로토콜][int]
+	CLIENT_NEW_CHARACTER_MENU,					// 클라 케릭터생성 메뉴			[프로토콜]
+	CLIENT_REQ_NICK_OVERLAP_CHECK,				// 클라 닉네임 중복				[프로토콜][int][char*]
+	CLIENT_REQ_CHARACTER,						// 클라 케릭터 생성 요청		[프로토콜][int][char*][int] : [nicknamesize][nickname][charactercode]
+	CLIENT_CHARACTER_EXIT,						// 클라 케릭터 생성 취소		[프로토콜]
+	CLIENT_LOGOUT,								// 클라 로그아웃				[프로토콜]
+	CLIENT_LEAVE,								// 클라 회원탈퇴				[프로토콜]
 
-	SERVER_CHARACTER_SLOT_RESULT,			// 서버 케릭터 슬롯 전송		[프로토콜]...
-	SERVER_CHARACTER_ENTER_RESULT,			// 서버 케릭터 접속결과			[프로토콜][bool]
-	SERVER_CHARACTER_ENTER_INFO,			// 서버 케릭터 접속 정보		[DataProtocol용]
-	SERVER_CHARACTER_DELETE_RESULT,			// 서버 케릭터 삭제 결과		[프로토콜][bool]
-	SERVER_CHARACTER_MENU,					// 서버 케릭터 메뉴 결과		[프로토콜]
-	//SERVER_NICK_OVERLAP_CHECK,			// 서버 닉네임 중복 결과		[프로토콜][bool]
-	SERVER_CHARACTER_RESULT,				// 서버 케릭터 생성 확인 결과	[프로토콜][bool]
-	SERVER_CHARACTER_EXIT_RESULT,			// 서버 케릭터 생성 취소 결과	[프로토콜[
-	SERVER_LEAVE,							// 서버 회원탈퇴 결과			[프로토콜][bool]
-	SERVER_LOGOUT,							// 서버 로그아웃 결과			[프로토콜][bool]
+	SERVER_CHARACTER_SLOT_RESULT,				// 서버 케릭터 슬롯 전송		[프로토콜]...
+	SERVER_CHARACTER_ENTER_RESULT,				// 서버 케릭터 접속결과			[프로토콜][bool]
+	SERVER_CHARACTER_ENTER_INFO,				// 서버 케릭터 접속 정보		[DataProtocol용]
+	SERVER_CHARACTER_DELETE_RESULT,				// 서버 케릭터 삭제 결과		[프로토콜][bool]
+	SERVER_CHARACTER_MENU,						// 서버 케릭터 메뉴 결과		[프로토콜]
+	//SERVER_NICK_OVERLAP_CHECK,				// 서버 닉네임 중복 결과		[프로토콜][bool]
+	SERVER_CHARACTER_RESULT,					// 서버 케릭터 생성 확인 결과	[프로토콜][bool]
+	SERVER_CHARACTER_EXIT_RESULT,				// 서버 케릭터 생성 취소 결과	[프로토콜[
+	SERVER_LEAVE,								// 서버 회원탈퇴 결과			[프로토콜][bool]
+	SERVER_LOGOUT,								// 서버 로그아웃 결과			[프로토콜][bool]
 
 	// 입찰 프로토콜
-	SERVER_TENDER,							// 입찰 선택
-	CLIENT_TENDER_MENU_CHOICE,				// 입찰메뉴 선택 확인
-	SERVER_TENDER_CREATE,					// 입찰물품 생성 선택 
-	SERVER_TENDER_PARTICIPATE,				// 입찰 참여 선택
-	SERVER_BACK,							// 뒤로가기
-	CLIENT_REQ_TENDER_CREATE,				// 입찰물품 생성 요청	 [프로토콜][char* 물품이름][int 가격][int 입찰자수]
-	SERVER_TENDER_CREATE_RESULT,			// 입찰물품 생성 요청 결과
-	CLIENT_REQ_TENDER_LIST,					// 입찰 리스트 요청
-	SERVER_TENDER_LIST_RESULT,				// 입찰 리스트 요청 결과
-	CLIENT_REQ_TENDER_PARTICIPATE,			// 입찰 요청
-	SERVER_TENDER_PARTICIPATE_RESULT,		// 입찰 요청 결과
-	SERVER_TENDER_END_RESULT,				// 입찰 종료 결과 [프로토콜][char* 메세지]
+	SERVER_TENDER,								// 입찰 선택
+	CLIENT_TENDER_MENU_CHOICE,					// 입찰메뉴 선택 확인
+	SERVER_TENDER_CREATE,						// 입찰물품 생성 선택 
+	SERVER_TENDER_PARTICIPATE,					// 입찰 참여 선택
+	SERVER_BACK,								// 뒤로가기
+	CLIENT_REQ_TENDER_CREATE,					// 입찰물품 생성 요청	 [프로토콜][char* 물품이름][int 가격][int 입찰자수]
+	SERVER_TENDER_CREATE_RESULT,				// 입찰물품 생성 요청 결과
+	CLIENT_REQ_TENDER_LIST,						// 입찰 리스트 요청
+	SERVER_TENDER_LIST_RESULT,					// 입찰 리스트 요청 결과
+	CLIENT_REQ_TENDER_PARTICIPATE,				// 입찰 요청
+	SERVER_TENDER_PARTICIPATE_RESULT,			// 입찰 요청 결과
+	SERVER_TENDER_END_RESULT,					// 입찰 종료 결과 [프로토콜][char* 메세지]
 
 	// 인게임 프로토콜
-	CLIENT_INGAME_OTHERPLAYERLIST,			// 클라 다른플레이어 리스트 요청	[프로토콜][]
-	CLIENT_INGAME_MOVE_START,				// 클라 이동 시작					[프로토콜]
-	CLIENT_INGAME_MOVE_REPORT,				// 클라 이동중 보고					[프로토콜]
-	CLIENT_INGAME_MOVE_END,					// 클라 이동 끝						[프로토콜]
-	CLIENT_INGAME_MOVE_ROTATION,			// 클라 회전
-	SERVER_INGAME_MOVE_ORDER,				// 서버 이동 명령					[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간]
-	SERVER_INGAME_MOVE_RESULT,				// 서버 이동 결과					[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간]
-	SERVER_INGAME_MOVE_OTHERPLAYERINFO,		// 다른플레이어 정보				[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간][닉네임사이즈][닉네임]
-	SERVER_INGAME_MOVE_ROTATION,			// 클라 회전
-	SERVER_INGAME_OTHERPLAYERLIST_RESULT,	// 플레이어 리스트 					[프로토콜][INT:카운트][INT:닉네임사이즈][CHAR:닉네임][VECTOR:위치]...
-	SERVER_INGAME_OTHERPLAYER_CONNECT,		// 접속한 플레이어 정보
+	CLIENT_INGAME_OTHERPLAYERLIST,				// 클라 다른플레이어 리스트 요청	[프로토콜][]
+	CLIENT_INGAME_MOVE_START,					// 클라 이동 시작					[프로토콜]
+	CLIENT_INGAME_MOVE_REPORT,					// 클라 이동중 보고					[프로토콜]
+	CLIENT_INGAME_MOVE_END,						// 클라 이동 끝						[프로토콜]
+	CLIENT_INGAME_MOVE_ROTATION,				// 클라 회전
+	SERVER_INGAME_MOVE_ORDER,					// 서버 이동 명령					[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간]
+	SERVER_INGAME_MOVE_RESULT,					// 서버 이동 결과					[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간]
+	SERVER_INGAME_MOVE_OTHERPLAYERINFO,			// 다른플레이어 정보				[프로토콜][FLOAT][FLOAT][FLOAT][FLOAT : 시간][닉네임사이즈][닉네임]
+	SERVER_INGAME_MOVE_ROTATION,				// 클라 회전
+	SERVER_INGAME_OTHERPLAYERLIST_RESULT,		// 플레이어 리스트 					[프로토콜][INT:카운트][INT:닉네임사이즈][CHAR:닉네임][VECTOR:위치]...
+	SERVER_INGAME_OTHERPLAYER_CONNECT,			// 접속한 플레이어 정보
+	
+	// 인게임 매뉴
+	CLIENT_INGAME_MENU_REQ_CHARACTER,			// 클라 캐릭터 선택화면으로 요청
+	CLIENT_INGAME_MENU_REQ_LOGOUT,				// 클라 로그아웃
+	CLIENT_INGAME_MENU_EXIT,					// 클라 게임종료
+	SERVER_INGAME_MENU_RESULT_CHARACTER,		// 서버 캐릭터 선택화면 결과
+	SERVER_INGAME_MENU_RESULT_LOGOUT,			// 서버 로그아웃 결과
+	SERVER_INGAME_OTHERPLAYER_LEAVE,			// 서버 다른 유저가 채널에서 나갔을때
 
-	CLIENT_INGAME_MENU_REQ_CHARACTER,		// 클라 캐릭터 선택화면으로 요청
-	CLIENT_INGAME_MENU_REQ_LOGOUT,			// 클라 로그아웃
-	CLIENT_INGAME_MENU_EXIT,				// 클라 게임종료
-	SERVER_INGAME_MENU_RESULT_CHARACTER,	// 서버 캐릭터 선택화면 결과
-	SERVER_INGAME_MENU_RESULT_LOGOUT,		// 서버 로그아웃 결과
-	SERVER_INGAME_OTHERPLAYER_LEAVE,		// 서버 다른 유저가 인게임에서 나갈때
+	// 인게임 채널
+	CLIENT_INGAME_CHANNEL_INFO,					// 클라 채널 정보 요청
+	CLIENT_INGAME_CHANNEL_CHANGE,				// 클라 채널 이동 요청
+	SERVER_INGAME_CHANNLE_INFO_RESULT,			// 서버 채널 정보 결과
+	SERVER_INGAME_CHANNLE_CHANGE_RESULT,		// 서버 채널 이동 요청 결과
+	SERVER_INGAME_CHANNLE_USER_CHANGE,			// 서버 채널 이동 요청시 그 유저 이동했다고 통보
 
-	CLIENT_INGAME_CHANNEL_INFO,				// 클라 채널 정보 요청
-	CLIENT_INGAME_CHANNEL_CHANGE,			// 클라 채널 이동 요청
-	SERVER_INGAME_CHANNLE_INFO_RESULT,		// 서버 채널 정보 결과
-	SERVER_INGAME_CHANNLE_CHANGE_RESULT,	// 서버 채널 이동 요청 결과
-	SERVER_INGAME_CHANNLE_USER_CHANGE,		// 서버 채널 이동 요청시 그 유저 이동했다고 통보
-
+	// 인게임 파티
 	CLIENT_INGAME_PARTY_ROOM_JOIN,				// 클라 파티 참여 요청
 	CLIENT_INGAME_PARTY_ROOM_INVITE,			// 클라 파티 초대 요청
 	CLIENT_INGAME_PARTY_ROOM_ANSWER_INVITE,		// 클라 파티 초대 응답
@@ -119,7 +122,7 @@ enum PROTOCOL {
 };
 
 enum STATE {
-	INIT_STATE, LOGIN_STATE,TENDER_STATE,JOIN_STATE,EXIT_STATE,
+	INIT_STATE, LOGIN_STATE, TENDER_STATE, JOIN_STATE, EXIT_STATE,
 	LOG_IN,
 	LOG_OUT,
 	TENDER_INTRO,
@@ -153,7 +156,7 @@ enum STATE {
 	SEND_TENDER_END_RESULT //입찰 종료 결과 [프로토콜][char* 메세지]
 };
 
-enum RESULT { 
+enum RESULT {
 	// 로그인매니저 결과
 	RT_LOGINMENU = 100, 		   // 로그인 매뉴
 	RT_JOINMENU, 				   // 회원가입 매뉴
@@ -199,7 +202,9 @@ enum RESULT {
 	RT_INGAME_PARTY_KICK_RESULT,		// 파티 강퇴 결과
 	RT_INGAME_PARTY_LEAVE_INFO,			// 탈퇴하는 유저정보
 	RT_INGAME_PARTY_LEAVE_RESULT,		// 탈퇴 결과
-	RT_INGAME_PARTY_ROOM_REMOVE			// 파티방 폭파시
+	RT_INGAME_PARTY_ROOM_REMOVE,		// 파티방 폭파시
+	RT_INGAME_PARTY_LEADER_DELEGATE,	
+	RT_INGAME_PARTY_LEADER_DELEGATE_RESULT
 
 };
 

@@ -1032,26 +1032,45 @@ void InGameManager::InGame_Recv_PartyRoom_Leader_Info(char * _buf)
 	char* ptr_data = data;
 	int size = 0;
 
-	char code[CHARACTERCODESIZE];
-	int codelen = 0;
+	char oldcode[CHARACTERCODESIZE];
+	char newcode[CHARACTERCODESIZE];
+	int oldcodelen = 0;
+	int newcodelen = 0;
 
-	memset(code, 0, CHARACTERCODESIZE);
+	memset(oldcode, 0, CHARACTERCODESIZE);
+	memset(newcode, 0, CHARACTERCODESIZE);
 
-	// 코드길이
-	memcpy(&codelen, ptr, sizeof(int));
+	// 전 파티 리더 코드길이
+	memcpy(&oldcodelen, ptr, sizeof(int));
 	ptr += sizeof(int);
-	// 코드
-	memcpy(code, ptr, codelen);
-	ptr += codelen;
+	// 전 파티 리더 코드
+	memcpy(oldcode, ptr, oldcodelen);
+	ptr += oldcodelen;
 
-	// data에 코드길이 패킹
-	memcpy(ptr_data, &codelen, sizeof(int));
+	// 현 파티 리더 코드길이
+	memcpy(&newcodelen, ptr, sizeof(int));
+	ptr += sizeof(int);
+	// 현 파티 리더 코드
+	memcpy(newcode, ptr, newcodelen);
+	ptr += newcodelen;
+
+	// data에 전 파티 리더 코드길이 패킹
+	memcpy(ptr_data, &oldcodelen, sizeof(int));
 	ptr_data += sizeof(int);
 	size += sizeof(int);
-	// data에 코드 패킹
-	memcpy(ptr_data, code, codelen);
-	ptr_data += codelen;
-	size += codelen;
+	// data에 전 파티 리더 코드 패킹
+	memcpy(ptr_data, oldcode, oldcodelen);
+	ptr_data += oldcodelen;
+	size += oldcodelen;
+
+	// data에 현 파티 리더 코드길이 패킹
+	memcpy(ptr_data, &newcodelen, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
+	// data에 현 파티 리더 코드 패킹
+	memcpy(ptr_data, newcode, newcodelen);
+	ptr_data += newcodelen;
+	size += newcodelen;
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_LEADER_INFO, data, size);
 }
@@ -1275,8 +1294,14 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 		result = RT_INGAME_PARTY_ROOM_REMOVE;
 		break;
 	case SERVER_INGAME_PARTY_LEADER_DELEGATE:
+		// 파티방 구 리더, 새로운 리더 코드가 온다
+		InGame_Recv_PartyRoom_Leader_Info(buf);
+		result = RT_INGAME_PARTY_LEADER_DELEGATE;
 		break;
 	case SERVER_INGAME_PARTY_LEADER_DELEGATE_RESULT:
+		// 리더 위임 결과가 오고 성공이면 뒤에 코드도 온다.
+		InGame_Recv_PartyRoom_Leader_Delegate_Result(buf);
+		result = RT_INGAME_PARTY_LEADER_DELEGATE_RESULT;
 		break;
 	default:
 		break;

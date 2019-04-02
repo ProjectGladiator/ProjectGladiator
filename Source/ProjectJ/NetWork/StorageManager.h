@@ -72,8 +72,10 @@ public:
 	void ChangeData(void* data, float*& _posxyz, float*& _rotxyz);
 	// 다른 플레이어 이동정보 결과용
 	void ChangeData(void* data, char*& _code, float*& _pos_rot_xyz);
-	// 다른 플레이어 나간정보용, 새로운 파티 리더 정보
+	// 다른 플레이어 나간정보용
 	void ChangeData(void* data, char*& _code);
+	// 새로운 파티 리더 정보
+	void ChangeData(void* data, char*& _oldcode, char*& _newcode);
 	// 다른 플레이어 이동정보 결과용
 	void ChangeData(void* data, OtherCharacterInfo& _otherinfo);
 	// 채널 정보

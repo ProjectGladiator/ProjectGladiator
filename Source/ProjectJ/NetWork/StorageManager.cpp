@@ -301,6 +301,25 @@ void StorageManager::ChangeData(void * data, char *& _code)
 	ptr += len;
 }
 
+// 새로운 파티 리더 정보
+void StorageManager::ChangeData(void * data, char *& _oldcode, char *& _newcode)
+{
+	int len = 0;
+	char* ptr = (char*)data;
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_oldcode, ptr, len);
+	ptr += len;
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_newcode, ptr, len);
+	ptr += len;
+}
+
 // 다른 플레이어 이동정보 결과용
 void StorageManager::ChangeData(void * data, OtherCharacterInfo& _otherinfo)
 {
