@@ -16,6 +16,8 @@ class PROJECTJ_API UPartyInteractionWidget : public UUserWidget
 	GENERATED_BODY()
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
+		class UBorder* NickNameTextBorder;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UTextBlock* NickNameText;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UButton* PartyLeaderDelegateButton;

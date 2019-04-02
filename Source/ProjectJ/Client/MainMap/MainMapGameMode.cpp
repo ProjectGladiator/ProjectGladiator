@@ -139,15 +139,6 @@ void AMainMapGameMode::BeginPlay()
 		LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
-	//FStringClassReference MenuWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Menu/W_Menu.W_Menu_C'"));
-
-	//if (UClass* MyMenuWidgetClass = MenuWidgetClass.TryLoadClass<UUserWidget>())
-	//{
-	//	MenuWidget = Cast<UMenuWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyMenuWidgetClass));
-	//	MenuWidget->AddToViewport();
-	//	MenuWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
-	//}
-
 	// 서버와 연결 시도
 	if (NetworkClient_main::NetworkManager::GetInstance()->Connect() == false)
 	{
@@ -171,12 +162,6 @@ void AMainMapGameMode::BeginPlay()
 			MainMapPlayerController->Possess(CreateSelectCharacter);
 		}
 	}
-
-	/*if (MenuWidget)
-	{
-		MenuWidget->OnLogOut.BindDynamic(this, &AMainMapGameMode::LogOut);
-		MenuWidget->OnCharacterSelect.BindDynamic(this, &AMainMapGameMode::CharacterSelect);
-	}*/
 }
 
 void AMainMapGameMode::Tick(float DeltaTime)
@@ -188,6 +173,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	bool ResultFlag;
 	bool PartyLeaveResultFlag;
 	bool PartyKickResultFlag;
+	bool PartyLeaderFlag;
 
 	CharacterInfo* character_info = nullptr;
 	float x, y, z; float rx, ry, rz;				// 위치, 회전 넣을 변수
@@ -197,6 +183,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	int UserCount = -1;
 	AMyCharacter* MyCharacter = nullptr;
 	AMyCharacter* OtherUserCharacter = nullptr;
+	AMyCharacter* PartyLeaderCharacter = nullptr;
+	AMyCharacter* PreviousPartyLeaderCharacter = nullptr;
+	AMyCharacter* PartyUserCharacter = nullptr;
 	ATanker* Tanker = nullptr;
 	AWarrior* Warrior = nullptr;
 	AGunner* Gunner = nullptr;
@@ -214,6 +203,10 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	char* PartyReqCharacterNickName = TempPartyReqCharacterNickName;
 	char TempPartyLeaveCharacterCode[30];
 	char* PartyLeaveCharacterCode = TempPartyLeaveCharacterCode;
+	char TempPartyLeaderCharacterCode[30];
+	char* PartyLeaderCharacterCode = TempPartyLeaderCharacterCode;
+	char TempPreviousPartyLeaderCharacterCode[30];
+	char* PreviousPartyLeaderCharacterCode = TempPreviousPartyLeaderCharacterCode;
 
 	int32 PartyRoomNum = -1;
 	int32 PartyUserCount = -1;
@@ -554,21 +547,16 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			if (MyCharacter)
 			{
-				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyJoin(PartyUser_Info->code, PartyUser_Info->job_code, PartyUser_Info->nick, PartyUser_Info->hp, PartyUser_Info->mp, PartyUser_Info->leader);
-
-				if (strcmp(MyCharacter->GetCharacterCode(), PartyUser_Info->code) == 0)
+				if (!strcmp(MyCharacter->GetCharacterCode(), PartyUser_Info->code) == 0)
 				{
-					MyCharacter->SetPartyLeader(PartyUser_Info->leader);
+					PartyUserCharacter = GetLoginUser(PartyUser_Info->code);
 				}
 				else
 				{
-					OtherUserCharacter = GetLoginUser(PartyUser_Info->code);
-
-					if (OtherUserCharacter)
-					{
-						OtherUserCharacter->SetPartyLeader(PartyUser_Info->leader);
-					}
+					PartyUserCharacter = MyCharacter;
 				}
+
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyJoin(PartyUserCharacter, PartyUser_Info->code, PartyUser_Info->job_code, PartyUser_Info->nick, PartyUser_Info->hp, PartyUser_Info->mp, PartyUser_Info->leader);
 			}
 
 			delete PartyUser_Info;
@@ -635,6 +623,62 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				{
 					MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave(PartyLeaveCharacterCode);
 				}
+			}
+			break;
+		case PGAMEDATA_PARTY_LEADER_DELEGATE_RESULT: //파티장 위임 결과 성공이면 파티장 코드 
+			memset(TempPartyLeaderCharacterCode, 0, sizeof(TempPartyLeaderCharacterCode));
+
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyLeaderFlag, PartyLeaderCharacterCode);
+			StorageManager::GetInstance()->PopData();
+
+			if (PartyLeaderFlag)
+			{
+				MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+				if (MyCharacter)
+				{
+					MyCharacter->SetPartyLeader(false);
+				}
+				
+				PartyLeaderCharacter = GetLoginUser(PartyLeaderCharacterCode);
+
+				if (PartyLeaderCharacter)
+				{
+					PartyLeaderCharacter->SetPartyLeader(true);
+				}
+
+				if (MyCharacter)
+				{
+					MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeaderUpdate();
+				}
+			}
+			break;
+		case PGAMEDATA_PARTY_LEADER_INFO: //새로운 파티장 정보 코드
+			memset(TempPreviousPartyLeaderCharacterCode, 0, sizeof(TempPreviousPartyLeaderCharacterCode));
+			memset(TempPartyLeaderCharacterCode, 0, sizeof(TempPartyLeaderCharacterCode));
+
+			StorageManager::GetInstance()->ChangeData(Data->data, PreviousPartyLeaderCharacterCode, PartyLeaderCharacterCode);
+			StorageManager::GetInstance()->PopData();
+
+			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+			if (MyCharacter)
+			{
+				PreviousPartyLeaderCharacter = GetLoginUser(PreviousPartyLeaderCharacterCode);
+
+				if (PreviousPartyLeaderCharacter)
+				{
+					PreviousPartyLeaderCharacter->SetPartyLeader(false);
+				}
+
+				PartyLeaderCharacter = GetLoginUser(PartyLeaderCharacterCode);
+
+				if (PartyLeaderCharacter)
+				{
+					PartyLeaderCharacter->SetPartyLeader(true);
+				}
+
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeaderUpdate();
 			}
 			break;
 		}

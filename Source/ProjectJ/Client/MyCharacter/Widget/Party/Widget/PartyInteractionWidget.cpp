@@ -2,6 +2,7 @@
 
 #include "PartyInteractionWidget.h"
 //클라 헤더
+#include "Components/Border.h"
 #include "Components/Button.h"
 #include "Components/TextBlock.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
@@ -12,7 +13,8 @@
 void UPartyInteractionWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-
+	
+	NickNameTextBorder = Cast<UBorder>(GetWidgetFromName(TEXT("NickNameTextBorder")));
 	NickNameText = Cast<UTextBlock>(GetWidgetFromName(TEXT("NickNameText")));
 	PartyLeaderDelegateButton = Cast<UButton>(GetWidgetFromName(TEXT("PartyLeaderDelegateButton")));
 
@@ -55,32 +57,43 @@ void UPartyInteractionWidget::SetPartyInteractionWidget(bool _IsMyPartySlot, FPa
 		{
 			if (PartyLeaderDelegateButton)
 			{
-				if (_IsMyPartySlot)
+				if (PartyKickButton)
 				{
-					PartyLeaderDelegateButton->SetVisibility(ESlateVisibility::Collapsed);
+					if (NickNameText)
+					{
+						if (NickNameTextBorder)
+						{
+							if (_IsMyPartySlot)
+							{
+								NickNameTextBorder->SetVisibility(ESlateVisibility::Collapsed);
+								PartyLeaderDelegateButton->SetVisibility(ESlateVisibility::Collapsed);
+								PartyKickButton->SetVisibility(ESlateVisibility::Collapsed);
+							}
+							else
+							{
+								NickNameTextBorder->SetVisibility(ESlateVisibility::Visible);
+								PartyLeaderDelegateButton->SetVisibility(ESlateVisibility::Visible);
+								PartyKickButton->SetVisibility(ESlateVisibility::Visible);
+							}
+						}
+					}
 				}
-				else
-				{
-					PartyLeaderDelegateButton->SetVisibility(ESlateVisibility::Visible);
-				}
-			}
-
-			if (PartyKickButton)
-			{
-				PartyKickButton->SetVisibility(ESlateVisibility::Visible);
 			}
 		}
 		else
 		{
 			if (NickNameText)
 			{
-				if (_IsMyPartySlot)
+				if (NickNameTextBorder)
 				{
-					NickNameText->SetVisibility(ESlateVisibility::Collapsed);
-				}
-				else
-				{
-					NickNameText->SetVisibility(ESlateVisibility::Visible);
+					if (_IsMyPartySlot)
+					{
+						NickNameTextBorder->SetVisibility(ESlateVisibility::Collapsed);
+					}
+					else
+					{
+						NickNameTextBorder->SetVisibility(ESlateVisibility::Visible);
+					}
 				}
 			}
 

@@ -82,7 +82,6 @@ void UPartySlotWiget::PartySlotUpdate(FPartySlot& _PartySlot, int32 _Index)
 		PartySlotInfo = _PartySlot;
 		PartySlotIndex = _Index;
 
-
 		NickNameText->SetText(FText::FromString(ANSI_TO_TCHAR(PartySlotInfo.NickName)));
 
 		float HP = PartySlotInfo.HP;
@@ -113,16 +112,31 @@ void UPartySlotWiget::PartySlotUpdate(FPartySlot& _PartySlot, int32 _Index)
 
 						MPBar->SetPercent(MPPercent);
 
-						if (PartySlotInfo.Leader)
-						{
-							if (LeaderImage)
-							{
-								LeaderImage->SetVisibility(ESlateVisibility::Visible);
-							}
-						}
+						PartySlotLeaderUpdate();
 					}
 				}
 			}
+		}
+	}
+}
+
+void UPartySlotWiget::PartySlotLeaderUpdate()
+{
+	if (LeaderImage)
+	{
+		bool IsPartyLeader = PartySlotInfo.PartyUser->GetPartyLeader();
+		PartySlotInfo.Leader = IsPartyLeader;
+
+		GLog->Log(FString::Printf(TEXT("파티슬롯 업데이트 캐릭터 코드 : ")));
+		GLog->Log(ANSI_TO_TCHAR(PartySlotInfo.PartyUser->GetCharacterCode()));
+		GLog->Log(FString::Printf(TEXT("%d\n"), IsPartyLeader));
+		if (IsPartyLeader)
+		{
+			LeaderImage->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			LeaderImage->SetVisibility(ESlateVisibility::Hidden);
 		}
 	}
 }

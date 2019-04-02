@@ -94,3 +94,11 @@ void UPartyWidget::PartyLeave(char * _CharacterCode)
 		}
 	}
 }
+
+void UPartyWidget::PartyLeaderUpdate()
+{
+	for (int i = 0; i < PartySlotWigets.Num(); i++)
+	{
+		PartySlotWigets[i]->PartySlotLeaderUpdate();
+	}
+}

@@ -42,8 +42,10 @@ public:
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
 	void PartySlotUpdate(FPartySlot& _PartySlot, int32 _Index);
+	void PartySlotLeaderUpdate();
+
 	void SetPartyWidget(UPartyWidget* _PartyWidget);
-	
+
 	bool IsMyPartySlot();
 
 	FPartySlot GetPartySlotInfo();

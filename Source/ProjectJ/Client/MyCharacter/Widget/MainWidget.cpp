@@ -37,8 +37,8 @@ void UMainWidget::NativeConstruct()
 		InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
-	PartyWidget = Cast<UPartyWidget>(GetWidgetFromName(TEXT("PartyWidget")));	
-	
+	PartyWidget = Cast<UPartyWidget>(GetWidgetFromName(TEXT("PartyWidget")));
+
 	if (PartyWidget)
 	{
 		PartyWidget->SetVisibility(ESlateVisibility::Hidden);
@@ -193,39 +193,44 @@ UPartyAcceptRejectWidget * UMainWidget::GetPartyAcceptRejectWidget()
 	return PartyAcceptRejectWidget;
 }
 
-void UMainWidget::PartyJoin(char * _CharacterCode, int32 _JobCode, char * _NickName, float _HP, float _MP, bool _Leader)
+void UMainWidget::PartyJoin(AMyCharacter* _PartyInCharacter, char * _CharacterCode, int32 _JobCode, char * _NickName, float _HP, float _MP, bool _Leader)
 {
-	if (PartyWidget)
+	if (_PartyInCharacter)
 	{
-		UPartySlotWiget* PartySlotWidget = PartyWidget->PartySlotCreate(); //파티 슬롯을 만든다.
+		_PartyInCharacter->SetPartyLeader(_Leader);
 
-		if (PartySlotWidget) //만든 파티슬롯의 정보를 업데이트 한다.
+		if (PartyWidget)
 		{
-			FPartySlot PartySlot;
-			memset(&PartySlot, 0, sizeof(FPartySlot));
+			UPartySlotWiget* PartySlotWidget = PartyWidget->PartySlotCreate(); //파티 슬롯을 만든다.
 
-			memcpy(PartySlot.CharacterCode, _CharacterCode, strlen(_CharacterCode));
-			PartySlot.JobCode = _JobCode;
-			memcpy(PartySlot.NickName, _NickName, strlen(_NickName));
-			PartySlot.HP = _HP;
-			PartySlot.Leader = _Leader;
-			int32 Index = PartySlots.Num();
-			PartySlots.Add(PartySlot);
-
-			if (_JobCode == CHARACTER_JOB::Gunner)
+			if (PartySlotWidget) //만든 파티슬롯의 정보를 업데이트 한다.
 			{
-				PartySlot.MP = _MP;
+				FPartySlot PartySlot;
+				memset(&PartySlot, 0, sizeof(FPartySlot));
+				PartySlot.PartyUser = _PartyInCharacter;
+				memcpy(PartySlot.CharacterCode, _CharacterCode, strlen(_CharacterCode));
+				PartySlot.JobCode = _JobCode;
+				memcpy(PartySlot.NickName, _NickName, strlen(_NickName));
+				PartySlot.HP = _HP;
+				PartySlot.Leader = _Leader;
+				int32 Index = PartySlots.Num();
+				PartySlots.Add(PartySlot);
+
+				if (_JobCode == CHARACTER_JOB::Gunner)
+				{
+					PartySlot.MP = _MP;
+				}
+				else
+				{
+					PartySlot.MP = 0;
+				}
+
+				PartySlotWidget->PartySlotUpdate(PartySlot, Index);
 			}
 			else
 			{
-				PartySlot.MP = 0;
+				GLog->Log(FString::Printf(TEXT("파티 슬롯 위젯이 만들어지지 않음")));
 			}
-
-			PartySlotWidget->PartySlotUpdate(PartySlot, Index);
-		}
-		else
-		{
-			GLog->Log(FString::Printf(TEXT("파티 슬롯 위젯이 만들어지지 않음")));
 		}
 	}
 }
@@ -256,6 +261,14 @@ void UMainWidget::PartyLeave(char * _CharacterCode)
 		}
 
 		PartyWidget->PartyLeave(_CharacterCode);
+	}
+}
+
+void UMainWidget::PartyLeaderUpdate()
+{
+	if (PartyWidget)
+	{
+		PartyWidget->PartyLeaderUpdate();
 	}
 }
 

@@ -35,4 +35,5 @@ public:
 
 	void PartyLeave();
 	void PartyLeave(char* _CharacterCode);
+	void PartyLeaderUpdate();
 };
