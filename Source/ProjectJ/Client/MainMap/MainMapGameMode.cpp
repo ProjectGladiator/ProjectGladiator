@@ -671,7 +671,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			}
 			break;
 		case PGAMEDATA_PARTY_LEADER_INFO: //새로운 파티장 정보 코드
-			GLog->Log(FString::Printf(TEXT("새로운 파티장 정보 코드")));
 			memset(TempPreviousPartyLeaderCharacterCode, 0, sizeof(TempPreviousPartyLeaderCharacterCode));
 			memset(TempPartyLeaderCharacterCode, 0, sizeof(TempPartyLeaderCharacterCode));
 
