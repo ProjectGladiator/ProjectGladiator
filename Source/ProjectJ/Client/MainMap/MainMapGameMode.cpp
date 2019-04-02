@@ -598,6 +598,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			}
 			break;
 		case PGAMEDATA_PARTY_PARTYROOM_REMOVE:
+			StorageManager::GetInstance()->PopData();
+
 			MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
 			if (MyCharacter)
@@ -605,7 +607,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave();
 			}
 			break;
-		case PGAMEDATA_PARTY_KICK:
+		case PGAMEDATA_PARTY_KICK: //강퇴 당한 파티원이 받는 프로토콜
+			StorageManager::GetInstance()->PopData();
+
 			MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
 			if (MyCharacter)
@@ -613,7 +617,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave();
 			}
 			break;
-		case PGAMEDATA_PARTY_USER_KICK_INFO:
+		case PGAMEDATA_PARTY_USER_KICK_INFO: //파티장과 강퇴 당한 애를 제외한 나머지 파티원이 받는 프로토콜
 			memset(TempPartyLeaveCharacterCode, 0, sizeof(TempPartyLeaveCharacterCode));
 
 			StorageManager::GetInstance()->ChangeData(Data->data, PartyLeaveCharacterCode);
@@ -626,7 +630,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeave(PartyLeaveCharacterCode);
 			}
 			break;
-		case PGAMEDATA_PARTY_USER_KICK_RESULT:
+		case PGAMEDATA_PARTY_USER_KICK_RESULT: //강퇴 햇을때 파티장이 받는 프로토콜
 			memset(TempPartyLeaveCharacterCode, 0, sizeof(TempPartyLeaveCharacterCode));
 
 			StorageManager::GetInstance()->ChangeData(Data->data, PartyKickResultFlag, PartyLeaveCharacterCode);
