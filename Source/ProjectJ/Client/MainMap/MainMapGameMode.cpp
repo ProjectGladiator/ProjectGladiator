@@ -2,51 +2,48 @@
 
 #include "MainMapGameMode.h"
 //클라 헤더
-#include "Kismet/GameplayStatics.h"
-#include "Engine/World.h"
-#include "Client/Title/Widget/TitleWidgetLogin.h"
-#include "Client/Title/Widget/TitleWidgetUserIn.h"
-#include "Client/ChracterCreateSelect/Widget/CharacterCreateWidget.h"
-#include "Client/ChracterCreateSelect/Widget/CharacterSelectWidget.h"
-#include "Client/ErrorWidget/WidgetCancel.h"
-#include "Client/ErrorWidget/WidgetOk.h"
-#include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h"
-#include "Components/Button.h"
-#include "Client/MyCharacter/PC/Tanker/Tanker.h"
-#include "Client/MyCharacter/PC/Warrior/Warrior.h"
-#include "Client/MyCharacter/PC/Gunner/Gunner.h"
-#include "MainMapPlayerController.h"
-#include "MainMapOtherPlayerController.h"
-#include "Manager/StageManager.h"
-#include "Client/MyCharacter/PC/MyAnimInstance.h"
-#include "Client/MyCharacter/PC/MyCharacter.h"
-#include "Client/State/ClientState/ClientState.h"
-#include "Client/State/ClientState/Character/ClientCharacterInGameState.h"
-#include "Client/State/ClientState/Character/ClientCharacterTitleState.h"
-#include "Client/State/ClientState/PC/ClientPCTitleState.h"
-#include "Client/State/ClientState/PC/ClientPCInGameState.h"
-#include "Client/Menu/MenuWidget.h"
-#include "Client/Menu/ChannelChange/Widget/ChannelChange.h"
-#include "Client/Menu/ChannelChange/Widget/ChannelChangeSlot.h"
-#include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
-#include "Client/MyCharacter/Widget/MyCharacterUI.h"
-#include "Client/MYCharacter/Widget/Party/Widget/PartyWidget.h"
-#include "Client/MyCharacter/Widget/Party/Widget/PartyAcceptRejectWidget.h"
-#include "Client/MyCharacter/Widget/MainWidget.h"
+#include "Kismet/GameplayStatics.h" //각종 유틸 헤더
+#include "Client/Title/Widget/TitleWidgetLogin.h" //로그인 위젯 헤더
+#include "Client/Title/Widget/TitleWidgetUserIn.h" //회원가입 위젯 헤더
+#include "Client/ChracterCreateSelect/Widget/CharacterCreateWidget.h" //캐릭터 생성 위젯 헤더
+#include "Client/ChracterCreateSelect/Widget/CharacterSelectWidget.h" //캐릭터 선택 위젯 헤더
+#include "Client/ErrorWidget/WidgetCancel.h" //에러 확인,취소 위젯 헤더
+#include "Client/ErrorWidget/WidgetOk.h" //에러 확인 위젯 헤더
+#include "Client/ChracterCreateSelect/CameraActor/ChracterCreateCamera.h" //캐릭터 생성, 선택 맵에 있는 카메라 헤더
+#include "Client/MyCharacter/PC/MyCharacter.h" //플레이어 캐릭터 헤더
+#include "Client/MyCharacter/PC/Tanker/Tanker.h" //탱커 헤더
+#include "Client/MyCharacter/PC/Warrior/Warrior.h" //전사 헤더
+#include "Client/MyCharacter/PC/Gunner/Gunner.h" //총잡이 헤더
+#include "Client/MyCharacter/PC/MyAnimInstance.h" //선택한 슬롯 캐릭터 애니메이션 재생을 위한 애님인스턴스 헤더
+#include "MainMapPlayerController.h" //메인맵 플레이어 컨트롤러 헤더
+#include "MainMapOtherPlayerController.h" //메인맵 나를 제외한 플레이어 컨트롤러 헤더
+#include "Manager/StageManager.h" //스테이지 관리 액터 컴포넌트 헤더
+#include "Client/State/ClientState/ClientState.h" //클라 상태 헤더
+#include "Client/State/ClientState/Character/ClientCharacterInGameState.h" //클라 인게임 상태 헤더
+#include "Client/State/ClientState/Character/ClientCharacterTitleState.h" //클라 타이틀 상태 헤더
+#include "Client/State/ClientState/PC/ClientPCTitleState.h" //클라 플레이어컨트롤러 타이틀 상태 헤더
+#include "Client/State/ClientState/PC/ClientPCInGameState.h" //클라 플레이어컨트롤러 인게임 상태 헤더
+#include "Client/Menu/MenuWidget.h" //메뉴 위젯 헤더
+#include "Client/Menu/ChannelChange/Widget/ChannelChange.h" //채널변경 위젯 헤더
+#include "Client/Menu/ChannelChange/Widget/ChannelChangeSlot.h" //채널변경 슬롯 위젯 헤더
+#include "Client/MyCharacter/Widget/MyCharacterUI.h" //캐릭터가 소유하고 있는 위젯 헤더
+#include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h" //캐릭터 상호작용 위젯 헤더
+#include "Client/MYCharacter/Widget/Party/Widget/PartyWidget.h" //캐릭터 파티 위젯 헤더
+#include "Client/MyCharacter/Widget/Party/Widget/PartyAcceptRejectWidget.h" //캐릭터 파티 수락, 취소 위젯 헤더
+#include "Client/MyCharacter/Widget/MainWidget.h" //메인 위젯 헤더
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
 #include "NetWork/NetworkManager.h"
 #include "NetWork/StorageManager.h"
-#include "NetWork/InGameManager.h"
 
 AMainMapGameMode::AMainMapGameMode()
 {
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true; //틱 활성화
 
-	StageManager = CreateDefaultSubobject<UStageManager>(TEXT("StageManager"));
+	StageManager = CreateDefaultSubobject<UStageManager>(TEXT("StageManager")); //스테이지를 관리하는 액터 컴포넌트 생성
 
-	MaxChannelUserCount = 100;
+	MaxChannelUserCount = 100; //채널 한곳당 최대인원 설정
 }
 
 void AMainMapGameMode::BeginPlay()
@@ -129,14 +126,16 @@ void AMainMapGameMode::BeginPlay()
 		OkWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
+	//로딩 위젯 블루프린트를 Class 형태로 읽어서 LoadingWidgetClass에 저장한다.
 	FStringClassReference LoadingWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Loading/W_Loading.W_Loading_C'"));
 
+	//앞에서 읽어 들인 LoadingWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = LoadingWidgetClass.TryLoadClass<UUserWidget>())
-	{
-		//MyWidgetClass를 토대로 OkWidget을 생성한다.
+	{		
+		//읽어 들인 클래스로 위젯을 생성하고 LoadingWidget에 넣는다.
 		LoadingWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass);
-		LoadingWidget->AddToViewport();
-		LoadingWidget->SetVisibility(ESlateVisibility::Hidden);
+		LoadingWidget->AddToViewport(); //화면에 붙이고
+		LoadingWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 
 	// 서버와 연결 시도
@@ -149,16 +148,20 @@ void AMainMapGameMode::BeginPlay()
 		UE_LOG(LogClass, Warning, TEXT("Server connect success"));
 	}
 
+	//메인맵 플레이어 컨트롤러를 월드에서 찾아서 넣어준다.
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
+	//캐릭터 생성, 선택에 사용할 캐릭터를 월드에 스폰시킨다.
 	CreateSelectCharacter = GetWorld()->SpawnActor<AMyCharacter>(CreateSelectCharacter->StaticClass(), FVector::ZeroVector, FRotator::ZeroRotator, SpawnActorOption);
 
-	if (CreateSelectCharacter)
+	if (CreateSelectCharacter) //스폰이 됐으면
 	{
+		//캐릭터의 상태를 Title상태로 바꿔준다. 
 		CreateSelectCharacter->SetClientCharacterState(new ClientCharacterTitleState());
 
 		if (MainMapPlayerController)
 		{
+			//메인맵 플레이어 컨트롤러로 캐릭터 생성, 선택 캐릭터에 빙의한다.
 			MainMapPlayerController->Possess(CreateSelectCharacter);
 		}
 	}
@@ -309,9 +312,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			{
 				//****
 				//** 게임 시작, 생성 버튼 활성화 후 메세지창 띄우기
-				//****
-				CharacterSelectWidget->GetGameStartButton()->SetVisibility(ESlateVisibility::Visible);
-				ChracterCreateWidget->GetChracterCreateButton()->SetVisibility(ESlateVisibility::Visible);
+				//****ButtonDisable
+				CharacterSelectWidget->ButtonEnable();
+				ChracterCreateWidget->ButtonEnable();
 			}
 			break;
 		case PCHARACTERDATA_CREATE_RESULT:
@@ -390,15 +393,15 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			delete character_info;
 			MyCharacter = nullptr;
 			break;
-		case PGAMEDATA_USERLIST_COUNT:
-			StorageManager::GetInstance()->ChangeData(Data->data, UserCount);
+		case PGAMEDATA_USERLIST_COUNT: //현재 채널에 접속한 유저가 몇명인지
+			StorageManager::GetInstance()->ChangeData(Data->data, UserCount); //현재 채널에 접속한 유저가 몇명인지 받고
 			StorageManager::GetInstance()->PopData();
-			GLog->Log(FString::Printf(TEXT("접속한 유저 수 : %d"), UserCount));
+			GLog->Log(FString::Printf(TEXT("접속한 유저 수 : %d"), UserCount)); //출력해준다.
 			break;
-		case PGAMEDATA_USERLIST_USER:
+		case PGAMEDATA_USERLIST_USER: //나를 제외한 채널에 접속한 유저들을 월드에 스폰시켜주는 함수
 			GLog->Log(FString::Printf(TEXT("접속한 다른 유저 월드에 스폰")));
 			// 캐릭터 정보 받을 구조체 할당
-			character_info = new CharacterInfo;
+			character_info = new CharacterInfo; 
 
 			memset(character_info, 0, sizeof(CharacterInfo));
 
@@ -448,33 +451,36 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			delete character_info;
 			OtherUserCharacter = nullptr;
 			break;
-		case PGAMEDATA_CHANNEL_INFO: //채널 정보
-			StorageManager::GetInstance()->ChangeData(Data->data, channelInfo);
+		case PGAMEDATA_CHANNEL_INFO: //메뉴 목록에서 서버변경을 눌럿을때 서버로부터 오는 채널 정보들
+			StorageManager::GetInstance()->ChangeData(Data->data, channelInfo); //채널 정보를 받고
 			StorageManager::GetInstance()->PopData();
 
+			//내 캐릭터가 소유하고 있는 메인 위젯에 접근하기 위해 내가 현재 조종중인 캐릭터를 구한다.
 			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
 
-			if (MyCharacter)
+			if (MyCharacter) //캐릭터가 존재하면
 			{
+				//캐릭터가 소유하고 있는 메뉴위젯을 구하고
+				auto MenuWidget = Cast<UMenuWidget>(MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetMenuWidget());
+
+				//채널 수만큼 반복하면서 ( 총 채널 6개 )
 				for (int i = 0; i < 6; i++)
 				{
-					auto MenuWidget = Cast<UMenuWidget>(MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetMenuWidget());
-
-					if (MenuWidget)
+					if (MenuWidget) //메뉴 위젯이 있는지 확인하고
 					{
+						//메뉴위젯이 가지고 있는 채널위젯의 채널슬롯에 정보를 업데이트 해준다.
 						MenuWidget->GetChannelChangeWidget()->ChannelUpdate(channelInfo[i].channelNum, channelInfo[i].channelUsercount);
 					}
 				}
 			}
 			break;
-		case PGAMEDATA_LEAVE_PLAYER:
-			GLog->Log(FString::Printf(TEXT("다른 유저가 로그아웃 or 캐릭터 선택창으로 이동 함")));
+		case PGAMEDATA_LEAVE_PLAYER: //나를 제외한 유저가 로그아웃 or 캐릭터 선택창으로 이동
 			memset(TempLeaveCharacterCode, 0, sizeof(TempLeaveCharacterCode));
 
-			StorageManager::GetInstance()->ChangeData(Data->data, LeaveCharacterCode);
+			StorageManager::GetInstance()->ChangeData(Data->data, LeaveCharacterCode); //서버로부터 로그아웃 or 캐릭터 선택창으로 이동한 캐릭터코드를 받고
 			StorageManager::GetInstance()->PopData();
 
-			LoginUserDestory(LeaveCharacterCode);
+			LoginUserDestory(LeaveCharacterCode); //해당 캐릭터를 삭제한다.
 			LeaveCharacterCode = nullptr;
 			break;
 		case PGAMEDATA_MENU_CHARACTER_SELECT:

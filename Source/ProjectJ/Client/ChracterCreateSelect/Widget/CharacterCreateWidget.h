@@ -30,5 +30,5 @@ public:
 	UFUNCTION()
 		void Cancel();
 
-	class UButton* GetChracterCreateButton();
+	void ButtonEnable();
 };

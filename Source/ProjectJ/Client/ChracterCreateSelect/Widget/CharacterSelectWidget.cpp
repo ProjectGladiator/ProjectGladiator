@@ -172,16 +172,6 @@ void UCharacterSelectWidget::MyCharacterSlotHidden()
 	CharacterButtonThree->SetVisibility(ESlateVisibility::Hidden);
 }
 
-UButton * UCharacterSelectWidget::GetGameStartButton()
-{
-	return GameStartButton;
-}
-
-UButton * UCharacterSelectWidget::GetChracterCreateButton()
-{
-	return CharacterCreateButton;
-}
-
 void UCharacterSelectWidget::ButtonEnable()
 {
 	GameStartButton->SetVisibility(ESlateVisibility::Visible);

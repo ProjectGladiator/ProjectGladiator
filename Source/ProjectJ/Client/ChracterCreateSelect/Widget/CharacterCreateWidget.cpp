@@ -82,7 +82,10 @@ void UCharacterCreateWidget::Cancel()
 	}
 }
 
-UButton * UCharacterCreateWidget::GetChracterCreateButton()
+void UCharacterCreateWidget::ButtonEnable()
 {
-	return ChracterCreateButton;
+	if (ChracterCreateButton)
+	{
+		ChracterCreateButton->SetVisibility(ESlateVisibility::Visible);
+	}
 }

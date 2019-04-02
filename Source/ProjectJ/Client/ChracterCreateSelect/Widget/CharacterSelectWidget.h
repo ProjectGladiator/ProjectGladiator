@@ -45,9 +45,6 @@ public:
 	void MyCharacterSlotUpdate(struct PacketData* _data);
 	void MyCharacterSlotHidden();
 
-	class UButton* GetGameStartButton();
-	class UButton* GetChracterCreateButton();
-
 	void ButtonEnable();
 	void ButtonDisable();
 };
