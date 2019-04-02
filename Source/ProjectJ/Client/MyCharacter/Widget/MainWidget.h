@@ -36,6 +36,8 @@ private:
 		class AMainMapPlayerController* MainMapPlayerController;
 	UPROPERTY()
 		class UWidgetAnimation* InChannelTextInVisibleAnimation;
+	UPROPERTY()
+		class UInDunGeonMessageWidget* InDunGeonMessageWidget;
 public:
 	virtual void NativeConstruct() override;
 

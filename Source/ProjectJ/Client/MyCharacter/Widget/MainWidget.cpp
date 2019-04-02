@@ -15,6 +15,7 @@
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Public/Animation/WidgetAnimation.h"
+#include "Client/MyCharacter/Widget/GlobalMessage/InDunGeonMessageWidget.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -25,7 +26,6 @@ void UMainWidget::NativeConstruct()
 
 	InChannelText = Cast<UTextBlock>(GetWidgetFromName(TEXT("InChannelText")));
 
-	
 	MenuWidget = Cast<UMenuWidget>(GetWidgetFromName(TEXT("MenuWidget")));
 
 	if (MenuWidget)
@@ -54,6 +54,13 @@ void UMainWidget::NativeConstruct()
 	if (PartyAcceptRejectWidget)
 	{
 		PartyAcceptRejectWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	InDunGeonMessageWidget = Cast<UInDunGeonMessageWidget>(GetWidgetFromName(TEXT("InDunGeonMessageWidget")));
+
+	if (InDunGeonMessageWidget)
+	{
+		InDunGeonMessageWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
@@ -87,6 +94,7 @@ void UMainWidget::NativeConstruct()
 	{
 		InChannelTextInVisibleAnimation->OnAnimationFinished.AddDynamic(this, &UMainWidget::InChannelTextHidden);
 	}
+
 }
 
 UMenuWidget * UMainWidget::GetMenuWidget()
@@ -297,6 +305,7 @@ void UMainWidget::PartyLeave()
 	if (PartyWidget)
 	{
 		PartyWidget->PartyLeave();
+		PartySlots.Empty();
 	}
 }
 
