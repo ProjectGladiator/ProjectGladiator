@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -21,7 +21,7 @@ protected:
 	/** The Pickup to spawn*/
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	//TSubclassOf<class AMonster> whatToSpawn;
-	TArray <TSubclassOf<class AMonster>> whatToSpawn;
+	TArray <TSubclassOf<class AMonster>> whatToSpawn_Array;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -55,11 +55,19 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Spawning")
 	int FullPoolVolume;
 
+	/** If you want to use this, check to attribute*/
+	UPROPERTY(EditAnywhere, Category = "TestPool")
+		bool isTestPoolStart;
+
+	UPROPERTY(VisibleAnywhere, Category = "Spawning")
 	TArray<class AMonster*> Spawn_Array;
 
 	/** SpawnObject Activate*/
 	void SpawnObject_SetActive(AMonster*, bool);
 
-	/** ´Ù»ç¿ëÇÑ ¿ÀºêÁ§Æ®*/
+	//
 	void ResetObject();
+
+	/** Monster Class input whatToSpawn_Array*/
+	void SetStaticMonsterClass();
 };

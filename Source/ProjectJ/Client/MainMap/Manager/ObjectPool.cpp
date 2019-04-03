@@ -5,6 +5,9 @@
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Client/Monster/Monster.h"
+#include "Client/Monster/StageOne/Bear/Bear.h"
+#include "Client/Monster/StageOne/Dinosaur/Dinosaur.h"
+#include "Client/Monster/MonsterAIController.h"
 #include "Components/BoxComponent.h"
 
 
@@ -21,7 +24,13 @@ AObjectPool::AObjectPool()
 	RootComponent = whereToSpawn;
 
 	//Set SpawnNum 
-	FullPoolVolume = initPoolVolume;
+	//FullPoolVolume = initPoolVolume;
+
+	//Test to Use this pool check
+	isTestPoolStart = false;
+
+	//Set Spawn Monster
+	SetStaticMonsterClass();
 
 	//Current pool init is 0
 	/*currentPool_count = 0;*/
@@ -56,26 +65,75 @@ FVector AObjectPool::GetRandomPointInVolume()
 
 void AObjectPool::PoolSetting()
 {
+	ABear* Bear;
+	ADinosaur* Dinosaur;
 	//Get World
 	UWorld* const world = GetWorld();
 
-	//Set ths Spawn Paramaters
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Owner = this;
-	SpawnParams.Instigator = Instigator;
+	FVector SpawnPos_Vector;
+	
+	//	//Set ths Spawn Paramaters
+	//FActorSpawnParameters SpawnParams;
+	//SpawnParams.Owner = this;
+	//SpawnParams.Instigator = Instigator;
+
+	if (isTestPoolStart == true)
+	{
+		SpawnPos_Vector = whereToSpawn->Bounds.Origin;
+	}
+	else if (isTestPoolStart == false)
+	{
+		SpawnPos_Vector = FVector::ZeroVector;
+	}
 
 	
 	for (int i_spawnObject = 0; i_spawnObject < FullPoolVolume; i_spawnObject++)
 	{
-		//어떤 Monster를 사용할 건지 정하는 부분을 만들어야함
+		AMonster* SpawnActor=nullptr;
+		if (i_spawnObject % 2 == 0)
+		{
+			//어떤 Monster를 사용할 건지 정하는 부분을 만들어야함
+			SpawnActor = GetWorld()->SpawnActor<ABear>(Bear->StaticClass(), SpawnPos_Vector, FRotator::ZeroRotator);
+			
+			if (SpawnActor)
+			{
+				GLog->Log(FString::Printf(TEXT("스폰 액터 있음")));
 
-		AMonster* SpawnActor = world->SpawnActor<AMonster>(whatToSpawn[0], FVector::ZeroVector, FRotator::ZeroRotator, SpawnParams);
-		Spawn_Array.Add(SpawnActor);
+				//Pawn->Auto Possess AI
+				//SpawnActor->AutoPossessAI = EAutoPossessAI::Spawned;
+				Spawn_Array.Emplace(SpawnActor);
+				UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
 
-		UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
+				SpawnObject_SetActive(Spawn_Array[i_spawnObject], true);
+				//Spawn_Array[i_spawnObject]->bisActive = false;
+			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("스폰 액터 NULL")));
+			}
+		}
+		else
+		{
+			//어떤 Monster를 사용할 건지 정하는 부분을 만들어야함
+			SpawnActor = GetWorld()->SpawnActor<ADinosaur>(Dinosaur->StaticClass(), SpawnPos_Vector, FRotator::ZeroRotator);
 
-		SpawnObject_SetActive(Spawn_Array[i_spawnObject], false);
-		Spawn_Array[i_spawnObject]->bisActive = false;
+			if (SpawnActor)
+			{
+				GLog->Log(FString::Printf(TEXT("스폰 액터 있음")));
+
+				//Pawn->Auto Possess AI
+				//SpawnActor->AutoPossessAI = EAutoPossessAI::Spawned;
+				Spawn_Array.Emplace(SpawnActor);
+				UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
+
+				SpawnObject_SetActive(Spawn_Array[i_spawnObject], true);
+				//Spawn_Array[i_spawnObject]->bisActive = false;
+			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("스폰 액터 NULL")));
+			}
+		}
 	}
 }
 
@@ -120,5 +178,32 @@ void AObjectPool::SpawnObject_SetActive(AMonster* SpawnObject, bool _bActive)
 
 void AObjectPool::ResetObject()
 {
+}
+
+void AObjectPool::SetStaticMonsterClass()
+{
+	UClass* bear = ABear::StaticClass();
+	UClass* Dinosaur = ADinosaur::StaticClass();
+
+	if (bear)
+	{
+		GLog->Log(FString::Printf(TEXT("bear 있음")));
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("bear 있음")));
+	}
+
+	if (Dinosaur)
+	{
+		GLog->Log(FString::Printf(TEXT("Dinosaur 있음")));
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("Dinosaur 있음")));
+	}
+
+	whatToSpawn_Array.Add(bear);
+	whatToSpawn_Array.Add(Dinosaur);
 }
 

@@ -18,13 +18,15 @@ AMonster::AMonster()
 	AIControllerClass = AMonsterAIController::StaticClass();
 
 	AIManager = CreateDefaultSubobject<UAIManager>(TEXT("AIManager"));
-
+	
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 
 	bUseControllerRotationYaw = false;
 
 	GetCharacterMovement()->bOrientRotationToMovement = true; //몬스터가 가속하는 방향으로 회전 시킨다.
 	GetCharacterMovement()->bUseRVOAvoidance = true;
+
+	AutoPossessAI = EAutoPossessAI::Spawned;
 
 	Tags.Add(TEXT("Monster"));
 
