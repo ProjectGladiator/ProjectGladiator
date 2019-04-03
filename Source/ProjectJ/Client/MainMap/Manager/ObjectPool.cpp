@@ -71,7 +71,8 @@ void AObjectPool::PoolSetting()
 	UWorld* const world = GetWorld();
 
 	FVector SpawnPos_Vector;
-	
+	FActorSpawnParameters SpawnActorOption;
+	SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	//	//Set ths Spawn Paramaters
 	//FActorSpawnParameters SpawnParams;
 	//SpawnParams.Owner = this;
@@ -93,7 +94,7 @@ void AObjectPool::PoolSetting()
 		if (i_spawnObject % 2 == 0)
 		{
 			//어떤 Monster를 사용할 건지 정하는 부분을 만들어야함
-			SpawnActor = GetWorld()->SpawnActor<ABear>(Bear->StaticClass(), SpawnPos_Vector, FRotator::ZeroRotator);
+			SpawnActor = GetWorld()->SpawnActor<ABear>(Bear->StaticClass(), SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
 			
 			if (SpawnActor)
 			{
@@ -112,10 +113,10 @@ void AObjectPool::PoolSetting()
 				GLog->Log(FString::Printf(TEXT("스폰 액터 NULL")));
 			}
 		}
-		else
+		else 
 		{
 			//어떤 Monster를 사용할 건지 정하는 부분을 만들어야함
-			SpawnActor = GetWorld()->SpawnActor<ADinosaur>(Dinosaur->StaticClass(), SpawnPos_Vector, FRotator::ZeroRotator);
+			SpawnActor = GetWorld()->SpawnActor<ADinosaur>(Dinosaur->StaticClass(), SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
 
 			if (SpawnActor)
 			{
