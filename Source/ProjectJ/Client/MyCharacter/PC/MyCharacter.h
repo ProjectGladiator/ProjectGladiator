@@ -190,4 +190,6 @@ public:
 
 	bool GetPartyLeader();
 	void SetPartyLeader(bool _IsPartyLeader);
+
+	void ChattingInputStart();
 };

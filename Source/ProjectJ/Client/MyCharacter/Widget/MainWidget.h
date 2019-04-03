@@ -15,11 +15,15 @@ class PROJECTJ_API UMainWidget : public UUserWidget
 {
 	GENERATED_BODY()
 private:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Widget, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GlobalMessageWidget, Meta = (AllowPrivateAccess = true))
 		class UTextBlock* InChannelText;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Widget, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GlobalMessageWidget, Meta = (AllowPrivateAccess = true))
+		class UInDunGeonMessageWidget* InDunGeonMessageWidget;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MenuWidget, Meta = (AllowPrivateAccess = true))
 		class UMenuWidget* MenuWidget;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Widget, Meta = (AllowPrivateAccess = true))
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
 		class UInventoryWidget* InventoryWidget;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PartyWidget, Meta = (AllowPrivateAccess = true))
@@ -30,14 +34,17 @@ private:
 		TArray<FPartySlot> PartySlots;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PartyWidget, Meta = (AllowPrivateAccess = true))
 		int32 PartyMaxCount;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ChattingWidget, Meta = (AllowPrivateAccess = true))
+		class UChattingWidget* ChattingWidget;
+
 	UPROPERTY()
 		class AMainMapGameMode* MainMapGameMode;
 	UPROPERTY()
 		class AMainMapPlayerController* MainMapPlayerController;
 	UPROPERTY()
 		class UWidgetAnimation* InChannelTextInVisibleAnimation;
-	UPROPERTY()
-		class UInDunGeonMessageWidget* InDunGeonMessageWidget;
+
 public:
 	virtual void NativeConstruct() override;
 
@@ -82,4 +89,9 @@ public:
 
 	UFUNCTION()
 		void InChannelTextHidden();
+
+	void InDunGeonMessageWidgetVisible();
+	bool IsDunGeonMessageWidgetVisible();
+
+	void ChattingStart();
 };

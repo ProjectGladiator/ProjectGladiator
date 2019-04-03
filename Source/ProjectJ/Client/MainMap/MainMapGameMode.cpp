@@ -409,6 +409,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			StorageManager::GetInstance()->ChangeData(Data->data, character_info);
 			StorageManager::GetInstance()->PopData();
 
+			GLog->Log(ANSI_TO_TCHAR(character_info->code));
+
 			x = character_info->xyz[0]; y = character_info->xyz[1]; z = character_info->xyz[2];
 			rx = character_info->rot_xyz[0]; ry = character_info->rot_xyz[1]; rz = character_info->rot_xyz[2];
 

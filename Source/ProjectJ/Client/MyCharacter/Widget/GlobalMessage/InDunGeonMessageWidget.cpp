@@ -15,6 +15,7 @@ void UInDunGeonMessageWidget::NativeConstruct()
 	{
 		InDunGeonAcceptButton->OnClicked.AddDynamic(this, &UInDunGeonMessageWidget::InDunGeonAccept);
 	}
+
 	InDunGeonCancelButton = Cast<UButton>(GetWidgetFromName(TEXT("InDunGeonCancelButton")));
 
 	if (InDunGeonCancelButton)
@@ -25,10 +26,11 @@ void UInDunGeonMessageWidget::NativeConstruct()
 
 void UInDunGeonMessageWidget::InDunGeonAccept()
 {
-
+	SetVisibility(ESlateVisibility::Hidden);
 }
 
 void UInDunGeonMessageWidget::InDunGeonCancel()
 {
+	
 	SetVisibility(ESlateVisibility::Hidden);
 }
