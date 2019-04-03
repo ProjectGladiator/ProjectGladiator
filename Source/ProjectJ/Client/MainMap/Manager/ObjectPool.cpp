@@ -90,11 +90,11 @@ void AObjectPool::PoolSetting()
 
 		if (i_spawnObject % 2 == 0)
 		{
-			SpawnActor = GetWorld()->SpawnActor<ABear>(whatToSpawn_Array[0], SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
+			SpawnActor = GetWorld()->SpawnActor<AMonster>(whatToSpawn_Array[0], SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
 		}
 		else 
 		{
-			SpawnActor = GetWorld()->SpawnActor<ADinosaur>(whatToSpawn_Array[1], SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
+			SpawnActor = GetWorld()->SpawnActor<AMonster>(whatToSpawn_Array[1], SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
 		}
 
 		if (SpawnActor)
