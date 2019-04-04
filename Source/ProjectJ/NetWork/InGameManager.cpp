@@ -767,7 +767,7 @@ void InGameManager::InGame_Recv_Party_User_Info(char * _buf)
 	int size = 0;
 
 	int codelen = 0;
-	int nicklen = 0;	
+	int nicklen = 0;
 	int jobcode = 0;
 	bool leader = false;
 	float hp = 0;
@@ -860,7 +860,7 @@ void InGameManager::InGame_Recv_Party_User_Info(char * _buf)
 
 		StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_USER_INFO, data, size);
 	}
-	
+
 }
 
 // 파티 강퇴 받은
@@ -1001,7 +1001,7 @@ void InGameManager::InGame_Recv_Leave_Result(char * _buf)
 	memset(data, 0, sizeof(BUFSIZE));
 	char* ptr_data = data;
 	int size = 0;
-	
+
 	bool result = false;
 
 	// 결과
@@ -1130,6 +1130,36 @@ void InGameManager::InGame_Recv_PartyRoom_Leader_Delegate_Result(char * _buf)
 	}
 }
 
+// 던전 입장 결과
+void InGameManager::InGame_Recv_Leave_Dungeon_Enter_Result(char * _buf)
+{
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT, 0, 0);
+}
+
+// 던정 퇴장 결과
+void InGameManager::InGame_Recv_Leave_Dungeon_Leave_Result(char * _buf)
+{
+	char* ptr = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(BUFSIZE));
+	char* ptr_data = data;
+	int size = 0;
+
+	int channelnum = 0;
+
+	// 채널번호
+	memcpy(&channelnum, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	// data에 채널번호 패킹
+	memcpy(ptr_data, &channelnum, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_LEAVE_RESULT, data, size);
+}
+
 // 파티 초대 요청
 void InGameManager::InGame_Req_Party_Invite(char * _code)
 {
@@ -1179,6 +1209,25 @@ void InGameManager::InGame_Req_Party_Invite_Result(bool _result, char * _code, i
 	datasize += sizeof(int);
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_ROOM_ANSWER_INVITE, buf, datasize);
+}
+
+// 던전 입장 요청
+void InGameManager::InGame_Req_Dungeon_Enter()
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_DUNGEON_ENTER, buf, 0);
+
+}
+
+// 던전 퇴장 요청
+void InGameManager::InGame_Req_Dungeon_Leave()
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_DUNGEON_LEAVE, buf, 0);
 }
 
 RESULT InGameManager::InGameInitRecvResult(User * _user)
@@ -1302,6 +1351,16 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 		// 리더 위임 결과가 오고 성공이면 뒤에 코드도 온다.
 		InGame_Recv_PartyRoom_Leader_Delegate_Result(buf);
 		result = RT_INGAME_PARTY_LEADER_DELEGATE_RESULT;
+		break;
+	case SERVER_INGAME_DUNGEON_ENTER_RESULT:
+		// 프로토콜만 옴
+		InGame_Recv_Leave_Dungeon_Enter_Result(buf);
+		result = RT_INGAME_DUNGEON_ENTER_RESULT;
+		break;
+	case SERVER_INGAME_DUNGEON_LEAVE_RESULT:
+		// 채널번호옴
+		InGame_Recv_Leave_Dungeon_Leave_Result(buf);
+		result = RT_INGAME_DUNGEON_LEAVE_RESULT;
 		break;
 	default:
 		break;
