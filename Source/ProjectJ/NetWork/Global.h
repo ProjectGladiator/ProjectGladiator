@@ -108,6 +108,13 @@ enum PROTOCOL {
 	SERVER_INGAME_PARTY_LEADER_DELEGATE_RESULT,	// 서버 파티장 위임 결과
 	SERVER_INGAME_PARTY_USER_INFO,				// 서버 파티원정보(파티원숫자,닉네임,HP,MP)
 
+	// 던전 프로토콜
+	CLIENT_INGAME_DUNGEON_ENTER,				// 클라 던전 입장
+	CLIENT_INGAME_DUNGEON_LEAVE,				// 클라 던전 퇴장
+
+	SERVER_INGAME_DUNGEON_ENTER_RESULT,			// 서버 던전 입장
+	SERVER_INGAME_DUNGEON_LEAVE_RESULT,			// 서버 던전 퇴장
+
 	// 채팅 프로토콜
 	CLIENT_REQ_CHAT_LIST,					// 현재 로그인한 회원리스트 요청 			 프로토콜만
 	SERVER_CHAT_LIST_RESULT,				// 현재 로그인한 회원리스트 요청 결과 		[인원 수] [닉네임 사이즈] [닉네임]...
@@ -204,7 +211,9 @@ enum RESULT {
 	RT_INGAME_PARTY_LEAVE_RESULT,		// 탈퇴 결과
 	RT_INGAME_PARTY_ROOM_REMOVE,		// 파티방 폭파시
 	RT_INGAME_PARTY_LEADER_DELEGATE,	
-	RT_INGAME_PARTY_LEADER_DELEGATE_RESULT
+	RT_INGAME_PARTY_LEADER_DELEGATE_RESULT,
+	RT_INGAME_DUNGEON_ENTER_RESULT,			// 던전 입장 결과
+	RT_INGAME_DUNGEON_LEAVE_RESULT			// 던전 퇴장 결과
 
 };
 

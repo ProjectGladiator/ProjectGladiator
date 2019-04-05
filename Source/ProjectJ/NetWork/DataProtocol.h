@@ -43,6 +43,9 @@ namespace DataProtocol {
 		PGAMEDATA_PARTY_PARTYROOM_REMOVE,		// 파티 터짐 - (프로토콜만)
 		PGAMEDATA_PARTY_LEADER_INFO,			// 새로운 파티 리더 정보 - (캐릭터코드,캐릭터코드)
 		PGAMEDATA_PARTY_LEADER_DELEGATE_RESULT,	// 파티 리더 위임 결과 - (결과,(성공이면)코드)
+		PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT,	// 파티 던전 입장 결과 - (프로토콜만)
+		PGAMEDATA_PARTY_DUNGEON_LEAVE_RESULT,	// 파티 던전 퇴장 결과 - (채널번호)
+
 	};
 	// 공통 프로토콜
 	enum PGLOBAL {

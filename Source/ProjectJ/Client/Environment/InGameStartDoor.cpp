@@ -4,7 +4,11 @@
 //클라 헤더
 #include "UObject/ConstructorHelpers.h"
 #include "Components/StaticMeshComponent.h"
+#include "Components/BoxComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Client/MyCharacter/PC/MyCharacter.h"
+#include "Client/MyCharacter/Widget/MyCharacterUI.h"
+#include "Client/MyCharacter/Widget/MainWidget.h"
 
 //서버 헤더
 
@@ -50,7 +54,7 @@ AInGameStartDoor::AInGameStartDoor()
 	DoorLeft->SetRelativeScale3D(FVector(1.0f, 2.0f, 1.0f));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>SM_DoorRight(TEXT("StaticMesh'/Game/Assets/MedievalDungeon/Mesh/SM_DoorWay_Large_Door_Right.SM_DoorWay_Large_Door_Right'"));
-
+	
 	if (SM_DoorRight.Succeeded())
 	{
 		DoorRight->SetStaticMesh(SM_DoorRight.Object);
@@ -60,6 +64,16 @@ AInGameStartDoor::AInGameStartDoor()
 	//DoorRight->SetRelativeRotation(FRotator(0, 120.0f, 0));
 	DoorRight->SetRelativeRotation(FRotator(0, -90.0f, 0));
 	DoorRight->SetRelativeScale3D(FVector(1.0f, 2.0f, 1.0f));
+
+	InDunGeonColision = CreateDefaultSubobject<UBoxComponent>(TEXT("InDunGeonColision"));
+	
+	if (InDunGeonColision)
+	{
+		InDunGeonColision->SetupAttachment(GetRootComponent());
+		InDunGeonColision->SetRelativeLocation(FVector(0, 144.0f, 160.0f));
+		InDunGeonColision->SetRelativeScale3D(FVector(5.7f, 5.0f, 5.7f));
+		InDunGeonColision->SetCollisionProfileName(TEXT("OverlapAll"));
+	}
 }
 
 // Called when the game starts or when spawned
@@ -67,6 +81,10 @@ void AInGameStartDoor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	if (InDunGeonColision)
+	{
+		InDunGeonColision->OnComponentBeginOverlap.AddDynamic(this, &AInGameStartDoor::InDunGeonOverlap);
+	}
 }
 
 // Called every frame
@@ -74,5 +92,25 @@ void AInGameStartDoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AInGameStartDoor::InDunGeonOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+	auto MyCharacter = Cast<AMyCharacter>(OtherActor);
+
+	if (MyCharacter)
+	{
+		bool IsPartyLeader = MyCharacter->GetPartyLeader();
+
+		if (IsPartyLeader)
+		{
+			bool IsDunGeonMessageWidgetVisibleFlag = MyCharacter->GetMyCharacterUI()->GetMainWidget()->IsDunGeonMessageWidgetVisible();
+
+			if (!IsDunGeonMessageWidgetVisibleFlag)
+			{
+				MyCharacter->GetMyCharacterUI()->GetMainWidget()->InDunGeonMessageWidgetVisible();
+			}
+		}
+	}
 }
 

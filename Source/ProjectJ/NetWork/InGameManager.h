@@ -59,6 +59,10 @@ private:
 	// 파티 리더 보낸 결과
 	void InGame_Recv_PartyRoom_Leader_Delegate_Result(char* _buf);
 
+	// 던전 입장 결과
+	void InGame_Recv_Leave_Dungeon_Enter_Result(char* _buf);
+	// 던정 퇴장 결과
+	void InGame_Recv_Leave_Dungeon_Leave_Result(char* _buf);
 
 public:
 	static void CreateInstance();
@@ -96,6 +100,11 @@ public:
 	void InGame_Req_Party_Invite(char* _code);												
 	// 파티 초대 응답
 	void InGame_Req_Party_Invite_Result(bool _result, char* _code, int _partyroomnum);		
+	// 던전 입장 요청
+	void InGame_Req_Dungeon_Enter();
+	// 던전 퇴장 요청
+	void InGame_Req_Dungeon_Leave();
+
 
 	RESULT InGameInitRecvResult(User* _user);			// 인게임 
 };

@@ -16,6 +16,7 @@
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Public/Animation/WidgetAnimation.h"
 #include "Client/MyCharacter/Widget/GlobalMessage/InDunGeonMessageWidget.h"
+#include "Client/MyCharacter/Widget/Chatting/ChattingWidget.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -25,6 +26,13 @@ void UMainWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	InChannelText = Cast<UTextBlock>(GetWidgetFromName(TEXT("InChannelText")));
+
+	InDunGeonMessageWidget = Cast<UInDunGeonMessageWidget>(GetWidgetFromName(TEXT("InDunGeonMessageWidget")));
+
+	if (InDunGeonMessageWidget)
+	{
+		InDunGeonMessageWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
 
 	MenuWidget = Cast<UMenuWidget>(GetWidgetFromName(TEXT("MenuWidget")));
 
@@ -56,12 +64,7 @@ void UMainWidget::NativeConstruct()
 		PartyAcceptRejectWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
-	InDunGeonMessageWidget = Cast<UInDunGeonMessageWidget>(GetWidgetFromName(TEXT("InDunGeonMessageWidget")));
-
-	if (InDunGeonMessageWidget)
-	{
-		InDunGeonMessageWidget->SetVisibility(ESlateVisibility::Hidden);
-	}
+	ChattingWidget = Cast<UChattingWidget>(GetWidgetFromName(TEXT("ChattingWidget")));
 
 	MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
@@ -208,6 +211,41 @@ void UMainWidget::InChannelTextHidden()
 	if (InChannelText)
 	{
 		InChannelText->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
+void UMainWidget::InDunGeonMessageWidgetVisible()
+{
+	if (InDunGeonMessageWidget)
+	{
+		InDunGeonMessageWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+bool UMainWidget::IsDunGeonMessageWidgetVisible()
+{
+	if (InDunGeonMessageWidget)
+	{
+		if (InDunGeonMessageWidget->GetVisibility() == ESlateVisibility::Visible)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void UMainWidget::ChattingStart()
+{
+	if (ChattingWidget)
+	{
+		ChattingWidget->ChattingStart();
 	}
 }
 

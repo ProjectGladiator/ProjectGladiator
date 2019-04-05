@@ -29,6 +29,7 @@
 #include "Client/MyCharacter/Widget/Info/MyCharacterNickNameWidget.h"
 #include "Client/MyCharacter/Widget/MainWidget.h"
 #include "Client/Menu/MenuWidget.h"
+#include "Client/MyCharacter/Widget/Chatting/ChattingWidget.h"
 //#include "Client/State/ClientState/Character/ClientCharacterInGameState.h"
 
 
@@ -174,6 +175,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("Party"), IE_Pressed, this, &AMyCharacter::PartyToggle);
 
 	PlayerInputComponent->BindAction(TEXT("Menu"), IE_Pressed, this, &AMyCharacter::MenuToggle);
+
+	PlayerInputComponent->BindAction(TEXT("ChattingInput"), IE_Pressed, this, &AMyCharacter::ChattingInputStart);
 }
 
 void AMyCharacter::MoveForward(float Value)
@@ -591,4 +594,13 @@ bool AMyCharacter::GetPartyLeader()
 void AMyCharacter::SetPartyLeader(bool _IsPartyLeader)
 {
 	IsPartyLeader = _IsPartyLeader;
+}
+
+void AMyCharacter::ChattingInputStart()
+{
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->SetInputMode(FInputModeUIOnly());
+		MyCharacterUI->GetMainWidget()->ChattingStart();
+	}
 }
