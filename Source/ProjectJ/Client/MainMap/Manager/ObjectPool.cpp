@@ -23,8 +23,7 @@ AObjectPool::AObjectPool()
 	//Root -> Boxcomponent
 	RootComponent = whereToSpawn;
 
-	//Set SpawnNum 
-	//FullPoolVolume = initPoolVolume;
+	//Set SpawnNum
 	SetStaticMonsterClass();
 
 	//Test to Use this pool check
@@ -65,71 +64,102 @@ FVector AObjectPool::GetRandomPointInVolume()
 
 void AObjectPool::PoolSetting()
 {
-	FVector SpawnPos_Vector;
-
-	FActorSpawnParameters SpawnActorOption;
-	SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-	//	//Set ths Spawn Paramaters
-	//FActorSpawnParameters SpawnParams;
-	//SpawnParams.Owner = this;
-	//SpawnParams.Instigator = Instigator;
-
-	if (isTestPoolStart == true)
+	try
 	{
-		SpawnPos_Vector = whereToSpawn->Bounds.Origin;
+		//throw Error FullPoolVolume
+		if (FullPoolVolume <= 0)
+		{
+			throw FullPoolVolume;
+		}
+
+		////Object Position
+		//FVector SpawnPos_Vector;
+
+		//SpawnParameter with CollisionHandling Set
+		FActorSpawnParameters SpawnActorOption;
+		SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+		//Test with object Spawn bool
+		if (isTestPoolStart == true)
+		{
+			SpawnPos_Vector = whereToSpawn->Bounds.Origin;
+		}
+		else if (isTestPoolStart == false)
+		{
+			SpawnPos_Vector = FVector::ZeroVector;
+		}
+
+		//Set To PoolObject
+		for (int i_spawnObject = 0; i_spawnObject < FullPoolVolume; i_spawnObject++)
+		{
+			AMonster* SpawnActor = nullptr;
+
+			if (i_spawnObject % 2 == 0)
+			{
+				SpawnActor = GetWorld()->SpawnActor<AMonster>(whatToSpawn_Array[0], SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
+			}
+			else
+			{
+				SpawnActor = GetWorld()->SpawnActor<AMonster>(whatToSpawn_Array[1], SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
+			}
+
+			if (SpawnActor)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
+				//Pawn->Auto Possess AI
+				//SpawnActor->AutoPossessAI = EAutoPossessAI::Spawned;
+				Spawn_Array.Emplace(SpawnActor);
+				SpawnObject_SetActive(Spawn_Array[i_spawnObject], false);
+				Spawn_Array[i_spawnObject]->bisActive = false;
+			}
+			else if(SpawnActor == nullptr)
+			{
+				//GLog->Log(FString::Printf(TEXT("SpawnActor Error")));
+				throw SpawnActor;
+			}
+		}
 	}
-	else if (isTestPoolStart == false)
-	{
-		SpawnPos_Vector = FVector::ZeroVector;
+	catch (int) {
+		if (FullPoolVolume <= 0)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("ERROR!! : (FullPoolVolume is 'Zero' OR 'Negative Number')"));
+		}
 	}
-
-	for (int i_spawnObject = 0; i_spawnObject < FullPoolVolume; i_spawnObject++)
+	catch (AMonster*)
 	{
-		AMonster* SpawnActor = nullptr;
-
-		if (i_spawnObject % 2 == 0)
-		{
-			SpawnActor = GetWorld()->SpawnActor<AMonster>(whatToSpawn_Array[0], SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
-		}
-		else 
-		{
-			SpawnActor = GetWorld()->SpawnActor<AMonster>(whatToSpawn_Array[1], SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
-		}
-
-		if (SpawnActor)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
-			//Pawn->Auto Possess AI
-			//SpawnActor->AutoPossessAI = EAutoPossessAI::Spawned;
-			Spawn_Array.Emplace(SpawnActor);
-			SpawnObject_SetActive(Spawn_Array[i_spawnObject], true);
-			Spawn_Array[i_spawnObject]->bisActive = false;
-		}
-		else
-		{
-			GLog->Log(FString::Printf(TEXT("SpawnActor NULL")));
-		}
+		GLog->Log(FString::Printf(TEXT("SpawnActor Error")));
 	}
 }
 
 void AObjectPool::Pooling(int _counter)
 {
-	// 요기에는 Pooling을 할 내용을 적어주면됩미다.
-	if (_counter > FullPoolVolume)
-	{
-		//Error or FullPoolVolume Use
-		UE_LOG(LogTemp, Warning, TEXT("_counter is over PoolVolume"));
-	}
-	else if (_counter < -1)
-	{
-		//Error not to use ObjectPool
-		UE_LOG(LogTemp, Warning, TEXT("_counter is (-)value"));
-	}
-	else
-	{
+	try {
+
+		//throw Error _counter
+		if (_counter > FullPoolVolume)
+		{
+			throw _counter;
+		}
+		else if (_counter < -1)
+		{
+			throw _counter;
+		}
+
 		// Pooling Enter
 		UE_LOG(LogTemp, Warning, TEXT("Pooling Enter"));
+
+	}
+	catch (int) {
+		if (_counter > FullPoolVolume)
+		{
+			//Error or FullPoolVolume Use
+			UE_LOG(LogTemp, Warning, TEXT("_counter is over PoolVolume"));
+		}
+		else if (_counter < -1)
+		{
+			//Error not to use ObjectPool
+			UE_LOG(LogTemp, Warning, TEXT("_counter is (-)value"));
+		}
 	}
 }
 
@@ -159,8 +189,12 @@ void AObjectPool::SpawnObject_SetActive(AMonster* SpawnObject, bool _bActive)
 	}
 }
 
-void AObjectPool::ResetObject()
+void AObjectPool::RecycleObject(AMonster* _spawnMonster)
 {
+	//Get Monster's init
+	_spawnMonster->init();
+	_spawnMonster->GetActorLocation()= SpawnPos_Vector;
+	SpawnObject_SetActive(_spawnMonster, false);
 }
 
 void AObjectPool::SetStaticMonsterClass()
@@ -170,5 +204,31 @@ void AObjectPool::SetStaticMonsterClass()
 
 	whatToSpawn_Array.Add(Dinosaur);
 	whatToSpawn_Array.Add(bear);
+}
+
+void AObjectPool::Recive_SpawnObject_Info(int _MonsterNum[], int _MonsterCode[], FVector _SpawnGatePosition[])
+{
+	//SpawnMonster's type Array
+	//The Array's Num get
+	//SpawnPosition Get
+	//Last, Non_Active's Monster Find
+	//N-A_M's Recycle 
+}
+
+void AObjectPool::check_ReadyMonster()
+{
+	int Non_ActiveMonster = 0;
+	for (int i_Monster = 0; i_Monster < Spawn_Array.Num(); i_Monster++)
+	{
+		if (Spawn_Array[i_Monster]->bisActive == false)
+		{
+			//This Set Non-Active Monster's info
+			Non_ActiveMonster++;
+		}
+	}
+}
+
+void AObjectPool::WhereToGate()
+{
 }
 

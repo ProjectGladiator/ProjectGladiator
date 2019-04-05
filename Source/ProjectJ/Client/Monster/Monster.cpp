@@ -82,6 +82,11 @@ void AMonster::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AMonster::init()
+{
+	//Init For Monster's type
+}
+
 float AMonster::GetHP()
 {
 	return CurrentHP;

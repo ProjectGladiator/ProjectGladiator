@@ -27,6 +27,8 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void init() override;
+
 	void SetAIController(class AMonsterAIController* NewAIController);
 
 	EDogState GetCurrentState();

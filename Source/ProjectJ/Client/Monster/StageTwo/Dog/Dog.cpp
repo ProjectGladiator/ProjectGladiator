@@ -65,8 +65,9 @@ void ADog::BeginPlay()
 	Super::BeginPlay();
 
 #pragma region HP, TagetLimit_Distance, AttackRange, State Set
-	MaxHP = 100.0f;
-	CurrentHP = MaxHP;
+	//MaxHP = 100.0f;
+	//CurrentHP = MaxHP;
+	init();
 
 	TargetLimitDistance = 50.0f;
 
@@ -194,6 +195,13 @@ void ADog::Tick(float DeltaTime)
 	}
 
 }
+
+void ADog::init()
+{
+	MaxHP = 50.0f;
+	CurrentHP = MaxHP;
+}
+
 
 void ADog::SetAIController(AMonsterAIController * NewAIController)
 {

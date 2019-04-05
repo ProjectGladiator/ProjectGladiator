@@ -56,8 +56,9 @@ void ABear::BeginPlay()
 {
 	Super::BeginPlay();
 
-	MaxHP = 100.0f;
-	CurrentHP = MaxHP;
+	//MaxHP = 100.0f;
+	//CurrentHP = MaxHP;
+	init();
 
 	TargetLimitDistance = 150.0f;
 	AttackInfo.SetAttackInfo(150.0f, 80.0f, 120.0f);
@@ -161,6 +162,12 @@ void ABear::Tick(float DeltaTime)
 	{
 		GLog->Log(FString::Printf(TEXT("곰 : 타겟이 존재하지 않음")));
 	}
+}
+
+void ABear::init()
+{
+	MaxHP = 100.0f;
+	CurrentHP = MaxHP;
 }
 
 void ABear::SetAIController(AMonsterAIController * NewAIController)

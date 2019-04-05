@@ -22,6 +22,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	//TSubclassOf<class AMonster> whatToSpawn;
 	TArray <TSubclassOf<class AMonster>> whatToSpawn_Array;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -62,12 +63,24 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Spawning")
 	TArray<class AMonster*> Spawn_Array;
 
+	//Object Position
+	FVector SpawnPos_Vector;
+
 	/** SpawnObject Activate*/
 	void SpawnObject_SetActive(AMonster*, bool);
 
-	//
-	void ResetObject();
+	/** Monster Set useful*/
+	void RecycleObject(AMonster*);
 
 	/** Monster Class input whatToSpawn_Array*/
 	void SetStaticMonsterClass();
+
+	//Get Spawn Info
+	void Recive_SpawnObject_Info(int[], int[],FVector[]);
+
+	//Check Non-Active Monster
+	void check_ReadyMonster();
+
+	//SpawnPos Selecter
+	void WhereToGate();
 };

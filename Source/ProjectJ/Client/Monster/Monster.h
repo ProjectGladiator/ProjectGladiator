@@ -58,7 +58,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
+	//Set Monster value initialize
+	virtual void init();
 	UFUNCTION()
 		float GetHP();
 
