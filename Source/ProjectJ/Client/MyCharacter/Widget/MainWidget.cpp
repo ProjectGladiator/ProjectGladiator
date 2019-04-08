@@ -249,6 +249,39 @@ void UMainWidget::ChattingStart()
 	}
 }
 
+void UMainWidget::InventoryCreate(int32 _NewInventoryMaxCount)
+{
+	InventoryMaxCount = _NewInventoryMaxCount;
+
+	if (InventoryWidget)
+	{
+		InventoryWidget->CreateInventorySlots(InventoryMaxCount);
+	}
+}
+
+void UMainWidget::InventoryWidgetToggle()
+{
+	if (InventoryWidget)
+	{
+		if (InventoryWidget->GetVisibility() == ESlateVisibility::Hidden)
+		{
+			InventoryWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			InventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
+}
+
+void UMainWidget::MoneyUpdate(int32 _GetMoney)
+{
+	if (InventoryWidget)
+	{
+		InventoryWidget->MoneyUpdate(_GetMoney);
+	}
+}
+
 void UMainWidget::PartyWidgetVisible()
 {
 	if (PartyWidget)

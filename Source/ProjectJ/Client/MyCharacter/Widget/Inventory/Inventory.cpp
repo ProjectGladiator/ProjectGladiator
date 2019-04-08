@@ -123,7 +123,7 @@ void UInventory::InventoryCreate(int32 _NewInventoryMaxCount)
 
 	if (InventoryWidget)
 	{
-		InventoryWidget->CreateInventorySlots();
+		InventoryWidget->CreateInventorySlots(InventoryMaxCount);
 	}
 }
 

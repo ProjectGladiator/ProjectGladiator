@@ -4,19 +4,19 @@
 //클라 헤더
 #include "Components/EditableTextBox.h"
 #include "Components/ScrollBox.h"
-#include "Components/ComboBoxString.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/MainMap/MainMapPlayerController.h"
 #include "ChattingMessageWidget.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "kismet/KismetStringLibrary.h"
+#include "Components/ComboBoxString.h"
 //서버 헤더
 
 void UChattingWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	ChannelList = Cast<UComboBoxString>(GetWidgetFromName(TEXT("ChannelList")));
+	ChannelListBox = Cast<UComboBoxString>(GetWidgetFromName(TEXT("ChannelListBox")));
 
 	ChattingInputBox = Cast<UEditableTextBox>(GetWidgetFromName(TEXT("ChattingInputBox")));
 

@@ -413,6 +413,10 @@ void AMyCharacter::S2C_MoveUpdate()
 {
 	//GLog->Log(FString::Printf(TEXT("GoalLocation X :%f Y : %f Z : %f"),GoalLocation.X,GoalLocation.Y,GoalLocation.Z));
 
+	float GoalDistance = FVector::Distance(GetActorLocation(), GoalLocation);
+
+	GLog->Log(FString::Printf(TEXT("%d"), GoalDistance));
+
 	if (GetActorLocation().Equals(GoalLocation, 20.0f))
 	{
 		//GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
@@ -471,7 +475,7 @@ void AMyCharacter::InventoryToggle()
 {
 	if (MyCharacterUI)
 	{
-		MyCharacterUI->GetInventoryComponent()->InventoryWidgetToggle();
+		MyCharacterUI->GetMainWidget()->InventoryWidgetToggle();
 	}
 }
 
@@ -510,7 +514,7 @@ void AMyCharacter::SetDefaultMyCharacter()
 
 		if (MyCharacterController)
 		{
-			MyCharacterUI->SetMyCharacterUI();
+			MyCharacterUI->GetMainWidget()->InventoryCreate(20);
 			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, MyCharacterController);
 			MyCharacterUI->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
 			MyCharacterUI->GetMyCharacterInteraction()->SetMyCharacterNickNameWidget(CharacterNickWidget, nick);
@@ -602,5 +606,44 @@ void AMyCharacter::ChattingInputStart()
 	{
 		MainMapPlayerController->SetInputMode(FInputModeUIOnly());
 		MyCharacterUI->GetMainWidget()->ChattingStart();
+	}
+}
+
+int32 AMyCharacter::GetMoney()
+{
+	return Money;
+}
+
+void AMyCharacter::GetMoney(int32 _GetMoney)
+{
+	Money += _GetMoney;
+
+	if (MyCharacterUI)
+	{
+		MyCharacterUI->GetMainWidget()->MoneyUpdate(Money);
+	}
+}
+
+void AMyCharacter::LoseMoney(int32 _LoseMoney)
+{
+	Money -= _LoseMoney;
+
+	if (MyCharacterUI)
+	{
+		MyCharacterUI->GetMainWidget()->MoneyUpdate(Money);
+	}
+}
+
+bool AMyCharacter::IsBuyItem(int32 _LoseMoney)
+{
+	int32 SubMoney = Money - _LoseMoney;
+
+	if (SubMoney > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }

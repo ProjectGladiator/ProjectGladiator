@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Client/MyCharacter/Widget/Party/Structure/FPartySlot.h"
+#include "Client/MyCharacter/Widget/Inventory/Structure/FInventorySlot.h"
 #include "MainWidget.generated.h"
 
 /**
@@ -25,6 +26,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
 		class UInventoryWidget* InventoryWidget;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
+		int32 InventoryMaxCount;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
+		TArray<FInventorySlot> Slots;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = PartyWidget, Meta = (AllowPrivateAccess = true))
 		class UPartyWidget* PartyWidget;
@@ -48,6 +53,9 @@ private:
 public:
 	virtual void NativeConstruct() override;
 
+	/*
+		메뉴 관련 함수
+	*/
 	UMenuWidget* GetMenuWidget();
 
 	void MenuWidgetToggle();
@@ -59,6 +67,18 @@ public:
 
 	void ReadyCharacterSelectLogOut(const FName& _BindFunctionName); //메뉴에서 캐릭터 선택 or 로그아웃 선택시 뒷작업을 해주는 함수
 
+	/*
+		가방 관련 함수
+	*/
+
+	void InventoryCreate(int32 _NewInventoryMaxCount); //가방을 생성 매개변수 수만큼
+	void InventoryWidgetToggle();
+
+	void MoneyUpdate(int32 _GetMoney);
+
+	/*
+		파티 관련 함수
+	*/
 	void PartyWidgetVisible();
 	void PartyWidgetHidden();
 

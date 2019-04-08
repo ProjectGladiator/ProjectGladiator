@@ -15,9 +15,11 @@ class PROJECTJ_API UInventoryWidget : public UUserWidget
 	GENERATED_BODY()
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
-		class UInventory* Inventory;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UUniformGridPanel* InventoryGrid;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
+		class UButton* CloseButton;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
+		class UTextBlock* MoneyText;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		TArray<class UInventorySlotWidget*> InventorySlots;
 	float RowColumnValue;
@@ -25,6 +27,9 @@ private:
 public:
 	virtual void NativeConstruct() override;
 
-	void CreateInventorySlots(); //인벤토리 슬롯위젯을 생성해주는 함수
-	
+	void CreateInventorySlots(int32 _InventoryNum); //인벤토리 슬롯위젯을 생성해주는 함수
+	void MoneyUpdate(int32 _NewMoney);
+
+	UFUNCTION()
+		void CloseInventory();
 };

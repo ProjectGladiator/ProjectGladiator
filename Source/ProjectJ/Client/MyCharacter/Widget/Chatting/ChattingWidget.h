@@ -15,7 +15,7 @@ class PROJECTJ_API UChattingWidget : public UUserWidget
 	GENERATED_BODY()
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
-		class UComboBoxString* ChannelList;
+		class UComboBoxString* ChannelListBox;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UEditableTextBox* ChattingInputBox;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))

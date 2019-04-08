@@ -23,6 +23,8 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		int32 Level; //현재 레벨
 	UPROPERTY()
+		int32 Money;
+	UPROPERTY()
 		class AMainMapOtherPlayerController* OtherCharacterController;
 	UPROPERTY()
 		class AMyCharacter* ClickCharacter;
@@ -192,4 +194,9 @@ public:
 	void SetPartyLeader(bool _IsPartyLeader);
 
 	void ChattingInputStart();
+
+	int32 GetMoney();
+	void GetMoney(int32 _GetMoney);
+	void LoseMoney(int32 _LoseMoney);
+	bool IsBuyItem(int32 _LoseMoney);
 };
