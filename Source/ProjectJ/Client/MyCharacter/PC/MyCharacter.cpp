@@ -411,9 +411,9 @@ void AMyCharacter::S2C_MoveUpdate()
 {
 	//GLog->Log(FString::Printf(TEXT("GoalLocation X :%f Y : %f Z : %f"),GoalLocation.X,GoalLocation.Y,GoalLocation.Z));
 
-	float GoalDistance = FVector::Distance(GetActorLocation(), GoalLocation);
+	//float GoalDistance = FVector::Distance(GetActorLocation(), GoalLocation);
 
-	GLog->Log(FString::Printf(TEXT("%d"), GoalDistance));
+	//GLog->Log(FString::Printf(TEXT("%d"), GoalDistance));
 
 	if (GetActorLocation().Equals(GoalLocation, 20.0f))
 	{
