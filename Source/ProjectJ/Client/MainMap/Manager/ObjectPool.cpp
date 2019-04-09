@@ -178,7 +178,7 @@ void AObjectPool::SpawnObject_SetActive(AMonster* SpawnObject, bool _bActive)
 			// Hides visible components
 			SpawnObject->SetActorHiddenInGame(true);
 			// Disables collision components
-			SpawnObject->SetActorEnableCollision(false);
+			SpawnObject->SetActorEnableCollision(true);
 			// Stops the Actor from ticking
 			SpawnObject->SetActorTickEnabled(false);
 		}

@@ -166,8 +166,9 @@ void ABear::Tick(float DeltaTime)
 
 void ABear::init()
 {
-	MaxHP = 100.0f;
-	CurrentHP = MaxHP;
+	Super::init();
+	/*MaxHP = 100.0f;
+	CurrentHP = MaxHP;*/
 }
 
 void ABear::SetAIController(AMonsterAIController * NewAIController)
