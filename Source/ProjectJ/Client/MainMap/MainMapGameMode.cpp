@@ -318,7 +318,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				MainMapLoadInfo.Linkage = 0;
 
 				StorageManager::GetInstance()->PopData();
-				UGameplayStatics::LoadStreamLevel(this, TEXT("MainStageStartArea"), true, true, MainMapLoadInfo);
+				UGameplayStatics::LoadStreamLevel(this, TEXT("InGameStageArea"), true, true, MainMapLoadInfo);
 			}
 			else
 			{
