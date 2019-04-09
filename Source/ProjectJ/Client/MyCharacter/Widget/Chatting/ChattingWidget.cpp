@@ -4,7 +4,6 @@
 //클라 헤더
 #include "Components/EditableTextBox.h"
 #include "Components/ScrollBox.h"
-#include "Components/ComboBox.h"
 #include "Components/ComboBoxString.h"
 #include "Kismet/GameplayStatics.h"
 #include "Client/MainMap/MainMapPlayerController.h"
@@ -18,6 +17,13 @@ void UChattingWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	ChannelListBox = Cast<UComboBoxString>(GetWidgetFromName(TEXT("ChannelListBox")));
+
+	if (ChannelListBox)
+	{
+		GLog->Log(FString::Printf(TEXT("채널리스트 박스 있음")));
+		ChannelListBox->SetRenderAngle(180.0f);
+		ChannelListBox->AddOption(FString::Printf(TEXT("전체")));
+	}
 
 	ChattingInputBox = Cast<UEditableTextBox>(GetWidgetFromName(TEXT("ChattingInputBox")));
 
