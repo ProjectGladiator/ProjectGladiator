@@ -49,7 +49,7 @@ AInGameStartDoor::AInGameStartDoor()
 	}
 
 	DoorLeft->SetRelativeLocation(FVector(-128.0f, 10.0f, 0));
-	//DoorLeft->SetRelativeRotation(FRotator(0, 40.0f, 0));
+	//DoorLeft->SetRelativeRotation(FRotator(0, -190.0f, 0));
 	DoorLeft->SetRelativeRotation(FRotator(0, -90.0f, 0));
 	DoorLeft->SetRelativeScale3D(FVector(1.0f, 2.0f, 1.0f));
 
@@ -61,7 +61,7 @@ AInGameStartDoor::AInGameStartDoor()
 	}
 
 	DoorRight->SetRelativeLocation(FVector(128.0f, 10.0f, 0));
-	//DoorRight->SetRelativeRotation(FRotator(0, 120.0f, 0));
+	//DoorRight->SetRelativeRotation(FRotator(0, 10.0f, 0));
 	DoorRight->SetRelativeRotation(FRotator(0, -90.0f, 0));
 	DoorRight->SetRelativeScale3D(FVector(1.0f, 2.0f, 1.0f));
 
@@ -74,6 +74,8 @@ AInGameStartDoor::AInGameStartDoor()
 		InDunGeonColision->SetRelativeScale3D(FVector(5.7f, 5.0f, 5.7f));
 		InDunGeonColision->SetCollisionProfileName(TEXT("OverlapAll"));
 	}
+
+	OpenDoorFlag = false;
 }
 
 // Called when the game starts or when spawned
@@ -83,7 +85,8 @@ void AInGameStartDoor::BeginPlay()
 
 	if (InDunGeonColision)
 	{
-		InDunGeonColision->OnComponentBeginOverlap.AddDynamic(this, &AInGameStartDoor::InDunGeonOverlap);
+		InDunGeonColision->OnComponentBeginOverlap.AddDynamic(this, &AInGameStartDoor::InDunGeonBeginOverlap);
+		InDunGeonColision->OnComponentEndOverlap.__Internal_AddDynamic
 	}
 }
 
@@ -92,9 +95,28 @@ void AInGameStartDoor::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (DoorLeft && DoorRight)
+	{
+		FRotator LeftRotation;
+		FRotator RightRotation;
+
+		if (OpenDoorFlag)
+		{
+			LeftRotation = FMath::RInterpTo(DoorLeft->GetComponentRotation(), FRotator(0, -190.0f, 0), DeltaTime, 0.5f);
+			RightRotation = FMath::RInterpTo(DoorRight->GetComponentRotation(), FRotator(0, 10.0f, 0), DeltaTime, 0.5f);
+		}
+		else
+		{
+			LeftRotation = FMath::RInterpTo(DoorLeft->GetComponentRotation(), FRotator(0, -90.0f, 0), DeltaTime, 0.5f);
+			RightRotation = FMath::RInterpTo(DoorRight->GetComponentRotation(), FRotator(0, -90.0f, 0), DeltaTime, 0.5f);
+		}
+		
+		DoorLeft->SetRelativeRotation(LeftRotation);
+		DoorRight->SetRelativeRotation(RightRotation);
+	}
 }
 
-void AInGameStartDoor::InDunGeonOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+void AInGameStartDoor::InDunGeonBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
 	auto MyCharacter = Cast<AMyCharacter>(OtherActor);
 
@@ -112,5 +134,20 @@ void AInGameStartDoor::InDunGeonOverlap(UPrimitiveComponent* OverlappedComponent
 			}
 		}
 	}
+}
+
+void AInGameStartDoor::InDunGeonEndOverlap()
+{
+
+}
+
+void AInGameStartDoor::OpenDoor()
+{
+	OpenDoorFlag = true;
+}
+
+void AInGameStartDoor::CloseDoor()
+{
+	OpenDoorFlag = false;
 }
 

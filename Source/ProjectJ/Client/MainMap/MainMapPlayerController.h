@@ -63,6 +63,7 @@ public:
 	void C2S_ReqPartyKick(char* _PartyKickUserCode);
 	void C2S_ReqPartyLeaderDelegate(char* _NewPartyLeaderUserCode);
 
+	void C2S_ReqInGameDungeon();
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;
 

@@ -31,6 +31,7 @@
 #include "Client/MYCharacter/Widget/Party/Widget/PartyWidget.h" //캐릭터 파티 위젯 헤더
 #include "Client/MyCharacter/Widget/Party/Widget/PartyAcceptRejectWidget.h" //캐릭터 파티 수락, 취소 위젯 헤더
 #include "Client/MyCharacter/Widget/MainWidget.h" //메인 위젯 헤더
+#include "Client/Environment/InGameStartDoor.h"
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -715,6 +716,12 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeaderUpdate();
 			}
 			break;
+		case PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT:
+			StorageManager::GetInstance()->PopData();
+
+			OpenDoor();
+
+			break;
 		}
 	}
 }
@@ -961,4 +968,18 @@ void AMainMapGameMode::MapLoadComplete()
 AMyCharacter * AMainMapGameMode::GetCreateSelectCharacter()
 {
 	return CreateSelectCharacter;
+}
+
+void AMainMapGameMode::OpenDoor()
+{
+	TArray <AActor*> InGameStartDoors;
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AInGameStartDoor::StaticClass(), InGameStartDoors);
+
+	auto InGameStartDoor = Cast<AInGameStartDoor>(InGameStartDoors[0]);
+
+	if (InGameStartDoor)
+	{
+		InGameStartDoor->OpenDoor();
+	}
 }

@@ -16,14 +16,14 @@ void UChattingWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	ChannelListBox = Cast<UComboBoxString>(GetWidgetFromName(TEXT("ChannelListBox")));
+	/*ChannelListBox = Cast<UComboBoxString>(GetWidgetFromName(TEXT("ChannelListBox")));
 
 	if (ChannelListBox)
 	{
 		GLog->Log(FString::Printf(TEXT("채널리스트 박스 있음")));
 		ChannelListBox->SetRenderAngle(180.0f);
 		ChannelListBox->AddOption(FString::Printf(TEXT("전체")));
-	}
+	}*/
 
 	ChattingInputBox = Cast<UEditableTextBox>(GetWidgetFromName(TEXT("ChattingInputBox")));
 

@@ -20,7 +20,7 @@ private:
 		class UButton* InDunGeonCancelButton;
 public:
 	virtual void NativeConstruct() override;
-
+	   
 	UFUNCTION()
 		void InDunGeonAccept();
 	UFUNCTION()

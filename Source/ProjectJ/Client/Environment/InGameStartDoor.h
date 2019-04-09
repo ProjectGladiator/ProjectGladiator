@@ -23,6 +23,8 @@ private:
 		class UStaticMeshComponent* DoorRight;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		class UBoxComponent* InDunGeonColision;
+	UPROPERTY()
+		bool OpenDoorFlag;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -31,5 +33,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-		void InDunGeonOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+		void InDunGeonBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	UFUNCTION()
+		void InDunGeonEndOverlap();
+	void OpenDoor();
+	void CloseDoor();
 };
