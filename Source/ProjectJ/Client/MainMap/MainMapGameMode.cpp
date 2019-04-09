@@ -32,6 +32,7 @@
 #include "Client/MyCharacter/Widget/Party/Widget/PartyAcceptRejectWidget.h" //캐릭터 파티 수락, 취소 위젯 헤더
 #include "Client/MyCharacter/Widget/MainWidget.h" //메인 위젯 헤더
 #include "Client/Environment/InGameStartDoor.h"
+#include "TimerManager.h" //타이머 헤더
 
 //서버 헤더
 #include "NetWork/CharacterManager.h"
@@ -166,6 +167,15 @@ void AMainMapGameMode::BeginPlay()
 			MainMapPlayerController->Possess(CreateSelectCharacter);
 		}
 	}
+
+	TArray <AActor*> InGameStartDoors;
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AInGameStartDoor::StaticClass(), InGameStartDoors);
+
+	if (InGameStartDoors.Num() > 0)
+	{
+		InGameStartDoor = Cast<AInGameStartDoor>(InGameStartDoors[0]);
+	}
 }
 
 void AMainMapGameMode::Tick(float DeltaTime)
@@ -295,7 +305,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			{
 				//****	
 				//** 다음 씬 로딩
-				//****
+				//****			
+
 				CharacterSelectWidgetToggle();
 
 				LoadingWidgetViewScreen();
@@ -718,9 +729,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			break;
 		case PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT:
 			StorageManager::GetInstance()->PopData();
-
+			
 			OpenDoor();
-
+			FadeIn();
 			break;
 		}
 	}
@@ -972,14 +983,45 @@ AMyCharacter * AMainMapGameMode::GetCreateSelectCharacter()
 
 void AMainMapGameMode::OpenDoor()
 {
-	TArray <AActor*> InGameStartDoors;
-
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AInGameStartDoor::StaticClass(), InGameStartDoors);
-
-	auto InGameStartDoor = Cast<AInGameStartDoor>(InGameStartDoors[0]);
-
 	if (InGameStartDoor)
 	{
 		InGameStartDoor->OpenDoor();
+	}
+}
+
+void AMainMapGameMode::CloseDoor()
+{
+	if (InGameStartDoor)
+	{
+		InGameStartDoor->CloseDoor();
+	}
+}
+
+void AMainMapGameMode::FadeIn()
+{
+	FTimerHandle FadeInEndTimer;
+	
+	auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+	if (MyCharacter)
+	{
+		MyCharacter->AllUIHidden();
+	}
+
+	GetWorld()->GetTimerManager().SetTimer(FadeInEndTimer, this, &AMainMapGameMode::FadeOut, 2.0f, false);
+	UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(0, 1.0f, 2.0f, FLinearColor(0, 0, 0), false, true);
+}
+
+void AMainMapGameMode::FadeOut()
+{
+	CloseDoor();
+
+	UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(1.0f, 0, 1.0f, FLinearColor(0, 0, 0), false, true);
+
+	auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+	if (MyCharacter)
+	{
+		MyCharacter->AllUIVisible();
 	}
 }

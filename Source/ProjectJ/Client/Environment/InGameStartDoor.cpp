@@ -9,6 +9,7 @@
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MyCharacter/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/Widget/MainWidget.h"
+#include "Kismet/GameplayStatics.h"
 
 //서버 헤더
 
@@ -20,7 +21,7 @@ AInGameStartDoor::AInGameStartDoor()
 
 	DoorBody = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorBody"));
 	SetRootComponent(DoorBody);
-	
+
 	if (DoorBody)
 	{
 		DoorBody->SetCollisionProfileName(TEXT("OverlapAll"));
@@ -54,7 +55,7 @@ AInGameStartDoor::AInGameStartDoor()
 	DoorLeft->SetRelativeScale3D(FVector(1.0f, 2.0f, 1.0f));
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>SM_DoorRight(TEXT("StaticMesh'/Game/Assets/MedievalDungeon/Mesh/SM_DoorWay_Large_Door_Right.SM_DoorWay_Large_Door_Right'"));
-	
+
 	if (SM_DoorRight.Succeeded())
 	{
 		DoorRight->SetStaticMesh(SM_DoorRight.Object);
@@ -66,7 +67,7 @@ AInGameStartDoor::AInGameStartDoor()
 	DoorRight->SetRelativeScale3D(FVector(1.0f, 2.0f, 1.0f));
 
 	InDunGeonColision = CreateDefaultSubobject<UBoxComponent>(TEXT("InDunGeonColision"));
-	
+
 	if (InDunGeonColision)
 	{
 		InDunGeonColision->SetupAttachment(GetRootComponent());
@@ -76,6 +77,7 @@ AInGameStartDoor::AInGameStartDoor()
 	}
 
 	OpenDoorFlag = false;
+	IsInDungeonMessage = true;
 }
 
 // Called when the game starts or when spawned
@@ -86,7 +88,6 @@ void AInGameStartDoor::BeginPlay()
 	if (InDunGeonColision)
 	{
 		InDunGeonColision->OnComponentBeginOverlap.AddDynamic(this, &AInGameStartDoor::InDunGeonBeginOverlap);
-		InDunGeonColision->OnComponentEndOverlap.__Internal_AddDynamic
 	}
 }
 
@@ -110,7 +111,7 @@ void AInGameStartDoor::Tick(float DeltaTime)
 			LeftRotation = FMath::RInterpTo(DoorLeft->GetComponentRotation(), FRotator(0, -90.0f, 0), DeltaTime, 0.5f);
 			RightRotation = FMath::RInterpTo(DoorRight->GetComponentRotation(), FRotator(0, -90.0f, 0), DeltaTime, 0.5f);
 		}
-		
+
 		DoorLeft->SetRelativeRotation(LeftRotation);
 		DoorRight->SetRelativeRotation(RightRotation);
 	}
@@ -118,27 +119,26 @@ void AInGameStartDoor::Tick(float DeltaTime)
 
 void AInGameStartDoor::InDunGeonBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	auto MyCharacter = Cast<AMyCharacter>(OtherActor);
+	auto BeginOverlapCharacter = Cast<AMyCharacter>(OtherActor);
 
-	if (MyCharacter)
+	if (BeginOverlapCharacter)
 	{
-		bool IsPartyLeader = MyCharacter->GetPartyLeader();
+		bool IsPartyLeader = BeginOverlapCharacter->GetPartyLeader();
 
 		if (IsPartyLeader)
 		{
-			bool IsDunGeonMessageWidgetVisibleFlag = MyCharacter->GetMyCharacterUI()->GetMainWidget()->IsDunGeonMessageWidgetVisible();
+			bool IsDunGeonMessageWidgetVisibleFlag = BeginOverlapCharacter->GetMyCharacterUI()->GetMainWidget()->IsDunGeonMessageWidgetVisible();
 
 			if (!IsDunGeonMessageWidgetVisibleFlag)
 			{
-				MyCharacter->GetMyCharacterUI()->GetMainWidget()->InDunGeonMessageWidgetVisible();
+				if (IsInDungeonMessage)
+				{
+					BeginOverlapCharacter->GetMyCharacterUI()->GetMainWidget()->InDunGeonMessageWidgetVisible();
+					IsInDungeonMessage = false;
+				}
 			}
 		}
 	}
-}
-
-void AInGameStartDoor::InDunGeonEndOverlap()
-{
-
 }
 
 void AInGameStartDoor::OpenDoor()
@@ -149,5 +149,10 @@ void AInGameStartDoor::OpenDoor()
 void AInGameStartDoor::CloseDoor()
 {
 	OpenDoorFlag = false;
+}
+
+void AInGameStartDoor::Init()
+{	
+	IsInDungeonMessage = true;
 }
 

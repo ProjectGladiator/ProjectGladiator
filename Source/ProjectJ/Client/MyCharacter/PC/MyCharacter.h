@@ -199,4 +199,7 @@ public:
 	void GetMoney(int32 _GetMoney);
 	void LoseMoney(int32 _LoseMoney);
 	bool IsBuyItem(int32 _LoseMoney);
+
+	void AllUIHidden();
+	void AllUIVisible();
 };

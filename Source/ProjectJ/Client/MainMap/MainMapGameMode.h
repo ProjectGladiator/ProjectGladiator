@@ -45,6 +45,8 @@ private:
 		class AMainMapPlayerController* MainMapPlayerController; 
 	UPROPERTY()
 		int32 Channelnum = -1; //속해 있는 채널 번호
+	UPROPERTY()
+		class AInGameStartDoor* InGameStartDoor;
 public:
 	AMainMapGameMode();
 
@@ -84,4 +86,8 @@ public:
 	AMyCharacter* GetCreateSelectCharacter();
 
 	void OpenDoor();
+	void CloseDoor();
+
+	void FadeIn();
+	void FadeOut();
 };

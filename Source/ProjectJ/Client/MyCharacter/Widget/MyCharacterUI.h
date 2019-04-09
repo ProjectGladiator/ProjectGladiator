@@ -39,8 +39,9 @@ public:
 	UParty* GetPartyComponent();
 
 	UClickCharacterInteraction* GetMyCharacterInteraction();
-
-	void AllUIWidgetHidden();
+	
+	void AllUIHidden();
+	void AllUIVisible();
 
 	UMainWidget* GetMainWidget();
 

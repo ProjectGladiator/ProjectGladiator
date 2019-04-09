@@ -97,8 +97,6 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//SetClientCharacterState(new ClientCharacterInGameState(this));
-
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
@@ -646,4 +644,18 @@ bool AMyCharacter::IsBuyItem(int32 _LoseMoney)
 	{
 		return false;
 	}
+}
+
+void AMyCharacter::AllUIHidden()
+{
+	CharacterNickWidget->SetVisibility(false);
+
+	MyCharacterUI->AllUIHidden();
+}
+
+void AMyCharacter::AllUIVisible()
+{
+	CharacterNickWidget->SetVisibility(true);
+
+	MyCharacterUI->AllUIVisible();
 }

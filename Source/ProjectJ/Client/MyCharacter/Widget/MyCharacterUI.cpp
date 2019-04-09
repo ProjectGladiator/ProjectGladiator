@@ -11,6 +11,7 @@
 #include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h"
 #include "Client/Menu/MenuWidget.h"
 #include "Client/MyCharacter/Widget/MainWidget.h"
+#include "Client/MyCharacter/PC/MyCharacter.h"
 //서버 헤더
 
 // Sets default values for this component's properties
@@ -77,11 +78,38 @@ UClickCharacterInteraction * UMyCharacterUI::GetMyCharacterInteraction()
 	return MyCharacterInteraction;
 }
 
-void UMyCharacterUI::AllUIWidgetHidden()
+void UMyCharacterUI::AllUIHidden()
 {
-	MyCharacterInteraction->GetMyCharacterWidget()->RemoveFromParent(); 
-	InventoryComponent->GetInventoryWidget()->RemoveFromParent();
-	PartyComponent->GetPartyWidget()->RemoveFromParent();
+	MainWidgetHidden();
+
+	MyCharacterInteraction->MyCharacterWidgetHidden();
+
+	auto MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	if (MyCharacter)
+	{
+		if (MyCharacter->GetClickCharacter())
+		{
+			MyCharacter->GetClickCharacter()->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetHidden();
+		}
+	}
+}
+
+void UMyCharacterUI::AllUIVisible()
+{
+	MainWidgetVisible();
+
+	MyCharacterInteraction->MyCharacterWidgetVisible();
+
+	auto MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	if (MyCharacter)
+	{
+		if (MyCharacter->GetClickCharacter())
+		{
+			MyCharacter->GetClickCharacter()->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
+		}
+	}
 }
 
 UMainWidget* UMyCharacterUI::GetMainWidget()
