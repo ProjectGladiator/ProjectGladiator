@@ -141,7 +141,7 @@ void UMainWidget::ReadyCharacterSelectLogOut(const FName & _BindFunctionName)
 
 		if (MyPlayCharacter)
 		{
-			MenuWidgetToggle();
+			MyPlayCharacter->AllUIDestroy();
 			MyPlayCharacter->Destroy();
 		}
 	}

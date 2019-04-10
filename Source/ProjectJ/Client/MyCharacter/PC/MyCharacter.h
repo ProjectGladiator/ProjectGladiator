@@ -202,6 +202,7 @@ public:
 
 	void AllUIHidden();
 	void AllUIVisible();
+	void AllUIDestroy();
 
 	void MyCharacterNickWidgetHidden();
 	void MyCharacterNickWidgetVisible();

@@ -112,6 +112,19 @@ void UMyCharacterUI::AllUIVisible()
 	}
 }
 
+void UMyCharacterUI::AllUIDestroy()
+{
+	if (MyCharacterInteraction->GetMyCharacterWidget())
+	{
+		MyCharacterInteraction->GetMyCharacterWidget()->RemoveFromParent();
+	}
+
+	if (MainWidget)
+	{
+		MainWidget->RemoveFromParent();
+	}
+}
+
 UMainWidget* UMyCharacterUI::GetMainWidget()
 {
 	return MainWidget;

@@ -494,6 +494,13 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			StorageManager::GetInstance()->ChangeData(Data->data, LeaveCharacterCode); //서버로부터 로그아웃 or 캐릭터 선택창으로 이동한 캐릭터코드를 받고
 			StorageManager::GetInstance()->PopData();
 
+			OtherUserCharacter = GetLoginUser(LeaveCharacterCode);
+
+			if (OtherUserCharacter)
+			{
+				OtherUserCharacter->AllUIDestroy();
+			}
+
 			LoginUserDestory(LeaveCharacterCode); //해당 캐릭터를 삭제한다.
 			LeaveCharacterCode = nullptr;
 			break;
@@ -1002,7 +1009,7 @@ void AMainMapGameMode::FadeIn(float _X, float _Y, float _Z)
 {
 	FLatentActionInfo InGameStageAreaMapLoadInfo;
 
-	UGameplayStatics::LoadStreamLevel(this, TEXT("InGameStageArea"), true, true, InGameStageAreaMapLoadInfo); //던전 안 레벨 메모리 로드
+	UGameplayStatics::LoadStreamLevel(this, TEXT("MainStageStartArea"), true, true, InGameStageAreaMapLoadInfo); //던전 안 레벨 메모리 로드
 
 	FTimerHandle FadeInEndTimer; //FadeOut용 타이머
 
@@ -1029,7 +1036,7 @@ void AMainMapGameMode::FadeIn(float _X, float _Y, float _Z)
 void AMainMapGameMode::FadeOut(float _X, float _Y, float _Z)
 {
 	CloseDoor(); //문을 닫는다.
-
+	
 	auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn()); //내가 조종하고 있는 캐릭터를 가져온다.
 
 	if (MyCharacter)

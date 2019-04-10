@@ -648,16 +648,23 @@ bool AMyCharacter::IsBuyItem(int32 _LoseMoney)
 
 void AMyCharacter::AllUIHidden()
 {
-	CharacterNickWidget->SetVisibility(false);
+	MyCharacterNickWidgetHidden();
 
 	MyCharacterUI->AllUIHidden();
 }
 
 void AMyCharacter::AllUIVisible()
 {
-	CharacterNickWidget->SetVisibility(true);
+	MyCharacterNickWidgetVisible();
 
 	MyCharacterUI->AllUIVisible();
+}
+
+void AMyCharacter::AllUIDestroy()
+{
+	CharacterNickWidget->SetWidgetClass(nullptr);
+
+	MyCharacterUI->AllUIDestroy();
 }
 
 void AMyCharacter::MyCharacterNickWidgetHidden()
