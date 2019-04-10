@@ -54,7 +54,7 @@ void AMainMapGameMode::BeginPlay()
 	FActorSpawnParameters SpawnActorOption;
 
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AChracterCreateCamera::StaticClass(), Cameras);
-	
+
 	//에디터 상에 있는 블루프린트를 읽어서 TitleUserInWidgetClass에 저장한다.
 	FStringClassReference TitleUserInWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Title/Widget/W_UserIn.W_UserIn_C'"));
 
@@ -133,7 +133,7 @@ void AMainMapGameMode::BeginPlay()
 
 	//앞에서 읽어 들인 LoadingWidgetClass를 UserWidget클래스 형태로 읽어서 MyWidgetClass에 저장한다.
 	if (UClass* MyWidgetClass = LoadingWidgetClass.TryLoadClass<UUserWidget>())
-	{		
+	{
 		//읽어 들인 클래스로 위젯을 생성하고 LoadingWidget에 넣는다.
 		LoadingWidget = CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyWidgetClass);
 		LoadingWidget->AddToViewport(); //화면에 붙이고
@@ -190,7 +190,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	bool PartyLeaderFlag;
 
 	CharacterInfo* character_info = nullptr;
-	float x, y, z; float rx, ry, rz;				// 위치, 회전 넣을 변수
+	float x = 0, y = 0, z = 0; float rx, ry, rz;				// 위치, 회전 넣을 변수
 	FVector SpawnLocation;
 	FRotator SpawnRotation;
 	FActorSpawnParameters SpawnActorOption;
@@ -303,6 +303,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			StorageManager::GetInstance()->ChangeData(Data->data, ResultFlag);
 			if (ResultFlag)
 			{
+				StorageManager::GetInstance()->PopData();
 				//****	
 				//** 다음 씬 로딩
 				//****			
@@ -317,7 +318,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				MainMapLoadInfo.UUID = 123;
 				MainMapLoadInfo.Linkage = 0;
 
-				StorageManager::GetInstance()->PopData();
 				UGameplayStatics::LoadStreamLevel(this, TEXT("InGameStageArea"), true, true, MainMapLoadInfo);
 			}
 			else
@@ -413,7 +413,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 		case PGAMEDATA_USERLIST_USER: //나를 제외한 채널에 접속한 유저들을 월드에 스폰시켜주는 함수
 			GLog->Log(FString::Printf(TEXT("접속한 다른 유저 월드에 스폰")));
 			// 캐릭터 정보 받을 구조체 할당
-			character_info = new CharacterInfo; 
+			character_info = new CharacterInfo;
 
 			memset(character_info, 0, sizeof(CharacterInfo));
 
@@ -568,7 +568,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			PartyUser_Info = new PartyUserInfo();
 
 			memset(PartyUser_Info, 0, sizeof(PartyUserInfo));
-			
+
 			StorageManager::GetInstance()->ChangeData(Data->data, PartyUser_Info);
 			StorageManager::GetInstance()->PopData();
 
@@ -604,7 +604,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				}
 			}
 			break;
-		case PGAMEDATA_PARTY_LEAVE_INFO:	
+		case PGAMEDATA_PARTY_LEAVE_INFO:
 			memset(TempPartyLeaveCharacterCode, 0, sizeof(TempPartyLeaveCharacterCode));
 
 			StorageManager::GetInstance()->ChangeData(Data->data, PartyLeaveCharacterCode);
@@ -680,7 +680,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				{
 					MyCharacter->SetPartyLeader(false);
 				}
-				
+
 				PartyLeaderCharacter = GetLoginUser(PartyLeaderCharacterCode);
 
 				if (PartyLeaderCharacter)
@@ -727,11 +727,12 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeaderUpdate();
 			}
 			break;
-		case PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT:
+		case PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT: //던전 입장 결과 이동할 위치 들어옴
+			//StorageManager::GetInstance()->ChangeData(Data->data, x, y, z); //서버로부터 이동할 X,Y,Z 위치 받아옴
 			StorageManager::GetInstance()->PopData();
-			
-			OpenDoor();
-			FadeIn();
+
+			OpenDoor(); //문을 열고
+			FadeIn(x,y,z); //X,Y,Z 전달
 			break;
 		}
 	}
@@ -997,31 +998,51 @@ void AMainMapGameMode::CloseDoor()
 	}
 }
 
-void AMainMapGameMode::FadeIn()
+void AMainMapGameMode::FadeIn(int _X, int _Y, int _Z)
 {
-	FTimerHandle FadeInEndTimer;
-	
-	auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+	FLatentActionInfo InGameStageAreaMapLoadInfo;
+
+	UGameplayStatics::LoadStreamLevel(this, TEXT("InGameStageArea"), true, true, InGameStageAreaMapLoadInfo); //던전 안 레벨 메모리 로드
+
+	FTimerHandle FadeInEndTimer; //FadeOut용 타이머
+
+	auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn()); //내가 조종하고 있는캐릭터를 가져와서      
 
 	if (MyCharacter)
 	{
-		MyCharacter->AllUIHidden();
+		MyCharacter->AllUIHidden(); //UI를 모두 다 숨겨준다.
 	}
 
-	GetWorld()->GetTimerManager().SetTimer(FadeInEndTimer, this, &AMainMapGameMode::FadeOut, 2.0f, false);
-	UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(0, 1.0f, 2.0f, FLinearColor(0, 0, 0), false, true);
+	for (int i = 0; i < OtherLoginUserList.Num(); i++)
+	{
+		OtherLoginUserList[i]->MyCharacterNickWidgetHidden(); //다른 유저의 이름 UI도 숨겨준다.
+	}
+
+	FTimerDelegate FadeOutDelegate; //타이머 딜리게이트 변수
+	FadeOutDelegate.BindUFunction(this, TEXT("FadeOut"), _X, _Y, _Z);  //타이머 딜리게이트를 이용해서 FadeOut 함수를 바인드하고 전송할 매개변수 3개를 담는다.
+
+	GetWorld()->GetTimerManager().SetTimer(FadeInEndTimer, FadeOutDelegate, 2.0f, false); //타이머를 셋팅한다. ( 2초 후 FadeOut 함수 호출 )
+	//2초간 화면을 투명한 상태에서 어둡게 바꿔준다.
+	UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(0, 1.0f, 2.0f, FLinearColor(0, 0, 0), false, true); 
 }
 
-void AMainMapGameMode::FadeOut()
+void AMainMapGameMode::FadeOut(int _X, int _Y, int _Z)
 {
-	CloseDoor();
+	CloseDoor(); //문을 닫는다.
 
-	UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(1.0f, 0, 1.0f, FLinearColor(0, 0, 0), false, true);
-
-	auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+	auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn()); //내가 조종하고 있는 캐릭터를 가져온다.
 
 	if (MyCharacter)
 	{
+		MyCharacter->SetActorLocation(FVector(_X, _Y, _Z)); //캐릭터의 위치를 받아온 X,Y,Z값의 위치로 변경시켜준다.
+		//1초간 화면을 어두운 상태에서 투명한 상태로 바꿔준다.
+		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(1.0f, 0, 1.0f, FLinearColor(0, 0, 0), false, true);
+		//모든 UI를 다 보여준다.
 		MyCharacter->AllUIVisible();
+	}
+
+	for (int i = 0; i < OtherLoginUserList.Num(); i++)
+	{
+		OtherLoginUserList[i]->MyCharacterNickWidgetVisible(); //다른 유저의 이름 UI를 보여준다.
 	}
 }

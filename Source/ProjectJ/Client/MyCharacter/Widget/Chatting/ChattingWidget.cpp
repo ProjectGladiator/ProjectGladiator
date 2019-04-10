@@ -46,40 +46,43 @@ void UChattingWidget::ChattingStart()
 
 void UChattingWidget::ChattingSend(const FText& Text, ETextCommit::Type CommitMethod)
 {
-	if (CommitMethod == ETextCommit::OnEnter)
+	if (!Text.IsEmpty())
 	{
-		auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-
-		if (MainMapPlayerController)
+		if (CommitMethod == ETextCommit::OnEnter)
 		{
-			MainMapPlayerController->SetInputMode(FInputModeGameOnly());
+			auto MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-			FStringClassReference ChattingMessageWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Chatting/W_ChattingMessageWidget.W_ChattingMessageWidget_C'"));
-
-			if (UClass* MyWidgetClass = ChattingMessageWidgetClass.TryLoadClass<UUserWidget>())
+			if (MainMapPlayerController)
 			{
-				auto ChattingMessageWidget = Cast<UChattingMessageWidget>(CreateWidget<UUserWidget>(MainMapPlayerController, MyWidgetClass));
+				MainMapPlayerController->SetInputMode(FInputModeGameOnly());
 
-				if (ChattingMessageWidget)
+				FStringClassReference ChattingMessageWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Chatting/W_ChattingMessageWidget.W_ChattingMessageWidget_C'"));
+
+				if (UClass* MyWidgetClass = ChattingMessageWidgetClass.TryLoadClass<UUserWidget>())
 				{
-					auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+					auto ChattingMessageWidget = Cast<UChattingMessageWidget>(CreateWidget<UUserWidget>(MainMapPlayerController, MyWidgetClass));
 
-					FText FinalChattingMessage = FText::FromString(FString::Printf(TEXT("%s : %s"), ANSI_TO_TCHAR(MyCharacter->GetCharacterNickName()), *Text.ToString()));
-					
-					ChattingMessageWidget->ChattingMessageSet(FinalChattingMessage);
-
-					ChattingMessages.Add(ChattingMessageWidget);
-
-					if (ChattingScrollBox)
+					if (ChattingMessageWidget)
 					{
-						ChattingScrollBox->AddChild(ChattingMessageWidget);
-						ChattingScrollBox->ScrollToEnd();
-						ChattingInputBox->SetText(FText::FromString(FString::Printf(TEXT(""))));
+						auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+						FText FinalChattingMessage = FText::FromString(FString::Printf(TEXT("%s : %s"), ANSI_TO_TCHAR(MyCharacter->GetCharacterNickName()), *Text.ToString()));
+
+						ChattingMessageWidget->ChattingMessageSet(FinalChattingMessage);
+
+						ChattingMessages.Add(ChattingMessageWidget);
+
+						if (ChattingScrollBox)
+						{
+							ChattingScrollBox->AddChild(ChattingMessageWidget);
+							ChattingScrollBox->ScrollToEnd();
+							ChattingInputBox->SetText(FText::FromString(FString::Printf(TEXT(""))));
+						}
 					}
-				}
-				else
-				{
-					GLog->Log(FString::Printf(TEXT("ChattingMessageWidget 없음")));
+					else
+					{
+						GLog->Log(FString::Printf(TEXT("ChattingMessageWidget 없음")));
+					}
 				}
 			}
 		}

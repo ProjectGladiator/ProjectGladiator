@@ -50,7 +50,6 @@ AInGameStartDoor::AInGameStartDoor()
 	}
 
 	DoorLeft->SetRelativeLocation(FVector(-128.0f, 10.0f, 0));
-	//DoorLeft->SetRelativeRotation(FRotator(0, -190.0f, 0));
 	DoorLeft->SetRelativeRotation(FRotator(0, -90.0f, 0));
 	DoorLeft->SetRelativeScale3D(FVector(1.0f, 2.0f, 1.0f));
 
@@ -62,7 +61,6 @@ AInGameStartDoor::AInGameStartDoor()
 	}
 
 	DoorRight->SetRelativeLocation(FVector(128.0f, 10.0f, 0));
-	//DoorRight->SetRelativeRotation(FRotator(0, 10.0f, 0));
 	DoorRight->SetRelativeRotation(FRotator(0, -90.0f, 0));
 	DoorRight->SetRelativeScale3D(FVector(1.0f, 2.0f, 1.0f));
 

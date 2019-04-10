@@ -202,4 +202,7 @@ public:
 
 	void AllUIHidden();
 	void AllUIVisible();
+
+	void MyCharacterNickWidgetHidden();
+	void MyCharacterNickWidgetVisible();
 };

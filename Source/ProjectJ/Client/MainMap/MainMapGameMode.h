@@ -88,6 +88,6 @@ public:
 	void OpenDoor();
 	void CloseDoor();
 
-	void FadeIn();
-	void FadeOut();
+	void FadeIn(int _X, int _Y, int _Z);
+	void FadeOut(int _X, int _Y, int _Z);
 };

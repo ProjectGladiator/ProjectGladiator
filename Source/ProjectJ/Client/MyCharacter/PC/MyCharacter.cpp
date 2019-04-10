@@ -659,3 +659,13 @@ void AMyCharacter::AllUIVisible()
 
 	MyCharacterUI->AllUIVisible();
 }
+
+void AMyCharacter::MyCharacterNickWidgetHidden()
+{
+	CharacterNickWidget->SetVisibility(false);
+}
+
+void AMyCharacter::MyCharacterNickWidgetVisible()
+{
+	CharacterNickWidget->SetVisibility(true);
+}
