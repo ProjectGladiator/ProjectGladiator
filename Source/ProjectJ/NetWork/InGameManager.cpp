@@ -1133,7 +1133,33 @@ void InGameManager::InGame_Recv_PartyRoom_Leader_Delegate_Result(char * _buf)
 // 던전 입장 결과
 void InGameManager::InGame_Recv_Leave_Dungeon_Enter_Result(char * _buf)
 {
-	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT, 0, 0);
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, BUFSIZE);
+	char* ptr_data = data;
+
+	int size = 0;
+	float xyz[3];
+
+	// 스폰위치 언패
+	memcpy(xyz, ptr_buf, sizeof(float) * 3);
+	ptr_buf += sizeof(float) * 3;
+
+	// data에 스폰위치 패킹
+	memcpy(ptr_data, &xyz[0], sizeof(float));
+	ptr_data += sizeof(float);
+	size += sizeof(float);
+
+	memcpy(ptr_data, &xyz[1], sizeof(float));
+	ptr_data += sizeof(float);
+	size += sizeof(float);
+
+	memcpy(ptr_data, &xyz[2], sizeof(float));
+	ptr_data += sizeof(float);
+	size += sizeof(float);
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT, data, size);
 }
 
 // 던정 퇴장 결과

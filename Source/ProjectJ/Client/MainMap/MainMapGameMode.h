@@ -88,6 +88,7 @@ public:
 	void OpenDoor();
 	void CloseDoor();
 
-	void FadeIn(int _X, int _Y, int _Z);
-	void FadeOut(int _X, int _Y, int _Z);
+	void FadeIn(float _X, float _Y, float _Z);
+	UFUNCTION()
+		void FadeOut(float _X, float _Y, float _Z);
 };

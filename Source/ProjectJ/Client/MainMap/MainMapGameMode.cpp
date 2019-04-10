@@ -728,7 +728,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			}
 			break;
 		case PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT: //던전 입장 결과 이동할 위치 들어옴
-			//StorageManager::GetInstance()->ChangeData(Data->data, x, y, z); //서버로부터 이동할 X,Y,Z 위치 받아옴
+			StorageManager::GetInstance()->ChangeData(Data->data, x, y, z); //서버로부터 이동할 X,Y,Z 위치 받아옴
 			StorageManager::GetInstance()->PopData();
 
 			OpenDoor(); //문을 열고
@@ -998,7 +998,7 @@ void AMainMapGameMode::CloseDoor()
 	}
 }
 
-void AMainMapGameMode::FadeIn(int _X, int _Y, int _Z)
+void AMainMapGameMode::FadeIn(float _X, float _Y, float _Z)
 {
 	FLatentActionInfo InGameStageAreaMapLoadInfo;
 
@@ -1026,7 +1026,7 @@ void AMainMapGameMode::FadeIn(int _X, int _Y, int _Z)
 	UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(0, 1.0f, 2.0f, FLinearColor(0, 0, 0), false, true); 
 }
 
-void AMainMapGameMode::FadeOut(int _X, int _Y, int _Z)
+void AMainMapGameMode::FadeOut(float _X, float _Y, float _Z)
 {
 	CloseDoor(); //문을 닫는다.
 

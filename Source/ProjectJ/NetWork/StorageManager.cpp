@@ -442,6 +442,21 @@ void StorageManager::ChangeData(void * data, bool & _result, char * _code)
 	_result = result;
 }
 
+// 던전 스폰위치 정보
+void StorageManager::ChangeData(void * data, float& _pos_x, float& _pos_y, float& _pos_z)
+{
+	char* ptr = (char*)data;
+
+	memcpy(&_pos_x, ptr, sizeof(float));
+	ptr += sizeof(float);
+
+	memcpy(&_pos_y, ptr, sizeof(float));
+	ptr += sizeof(float);
+
+	memcpy(&_pos_z, ptr, sizeof(float));
+	ptr += sizeof(float);
+}
+
 // Front 삭제
 bool StorageManager::PopData()
 {	
