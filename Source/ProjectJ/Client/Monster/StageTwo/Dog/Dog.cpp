@@ -198,6 +198,7 @@ void ADog::Tick(float DeltaTime)
 
 void ADog::init()
 {
+	Super::init();
 	MaxHP = 50.0f;
 	CurrentHP = MaxHP;
 }

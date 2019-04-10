@@ -21,8 +21,11 @@ protected:
 	/** The Pickup to spawn*/
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	//TSubclassOf<class AMonster> whatToSpawn;
-	TArray <TSubclassOf<class AMonster>> whatToSpawn_Array;
+	TArray <TSubclassOf<class AMonster>> DefaultSpawnArea_Array;
 
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	TArray <TSubclassOf<class AMonster>> Monster_Volum_Array;
+		
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -51,14 +54,15 @@ public:
 private:
 	/** Box Component to specify where pickups should be spawned*/
 	UPROPERTY(VisibleAnywhere, Category = "Spawning", meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* whereToSpawn;
+	class UBoxComponent* DefaultSpawnArea;
 
+	/** Pool Maximum size*/
 	UPROPERTY(VisibleAnywhere, Category = "Spawning")
 	int FullPoolVolume;
 
-	/** If you want to use this, check to attribute*/
-	UPROPERTY(EditAnywhere, Category = "TestPool")
-		bool isTestPoolStart;
+	///** If you want to use this, check to attribute*/
+	//UPROPERTY(EditAnywhere, Category = "TestPool")
+	//	bool isTestPoolStart;
 
 	UPROPERTY(VisibleAnywhere, Category = "Spawning")
 	TArray<class AMonster*> Spawn_Array;
@@ -83,4 +87,7 @@ private:
 
 	//SpawnPos Selecter
 	void WhereToGate();
+
+	/**Create Maximum Monster Setting */
+	void Set_MonsterVolume_With_Array(TSubclassOf<class AMonster> , int);
 };

@@ -7,6 +7,7 @@
 #include "Client/Monster/Monster.h"
 #include "Client/Monster/StageOne/Bear/Bear.h"
 #include "Client/Monster/StageOne/Dinosaur/Dinosaur.h"
+#include "Client/Monster/StageTwo/Dog/Dog.h"
 #include "Client/Monster/MonsterAIController.h"
 #include "Components/BoxComponent.h"
 
@@ -18,19 +19,16 @@ AObjectPool::AObjectPool()
 	PrimaryActorTick.bCanEverTick = false;
 
 	// create the Box Component the spawn volume
-	whereToSpawn = CreateDefaultSubobject<UBoxComponent>(TEXT("WhereToSpawn"));
+	DefaultSpawnArea = CreateDefaultSubobject<UBoxComponent>(TEXT("WhereToSpawn"));
 
 	//Root -> Boxcomponent
-	RootComponent = whereToSpawn;
+	RootComponent = DefaultSpawnArea;
 
 	//Set SpawnNum
 	SetStaticMonsterClass();
 
-	//Test to Use this pool check
-	isTestPoolStart = false;
-
-	//Current pool init is 0
-	/*currentPool_count = 0;*/
+	////Test to Use this pool check
+	//isTestPoolStart = false;
 }
 
 // Called when the game starts or when spawned
@@ -49,21 +47,21 @@ void AObjectPool::BeginPlay()
 void AObjectPool::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 FVector AObjectPool::GetRandomPointInVolume()
 {
 	//Origin Spawn Area
-	FVector SpawnOrigin = whereToSpawn->Bounds.Origin;
+	FVector SpawnOrigin = DefaultSpawnArea->Bounds.Origin;
 	//Extent Spawn Area
-	FVector SpawnExtent = whereToSpawn->Bounds.BoxExtent;
+	FVector SpawnExtent = DefaultSpawnArea->Bounds.BoxExtent;
 
 	return UKismetMathLibrary::RandomPointInBoundingBox(SpawnOrigin, SpawnExtent);
 }
 
 void AObjectPool::PoolSetting()
 {
+	//Set To PoolObject
 	try
 	{
 		//throw Error FullPoolVolume
@@ -72,52 +70,15 @@ void AObjectPool::PoolSetting()
 			throw FullPoolVolume;
 		}
 
-		////Object Position
-		//FVector SpawnPos_Vector;
+		//kind of Monster Array
+		DefaultSpawnArea_Array.Add(Monster_Volum_Array[0]);
+		DefaultSpawnArea_Array.Add(Monster_Volum_Array[1]);
+		DefaultSpawnArea_Array.Add(Monster_Volum_Array[2]);
 
-		//SpawnParameter with CollisionHandling Set
-		FActorSpawnParameters SpawnActorOption;
-		SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
-		//Test with object Spawn bool
-		if (isTestPoolStart == true)
-		{
-			SpawnPos_Vector = whereToSpawn->Bounds.Origin;
-		}
-		else if (isTestPoolStart == false)
-		{
-			SpawnPos_Vector = FVector::ZeroVector;
-		}
-
-		//Set To PoolObject
-		for (int i_spawnObject = 0; i_spawnObject < FullPoolVolume; i_spawnObject++)
-		{
-			AMonster* SpawnActor = nullptr;
-
-			if (i_spawnObject % 2 == 0)
-			{
-				SpawnActor = GetWorld()->SpawnActor<AMonster>(whatToSpawn_Array[0], SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
-			}
-			else
-			{
-				SpawnActor = GetWorld()->SpawnActor<AMonster>(whatToSpawn_Array[1], SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
-			}
-
-			if (SpawnActor)
-			{
-				UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
-				//Pawn->Auto Possess AI
-				//SpawnActor->AutoPossessAI = EAutoPossessAI::Spawned;
-				Spawn_Array.Emplace(SpawnActor);
-				SpawnObject_SetActive(Spawn_Array[i_spawnObject], false);
-				Spawn_Array[i_spawnObject]->bisActive = false;
-			}
-			else if(SpawnActor == nullptr)
-			{
-				//GLog->Log(FString::Printf(TEXT("SpawnActor Error")));
-				throw SpawnActor;
-			}
-		}
+		//Monster's Maximum size Array
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Array[0], 10);
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Array[1], 5);
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Array[2], 20);
 	}
 	catch (int) {
 		if (FullPoolVolume <= 0)
@@ -201,9 +162,11 @@ void AObjectPool::SetStaticMonsterClass()
 {
 	UClass* bear = ABear::StaticClass();
 	UClass* Dinosaur = ADinosaur::StaticClass();
+	UClass* Dog = ADog::StaticClass();
 
-	whatToSpawn_Array.Add(Dinosaur);
-	whatToSpawn_Array.Add(bear);
+	Monster_Volum_Array.Add(Dinosaur);
+	Monster_Volum_Array.Add(bear);
+	Monster_Volum_Array.Add(Dog);
 }
 
 void AObjectPool::Recive_SpawnObject_Info(int _MonsterNum[], int _MonsterCode[], FVector _SpawnGatePosition[])
@@ -230,5 +193,46 @@ void AObjectPool::check_ReadyMonster()
 
 void AObjectPool::WhereToGate()
 {
+	//Set Effect to Spawn
+}
+
+void AObjectPool::Set_MonsterVolume_With_Array(TSubclassOf<class AMonster> _MonsterType, int _MaximumSize)
+{
+	//SpawnParameter with CollisionHandling Set
+	FActorSpawnParameters SpawnActorOption;
+	SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	//Default SpawnVector Pos
+	SpawnPos_Vector = DefaultSpawnArea->Bounds.Origin;
+
+	for (int i_spawnObject = 0; i_spawnObject < _MaximumSize; i_spawnObject++)
+	{
+		//Create Actor
+		AMonster* SpawnActor = nullptr;
+
+		//SpawnActorFuntion 
+		SpawnActor = GetWorld()->SpawnActor<AMonster>(_MonsterType, SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
+		
+		//Is SpawnActor null or nomal
+		if (SpawnActor)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
+					//Pawn->Auto Possess AI
+			//SpawnActor->AutoPossessAI = EAutoPossessAI::Spawned;
+
+			//input Array to SpawnActor
+			Spawn_Array.Emplace(SpawnActor);
+			//isActive Check bool Attribute make false
+			Spawn_Array[i_spawnObject]->bisActive = false;
+			//SpawnActor's ActiveMode Setting
+			SpawnObject_SetActive(Spawn_Array[i_spawnObject], false);
+			
+		}
+		else if (SpawnActor == nullptr)
+		{
+			//GLog->Log(FString::Printf(TEXT("SpawnActor Error")));
+			UE_LOG(LogTemp, Warning, TEXT("SpawnActor Error"));
+		}
+	}
 }
 

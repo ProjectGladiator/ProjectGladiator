@@ -87,6 +87,7 @@ void AMonster::init()
 	//Init For Monster's type
 	MaxHP = 100.0f;
 	CurrentHP = MaxHP;
+	bisActive = false;
 }
 
 float AMonster::GetHP()
