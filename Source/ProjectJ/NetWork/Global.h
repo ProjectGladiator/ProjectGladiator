@@ -239,5 +239,6 @@ enum RESULT {
 //#define SERVERIP "192.168.123.181"
 //#define SERVERIP "182.227.211.86"
 //#define SERVERIP "192.168.0.134"
+//#define SERVERIP "192.168.17.26"
 
 #endif

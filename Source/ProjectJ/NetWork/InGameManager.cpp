@@ -1139,27 +1139,62 @@ void InGameManager::InGame_Recv_Leave_Dungeon_Enter_Result(char * _buf)
 	memset(data, 0, BUFSIZE);
 	char* ptr_data = data;
 
+	char code[CHARACTERCODESIZE];
+	int len = 0;
 	int size = 0;
+	int count = 0;
+
 	float xyz[3];
 
-	// 스폰위치 언패
-	memcpy(xyz, ptr_buf, sizeof(float) * 3);
-	ptr_buf += sizeof(float) * 3;
+	memcpy(&count, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
 
-	// data에 스폰위치 패킹
-	memcpy(ptr_data, &xyz[0], sizeof(float));
-	ptr_data += sizeof(float);
-	size += sizeof(float);
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT, (void*)&count, sizeof(int));
 
-	memcpy(ptr_data, &xyz[1], sizeof(float));
-	ptr_data += sizeof(float);
-	size += sizeof(float);
+	for (int i = 0; i < count; i++)
+	{
+		memset(data, 0, sizeof(data));
+		memset(code, 0, sizeof(code));
+		ptr_data = data;
+		size = 0;
+		len = 0;
 
-	memcpy(ptr_data, &xyz[2], sizeof(float));
-	ptr_data += sizeof(float);
-	size += sizeof(float);
+		// 코드 사이즈
+		memcpy(&len, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		// 코드
+		memcpy(code, ptr_buf, len);
+		ptr_buf += len;
+		// 스폰위치 언패
+		memcpy(xyz, ptr_buf, sizeof(float) * 3);
+		ptr_buf += sizeof(float) * 3;
 
-	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT, data, size);
+		// data에 코드 길이
+		memcpy(ptr_data, &len, sizeof(int));
+		ptr_data += sizeof(int);
+		size += sizeof(int);
+		// data에 코드
+		memcpy(ptr_data, code, len);
+		ptr_data += len;
+		size += len;
+		// data에 스폰위치 패킹.x
+		memcpy(ptr_data, &xyz[0], sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+		// data에 스폰위치 패킹.y
+		memcpy(ptr_data, &xyz[1], sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+		// data에 스폰위치 패킹.z
+		memcpy(ptr_data, &xyz[2], sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+
+		StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_SPAWNINFO, data, size);
+	}
+
+
+
 }
 
 // 던정 퇴장 결과

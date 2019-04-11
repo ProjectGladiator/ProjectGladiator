@@ -443,9 +443,16 @@ void StorageManager::ChangeData(void * data, bool & _result, char * _code)
 }
 
 // 던전 스폰위치 정보
-void StorageManager::ChangeData(void * data, float& _pos_x, float& _pos_y, float& _pos_z)
+void StorageManager::ChangeData(void * data, char*& _code, float& _pos_x, float& _pos_y, float& _pos_z)
 {
+	int len = 0;
 	char* ptr = (char*)data;
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_code, ptr, len);
+	ptr += len;
 
 	memcpy(&_pos_x, ptr, sizeof(float));
 	ptr += sizeof(float);
