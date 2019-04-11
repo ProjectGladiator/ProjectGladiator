@@ -420,6 +420,11 @@ int32 UMainWidget::GetPartySize()
 	return PartySlots.Num();
 }
 
+FPartySlot UMainWidget::GetPartySlot(int32 _Index)
+{
+	return PartySlots[_Index];
+}
+
 void UMainWidget::MapLoadComplete()
 {
 	MainMapGameMode->SelectCharacterDestroy();

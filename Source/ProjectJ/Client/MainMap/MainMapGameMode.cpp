@@ -735,11 +735,29 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			}
 			break;
 		case PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT: //던전 입장 결과 이동할 위치 들어옴
-			StorageManager::GetInstance()->ChangeData(Data->data, x, y, z); //서버로부터 이동할 X,Y,Z 위치 받아옴
+			StorageManager::GetInstance()->ChangeData(Data->data, UserCount); //서버로부터 이동할 X,Y,Z 위치 받아옴
 			StorageManager::GetInstance()->PopData();
 
-			OpenDoor(); //문을 열고
-			FadeIn(x,y,z); //X,Y,Z 전달
+			FadeIn();
+			break;
+		case PGAMEDATA_PARTY_DUNGEON_SPAWNINFO:
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyReqCharacterCode, x, y, z);
+			StorageManager::GetInstance()->PopData();
+
+			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+			if (MyCharacter)
+			{
+				for (int i = 0; i < MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySize(); i++)
+				{
+					FPartySlot PartySlot = MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySlot(i);
+
+					if (strcmp(PartySlot.CharacterCode, PartyReqCharacterCode) == 0)
+					{
+						PartySlot.PartyUser->SetActorLocation(FVector(x, y, z));
+					}
+				}
+			}
 			break;
 		}
 	}
@@ -1005,8 +1023,10 @@ void AMainMapGameMode::CloseDoor()
 	}
 }
 
-void AMainMapGameMode::FadeIn(float _X, float _Y, float _Z)
+void AMainMapGameMode::FadeIn()
 {
+	LoadingWidgetViewScreen();
+
 	FLatentActionInfo InGameStageAreaMapLoadInfo;
 
 	UGameplayStatics::LoadStreamLevel(this, TEXT("MainStageStartArea"), true, true, InGameStageAreaMapLoadInfo); //던전 안 레벨 메모리 로드
@@ -1025,25 +1045,18 @@ void AMainMapGameMode::FadeIn(float _X, float _Y, float _Z)
 		OtherLoginUserList[i]->MyCharacterNickWidgetHidden(); //다른 유저의 이름 UI도 숨겨준다.
 	}
 
-	FTimerDelegate FadeOutDelegate; //타이머 딜리게이트 변수
-	FadeOutDelegate.BindUFunction(this, TEXT("FadeOut"), _X, _Y, _Z);  //타이머 딜리게이트를 이용해서 FadeOut 함수를 바인드하고 전송할 매개변수 3개를 담는다.
-
-	GetWorld()->GetTimerManager().SetTimer(FadeInEndTimer, FadeOutDelegate, 2.0f, false); //타이머를 셋팅한다. ( 2초 후 FadeOut 함수 호출 )
-	//2초간 화면을 투명한 상태에서 어둡게 바꿔준다.
-	UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(0, 1.0f, 2.0f, FLinearColor(0, 0, 0), false, true); 
+	FTimerHandle FadeOutTimer;
+	GetWorld()->GetTimerManager().SetTimer(FadeOutTimer,this, &AMainMapGameMode::FadeOut, 1.0f, false);
 }
 
-void AMainMapGameMode::FadeOut(float _X, float _Y, float _Z)
+void AMainMapGameMode::FadeOut()
 {
-	CloseDoor(); //문을 닫는다.
-	
+	LoadingWidgetHiddenScreen();
+
 	auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn()); //내가 조종하고 있는 캐릭터를 가져온다.
 
 	if (MyCharacter)
 	{
-		MyCharacter->SetActorLocation(FVector(_X, _Y, _Z)); //캐릭터의 위치를 받아온 X,Y,Z값의 위치로 변경시켜준다.
-		//1초간 화면을 어두운 상태에서 투명한 상태로 바꿔준다.
-		UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->StartCameraFade(1.0f, 0, 1.0f, FLinearColor(0, 0, 0), false, true);
 		//모든 UI를 다 보여준다.
 		MyCharacter->AllUIVisible();
 	}
