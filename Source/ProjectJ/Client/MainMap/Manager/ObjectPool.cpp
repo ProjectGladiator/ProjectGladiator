@@ -25,7 +25,9 @@ AObjectPool::AObjectPool()
 	RootComponent = DefaultSpawnArea;
 
 	//Set SpawnNum
-	SetStaticMonsterClass();
+	DefaultSpawnArea_Map.Emplace(enumMonsterType::Bear, MonsterArray);
+	DefaultSpawnArea_Map.Emplace(enumMonsterType::Dinosaur, MonsterArray);
+	DefaultSpawnArea_Map.Emplace(enumMonsterType::Dog, MonsterArray);
 
 	////Test to Use this pool check
 	//isTestPoolStart = false;
@@ -70,15 +72,16 @@ void AObjectPool::PoolSetting()
 			throw FullPoolVolume;
 		}
 
-		//kind of Monster Array
-		DefaultSpawnArea_Array.Add(Monster_Volum_Array[0]);
-		DefaultSpawnArea_Array.Add(Monster_Volum_Array[1]);
-		DefaultSpawnArea_Array.Add(Monster_Volum_Array[2]);
+		/*UClass* Static_bear = ABear::StaticClass();
+		UClass* Static_Dinosaur = ADinosaur::StaticClass();
+		UClass* Static_Dog = ADog::StaticClass();*/
 
-		//Monster's Maximum size Array
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Array[0], 10);
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Array[1], 5);
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Array[2], 20);
+		////kind of Monster
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[enumMonsterType::Bear].Monster_Volum_Array, 15, ABear::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[enumMonsterType::Dinosaur].Monster_Volum_Array, 10, ADinosaur::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[enumMonsterType::Dog].Monster_Volum_Array, 5, ADog::StaticClass());
+		//
+		//Monster's Maximum size
 	}
 	catch (int) {
 		if (FullPoolVolume <= 0)
@@ -160,13 +163,22 @@ void AObjectPool::RecycleObject(AMonster* _spawnMonster)
 
 void AObjectPool::SetStaticMonsterClass()
 {
-	UClass* bear = ABear::StaticClass();
-	UClass* Dinosaur = ADinosaur::StaticClass();
-	UClass* Dog = ADog::StaticClass();
+	/*UClass* Static_bear = ABear::StaticClass();
+	UClass* Static_Dinosaur = ADinosaur::StaticClass();
+	UClass* Static_Dog = ADog::StaticClass();
 
-	Monster_Volum_Array.Add(Dinosaur);
-	Monster_Volum_Array.Add(bear);
-	Monster_Volum_Array.Add(Dog);
+
+	DefaultSpawnArea_Map.Emplace((enumMonsterType)Bear, MonsterArray);
+	DefaultSpawnArea_Map.Emplace((enumMonsterType)Dinosaur, MonsterArray);
+	DefaultSpawnArea_Map.Emplace((enumMonsterType)Dog, MonsterArray);*/
+
+	//bool bisTypeIn
+	//DefaultSpawnArea_Array[0].Monster_Volum_Array
+
+	/*DefaultSpawnArea_Array.Add(bear, MonsterArray);
+	DefaultSpawnArea_Array.Add(Dinosaur, MonsterArray);
+	DefaultSpawnArea_Array.Add(Dog, MonsterArray);*/
+
 }
 
 void AObjectPool::Recive_SpawnObject_Info(int _MonsterNum[], int _MonsterCode[], FVector _SpawnGatePosition[])
@@ -180,15 +192,15 @@ void AObjectPool::Recive_SpawnObject_Info(int _MonsterNum[], int _MonsterCode[],
 
 void AObjectPool::check_ReadyMonster()
 {
-	int Non_ActiveMonster = 0;
-	for (int i_Monster = 0; i_Monster < Spawn_Array.Num(); i_Monster++)
-	{
-		if (Spawn_Array[i_Monster]->bisActive == false)
-		{
-			//This Set Non-Active Monster's info
-			Non_ActiveMonster++;
-		}
-	}
+	//int Non_ActiveMonster = 0;
+	//for (int i_Monster = 0; i_Monster < Spawn_Array.Num(); i_Monster++)
+	//{
+	//	if (Spawn_Array[i_Monster]->bisActive == false)
+	//	{
+	//		//This Set Non-Active Monster's info
+	//		Non_ActiveMonster++;
+	//	}
+	//}
 }
 
 void AObjectPool::WhereToGate()
@@ -196,7 +208,7 @@ void AObjectPool::WhereToGate()
 	//Set Effect to Spawn
 }
 
-void AObjectPool::Set_MonsterVolume_With_Array(TSubclassOf<class AMonster> _MonsterType, int _MaximumSize)
+void AObjectPool::Set_MonsterVolume_With_Array(TArray<TSubclassOf<class AMonster>> _MonsterTypeArray, int _MaximumSize, TSubclassOf<class AMonster> _MonsterClass)
 {
 	//SpawnParameter with CollisionHandling Set
 	FActorSpawnParameters SpawnActorOption;
@@ -209,9 +221,11 @@ void AObjectPool::Set_MonsterVolume_With_Array(TSubclassOf<class AMonster> _Mons
 	{
 		//Create Actor
 		AMonster* SpawnActor = nullptr;
-
+		/*UClass* Static_bear = ABear::StaticClass();
+		UClass* Static_Dinosaur = ADinosaur::StaticClass();
+		UClass* Static_Dog = ADog::StaticClass();*/
 		//SpawnActorFuntion 
-		SpawnActor = GetWorld()->SpawnActor<AMonster>(_MonsterType, SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
+		SpawnActor = GetWorld()->SpawnActor<AMonster>(_MonsterClass, SpawnPos_Vector, FRotator::ZeroRotator, SpawnActorOption);
 		
 		//Is SpawnActor null or nomal
 		if (SpawnActor)
@@ -220,12 +234,15 @@ void AObjectPool::Set_MonsterVolume_With_Array(TSubclassOf<class AMonster> _Mons
 					//Pawn->Auto Possess AI
 			//SpawnActor->AutoPossessAI = EAutoPossessAI::Spawned;
 
-			//input Array to SpawnActor
-			Spawn_Array.Emplace(SpawnActor);
-			//isActive Check bool Attribute make false
-			Spawn_Array[i_spawnObject]->bisActive = false;
+			////isActive Check bool Attribute make false
+			SpawnActor->bisActive = false;
+			//_MonsterTypeArray[i_spawnObject]->bisActive = false;
+
 			//SpawnActor's ActiveMode Setting
-			SpawnObject_SetActive(Spawn_Array[i_spawnObject], false);
+			SpawnObject_SetActive(SpawnActor, false);
+
+			//input Array to SpawnActor
+			_MonsterTypeArray.Add(SpawnActor->StaticClass());
 			
 		}
 		else if (SpawnActor == nullptr)
