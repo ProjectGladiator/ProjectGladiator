@@ -2,8 +2,6 @@
 
 #include "MainMapOtherPlayerController.h"
 //클라 헤더
-#include "Client/MyCharacter/PC/MyCharacter.h"
-#include "Client/MyCharacter/Widget/MyCharacterUI.h"
 
 //서버 헤더
 

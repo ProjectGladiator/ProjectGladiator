@@ -7,8 +7,8 @@
 #include "Components/BoxComponent.h"
 #include "Engine/StaticMesh.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
-#include "Client/MyCharacter/Widget/MyCharacterUI.h"
-#include "Client/MyCharacter/Widget/MainWidget.h"
+#include "Client/MyCharacter/PC/Widget/MyCharacterUI.h"
+#include "Client/MyCharacter/PC/Widget/MainWidget.h"
 #include "Kismet/GameplayStatics.h"
 
 //서버 헤더

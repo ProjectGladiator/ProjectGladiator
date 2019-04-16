@@ -13,13 +13,7 @@ UCLASS()
 class PROJECTJ_API UWinterGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-private:
-	int32 SelectCharacterIndex;
 public:
 	virtual void Init() override;
 	virtual void Shutdown() override;
-	
-	int32 GetSelectCharacterIndex();
-	void SetSelectCharacterIndex(int32 NewIndex);
-	
 };

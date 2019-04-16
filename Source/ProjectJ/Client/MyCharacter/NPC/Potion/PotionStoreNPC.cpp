@@ -1,8 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "PotionStoreNPC.h"
+//클라 헤더
 #include "UObject/ConstructorHelpers.h"
 #include "Components/SkeletalMeshComponent.h"
+
+//서버 헤더
 
 APotionStoreNPC::APotionStoreNPC()
 {
@@ -27,4 +30,9 @@ APotionStoreNPC::APotionStoreNPC()
 			GetMesh()->SetAnimInstanceClass(PotionStoreAnimBlueprint);
 		}
 	}
+}
+
+void APotionStoreNPC::BeginPlay()
+{
+	Super::BeginPlay();
 }

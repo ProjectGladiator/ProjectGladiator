@@ -3,6 +3,7 @@
 #include "MyNonPlayerCharacter.h"
 //클라 헤더
 #include "UObject/ConstructorHelpers.h"
+#include "Client/MyCharacter/NPC/Widget/StoreInventory/StoreInventory.h"
 //서버 헤더
 
 // Sets default values
@@ -11,7 +12,7 @@ AMyNonPlayerCharacter::AMyNonPlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;	
 
-	
+	StoreInventoryComponent = CreateDefaultSubobject<UStoreInventory>(TEXT("InventoryComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -19,6 +20,10 @@ void AMyNonPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (StoreInventoryComponent)
+	{
+		StoreInventoryComponent->InventoryCreate(2);
+	}
 }
 
 // Called every frame

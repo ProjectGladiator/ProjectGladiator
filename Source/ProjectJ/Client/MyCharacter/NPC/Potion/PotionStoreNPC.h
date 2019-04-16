@@ -13,9 +13,8 @@ UCLASS()
 class PROJECTJ_API APotionStoreNPC : public AMyNonPlayerCharacter
 {
 	GENERATED_BODY()
-private:
+public:
 	APotionStoreNPC();
-	
-	
-	
+protected:
+	virtual void BeginPlay() override;
 };

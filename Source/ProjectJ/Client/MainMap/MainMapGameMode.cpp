@@ -26,11 +26,11 @@
 #include "Client/Menu/MenuWidget.h" //메뉴 위젯 헤더
 #include "Client/Menu/ChannelChange/Widget/ChannelChange.h" //채널변경 위젯 헤더
 #include "Client/Menu/ChannelChange/Widget/ChannelChangeSlot.h" //채널변경 슬롯 위젯 헤더
-#include "Client/MyCharacter/Widget/MyCharacterUI.h" //캐릭터가 소유하고 있는 위젯 헤더
-#include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h" //캐릭터 상호작용 위젯 헤더
-#include "Client/MYCharacter/Widget/Party/Widget/PartyWidget.h" //캐릭터 파티 위젯 헤더
-#include "Client/MyCharacter/Widget/Party/Widget/PartyAcceptRejectWidget.h" //캐릭터 파티 수락, 취소 위젯 헤더
-#include "Client/MyCharacter/Widget/MainWidget.h" //메인 위젯 헤더
+#include "Client/MyCharacter/PC/Widget/MyCharacterUI.h" //캐릭터가 소유하고 있는 위젯 헤더
+#include "Client/MyCharacter/PC/Widget/CharacterInteraction/ClickCharacterInteraction.h" //캐릭터 상호작용 위젯 헤더
+#include "Client/MYCharacter/PC/Widget/Party/Widget/PartyWidget.h" //캐릭터 파티 위젯 헤더
+#include "Client/MyCharacter/PC/Widget/Party/Widget/PartyAcceptRejectWidget.h" //캐릭터 파티 수락, 취소 위젯 헤더
+#include "Client/MyCharacter/PC/Widget/MainWidget.h" //메인 위젯 헤더
 #include "Client/Environment/InGameStartDoor.h"
 #include "TimerManager.h" //타이머 헤더
 

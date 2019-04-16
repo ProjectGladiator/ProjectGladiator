@@ -14,11 +14,11 @@ class PROJECTJ_API AMyNonPlayerCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	AMyNonPlayerCharacter();
-
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY()
+		class UStoreInventory* StoreInventoryComponent;
 
+	virtual void BeginPlay() override;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

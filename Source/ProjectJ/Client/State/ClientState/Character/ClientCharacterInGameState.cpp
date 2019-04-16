@@ -8,9 +8,9 @@
 #include "Client/MainMap/MainMapPlayerController.h"
 #include "Client/MainMap/MainMapOtherPlayerController.h"
 #include "Kismet/GameplayStatics.h"
-#include "Client/MyCharacter/Widget/MyCharacterUI.h"
-#include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"
-#include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h"
+#include "Client/MyCharacter/PC/Widget/MyCharacterUI.h"
+#include "Client/MyCharacter/PC/Widget/CharacterInteraction/ClickCharacterInteraction.h"
+#include "Client/MyCharacter/PC/Widget/Info/MyCharacterWidget.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 
 //서버 헤더

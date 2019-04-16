@@ -18,20 +18,18 @@
 #include "client/MainMap/MainMapGameMode.h" //메인맵 게임모드 헤더
 #include "Client/MainMap/MainMapPlayerController.h" //메인맵 플레이어 컨트롤러 헤더
 #include "Client/MainMap/MainMapOtherPlayerController.h" //메인맵 다른 유저 플레이어 컨트롤러 헤더
-#include "Client/MyCharacter/Widget/MyCharacterUI.h" //내캐릭터 UI헤더
-#include "Client/MyCharacter/Widget/Inventory/Inventory.h" //인벤토리 헤더
-#include "Client/MyCharacter/Widget/Party/Party.h" //파티 헤더
-#include "Client/MyCharacter/Widget/CharacterInteraction/ClickCharacterInteraction.h"//클릭 상호작용 헤더
-#include "Client/MyCharacter/Widget/Info/MyCharacterWidget.h" //내캐릭터 정보 위젯 헤더
-#include "Client/MyCharacter/Widget/MainWidget.h"
+#include "Client/MyCharacter/PC/Widget/MyCharacterUI.h" //내캐릭터 UI헤더
+#include "Client/MyCharacter/PC/Widget/Party/Party.h" //파티 헤더
+#include "Client/MyCharacter/PC/Widget/CharacterInteraction/ClickCharacterInteraction.h"//클릭 상호작용 헤더
+#include "Client/MyCharacter/PC/Widget/Info/MyCharacterWidget.h" //내캐릭터 정보 위젯 헤더
+#include "Client/MyCharacter/PC/Widget/MainWidget.h"
 #include "Client/State/ClientState/ClientState.h" //클라 상태 클래스 헤더
 #include "Components/WidgetComponent.h"
-#include "Client/MyCharacter/Widget/Info/MyCharacterNickNameWidget.h"
-#include "Client/MyCharacter/Widget/MainWidget.h"
+#include "Client/MyCharacter/PC/Widget/Info/MyCharacterNickNameWidget.h"
+#include "Client/MyCharacter/PC/Widget/MainWidget.h"
 #include "Client/Menu/MenuWidget.h"
-#include "Client/MyCharacter/Widget/Chatting/ChattingWidget.h"
+#include "Client/MyCharacter/PC/Widget/Chatting/ChattingWidget.h"
 //#include "Client/State/ClientState/Character/ClientCharacterInGameState.h"
-
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -479,10 +477,10 @@ void AMyCharacter::InventoryToggle()
 
 void AMyCharacter::PartyToggle()
 {
-	if (MyCharacterUI)
+	/*if (MyCharacterUI)
 	{
 		MyCharacterUI->GetPartyComponent()->PartyWidgetVisible();
-	}
+	}*/
 }
 
 void AMyCharacter::MenuToggle()

@@ -2,6 +2,7 @@
 
 #include "WinterGameInstance.h"
 //클라 헤더
+
 //서버 헤더
 #include "NetWork/NetworkManager.h"
 
@@ -20,15 +21,4 @@ void UWinterGameInstance::Shutdown()
 	NetworkManager::GetInstance()->EndManager();
 	NetworkManager::DestroyInstance();
 }
-
-int32 UWinterGameInstance::GetSelectCharacterIndex()
-{
-	return SelectCharacterIndex;
-}
-
-void UWinterGameInstance::SetSelectCharacterIndex(int32 NewIndex)
-{
-	SelectCharacterIndex = NewIndex;
-}
-
 
