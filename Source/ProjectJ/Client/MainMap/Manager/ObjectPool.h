@@ -5,12 +5,25 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "ObjectPool.generated.h"
-
+USTRUCT()
+struct FMonsterstruct
+{
+	GENERATED_USTRUCT_BODY()
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	TArray<TSubclassOf<class AMonster>> Monster_Volum_Array;
+};
+/** Monster Type Enum*/
+UENUM()
+enum class enumMonsterType : uint8
+{
+	Bear, Dinosaur, Spider, SpiderBoss, Worm, Dog, Grount, End_MonsterType
+};
 UCLASS()
 class PROJECTJ_API AObjectPool : public AActor
 {
-	GENERATED_BODY()
 	
+	GENERATED_BODY()
+	FMonsterstruct MonsterArray;
 public:	
 	// Sets default values for this actor's properties
 	AObjectPool();
@@ -18,13 +31,11 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	/** The Pickup to spawn*/
+	
+	//enumMonsterType MonsterType_Enum;
+	/** This Data Structure is Monster's Type and list of Array*/
 	UPROPERTY(EditAnywhere, Category = "Spawning")
-	//TSubclassOf<class AMonster> whatToSpawn;
-	TArray <TSubclassOf<class AMonster>> DefaultSpawnArea_Array;
-
-	UPROPERTY(EditAnywhere, Category = "Spawning")
-	TArray <TSubclassOf<class AMonster>> Monster_Volum_Array;
+	TMap<enumMonsterType,FMonsterstruct> DefaultSpawnArea_Map;
 		
 public:	
 	// Called every frame
@@ -64,8 +75,8 @@ private:
 	//UPROPERTY(EditAnywhere, Category = "TestPool")
 	//	bool isTestPoolStart;
 
-	UPROPERTY(VisibleAnywhere, Category = "Spawning")
-	TArray<class AMonster*> Spawn_Array;
+	//UPROPERTY(VisibleAnywhere, Category = "Spawning")
+	//TArray<class AMonster*> Spawn_Array;
 
 	//Object Position
 	FVector SpawnPos_Vector;
@@ -89,5 +100,5 @@ private:
 	void WhereToGate();
 
 	/**Create Maximum Monster Setting */
-	void Set_MonsterVolume_With_Array(TSubclassOf<class AMonster> , int);
+	void Set_MonsterVolume_With_Array(TArray<TSubclassOf<class AMonster>>, int, TSubclassOf<class AMonster>);
 };
