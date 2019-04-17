@@ -8,6 +8,7 @@
 UENUM(BlueprintType)
 enum class EWormState : uint8
 {
+	Ready,
 	Idle,
 	Chase,
 	Attack,
@@ -17,6 +18,7 @@ enum class EWormState : uint8
 UENUM(BlueprintType)
 enum class EBearState : uint8
 {
+	Ready,
 	Idle,
 	Chase,
 	Attack,
@@ -26,6 +28,7 @@ enum class EBearState : uint8
 UENUM(BlueprintType)
 enum class EDogState : uint8
 {
+	Ready,
 	Idle,
 	Chase,
 	Attack,
@@ -35,6 +38,7 @@ enum class EDogState : uint8
 UENUM(BlueprintType)
 enum class ESpiderState : uint8
 {
+	Ready,
 	Idle,
 	Chase,
 	Attack,
@@ -44,6 +48,7 @@ enum class ESpiderState : uint8
 UENUM(BlueprintType)
 enum class ESpiderAttackState : uint8
 {
+	Ready,
 	Idle,
 	DefaultAttack,
 	ChargeAttack
@@ -52,6 +57,7 @@ enum class ESpiderAttackState : uint8
 UENUM(BlueprintType)
 enum class EDinosaurState : uint8
 {
+	Ready,
 	Idle,
 	Chase,
 	Attack,
@@ -61,6 +67,7 @@ enum class EDinosaurState : uint8
 UENUM(BlueprintType)
 enum class EDinosaurAttackState : uint8
 {
+	Ready,
 	Idle,
 	DefaultAttack,
 	RangeAttack
@@ -69,6 +76,7 @@ enum class EDinosaurAttackState : uint8
 UENUM(BlueprintType)
 enum class ESpiderBossState : uint8
 {
+	Ready,
 	Start,
 	Idle,
 	Chase,

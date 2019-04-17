@@ -91,6 +91,8 @@ void ADinosaur::Tick(float DeltaTime)
 
 		switch (CurrentState)
 		{
+		case EDinosaurState::Ready:
+			break;
 		case EDinosaurState::Idle:
 			CurrentState = EDinosaurState::Chase;
 			break;

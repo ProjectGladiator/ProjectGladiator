@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "ObjectPool.h"
-
+//클라 헤더
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Client/Monster/Monster.h"
@@ -10,7 +10,10 @@
 #include "Client/Monster/StageTwo/Dog/Dog.h"
 #include "Client/Monster/MonsterAIController.h"
 #include "Components/BoxComponent.h"
+#include "UObject/ConstructorHelpers.h" // 경로 탐색 헤더
+#include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 
+//서버 헤더
 
 // Sets default values
 AObjectPool::AObjectPool()
@@ -31,6 +34,13 @@ AObjectPool::AObjectPool()
 
 	////Test to Use this pool check
 	//isTestPoolStart = false;
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>PT_SpawnEffect(TEXT("ParticleSystem'/Game/Assets/Monster/ParagonMinions/FX/Particles/Minions/Shared/P_MinionSpawn.P_MinionSpawn'"));
+
+	if (PT_SpawnEffect.Succeeded())
+	{
+		SpawnEffect = PT_SpawnEffect.Object;
+	}
 }
 
 // Called when the game starts or when spawned

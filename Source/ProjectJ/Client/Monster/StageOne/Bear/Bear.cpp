@@ -86,6 +86,8 @@ void ABear::Tick(float DeltaTime)
 	
 		switch (CurrentState)
 		{
+		case EBearState::Ready:
+			break;
 		case EBearState::Idle:
 			CurrentState = EBearState::Chase;
 			break;

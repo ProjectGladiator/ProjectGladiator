@@ -87,6 +87,8 @@ void AWorm::Tick(float DeltaTime)
 	{
 		switch (CurrentState)
 		{
+		case EWormState::Ready:
+			break;
 		case EWormState::Idle:
 			if (Target)
 			{

@@ -82,6 +82,9 @@ private:
 	//Object Position
 	FVector SpawnPos_Vector;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
+		class UParticleSystem* SpawnEffect;
+
 	/** SpawnObject Activate*/
 	void SpawnObject_SetActive(AMonster*, bool);
 

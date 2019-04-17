@@ -83,6 +83,8 @@ void ASpiderBoss::Tick(float DeltaTime)
 
 		switch (CurrentState)
 		{
+		case ESpiderBossState::Ready:
+			break;
 		case ESpiderBossState::Idle:
 			CurrentState = ESpiderBossState::Chase;
 			break;

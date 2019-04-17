@@ -2,11 +2,9 @@
 
 #include "StageManager.h"
 //클라 헤더
-#include "Engine/World.h" 
-#include "Client/Monster/Monster.h" //몬스터 헤더
-#include "TimerManager.h" //타이머 헤더
-#include "UObject/ConstructorHelpers.h" // 경로 탐색 헤더
-#include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
+#include "Engine/World.h"
+#include "Client/MainMap/Manager/ObjectPool.h"
+
 //서버 헤더
 
 // Sets default values for this component's properties
@@ -16,22 +14,17 @@ UStageManager::UStageManager()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
-	static ConstructorHelpers::FObjectFinder<UParticleSystem>PT_SpawnEffect(TEXT("ParticleSystem'/Game/Assets/Monster/ParagonMinions/FX/Particles/Minions/Shared/P_MinionSpawn.P_MinionSpawn'"));
-
-	if (PT_SpawnEffect.Succeeded())
-	{
-		SpawnEffect = PT_SpawnEffect.Object;
-	}
 }
-
 
 // Called when the game starts
 void UStageManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	FActorSpawnParameters SpawnActorOption;
 	
+	ObjectPool = GetWorld()->SpawnActor<AObjectPool>(ObjectPool->StaticClass(), FVector(4607.0f,18000.0f,4500.0f), FRotator::ZeroRotator, SpawnActorOption);
+
 }
 
 
@@ -43,19 +36,15 @@ void UStageManager::TickComponent(float DeltaTime, ELevelTick TickType, FActorCo
 	// ...
 }
 
-void UStageManager::SetSpawnMonsterInfo(AMonster * _Monster, int32 _Count)
+AObjectPool * UStageManager::GetObjectPool()
 {
-	CurrentSpawnMonster = _Monster;
-	CurrentSpawnMonsterCount = _Count;
-}
-
-void UStageManager::SpawnStart()
-{
-	GetWorld()->GetTimerManager().SetTimer(SpawnTimerHandle, this, &UStageManager::Spawn, 2.0f, true, 2.0f);
-}
-
-void UStageManager::Spawn()
-{
-
+	if (ObjectPool)
+	{
+		return ObjectPool;
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
