@@ -160,7 +160,7 @@ void ABear::Tick(float DeltaTime)
 				bisActive = false;
 				
 				//Monster_SetActive(this, bisActive);
-				EBearState::Ready;
+				CurrentState = EBearState::Ready;
 				DeathFlag = true;
 				DeathInVisibleValue = 0;
 				GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);

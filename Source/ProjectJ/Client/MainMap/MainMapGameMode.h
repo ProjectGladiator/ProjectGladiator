@@ -80,8 +80,7 @@ public:
 
 	int32 GetChannelNum();//현재 속한 채널 번호 반환
 
-	UFUNCTION()
-		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수	
+	void C2S_ReqUserList(); //스트리밍 레벨 로드 완료시 호출하는 함수	
 
 	AMyCharacter* GetCreateSelectCharacter();
 

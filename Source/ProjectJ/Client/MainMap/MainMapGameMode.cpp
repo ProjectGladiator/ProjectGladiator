@@ -176,6 +176,10 @@ void AMainMapGameMode::BeginPlay()
 	{
 		InGameStartDoor = Cast<AInGameStartDoor>(InGameStartDoors[0]);
 	}
+
+	FLatentActionInfo MapLoadInfo;
+	UGameplayStatics::LoadStreamLevel(this, TEXT("InGameStageArea"), true, true, MapLoadInfo);
+	UGameplayStatics::LoadStreamLevel(this, TEXT("CharacterCreate"), true, true, MapLoadInfo);
 }
 
 void AMainMapGameMode::Tick(float DeltaTime)
@@ -266,8 +270,6 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				LoginWidgetToggle();
 				CharacterSelectWidgetToggle();
 
-				FLatentActionInfo CharacterCreateMapLoadInfo;
-				UGameplayStatics::LoadStreamLevel(this, TEXT("CharacterCreate"), true, true, CharacterCreateMapLoadInfo);
 				StorageManager::GetInstance()->PopData();
 				CharacterManager::GetInstance()->Character_Req_Slot();
 				NetworkClient_main::NetworkManager::GetInstance()->Send();
@@ -307,18 +309,9 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				//****	
 				//** 다음 씬 로딩
 				//****			
-
 				CharacterSelectWidgetToggle();
 
-				LoadingWidgetViewScreen();
-
-				FLatentActionInfo MainMapLoadInfo;
-				MainMapLoadInfo.CallbackTarget = this;
-				MainMapLoadInfo.ExecutionFunction = "MapLoadComplete";
-				MainMapLoadInfo.UUID = 123;
-				MainMapLoadInfo.Linkage = 0;
-
-				UGameplayStatics::LoadStreamLevel(this, TEXT("InGameStageArea"), true, true, MainMapLoadInfo);
+				C2S_ReqUserList();
 			}
 			else
 			{
@@ -990,11 +983,9 @@ int32 AMainMapGameMode::GetChannelNum()
 	return Channelnum;
 }
 
-void AMainMapGameMode::MapLoadComplete()
+void AMainMapGameMode::C2S_ReqUserList()
 {
 	SelectCharacterDestroy();
-	GLog->Log(FString::Printf(TEXT("맵 로드 완료")));
-	LoadingWidgetHiddenScreen();
 
 	if (MainMapPlayerController)
 	{
