@@ -159,8 +159,11 @@ void ABear::Tick(float DeltaTime)
 				//Destroy();
 				bisActive = false;
 				
-				Monster_SetActive(this, bisActive);
+				//Monster_SetActive(this, bisActive);
+				EBearState::Ready;
 				DeathFlag = true;
+				DeathInVisibleValue = 0;
+				GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 			}
 			break;
 		}
@@ -174,6 +177,7 @@ void ABear::Tick(float DeltaTime)
 void ABear::init()
 {
 	Super::init();
+	CurrentState = EBearState::Idle;
 	/*MaxHP = 100.0f;
 	CurrentHP = MaxHP;*/
 }

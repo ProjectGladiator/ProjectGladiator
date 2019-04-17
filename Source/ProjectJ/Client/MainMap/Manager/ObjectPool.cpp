@@ -173,7 +173,8 @@ bool AObjectPool::check_RecycleObject(AMonster* _spawnMonster)
 	{
 		//Get Monster's init
 		_spawnMonster->init();
-		_spawnMonster->GetActorLocation()= SpawnPos_Vector;
+		SpawnPos_Vector = DefaultSpawnArea->Bounds.Origin;
+		_spawnMonster->SetActorLocation(SpawnPos_Vector);
 		_spawnMonster->bisActive = true;
 		SpawnObject_SetActive(_spawnMonster, true);
 		return true;
