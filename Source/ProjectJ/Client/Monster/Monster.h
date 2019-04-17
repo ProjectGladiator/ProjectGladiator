@@ -32,7 +32,7 @@ protected:
 		class UParticleSystem* HitEffectTarget;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UPROPERTY()
+	UPROPERTY(VisibleInstanceOnly, Category = isDead)
 		bool DeathFlag;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ComboAttack)
@@ -65,6 +65,9 @@ public:
 		float GetHP();
 
 	/** Actor Hidden 확인여부 */
-	UPROPERTY(VisibleAnywhere, Category = isSpawn)
+	UPROPERTY(VisibleInstanceOnly, Category = isSpawn)
 	bool bisActive;
+
+	void Monster_SetActive(AMonster*, bool);
+
 };

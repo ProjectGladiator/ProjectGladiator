@@ -10,7 +10,7 @@ struct FMonsterstruct
 {
 	GENERATED_USTRUCT_BODY()
 	UPROPERTY(EditAnywhere, Category = "Spawning")
-	TArray<TSubclassOf<class AMonster>> Monster_Volum_Array;
+	TArray<class AMonster*> Monster_Volum_Array;
 };
 /** Monster Type Enum*/
 UENUM()
@@ -32,7 +32,8 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	//enumMonsterType MonsterType_Enum;
+	enumMonsterType MonsterType_Enum;
+
 	/** This Data Structure is Monster's Type and list of Array*/
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	TMap<enumMonsterType,FMonsterstruct> DefaultSpawnArea_Map;
@@ -85,20 +86,20 @@ private:
 	void SpawnObject_SetActive(AMonster*, bool);
 
 	/** Monster Set useful*/
-	void RecycleObject(AMonster*);
+	bool check_RecycleObject(AMonster*);
 
 	/** Monster Class input whatToSpawn_Array*/
 	void SetStaticMonsterClass();
 
 	//Get Spawn Info
-	void Recive_SpawnObject_Info(int[], int[],FVector[]);
+	void Recive_SpawnObject_Info(int, enumMonsterType, FVector);
 
 	//Check Non-Active Monster
-	void check_ReadyMonster();
+	void ReadyMonster(enumMonsterType);
 
 	//SpawnPos Selecter
 	void WhereToGate();
 
 	/**Create Maximum Monster Setting */
-	void Set_MonsterVolume_With_Array(TArray<TSubclassOf<class AMonster>>, int, TSubclassOf<class AMonster>);
+	void Set_MonsterVolume_With_Array(TArray<class AMonster*>&, int, TSubclassOf<class AMonster>);
 };

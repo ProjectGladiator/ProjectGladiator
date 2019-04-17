@@ -87,12 +87,39 @@ void AMonster::init()
 	//Init For Monster's type
 	MaxHP = 100.0f;
 	CurrentHP = MaxHP;
-	bisActive = false;
+	//bisActive = false;
 }
 
 float AMonster::GetHP()
 {
 	return CurrentHP;
+}
+
+void AMonster::Monster_SetActive(AMonster * SpawnObject, bool _bActive)
+{
+	if (SpawnObject)
+	{
+		if (_bActive == true)
+		{
+			SpawnObject->SetActorHiddenInGame(false);
+			SpawnObject->SetActorEnableCollision(true);
+			SpawnObject->SetActorTickEnabled(true);
+		}
+		else
+		{
+			// Hides visible components
+			SpawnObject->SetActorHiddenInGame(true);
+			// Disables collision components
+			SpawnObject->SetActorEnableCollision(true);
+			// Stops the Actor from ticking
+			SpawnObject->SetActorTickEnabled(false);
+		}
+	}
+	else
+	{
+		GLog->Log(FString::Printf(TEXT("Monster Cannot Active")));
+	}
+	
 }
 
 

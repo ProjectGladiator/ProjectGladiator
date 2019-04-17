@@ -158,7 +158,9 @@ void ASpider::Tick(float DeltaTime)
 
 			if (DeathFlag)
 			{
-				Destroy();
+				//We Not Use Destroy Function
+				//Destroy();
+				Monster_SetActive(this, bisActive);
 			}
 			break;
 		}

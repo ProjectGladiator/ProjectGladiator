@@ -136,7 +136,10 @@ void ADinosaur::Tick(float DeltaTime)
 
 			if (DeathFlag)
 			{
-				Destroy();
+				//We Not Use Destroy Function
+				//Destroy();
+				bisActive = false;
+				Monster_SetActive(this, bisActive);
 			}
 			break;
 		}
