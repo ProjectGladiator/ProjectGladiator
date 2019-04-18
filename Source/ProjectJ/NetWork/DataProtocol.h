@@ -47,9 +47,9 @@ namespace DataProtocol {
 		PGAMEDATA_PARTY_DUNGEON_SPAWNINFO,				// 파티 던전 입장시 던전좌표 - (코드,좌표)
 		PGAMEDATA_PARTY_DUNGEON_LEAVE_RESULT,			// 파티 던전 퇴장 결과 - (채널번호)
 		PGAMEDATA_PARTY_DUNGEON_STAGE_ENTER_RESULT,		// 파티 스테이지 입장  - (유저 숫자)
-		PGAMEDATA_PARTY_DUNGEON_STAGE_SPAWNINFO,		// 파티 스테이지 입장시 좌표 - (코드,좌표)
-		PGAMEDATA_STAGE_MONSTER_TPYES_COUNT,			// 스테이지 몬스터 종류가 몇개인지 - (종류 숫자)
-		PGAMEDATA_STAGE_MONSTER_INFO					// 스테이지 몬스터 정보 - (몬스터코드,몬스터숫자,좌표)
+		PGAMEDATA_PARTY_DUNGEON_STAGE_SPAWNINFO,		// 파티 스테이지 입장시 좌표 - ([char]코드,좌표)
+		PGAMEDATA_STAGE_MONSTER_TPYES_COUNT,			// 스테이지 몬스터 종류가 몇개인지 - ([int] 종류 숫자)
+		PGAMEDATA_STAGE_MONSTER_INFO					// 스테이지 몬스터 정보 - ([int] 몬스터코드,[int] 몬스터숫자, [float*3] 좌표)
 	};
 	// 공통 프로토콜
 	enum PGLOBAL {
