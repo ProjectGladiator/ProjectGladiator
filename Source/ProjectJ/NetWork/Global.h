@@ -111,9 +111,17 @@ enum PROTOCOL {
 	// 던전 프로토콜
 	CLIENT_INGAME_DUNGEON_ENTER,				// 클라 던전 입장
 	CLIENT_INGAME_DUNGEON_LEAVE,				// 클라 던전 퇴장
+	CLIENT_INGAME_DUNGEON_STAGE_IN,				// 클라 던전 스테이지에 입장하겠다는 프로토콜(리더가보냄)
 
-	SERVER_INGAME_DUNGEON_ENTER_RESULT,			// 서버 던전 입장
-	SERVER_INGAME_DUNGEON_LEAVE_RESULT,			// 서버 던전 퇴장
+	SERVER_INGAME_DUNGEON_ENTER_RESULT,			// 서버 던전 입장 결과
+	SERVER_INGAME_DUNGEON_LEAVE_RESULT,			// 서버 던전 퇴장 결과
+	SERVER_INGAME_DUNGEON_STAGE_IN_REULST,		// 서버 던전 스테이지에 입장결과
+
+	// 몬스터 프로토콜
+	CLIENT_INGAME_MONSTER_MOVE,					// 클라 파티리더가 몬스터 이동정보를 보낸다
+
+	SERVER_INGAME_MONSTER_INFO,					// 서버 몬스터 정보를 주는 프로토콜
+	SERVER_INGAME_MONSTER_MOVE_RESULT,			// 서버 몬스터 이동정보
 
 	// 채팅 프로토콜
 	CLIENT_REQ_CHAT_LIST,					// 현재 로그인한 회원리스트 요청 			 프로토콜만
