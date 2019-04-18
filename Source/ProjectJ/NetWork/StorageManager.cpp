@@ -464,6 +464,27 @@ void StorageManager::ChangeData(void * data, char*& _code, float& _pos_x, float&
 	ptr += sizeof(float);
 }
 
+// 몬스터정보 (코드,몬스터숫자,좌표)
+void StorageManager::ChangeData(void * data, int *& _code, int *& _count, float & _pos_x, float & _pos_y, float & _pos_z)
+{
+	char* ptr = (char*)data;
+
+	memcpy(&_code, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&_count, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&_pos_x, ptr, sizeof(float));
+	ptr += sizeof(float);
+
+	memcpy(&_pos_y, ptr, sizeof(float));
+	ptr += sizeof(float);
+
+	memcpy(&_pos_z, ptr, sizeof(float));
+	ptr += sizeof(float);
+}
+
 // Front 삭제
 bool StorageManager::PopData()
 {	

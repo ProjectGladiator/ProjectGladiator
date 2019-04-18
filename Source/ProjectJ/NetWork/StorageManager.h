@@ -86,9 +86,10 @@ public:
 	void ChangeData(void* data, PartyUserInfo*& _partyuserinfo);
 	// 강퇴 결과 정보,파티 리더 위임 결과 정보(성공이면 코드있고,실패하면 뒤에 코드가없습니다)
 	void ChangeData(void* data, bool& _result, char* _code);
-	// 던전 스폰위치 정보
+	// 던전 스폰위치 정보, 스테이지 스폰위치 정보
 	void ChangeData(void* data, char*& _code,float& _pos_x, float& _pos_y, float& _pos_z);
-
+	// 몬스터정보 (코드,몬스터숫자,좌표)
+	void ChangeData(void* data, int*& _code, int*& _count, float& _pos_x, float& _pos_y, float& _pos_z);
 
 	bool PopData();
 };

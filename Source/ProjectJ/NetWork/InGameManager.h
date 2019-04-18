@@ -64,6 +64,12 @@ private:
 	// 던정 퇴장 결과
 	void InGame_Recv_Leave_Dungeon_Leave_Result(char* _buf);
 
+	// 스테이지 입장 결과
+	void InGame_Recv_Stage_Enter_Result(char* _buf);
+
+	// 스테이지 입장후 받는 몬스터정보(초기화정보)
+	void InGame_Recv_Stage_MonsterInfo(char* _buf);
+
 public:
 	static void CreateInstance();
 	static InGameManager* GetInstance();
@@ -105,6 +111,8 @@ public:
 	// 던전 퇴장 요청
 	void InGame_Req_Dungeon_Leave();
 
+	// 스테이지 입장
+	void InGame_Req_Dungeon_Stage_Enter();
 
 	RESULT InGameInitRecvResult(User* _user);			// 인게임 
 };

@@ -1192,9 +1192,6 @@ void InGameManager::InGame_Recv_Leave_Dungeon_Enter_Result(char * _buf)
 
 		StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_SPAWNINFO, data, size);
 	}
-
-
-
 }
 
 // 던정 퇴장 결과
@@ -1219,6 +1216,133 @@ void InGameManager::InGame_Recv_Leave_Dungeon_Leave_Result(char * _buf)
 	size += sizeof(int);
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_LEAVE_RESULT, data, size);
+}
+
+// 스테이지 입장 결과
+void InGameManager::InGame_Recv_Stage_Enter_Result(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, BUFSIZE);
+	char* ptr_data = data;
+
+	char code[CHARACTERCODESIZE];
+	int len = 0;
+	int size = 0;
+	int count = 0;
+
+	float xyz[3];
+
+	memcpy(&count, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_STAGE_ENTER_RESULT, (void*)&count, sizeof(int));
+
+	for (int i = 0; i < count; i++)
+	{
+		memset(data, 0, sizeof(data));
+		memset(code, 0, sizeof(code));
+		ptr_data = data;
+		size = 0;
+		len = 0;
+
+		// 코드 사이즈
+		memcpy(&len, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		// 코드
+		memcpy(code, ptr_buf, len);
+		ptr_buf += len;
+		// 스폰위치 언패
+		memcpy(xyz, ptr_buf, sizeof(float) * 3);
+		ptr_buf += sizeof(float) * 3;
+
+		// data에 코드 길이
+		memcpy(ptr_data, &len, sizeof(int));
+		ptr_data += sizeof(int);
+		size += sizeof(int);
+		// data에 코드
+		memcpy(ptr_data, code, len);
+		ptr_data += len;
+		size += len;
+		// data에 스폰위치 패킹.x
+		memcpy(ptr_data, &xyz[0], sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+		// data에 스폰위치 패킹.y
+		memcpy(ptr_data, &xyz[1], sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+		// data에 스폰위치 패킹.z
+		memcpy(ptr_data, &xyz[2], sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+
+		StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_STAGE_SPAWNINFO, data, size);
+	}
+}
+
+// 스테이지 입장후 받는 몬스터정보(초기화정보)
+void InGameManager::InGame_Recv_Stage_MonsterInfo(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, BUFSIZE);
+	char* ptr_data = data;
+	int size = 0;
+
+	int code = 0;
+	int monster_num = 0;
+	int monster_tpyes_count = 0;
+
+	float xyz[3] = { 0 };
+
+	memcpy(&monster_tpyes_count, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_STAGE_MONSTER_TPYES_COUNT, (void*)&monster_tpyes_count, sizeof(int));
+
+	for (int i = 0; i < monster_tpyes_count; i++)
+	{
+		ptr_data = data;
+		code = 0;
+		monster_num = 0;
+		size = 0;
+
+		// 몬스터 코드
+		memcpy(&code, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		// 몬스터 숫자
+		memcpy(&monster_num, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		// 스폰위치
+		memcpy(xyz, ptr_buf, sizeof(float) * 3);
+		ptr_buf += sizeof(float) * 3;
+
+		// data에 몬스터 코드 패킹
+		memcpy(ptr_data, &code, sizeof(int));
+		ptr_data += sizeof(int);
+		size += sizeof(int);
+		// data에 몬스터 숫자 패킹
+		memcpy(ptr_data, &monster_num, sizeof(int));
+		ptr_data += sizeof(int);
+		size += sizeof(int);
+		// data에 스폰위치 패킹.x
+		memcpy(ptr_data, &xyz[0], sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+		// data에 스폰위치 패킹.y
+		memcpy(ptr_data, &xyz[1], sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+		// data에 스폰위치 패킹.z
+		memcpy(ptr_data, &xyz[2], sizeof(float));
+		ptr_data += sizeof(float);
+		size += sizeof(float);
+
+		StorageManager::GetInstance()->PushData(PGAMEDATA_STAGE_MONSTER_INFO, data, size);
+	}
 }
 
 // 파티 초대 요청
@@ -1289,6 +1413,15 @@ void InGameManager::InGame_Req_Dungeon_Leave()
 	memset(buf, 0, sizeof(buf));
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_DUNGEON_LEAVE, buf, 0);
+}
+
+// 스테이지 입장
+void InGameManager::InGame_Req_Dungeon_Stage_Enter()
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_DUNGEON_STAGE_IN, buf, 0);
 }
 
 RESULT InGameManager::InGameInitRecvResult(User * _user)
@@ -1414,7 +1547,7 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 		result = RT_INGAME_PARTY_LEADER_DELEGATE_RESULT;
 		break;
 	case SERVER_INGAME_DUNGEON_ENTER_RESULT:
-		// 프로토콜만 옴
+		// 던전 스폰 위치 옴(Vector3)
 		InGame_Recv_Leave_Dungeon_Enter_Result(buf);
 		result = RT_INGAME_DUNGEON_ENTER_RESULT;
 		break;
@@ -1422,6 +1555,16 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 		// 채널번호옴
 		InGame_Recv_Leave_Dungeon_Leave_Result(buf);
 		result = RT_INGAME_DUNGEON_LEAVE_RESULT;
+		break;
+	case SERVER_INGAME_DUNGEON_STAGE_IN_REULST:
+		// 스테이지 입장 결과옴(Vector3)
+		InGame_Recv_Stage_Enter_Result(buf);
+		result = RT_INGAME_DUNGEON_STAGE_ENTER_RESULT;
+		break;
+	case SERVER_INGAME_MONSTER_INFO:
+		// 몬스터 정보 옴
+		InGame_Recv_Stage_MonsterInfo(buf);
+		result = RT_INGAME_MONSTER_INFO_RESULT;
 		break;
 	default:
 		break;
