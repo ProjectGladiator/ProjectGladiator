@@ -113,6 +113,9 @@ public:
 
 	// 스테이지 입장
 	void InGame_Req_Dungeon_Stage_Enter();
+	// 몬스터 정보 요청
+	void InGame_Req_Monster_Info();
+
 
 	RESULT InGameInitRecvResult(User* _user);			// 인게임 
 };

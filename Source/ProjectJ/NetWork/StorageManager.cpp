@@ -465,7 +465,7 @@ void StorageManager::ChangeData(void * data, char*& _code, float& _pos_x, float&
 }
 
 // 몬스터정보 (코드,몬스터숫자,좌표)
-void StorageManager::ChangeData(void * data, int *& _code, int *& _count, float & _pos_x, float & _pos_y, float & _pos_z)
+void StorageManager::ChangeData(void * data, int & _code, int & _count, float & _pos_x, float & _pos_y, float & _pos_z)
 {
 	char* ptr = (char*)data;
 

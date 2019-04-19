@@ -4,6 +4,7 @@
 //클라 헤더
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "NetWork/DataProtocol.h"
 #include "Client/Monster/Monster.h"
 #include "Client/Monster/StageOne/Bear/Bear.h"
 #include "Client/Monster/StageOne/Dinosaur/Dinosaur.h"
@@ -14,6 +15,7 @@
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 
 //서버 헤더
+#include "NetWork/StorageManager.h"
 
 // Sets default values
 AObjectPool::AObjectPool()
@@ -27,10 +29,11 @@ AObjectPool::AObjectPool()
 	//Root -> Boxcomponent
 	RootComponent = DefaultSpawnArea;
 
+	FMonsterstruct MonsterArray;
 	//Set SpawnNum
-	DefaultSpawnArea_Map.Emplace(enumMonsterType::Bear, MonsterArray);
-	DefaultSpawnArea_Map.Emplace(enumMonsterType::Dinosaur, MonsterArray);
-	DefaultSpawnArea_Map.Emplace(enumMonsterType::Dog, MonsterArray);
+	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::SPIDER, MonsterArray);
+	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::WORM, MonsterArray);
+	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::BOSS_SPIDER, MonsterArray);
 
 	////Test to Use this pool check
 	//isTestPoolStart = false;
@@ -51,7 +54,6 @@ void AObjectPool::BeginPlay()
 
 	GLog->Log(FString::Printf(TEXT("AObjectPool BeginPlay")));
 	//Set Pool volume to BeginPlay
-	FullPoolVolume = initPoolVolume;
 	PoolSetting();
 }
 
@@ -59,10 +61,32 @@ void AObjectPool::BeginPlay()
 void AObjectPool::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//Origin Spawn Area
-	//FVector SpawnOrigin = DefaultSpawnArea->Bounds.Origin;
-	//Recive_SpawnObject_Info(3, enumMonsterType::Dog, SpawnOrigin);
-	ReadyMonster(enumMonsterType::Bear);
+	PacketData* Data;
+	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
+	{
+	
+
+		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
+		{
+		case PGAMEDATA_STAGE_MONSTER_TPYES_COUNT: // 스테이지 몬스터 종류가 몇개인지 - (종류 숫자)
+			//StorageManager::GetInstance()->ChangeData(SpawnMonster_Num);
+			StorageManager::GetInstance()->PopData();
+			break;
+		case PGAMEDATA_STAGE_MONSTER_INFO: // 스테이지 몬스터 정보 - (몬스터코드,몬스터숫자,좌표)
+
+			int KindMonster;
+			int SpawnMonster_Num;
+			FVector SpawnPos;
+
+			StorageManager::GetInstance()->ChangeData(Data->data, KindMonster, SpawnMonster_Num, SpawnPos.X, SpawnPos.Y, SpawnPos.Z);
+			StorageManager::GetInstance()->PopData();
+
+			Recive_SpawnObject_Info(SpawnMonster_Num, static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
+			break;
+		}
+	}
+	//종류 int 갯수
+	/*ReadyMonster(enumMonsterType::Bear);*/
 }
 
 FVector AObjectPool::GetRandomPointInVolume()
@@ -81,26 +105,38 @@ void AObjectPool::PoolSetting()
 	try
 	{
 		//throw Error FullPoolVolume
-		if (FullPoolVolume <= 0)
+		if (bis_Testpool_Set == true)
 		{
-			throw FullPoolVolume;
+			throw bis_Testpool_Set;
 		}
 
 		////kind of Monster AND Monster's Maximum size
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[enumMonsterType::Bear].Monster_Volum_Array, 5, ABear::StaticClass());
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[enumMonsterType::Dinosaur].Monster_Volum_Array, 5, ADinosaur::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, 20, ABear::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::WORM].Monster_Volum_Array, 10, ADinosaur::StaticClass());
 		//Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[enumMonsterType::Dog].Monster_Volum_Array, 5, ADog::StaticClass());
-		
+	/*	
+		int* KindMonster;
+		int* SpawnMonster_Num;
+		FVector SpawnPos;
+
+		int k = 0;
+		int SN = 3;
+
+		KindMonster = &k;
+		SpawnMonster_Num = &SN;
+
+		Recive_SpawnObject_Info(*SpawnMonster_Num, static_cast<enumMonsterType>(*KindMonster), FVector(300, 300, 500));*/
+
 		/*MonsterType_Enum = enumMonsterType::Bear;
 		int temp = 2;*/
 
 		/*Recive_SpawnObject_Info(3, MonsterType_Enum, FVector(4892, 15000, 6451));
 		Recive_SpawnObject_Info(temp, enumMonsterType::Dinosaur, FVector(4844, 22780, 6451));*/
 	}
-	catch (int) {
-		if (FullPoolVolume <= 0)
+	catch (bool) {
+		if (bis_Testpool_Set == true)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("ERROR!! : (FullPoolVolume is 'Zero' OR 'Negative Number')"));
+			UE_LOG(LogTemp, Warning, TEXT("Pool DisActive"));
 		}
 	}
 	catch (AMonster*)
@@ -114,11 +150,11 @@ void AObjectPool::Pooling(int _counter)
 	try {
 
 		//throw Error _counter
-		if (_counter > FullPoolVolume)
+	/*	if (_counter > FullPoolVolume)
 		{
 			throw _counter;
 		}
-		else if (_counter < -1)
+		else */if (_counter < -1)
 		{
 			throw _counter;
 		}
@@ -128,12 +164,13 @@ void AObjectPool::Pooling(int _counter)
 
 	}
 	catch (int) {
-		if (_counter > FullPoolVolume)
-		{
-			//Error or FullPoolVolume Use
-			UE_LOG(LogTemp, Warning, TEXT("_counter is over PoolVolume"));
-		}
-		else if (_counter < -1)
+		//if (_counter > FullPoolVolume)
+		//{
+		//	//Error or FullPoolVolume Use
+		//	UE_LOG(LogTemp, Warning, TEXT("_counter is over PoolVolume"));
+		//}
+		//else
+		if (_counter < -1)
 		{
 			//Error not to use ObjectPool
 			UE_LOG(LogTemp, Warning, TEXT("_counter is (-)value"));
@@ -171,12 +208,7 @@ bool AObjectPool::check_RecycleObject(AMonster* _spawnMonster)
 {
 	if (_spawnMonster->bisActive == false)
 	{
-		//Get Monster's init
-		_spawnMonster->init();
-		SpawnPos_Vector = DefaultSpawnArea->Bounds.Origin;
-		_spawnMonster->SetActorLocation(SpawnPos_Vector);
-		_spawnMonster->bisActive = true;
-		SpawnObject_SetActive(_spawnMonster, true);
+		//Make BisActive false -> true
 		return true;
 	}
 	else
@@ -188,7 +220,7 @@ void AObjectPool::SetStaticMonsterClass()
 
 }
 
-void AObjectPool::Recive_SpawnObject_Info(int _MonsterNum, enumMonsterType _MonsterCode, FVector _SpawnGatePosition)
+void AObjectPool::Recive_SpawnObject_Info(int _MonsterNum, MONSTER_CODE _MonsterCode, FVector _SpawnGatePosition)
 {
 
 	//스폰좌표 3가지
@@ -199,19 +231,32 @@ void AObjectPool::Recive_SpawnObject_Info(int _MonsterNum, enumMonsterType _Mons
 
 	//SpawnPosition Get
 	//Last, Non_Active's Monster Find
-	DefaultSpawnArea_Map[(enumMonsterType)_MonsterCode].Monster_Volum_Array[_MonsterNum]->SetActorLocation(_SpawnGatePosition);
-	DefaultSpawnArea_Map[(enumMonsterType)_MonsterCode].Monster_Volum_Array[_MonsterNum]->bisActive = true;
-	ReadyMonster(_MonsterCode);
+	ReadyMonster(_MonsterCode, _MonsterNum, _SpawnGatePosition);
 
 }
 
-void AObjectPool::ReadyMonster(enumMonsterType _MonsterCode)
+void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, int _MonsterNum, FVector _MonsterPostion)
 {
-	for (int i_Monster = 0; i_Monster < DefaultSpawnArea_Map[(enumMonsterType)_MonsterCode].Monster_Volum_Array.Num(); i_Monster++)
+	int Monster_Spawn_Counter=0;
+	for (int i_Monster = 0; i_Monster < DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array.Num(); i_Monster++)
 	{
-		if (check_RecycleObject(DefaultSpawnArea_Map[(enumMonsterType)_MonsterCode].Monster_Volum_Array[i_Monster]) == true)
+		if (check_RecycleObject(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]) == true && Monster_Spawn_Counter != _MonsterNum)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Monster Recycle"));
+			++Monster_Spawn_Counter;
+			//Active Actor to bisActive make true;
+			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->bisActive = true;
+			//Get Monster's init
+			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->init();
+			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->SetActorLocation(_MonsterPostion);
+		/*	SpawnPos_Vector = DefaultSpawnArea->Bounds.Origin;
+			DefaultSpawnArea_Map[(enumMonsterType)_MonsterCode].Monster_Volum_Array[i_Monster]->SetActorLocation(SpawnPos_Vector);*/
+
+			SpawnObject_SetActive(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster], true);
+		}
+		else if (Monster_Spawn_Counter == _MonsterNum)
+		{
+			break;
 		}
 		else
 			UE_LOG(LogTemp, Warning, TEXT("Monster Recycle Fail"));
@@ -227,7 +272,9 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 {
 	//SpawnParameter with CollisionHandling Set
 	FActorSpawnParameters SpawnActorOption;
-	SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+
+	//Use SpawnActorOption, ESpawnActorCollisionHandlingMethod::[ AlwaysSpawn OR AdjustIfPossibleButAlwaysSpawn ]
+	SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
 	//Default SpawnVector Pos
 	SpawnPos_Vector = DefaultSpawnArea->Bounds.Origin;
@@ -244,14 +291,14 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 		if (SpawnActor)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("SpawnActor Create"));
-					//Pawn->Auto Possess AI
+			//Pawn->Auto Possess AI
 			//SpawnActor->AutoPossessAI = EAutoPossessAI::Spawned;
 
 			////isActive Check bool Attribute make false
-			SpawnActor->bisActive = true;
+			SpawnActor->bisActive = false;
 
-			//SpawnActor's ActiveMode Setting
-			SpawnObject_SetActive(SpawnActor, true);
+			//SpawnActor's ActiveMode Setting False
+			SpawnObject_SetActive(SpawnActor, false);
 
 			//input Array to SpawnActor
 			_MonsterTypeArray.Add(SpawnActor);

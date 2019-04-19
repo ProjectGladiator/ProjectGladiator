@@ -1424,6 +1424,16 @@ void InGameManager::InGame_Req_Dungeon_Stage_Enter()
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_DUNGEON_STAGE_IN, buf, 0);
 }
 
+// 몬스터 정보 요청
+void InGameManager::InGame_Req_Monster_Info()
+{
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MONSTER_INFO, buf, 0);
+	
+}
+
 RESULT InGameManager::InGameInitRecvResult(User * _user)
 {
 	PROTOCOL protocol;
