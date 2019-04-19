@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "NetWork/MonsterInfo.h"
 #include "ObjectPool.generated.h"
 USTRUCT()
 struct FMonsterstruct
@@ -16,14 +17,17 @@ struct FMonsterstruct
 UENUM()
 enum class enumMonsterType : uint8
 {
-	Bear, Dinosaur, Spider, SpiderBoss, Worm, Dog, Grount, End_MonsterType
+	//Stage 1
+	Bear, Dinosaur, Spider, SpiderBoss, Worm,
+	//Stage 2
+	Dog, Grount
 };
 UCLASS()
 class PROJECTJ_API AObjectPool : public AActor
 {
 	
 	GENERATED_BODY()
-	FMonsterstruct MonsterArray;
+
 public:	
 	// Sets default values for this actor's properties
 	AObjectPool();
@@ -32,11 +36,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
-	enumMonsterType MonsterType_Enum;
+	//enumMonsterType MonsterType_Enum;
 
 	/** This Data Structure is Monster's Type and list of Array*/
-	UPROPERTY(EditAnywhere, Category = "Spawning")
-	TMap<enumMonsterType,FMonsterstruct> DefaultSpawnArea_Map;
+	//UPROPERTY(EditAnywhere, Category = "Spawning")
+	TMap<MONSTER_CODE,FMonsterstruct> DefaultSpawnArea_Map;
 		
 public:	
 	// Called every frame
@@ -68,13 +72,10 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Spawning", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* DefaultSpawnArea;
 
-	/** Pool Maximum size*/
-	UPROPERTY(VisibleAnywhere, Category = "Spawning")
-	int FullPoolVolume;
 
-	///** If you want to use this, check to attribute*/
-	//UPROPERTY(EditAnywhere, Category = "TestPool")
-	//	bool isTestPoolStart;
+	/** if you want to use this, check to attribute*/
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+		bool bis_Testpool_Set;
 
 	//UPROPERTY(VisibleAnywhere, Category = "Spawning")
 	//TArray<class AMonster*> Spawn_Array;
@@ -95,10 +96,10 @@ private:
 	void SetStaticMonsterClass();
 
 	//Get Spawn Info
-	void Recive_SpawnObject_Info(int, enumMonsterType, FVector);
+	void Recive_SpawnObject_Info(int, MONSTER_CODE, FVector);
 
 	//Check Non-Active Monster
-	void ReadyMonster(enumMonsterType);
+	void ReadyMonster(MONSTER_CODE,int,FVector);
 
 	//SpawnPos Selecter
 	void WhereToGate();
