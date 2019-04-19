@@ -70,7 +70,7 @@ enum PROTOCOL {
 	SERVER_INGAME_MOVE_ROTATION,				// 클라 회전
 	SERVER_INGAME_OTHERPLAYERLIST_RESULT,		// 플레이어 리스트 					[프로토콜][INT:카운트][INT:닉네임사이즈][CHAR:닉네임][VECTOR:위치]...
 	SERVER_INGAME_OTHERPLAYER_CONNECT,			// 접속한 플레이어 정보
-	
+
 	// 인게임 매뉴
 	CLIENT_INGAME_MENU_REQ_CHARACTER,			// 클라 캐릭터 선택화면으로 요청
 	CLIENT_INGAME_MENU_REQ_LOGOUT,				// 클라 로그아웃
@@ -118,6 +118,7 @@ enum PROTOCOL {
 	SERVER_INGAME_DUNGEON_STAGE_IN_REULST,		// 서버 던전 스테이지에 입장결과
 
 	// 몬스터 프로토콜
+	CLIENT_INGAME_MONSTER_INFO,					// 클라 몬스터 정보 요청
 	CLIENT_INGAME_MONSTER_MOVE,					// 클라 파티리더가 몬스터 이동정보를 보낸다
 
 	SERVER_INGAME_MONSTER_INFO,					// 서버 몬스터 정보를 주는 프로토콜
@@ -218,7 +219,7 @@ enum RESULT {
 	RT_INGAME_PARTY_LEAVE_INFO,			// 탈퇴하는 유저정보
 	RT_INGAME_PARTY_LEAVE_RESULT,		// 탈퇴 결과
 	RT_INGAME_PARTY_ROOM_REMOVE,		// 파티방 폭파시
-	RT_INGAME_PARTY_LEADER_DELEGATE,	
+	RT_INGAME_PARTY_LEADER_DELEGATE,
 	RT_INGAME_PARTY_LEADER_DELEGATE_RESULT,
 	RT_INGAME_DUNGEON_ENTER_RESULT,			// 던전 입장 결과
 	RT_INGAME_DUNGEON_LEAVE_RESULT,			// 던전 퇴장 결과
