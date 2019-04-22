@@ -19,10 +19,13 @@ AMyNonPlayerCharacter::AMyNonPlayerCharacter()
 void AMyNonPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+}
+
+void AMyNonPlayerCharacter::StoreWidgetToggle()
+{
 	if (StoreInventoryComponent)
 	{
-		StoreInventoryComponent->InventoryCreate(2);
+		StoreInventoryComponent->StoreWidgetToggle();
 	}
 }
 

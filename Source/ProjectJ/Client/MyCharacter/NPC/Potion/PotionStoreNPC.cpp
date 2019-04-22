@@ -4,7 +4,7 @@
 //클라 헤더
 #include "UObject/ConstructorHelpers.h"
 #include "Components/SkeletalMeshComponent.h"
-
+#include "Client/MyCharacter/NPC/Widget/StoreInventory/StoreInventory.h"
 //서버 헤더
 
 APotionStoreNPC::APotionStoreNPC()
@@ -35,4 +35,9 @@ APotionStoreNPC::APotionStoreNPC()
 void APotionStoreNPC::BeginPlay()
 {
 	Super::BeginPlay();
+
+	if (StoreInventoryComponent)
+	{
+		StoreInventoryComponent->PotionStoreInventoryCreate();
+	}
 }

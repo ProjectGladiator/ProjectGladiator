@@ -6,19 +6,22 @@
 #include "Client/Monster/Manager/AIManager.h"
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
 #include "GameFrameWork/CharacterMovementComponent.h" //캐릭터 속도 관련 헤더
+#include "UObject/ConstructorHelpers.h" // 경로 탐색 헤더
+#include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
+#include "Kismet/GameplayStatics.h"
 
 //서버 헤더
 
 // Sets default values
 AMonster::AMonster()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 	AIControllerClass = AMonsterAIController::StaticClass();
 
 	AIManager = CreateDefaultSubobject<UAIManager>(TEXT("AIManager"));
-	
+
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 
 	bUseControllerRotationYaw = false;
@@ -29,6 +32,13 @@ AMonster::AMonster()
 	AutoPossessAI = EAutoPossessAI::Spawned;
 
 	Tags.Add(TEXT("Monster"));
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>PT_SpawnEffect(TEXT("ParticleSystem'/Game/Assets/Monster/ParagonMinions/FX/Particles/Minions/Shared/P_MinionSpawn.P_MinionSpawn'"));
+
+	if (PT_SpawnEffect.Succeeded())
+	{
+		SpawnEffect = PT_SpawnEffect.Object;
+	}
 
 	//활성화 확인용 bool은 처음엔 true로 설정 
 	bisActive = true;
@@ -66,7 +76,7 @@ void AMonster::Death()
 void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame
@@ -87,6 +97,11 @@ void AMonster::init()
 	//Init For Monster's type
 	MaxHP = 100.0f;
 	CurrentHP = MaxHP;
+
+	if (SpawnEffect)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnEffect, GetActorLocation(), FRotator::ZeroRotator, true);
+	}
 	//bisActive = false;
 }
 
@@ -119,7 +134,7 @@ void AMonster::Monster_SetActive(AMonster * SpawnObject, bool _bActive)
 	{
 		GLog->Log(FString::Printf(TEXT("Monster Cannot Active")));
 	}
-	
+
 }
 
 

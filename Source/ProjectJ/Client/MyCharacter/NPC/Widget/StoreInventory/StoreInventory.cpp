@@ -6,6 +6,8 @@
 #include "Client/MyCharacter/NPC/Widget/StoreInventory/StoreInventoryWidget.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
+#include "UObject/ConstructorHelpers.h"
+#include "Engine/Texture2D.h"
 
 //서버 헤더
 
@@ -17,7 +19,14 @@ UStoreInventory::UStoreInventory()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 
-	InventoryMaxCount = 20;
+	InventoryMaxCount = 0;
+
+	static ConstructorHelpers::FObjectFinder<UTexture2D>T_HPPotion(TEXT("TTexture2D'/Game/Assets/Item/Potion/Texture/RedPotion.RedPotion'"));
+
+	if (T_HPPotion.Succeeded())
+	{
+		HPPotionTexture = T_HPPotion.Object;
+	}
 }
 
 
@@ -25,15 +34,15 @@ UStoreInventory::UStoreInventory()
 void UStoreInventory::BeginPlay()
 {
 	Super::BeginPlay();
-	//FStringClassReference InventoryWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Inventory/Widget/W_Inventory.W_Inventory_C'"));
+	FStringClassReference StoreInventoryWidgetClass(TEXT("WidgetBlueprint'/Game/Blueprints/Widget/Store/W_StoreInventory.W_StoreInventory_C'"));
 
-	//if (UClass* MyInventoryWidgetClass = InventoryWidgetClass.TryLoadClass<UUserWidget>())
-	//{
-	//	InventoryWidget = Cast<UInventoryWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyInventoryWidgetClass));
-	//	
-	//	InventoryWidget->AddToViewport(); //화면에 붙인다.
-	//	InventoryWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
-	//}	
+	if (UClass* MyStoreInventoryWidgetClass = StoreInventoryWidgetClass.TryLoadClass<UUserWidget>())
+	{
+		StoreInventoryWidget = Cast<UStoreInventoryWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyStoreInventoryWidgetClass));
+		
+		StoreInventoryWidget->AddToViewport(); //화면에 붙인다.
+		StoreInventoryWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
+	}	
 }
 
 
@@ -93,15 +102,17 @@ void UStoreInventory::TickComponent(float DeltaTime, ELevelTick TickType, FActor
 
 void UStoreInventory::InventoryWidgetToggle()
 {
-	if (InventoryWidget)
+	if (StoreInventoryWidget)
 	{
-		
+		if (StoreInventoryWidget->GetVisibility() == ESlateVisibility::Visible)
+		{
+			StoreInventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+		else
+		{
+			StoreInventoryWidget->SetVisibility(ESlateVisibility::Visible);
+		}
 	}
-}
-
-UInventoryWidget * UStoreInventory::GetInventoryWidget()
-{
-	return InventoryWidget;
 }
 
 int32 UStoreInventory::GetInventoryMaxCount()
@@ -109,13 +120,29 @@ int32 UStoreInventory::GetInventoryMaxCount()
 	return InventoryMaxCount;
 }
 
-void UStoreInventory::InventoryCreate(int32 _NewInventoryMaxCount)
+void UStoreInventory::PotionStoreInventoryCreate()
 {
-	InventoryMaxCount = _NewInventoryMaxCount;
+	InventoryMaxCount++;
 
-	if (InventoryWidget)
+	FItemInfo NewStoreItem(10,FText::FromString(TEXT("체력 물약")), EItemType::Consumable, 20, 0, 20, HPPotionTexture);
+
+	if (StoreInventoryWidget)
 	{
-		//InventoryWidget->CreateInventorySlots(InventoryMaxCount);
+		StoreInventoryWidget->CreateStoreInventorySlots(NewStoreItem);
 	}
 }
 
+void UStoreInventory::StoreWidgetToggle()
+{
+	if (StoreInventoryWidget)
+	{
+		if (StoreInventoryWidget->GetVisibility() == ESlateVisibility::Visible)
+		{
+			StoreInventoryWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+		else
+		{
+			StoreInventoryWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+	}
+}

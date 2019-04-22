@@ -28,4 +28,6 @@ public:
 	virtual void NativeConstruct() override;
 
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+	void Init(FItemInfo& _SlotInfo);
 };

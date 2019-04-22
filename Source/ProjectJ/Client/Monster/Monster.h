@@ -30,6 +30,9 @@ protected:
 		FMonsterAttackInfo AttackInfo;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect)
 		class UParticleSystem* HitEffectTarget;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect, Meta = (AllowPrivateAccess = true))
+		class UParticleSystem* SpawnEffect;
+
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	UPROPERTY(VisibleInstanceOnly, Category = isDead)

@@ -17,11 +17,13 @@ public:
 	UStoreInventory();
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
-		class UInventoryWidget* InventoryWidget;
+		class UStoreInventoryWidget* StoreInventoryWidget;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Info, Meta = (AllowPrivateAccess = true))
 		int32 InventoryMaxCount;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
 		TArray<FInventorySlot> Slots;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = InventoryWidget, Meta = (AllowPrivateAccess = true))
+		class UTexture2D* HPPotionTexture;
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
@@ -38,9 +40,9 @@ public:
 
 	void InventoryWidgetToggle();
 
-	UInventoryWidget* GetInventoryWidget();
-
 	int32 GetInventoryMaxCount();
 
-	void InventoryCreate(int32 _NewInventoryMaxCount);
+	void PotionStoreInventoryCreate();
+
+	void StoreWidgetToggle();
 };

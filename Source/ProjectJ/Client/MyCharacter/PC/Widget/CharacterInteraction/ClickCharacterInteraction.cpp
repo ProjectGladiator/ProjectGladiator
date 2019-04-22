@@ -33,7 +33,7 @@ void UClickCharacterInteraction::BeginPlay()
 		MyCharacterWidget = Cast<UMyCharacterWidget>(CreateWidget<UUserWidget>(UGameplayStatics::GetPlayerController(GetWorld(), 0), MyCharacterWidgetClass));
 
 		MyCharacterWidget->AddToViewport(); //화면에 붙인다.
-		MyCharacterWidget->SetRenderTranslation(FVector2D(340.0f, 740.0f));
+		MyCharacterWidget->SetRenderTranslation(FVector2D(340.0f, 640.0f));
 		MyCharacterWidget->SetVisibility(ESlateVisibility::Hidden); //숨긴다.
 	}
 }

@@ -28,8 +28,14 @@ struct PROJECTJ_API FItemInfo
 {
 	GENERATED_USTRUCT_BODY()
 public:
+	FItemInfo();
+	FItemInfo(int32 _ItemPrice,const FText& _ItemNameText,const EItemType& _ItemType,int32 _ItemMaxCount,int32 _EquipAbilityIncreasePoint, int32 _ConsumableIncreasePoint,class UTexture2D* _ItemThumbnail);
+	~FItemInfo();
+
 	UPROPERTY()
 		bool IsActive;
+	UPROPERTY()
+		int32 ItemPrice;
 	UPROPERTY()
 		FText ItemNameText;
 	UPROPERTY()
@@ -39,5 +45,7 @@ public:
 	UPROPERTY()
 		int32 EquipAbilityIncreasePoint;
 	UPROPERTY()
-		class UTexture2D* ItemThumbnail;
+		int32 ConsumableIncreasePoint;
+	UPROPERTY()
+		UTexture2D* ItemThumbnail;
 };

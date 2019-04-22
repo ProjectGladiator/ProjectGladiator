@@ -1,10 +1,20 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+Ôªø// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "StoreInventorySlotWidget.h"
+//ÌÅ¥Îùº Ìó§Îçî
+#include "Components/Button.h"
+#include "Components/Image.h"
+#include "Components/TextBlock.h"
+//ÏÑúÎ≤Ñ Ìó§Îçî
 
 void UStoreInventorySlotWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
+
+	StoreInventorySlotButton = Cast<UButton>(GetWidgetFromName(TEXT("StoreInventorySlotButton")));
+	ItemImage = Cast<UImage>(GetWidgetFromName(TEXT("ItemImage")));
+	ItemNameText = Cast<UTextBlock>(GetWidgetFromName(TEXT("ItemNameText")));
+	ItemPriceText = Cast<UTextBlock>(GetWidgetFromName(TEXT("ItemPriceText")));
 }
 
 FReply UStoreInventorySlotWidget::NativeOnMouseButtonDown(const FGeometry & InGeometry, const FPointerEvent & InMouseEvent)
@@ -13,8 +23,28 @@ FReply UStoreInventorySlotWidget::NativeOnMouseButtonDown(const FGeometry & InGe
 
 	if (InMouseEvent.IsMouseButtonDown(EKeys::RightMouseButton))
 	{
-		GLog->Log(FString::Printf(TEXT("ªÛ¡° æ∆¿Ã≈€ ø¿∏•¬  ≈¨∏Ø")));
+		GLog->Log(FString::Printf(TEXT("ÏÉÅÏ†ê ÏïÑÏù¥ÌÖú Ïò§Î•∏Ï™Ω ÌÅ¥Î¶≠")));
 	}
 
 	return FReply::Handled();
+}
+
+void UStoreInventorySlotWidget::Init(FItemInfo& _SlotInfo)
+{
+	StoreInventorySlotInfo = _SlotInfo;
+
+	if (ItemImage)
+	{
+		ItemImage->SetBrushFromTexture(StoreInventorySlotInfo.ItemThumbnail);
+	}
+
+	if (ItemNameText)
+	{
+		ItemNameText->SetText(StoreInventorySlotInfo.ItemNameText);
+	}
+
+	if (ItemPriceText)
+	{
+		ItemPriceText->SetText(FText::FromString(FString::FromInt(StoreInventorySlotInfo.ItemPrice)));
+	}
 }

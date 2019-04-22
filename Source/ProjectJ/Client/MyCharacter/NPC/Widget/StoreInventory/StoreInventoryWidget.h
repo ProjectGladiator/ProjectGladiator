@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Client/Item/Struct/FItemInfo.h"
 #include "StoreInventoryWidget.generated.h"
 
 /**
@@ -25,7 +26,7 @@ private:
 public:
 	virtual void NativeConstruct() override;
 
-	void CreateStoreInventorySlots();
+	void CreateStoreInventorySlots(FItemInfo& ItemInfo);
 
 	UFUNCTION()
 		void CloseStoreInventory();
