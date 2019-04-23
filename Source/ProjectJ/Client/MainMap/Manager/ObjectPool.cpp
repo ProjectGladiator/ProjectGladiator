@@ -64,8 +64,6 @@ void AObjectPool::Tick(float DeltaTime)
 	PacketData* Data;
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
-	
-
 		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
 		{
 		case PGAMEDATA_STAGE_MONSTER_TPYES_COUNT: // 스테이지 몬스터 종류가 몇개인지 - (종류 숫자)
@@ -83,6 +81,7 @@ void AObjectPool::Tick(float DeltaTime)
 
 			Recive_SpawnObject_Info(SpawnMonster_Num, static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
 			break;
+
 		}
 	}
 	//종류 int 갯수
@@ -111,8 +110,8 @@ void AObjectPool::PoolSetting()
 		}
 
 		////kind of Monster AND Monster's Maximum size
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, 20, ABear::StaticClass());
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::WORM].Monster_Volum_Array, 10, ADinosaur::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 5, ABear::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM, 5, ADinosaur::StaticClass());
 		//Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[enumMonsterType::Dog].Monster_Volum_Array, 5, ADog::StaticClass());
 	/*	
 		int* KindMonster;
@@ -249,9 +248,6 @@ void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, int _MonsterNum, FVect
 			//Get Monster's init
 			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->init();
 			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->SetActorLocation(_MonsterPostion);
-		/*	SpawnPos_Vector = DefaultSpawnArea->Bounds.Origin;
-			DefaultSpawnArea_Map[(enumMonsterType)_MonsterCode].Monster_Volum_Array[i_Monster]->SetActorLocation(SpawnPos_Vector);*/
-
 			SpawnObject_SetActive(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster], true);
 		}
 		else if (Monster_Spawn_Counter == _MonsterNum)
@@ -268,7 +264,7 @@ void AObjectPool::WhereToGate()
 	//Set Effect to Spawn
 }
 
-void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _MonsterTypeArray, int _MaximumSize, TSubclassOf<class AMonster> _MonsterClass)
+void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _MonsterTypeArray, MONSTER_CODE _MonsterCode, int _MaximumSize, TSubclassOf<class AMonster> _MonsterClass)
 {
 	//SpawnParameter with CollisionHandling Set
 	FActorSpawnParameters SpawnActorOption;
@@ -296,6 +292,9 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 
 			////isActive Check bool Attribute make false
 			SpawnActor->bisActive = false;
+
+			SpawnActor->SetMonsterCode(_MonsterCode);
+			SpawnActor->SetMonsterNum(i_spawnObject);
 
 			//SpawnActor's ActiveMode Setting False
 			SpawnObject_SetActive(SpawnActor, false);

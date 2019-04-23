@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "Client/MainMap/Manager/ObjectPool.h"
 #include "NetWork/JobInfo.h"
 #include "MainMapGameMode.generated.h"
 
@@ -92,4 +93,7 @@ public:
 	void DungeonIn();
 	UFUNCTION()
 		void DungeonInRecovery();
+
+	AObjectPool* ObjectPool;
+	void Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>, MONSTER_CODE, int, FVector);
 };

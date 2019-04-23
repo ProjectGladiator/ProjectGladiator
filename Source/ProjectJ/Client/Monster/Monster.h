@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "NetWork/MonsterInfo.h"
 #include "GameFramework/Character.h"
 #include "Client/Monster/Struct/MonsterAttackInfo.h"
 #include "Monster.generated.h"
@@ -14,6 +15,12 @@ class PROJECTJ_API AMonster : public ACharacter
 public:
 	AMonster();
 protected:
+	//나 자신의 몬스터 코드
+		MONSTER_CODE m_MonsterCode;
+	//나의 몬스터 번호
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MonsterCode)
+		int m_MonsterNum;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 		float MaxHP;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
@@ -37,7 +44,6 @@ protected:
 	virtual void BeginPlay() override;
 	UPROPERTY(VisibleInstanceOnly, Category = isDead)
 		bool DeathFlag;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ComboAttack)
 		bool IsAttack; //공격중인지 아닌지
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ComboAttack)
@@ -65,11 +71,15 @@ public:
 	//Set Monster value initialize
 	virtual void init();
 	UFUNCTION()
-		float GetHP();
+	float GetHP();
+
+	int SetMonsterNum(int);
 
 	/** Actor Hidden 확인여부 */
 	UPROPERTY(VisibleInstanceOnly, Category = isSpawn)
 	bool bisActive;
+
+	MONSTER_CODE SetMonsterCode(MONSTER_CODE);
 
 	void Monster_SetActive(AMonster*, bool);
 

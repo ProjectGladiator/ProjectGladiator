@@ -32,6 +32,7 @@
 #include "Client/MyCharacter/PC/Widget/Party/Widget/PartyAcceptRejectWidget.h" //캐릭터 파티 수락, 취소 위젯 헤더
 #include "Client/MyCharacter/PC/Widget/MainWidget.h" //메인 위젯 헤더
 #include "Client/Environment/InGameStartDoor.h"
+#include "Client/Monster/Monster.h"
 #include "TimerManager.h" //타이머 헤더
 
 //서버 헤더
@@ -230,6 +231,10 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	int32 PartyUserCount = -1;
 
 	PartyUserInfo* PartyUser_Info;
+
+	int MonsterCode=-1;
+	int MonsterNum=-1;
+	FVector MosterPosition;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -758,6 +763,11 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				}
 			}
 			break;
+		case PGAMEDATA_MONSTER_MOVE_INFO: // 몬스터 이동정보 - ([int] 몬스터코드, [int] 몬스터숫자, [float*3] 좌표)
+			StorageManager::GetInstance()->ChangeData(Data->data, MonsterCode, MonsterNum, MosterPosition.X, MosterPosition.Y, MosterPosition.Z);
+			StorageManager::GetInstance()->PopData();
+			Get_MonsterPosition(ObjectPool->DefaultSpawnArea_Map, static_cast<MONSTER_CODE>(MonsterCode),MonsterNum,MosterPosition);
+			break;
 		case PGAMEDATA_PARTY_DUNGEON_STAGE_ENTER_RESULT:
 			StorageManager::GetInstance()->ChangeData(Data->data, UserCount); 
 			StorageManager::GetInstance()->PopData();
@@ -1093,4 +1103,11 @@ void AMainMapGameMode::DungeonInRecovery()
 	{
 		OtherLoginUserList[i]->MyCharacterNickWidgetVisible(); //다른 유저의 이름 UI를 보여준다.
 	}
+}
+
+void AMainMapGameMode::Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>_MonsterMapData,MONSTER_CODE _MC,int _Num, FVector _MosterPosition)
+{
+
+
+	_MonsterMapData[_MC].Monster_Volum_Array[_Num]->SetActorLocation(_MosterPosition);
 }
