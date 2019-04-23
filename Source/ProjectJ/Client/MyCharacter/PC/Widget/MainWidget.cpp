@@ -15,8 +15,8 @@
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MyCharacter/PC/Widget/MyCharacterUI.h"
 #include "Public/Animation/WidgetAnimation.h"
-#include "Client/MyCharacter/PC/Widget/GlobalMessage/InDunGeonMessageWidget.h"
 #include "Client/MyCharacter/PC/Widget/Chatting/ChattingWidget.h"
+#include "TimerManager.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -26,6 +26,13 @@ void UMainWidget::NativeConstruct()
 	Super::NativeConstruct();
 
 	InChannelText = Cast<UTextBlock>(GetWidgetFromName(TEXT("InChannelText")));
+
+	InGameStageStartText = Cast<UTextBlock>(GetWidgetFromName(TEXT("InGameStageStartText")));
+
+	if (InGameStageStartText)
+	{
+		InGameStageStartText->SetVisibility(ESlateVisibility::Hidden);
+	}
 
 	InDunGeonMessageWidget = Cast<UInDunGeonMessageWidget>(GetWidgetFromName(TEXT("InDunGeonMessageWidget")));
 
@@ -213,6 +220,14 @@ void UMainWidget::InChannelTextHidden()
 	}
 }
 
+void UMainWidget::SetInDunGeonMessageWidgetState(const EMessageState& _NewState, const FText & _NewMessage)
+{
+	if (InDunGeonMessageWidget)
+	{
+		InDunGeonMessageWidget->SetMessageState(_NewState, _NewMessage);
+	}
+}
+
 void UMainWidget::InDunGeonMessageWidgetVisible()
 {
 	if (InDunGeonMessageWidget)
@@ -237,6 +252,50 @@ bool UMainWidget::IsDunGeonMessageWidgetVisible()
 	else
 	{
 		return false;
+	}
+}
+
+void UMainWidget::SetGameStageStartCountInit(int32 _GameStageStartCount)
+{
+	if (InGameStageStartText)
+	{
+		GameStageStartCount = _GameStageStartCount;
+
+		InGameStageStartText->SetText(FText::FromString(FString::Printf(TEXT("게임 시작 까지 %d초"), GameStageStartCount)));
+
+		InGameStageStartText->SetVisibility(ESlateVisibility::Visible);
+
+		GetWorld()->GetTimerManager().SetTimer(GameStageStartTimer, this, &UMainWidget::StartGameStageCount, 1.0f, true, 0);
+	}
+}
+
+void UMainWidget::StartGameStageCount()
+{
+	if (InGameStageStartText)
+	{
+		InGameStageStartText->SetText(FText::FromString(FString::Printf(TEXT("게임 시작 까지 %d초"), --GameStageStartCount)));
+
+		if (GameStageStartCount == 0)
+		{
+			GetWorld()->GetTimerManager().ClearTimer(GameStageStartTimer);
+
+			InGameStageStartText->SetVisibility(ESlateVisibility::Hidden);
+
+			if (MainMapPlayerController)
+			{
+				auto MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+				if (MyCharacter)
+				{
+					bool IsPartyLeader = MyCharacter->GetPartyLeader();
+
+					if (IsPartyLeader)
+					{
+						MainMapPlayerController->C2S_ReqGameStageStart();
+					}
+				}
+			}
+		}
 	}
 }
 

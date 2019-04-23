@@ -48,6 +48,8 @@ private:
 		int32 Channelnum = -1; //속해 있는 채널 번호
 	UPROPERTY()
 		class AInGameStartDoor* InGameStartDoor;
+	UPROPERTY()
+		FVector GameStageStartSpawnLocation;
 public:
 	AMainMapGameMode();
 
@@ -88,8 +90,9 @@ public:
 	void OpenDoor();
 	void CloseDoor();
 
-	void FadeIn();
+	void DungeonIn();
 	UFUNCTION()
+		void DungeonInRecovery();
 		void FadeOut();
 
 	AObjectPool* ObjectPool;

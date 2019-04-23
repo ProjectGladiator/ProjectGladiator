@@ -202,6 +202,12 @@ void AMainMapPlayerController::C2S_ReqPartyLeaderDelegate(char * _NewPartyLeader
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
+void AMainMapPlayerController::C2S_ReqGameStageStart()
+{
+	InGameManager::GetInstance()->InGame_Req_Dungeon_Stage_Enter();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
 void AMainMapPlayerController::C2S_ReqInGameDungeon()
 {
 	InGameManager::GetInstance()->InGame_Req_Dungeon_Enter();

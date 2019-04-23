@@ -22,13 +22,14 @@
 #include "Client/MyCharacter/PC/Widget/Party/Party.h" //파티 헤더
 #include "Client/MyCharacter/PC/Widget/CharacterInteraction/ClickCharacterInteraction.h"//클릭 상호작용 헤더
 #include "Client/MyCharacter/PC/Widget/Info/MyCharacterWidget.h" //내캐릭터 정보 위젯 헤더
-#include "Client/MyCharacter/PC/Widget/MainWidget.h"
+#include "Client/MyCharacter/PC/Widget/MainWidget.h" //메인 위젯 헤더
 #include "Client/State/ClientState/ClientState.h" //클라 상태 클래스 헤더
 #include "Components/WidgetComponent.h"
 #include "Client/MyCharacter/PC/Widget/Info/MyCharacterNickNameWidget.h"
 #include "Client/MyCharacter/PC/Widget/MainWidget.h"
 #include "Client/Menu/MenuWidget.h"
 #include "Client/MyCharacter/PC/Widget/Chatting/ChattingWidget.h"
+#include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 //#include "Client/State/ClientState/Character/ClientCharacterInGameState.h"
 
 //서버 헤더
@@ -86,6 +87,13 @@ AMyCharacter::AMyCharacter()
 	MyCharacterUI = CreateDefaultSubobject<UMyCharacterUI>(TEXT("MyCharacterUI"));
 
 	IsPartyLeader = false;
+
+	static ConstructorHelpers::FObjectFinder<UParticleSystem>PT_GameStageStartEffect(TEXT("ParticleSystem'/Game/Assets/Paragon/ParagonProps/FX/Particles/Core/P_Core_CharacterRecall.P_Core_CharacterRecall'"));
+
+	if (PT_GameStageStartEffect.Succeeded())
+	{
+		GameStageStartEffect = PT_GameStageStartEffect.Object;
+	}
 
 	Tags.Add(TEXT("Character"));
 }
@@ -673,4 +681,9 @@ void AMyCharacter::MyCharacterNickWidgetHidden()
 void AMyCharacter::MyCharacterNickWidgetVisible()
 {
 	CharacterNickWidget->SetVisibility(true);
+}
+
+void AMyCharacter::SpawnGameStageStartEffect()
+{
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), GameStageStartEffect, GetActorLocation(), FRotator::ZeroRotator, true);
 }

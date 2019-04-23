@@ -25,7 +25,7 @@ private:
 public:
 	virtual void NativeConstruct() override;
 
-	void UpdateInventorySlot(FInventorySlot SlotInfo);
+	void UpdateInventorySlot();
 	
 	void SlotIndexInit(int Index);
 	

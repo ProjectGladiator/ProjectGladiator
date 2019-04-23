@@ -62,6 +62,8 @@ public:
 	void C2S_ReqPartyLeave();
 	void C2S_ReqPartyKick(char* _PartyKickUserCode);
 	void C2S_ReqPartyLeaderDelegate(char* _NewPartyLeaderUserCode);
+	
+	void C2S_ReqGameStageStart();
 
 	void C2S_ReqInGameDungeon();
 	UFUNCTION()

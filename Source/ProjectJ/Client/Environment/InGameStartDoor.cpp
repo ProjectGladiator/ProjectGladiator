@@ -131,6 +131,7 @@ void AInGameStartDoor::InDunGeonBeginOverlap(UPrimitiveComponent* OverlappedComp
 			{
 				if (IsInDungeonMessage)
 				{
+					BeginOverlapCharacter->GetMyCharacterUI()->GetMainWidget()->SetInDunGeonMessageWidgetState(EMessageState::InDunGeon, FText::FromString(TEXT("던전에 입장 하시겠습니까?")));
 					BeginOverlapCharacter->GetMyCharacterUI()->GetMainWidget()->InDunGeonMessageWidgetVisible();
 					IsInDungeonMessage = false;
 				}
@@ -150,7 +151,7 @@ void AInGameStartDoor::CloseDoor()
 }
 
 void AInGameStartDoor::Init()
-{	
+{
 	IsInDungeonMessage = true;
 }
 

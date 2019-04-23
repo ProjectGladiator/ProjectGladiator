@@ -25,8 +25,20 @@ void UInventorySlotWidget::NativeConstruct()
 	}	
 }
 
-void UInventorySlotWidget::UpdateInventorySlot(FInventorySlot SlotInfo)
+void UInventorySlotWidget::UpdateInventorySlot()
 {
+	if (InventorySlotInfo.ItemInfo.IsActive)
+	{
+		/*InventorySlotButton->SetIsEnabled(true);
+		ItemAmount->SetVisibility(ESlateVisibility::Visible);
+		ItemImage->SetVisibility(ESlateVisibility::Visible);*/
+	}
+	else
+	{
+		InventorySlotButton->SetIsEnabled(false);
+		ItemAmount->SetVisibility(ESlateVisibility::Hidden);
+		ItemImage->SetVisibility(ESlateVisibility::Hidden);
+	}
 	/*if (SlotInfo.ItemClass)
 	{
 		GLog->Log(FString::Printf(TEXT("슬롯 정보 있음")));
