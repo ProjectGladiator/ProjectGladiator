@@ -1345,6 +1345,59 @@ void InGameManager::InGame_Recv_Stage_MonsterInfo(char * _buf)
 	}
 }
 
+// 몬스터 이동정보
+void InGameManager::InGame_Recv_Monster_MoveInfo(char * _buf)
+{
+	int count = 0;
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	char* ptr_data = data;
+	memset(data, 0, sizeof(data));
+	int size = 0;
+
+	int code = 0;
+	int num = 0;
+	float xyz[3];
+
+	memcpy(&count, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+
+	//StorageManager::GetInstance()->PushData(PGAMEDATA_USERLIST_COUNT, (void*)&count, sizeof(int));
+
+	for (int i = 0; i < count; i++)
+	{
+		memset(data, 0, sizeof(data));
+		ptr_data = data;
+		size = 0;
+		code = 0;
+		num = 0;
+
+		// 코드 사이즈
+		memcpy(&code, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		size += sizeof(int);
+		memcpy(ptr_data, &code, sizeof(int));
+		ptr_data += sizeof(int);
+
+		// 캐릭터 직업코드
+		memcpy(&num, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		size += sizeof(int);
+		memcpy(ptr_data, &num, sizeof(int));
+		ptr_data += sizeof(int);
+
+		// position x, y, z
+		memcpy(xyz, ptr_buf, sizeof(float) * 3);
+		ptr_buf += sizeof(float) * 3;
+		size += sizeof(float) * 3;
+		memcpy(ptr_data, xyz, sizeof(float) * 3);
+		ptr_data += sizeof(float) * 3;
+
+		StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_MOVE_INFO, data, size);
+	}
+}
+
 // 파티 초대 요청
 void InGameManager::InGame_Req_Party_Invite(char * _code)
 {
@@ -1432,6 +1485,40 @@ void InGameManager::InGame_Req_Monster_Info()
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MONSTER_INFO, buf, 0);
 	
+}
+
+// 파티리더가 몬스터 이동 정보 전송
+void InGameManager::InGame_Req_Monster_Move_Info(int _code, int _num, float _px, float _py, float _pz)
+{
+	char buf[BUFSIZE];
+	char* ptr = buf;
+	int datasize = 0;
+	memset(buf, 0, sizeof(buf));
+
+	// 몬스터 코드
+	memcpy(ptr, &_code, sizeof(int));
+	datasize += sizeof(int);
+	ptr += sizeof(int);
+
+	// 몬스터 번호
+	memcpy(ptr, &_num, sizeof(int));
+	datasize += sizeof(int);
+	ptr += sizeof(int);
+
+	// 위치값
+	memcpy(ptr, &_px, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	memcpy(ptr, &_py, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	memcpy(ptr, &_pz, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MONSTER_MOVE, buf, datasize);
 }
 
 RESULT InGameManager::InGameInitRecvResult(User * _user)

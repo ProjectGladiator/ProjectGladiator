@@ -69,6 +69,8 @@ private:
 
 	// 스테이지 입장후 받는 몬스터정보(초기화정보)
 	void InGame_Recv_Stage_MonsterInfo(char* _buf);
+	// 몬스터 이동정보
+	void InGame_Recv_Monster_MoveInfo(char* _buf);
 
 public:
 	static void CreateInstance();
@@ -115,6 +117,8 @@ public:
 	void InGame_Req_Dungeon_Stage_Enter();
 	// 몬스터 정보 요청
 	void InGame_Req_Monster_Info();
+	// 파티리더가 몬스터 이동 정보 전송
+	void InGame_Req_Monster_Move_Info(int _code, int _num, float _px, float _py, float _pz);
 
 
 	RESULT InGameInitRecvResult(User* _user);			// 인게임 
