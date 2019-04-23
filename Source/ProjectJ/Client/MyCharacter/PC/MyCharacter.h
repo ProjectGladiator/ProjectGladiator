@@ -51,6 +51,9 @@ private:
 		FTimerHandle C2S_RotateUpdateTimer;
 	UPROPERTY()
 		bool IsPartyLeader;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect, Meta = (AllowPrivateAccess = true))
+		class UParticleSystem* GameStageStartEffect;
 protected:
 	class ClientState* ClientCharacterState;
 
@@ -206,4 +209,6 @@ public:
 
 	void MyCharacterNickWidgetHidden();
 	void MyCharacterNickWidgetVisible();
+
+	void SpawnGameStageStartEffect();
 };

@@ -170,7 +170,7 @@ void ABear::Tick(float DeltaTime)
 	}
 	else
 	{
-		GLog->Log(FString::Printf(TEXT("곰 : 타겟이 존재하지 않음")));
+		//GLog->Log(FString::Printf(TEXT("곰 : 타겟이 존재하지 않음")));
 	}
 }
 

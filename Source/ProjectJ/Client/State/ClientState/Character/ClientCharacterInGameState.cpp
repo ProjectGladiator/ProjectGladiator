@@ -12,6 +12,7 @@
 #include "Client/MyCharacter/PC/Widget/CharacterInteraction/ClickCharacterInteraction.h"
 #include "Client/MyCharacter/PC/Widget/Info/MyCharacterWidget.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
+#include "Client/MyCharacter/NPC/MyNonPlayerCharacter.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -63,6 +64,12 @@ void ClientCharacterInGameState::Click(AMainMapPlayerController * _MainMapPlayer
 			}	
 			else 
 			{
+				auto OtherNonPlayerCharacter = Cast<AMyNonPlayerCharacter>(HitResult.Actor);
+
+				if (OtherNonPlayerCharacter)
+				{
+					OtherNonPlayerCharacter->StoreWidgetToggle();
+				}
 				//내 캐릭터가 아닌 다른 캐릭터일때 
 				//ClickCharacterInfoHidden(); //상대방 UI를 숨긴다.
 			}
@@ -233,7 +240,7 @@ void ClientCharacterInGameState::ClickCharacterInfoVisible(AMyCharacter* _ClickC
 
 		GLog->Log(ANSI_TO_TCHAR(MyCharacter->GetClickCharacter()->GetCharacterNickName()));
 
-		MyCharacter->GetClickCharacter()->GetMyCharacterUI()->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetPosition(FVector2D(1500.0f, 740.0f));
+		MyCharacter->GetClickCharacter()->GetMyCharacterUI()->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetPosition(FVector2D(1500.0f, 640.0f));
 		MyCharacter->GetClickCharacter()->GetMyCharacterUI()->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
 	}
 }

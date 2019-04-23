@@ -727,15 +727,23 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeaderUpdate();
 			}
 			break;
-		case PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT: //던전 입장 결과 이동할 위치 들어옴
-			StorageManager::GetInstance()->ChangeData(Data->data, UserCount); //서버로부터 이동할 X,Y,Z 위치 받아옴
+		case PGAMEDATA_PARTY_DUNGEON_ENTER_RESULT: 
+			StorageManager::GetInstance()->ChangeData(Data->data, UserCount); 
 			StorageManager::GetInstance()->PopData();
 
-			FadeIn();
+			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+			MyCharacter->GetMyCharacterUI()->GetMainWidget()->SetGameStageStartCountInit(60);
+
+			DungeonIn();
 			break;
 		case PGAMEDATA_PARTY_DUNGEON_SPAWNINFO:
+			memset(TempPartyReqCharacterCode, 0, sizeof(TempPartyReqCharacterCode));
+
 			StorageManager::GetInstance()->ChangeData(Data->data, PartyReqCharacterCode, x, y, z);
 			StorageManager::GetInstance()->PopData();
+
+			//GLog->Log(ANSI_TO_TCHAR(PartyReqCharacterCode));
 
 			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
 
@@ -748,6 +756,37 @@ void AMainMapGameMode::Tick(float DeltaTime)
 					if (strcmp(PartySlot.CharacterCode, PartyReqCharacterCode) == 0)
 					{
 						PartySlot.PartyUser->SetActorLocation(FVector(x, y, z));
+					}
+				}
+			}
+			break;
+		case PGAMEDATA_PARTY_DUNGEON_STAGE_ENTER_RESULT:
+			StorageManager::GetInstance()->ChangeData(Data->data, UserCount); 
+			StorageManager::GetInstance()->PopData();
+
+			break;
+		case PGAMEDATA_PARTY_DUNGEON_STAGE_SPAWNINFO:
+			memset(TempPartyReqCharacterCode, 0, sizeof(TempPartyReqCharacterCode));
+
+			StorageManager::GetInstance()->ChangeData(Data->data, PartyReqCharacterCode, x, y, z);
+			StorageManager::GetInstance()->PopData();
+
+			GameStageStartSpawnLocation.X = x;
+			GameStageStartSpawnLocation.Y = y;
+			GameStageStartSpawnLocation.Z = z;
+
+			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+
+			if (MyCharacter)
+			{
+				for (int i = 0; i < MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySize(); i++)
+				{
+					FPartySlot PartySlot = MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySlot(i);
+
+					if (strcmp(PartySlot.CharacterCode, PartyReqCharacterCode) == 0)
+					{
+						PartySlot.PartyUser->SpawnGameStageStartEffect();
+						PartySlot.PartyUser->SetActorLocation(GameStageStartSpawnLocation);
 					}
 				}
 			}
@@ -1014,7 +1053,7 @@ void AMainMapGameMode::CloseDoor()
 	}
 }
 
-void AMainMapGameMode::FadeIn()
+void AMainMapGameMode::DungeonIn()
 {
 	LoadingWidgetViewScreen();
 
@@ -1036,11 +1075,11 @@ void AMainMapGameMode::FadeIn()
 		OtherLoginUserList[i]->MyCharacterNickWidgetHidden(); //다른 유저의 이름 UI도 숨겨준다.
 	}
 
-	FTimerHandle FadeOutTimer;
-	GetWorld()->GetTimerManager().SetTimer(FadeOutTimer,this, &AMainMapGameMode::FadeOut, 1.0f, false);
+	FTimerHandle DungeonInRecoveryTimer;
+	GetWorld()->GetTimerManager().SetTimer(DungeonInRecoveryTimer,this, &AMainMapGameMode::DungeonInRecovery, 1.5f, false);
 }
 
-void AMainMapGameMode::FadeOut()
+void AMainMapGameMode::DungeonInRecovery()
 {
 	LoadingWidgetHiddenScreen();
 

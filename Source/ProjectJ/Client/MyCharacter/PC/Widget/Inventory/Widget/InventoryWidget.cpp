@@ -47,7 +47,7 @@ void UInventoryWidget::CreateInventorySlots(int32 _InventoryNum)
 					InputGridSlot->SetRow(UKismetMathLibrary::FTrunc(i / RowColumnValue));
 					UKismetMathLibrary::FMod(i, RowColumnValue, Column);
 					InputGridSlot->SetColumn(UKismetMathLibrary::FTrunc(Column));
-					InventorySlot->UpdateInventorySlot(InventorySlots[i]->GetInventorySlotInfo());
+					InventorySlot->UpdateInventorySlot();
 				}
 			}
 		}

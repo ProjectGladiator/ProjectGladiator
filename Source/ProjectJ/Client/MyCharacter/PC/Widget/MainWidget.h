@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Client/MyCharacter/PC/Widget/Party/Structure/FPartySlot.h"
 #include "Client/MyCharacter/PC/Widget/Inventory/Structure/FInventorySlot.h"
+#include "Client/MyCharacter/PC/Widget/GlobalMessage/InDunGeonMessageWidget.h"
 #include "MainWidget.generated.h"
 
 /**
@@ -18,6 +19,8 @@ class PROJECTJ_API UMainWidget : public UUserWidget
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GlobalMessageWidget, Meta = (AllowPrivateAccess = true))
 		class UTextBlock* InChannelText;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GlobalMessageWidget, Meta = (AllowPrivateAccess = true))
+		class UTextBlock* InGameStageStartText;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = GlobalMessageWidget, Meta = (AllowPrivateAccess = true))
 		class UInDunGeonMessageWidget* InDunGeonMessageWidget;
 
@@ -49,7 +52,10 @@ private:
 		class AMainMapPlayerController* MainMapPlayerController;
 	UPROPERTY()
 		class UWidgetAnimation* InChannelTextInVisibleAnimation;
-
+	UPROPERTY()
+		FTimerHandle GameStageStartTimer;
+	UPROPERTY()
+		int32 GameStageStartCount;
 public:
 	virtual void NativeConstruct() override;
 
@@ -111,8 +117,17 @@ public:
 	UFUNCTION()
 		void InChannelTextHidden();
 
+	/*
+		글로벌 메세지 관련 함수
+	*/
+	void SetInDunGeonMessageWidgetState(const EMessageState& _NewState, const FText & _NewMessage);
 	void InDunGeonMessageWidgetVisible();
 	bool IsDunGeonMessageWidgetVisible();
+	
+	//중앙 맵 이동 카운트 관련 함수들
+	void SetGameStageStartCountInit(int32 _GameStageStartCount);
+	UFUNCTION()
+		void StartGameStageCount();
 
 	void ChattingStart();
 };
