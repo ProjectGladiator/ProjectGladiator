@@ -742,9 +742,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			StorageManager::GetInstance()->ChangeData(Data->data, PartyReqCharacterCode, x, y, z);
 			StorageManager::GetInstance()->PopData();
-
-			//GLog->Log(ANSI_TO_TCHAR(PartyReqCharacterCode));
-
+						
 			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
 
 			if (MyCharacter)
@@ -785,8 +783,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 					if (strcmp(PartySlot.CharacterCode, PartyReqCharacterCode) == 0)
 					{
-						PartySlot.PartyUser->SpawnGameStageStartEffect();
 						PartySlot.PartyUser->SetActorLocation(GameStageStartSpawnLocation);
+						PartySlot.PartyUser->SpawnGameStageStartEffect();
 					}
 				}
 			}
