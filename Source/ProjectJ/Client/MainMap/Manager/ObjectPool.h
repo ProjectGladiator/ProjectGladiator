@@ -31,16 +31,13 @@ class PROJECTJ_API AObjectPool : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AObjectPool();
-
+	/** This Data Structure is Monster's Type and list of Array*/
+	TMap<MONSTER_CODE, FMonsterstruct> DefaultSpawnArea_Map;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
 	//enumMonsterType MonsterType_Enum;
-
-	/** This Data Structure is Monster's Type and list of Array*/
-	//UPROPERTY(EditAnywhere, Category = "Spawning")
-	TMap<MONSTER_CODE,FMonsterstruct> DefaultSpawnArea_Map;
 		
 public:	
 	// Called every frame
@@ -105,5 +102,5 @@ private:
 	void WhereToGate();
 
 	/**Create Maximum Monster Setting */
-	void Set_MonsterVolume_With_Array(TArray<class AMonster*>&, int, TSubclassOf<class AMonster>);
+	void Set_MonsterVolume_With_Array(TArray<class AMonster*>&, MONSTER_CODE,int, TSubclassOf<class AMonster>);
 };

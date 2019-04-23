@@ -11,6 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 
 //서버 헤더
+#include "NetWork/StorageManager.h"
 
 // Sets default values
 AMonster::AMonster()
@@ -83,6 +84,18 @@ void AMonster::BeginPlay()
 void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	//PacketData* Data;
+	//if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
+	//{
+	//	switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
+	//	{
+	//	case PGAMEDATA_MONSTER_MOVE_INFO: // 몬스터 이동정보 - ([int] 몬스터코드, [int] 몬스터숫자, [float*3] 좌표)
+	//		StorageManager::GetInstance()->ChangeData(Data->data, KindMonster, SpawnMonster_Num, SpawnPos.X, SpawnPos.Y, SpawnPos.Z);
+	//		StorageManager::GetInstance()->PopData();
+	//		break;
+	//	}
+	//}
+
 }
 
 // Called to bind functionality to input
@@ -108,6 +121,16 @@ void AMonster::init()
 float AMonster::GetHP()
 {
 	return CurrentHP;
+}
+
+MONSTER_CODE AMonster::SetMonsterCode(MONSTER_CODE _MonsterCode)
+{
+	return m_MonsterCode = _MonsterCode;
+}
+
+int AMonster::SetMonsterNum(int _MonsterNum)
+{
+	return m_MonsterNum = _MonsterNum;
 }
 
 void AMonster::Monster_SetActive(AMonster * SpawnObject, bool _bActive)
