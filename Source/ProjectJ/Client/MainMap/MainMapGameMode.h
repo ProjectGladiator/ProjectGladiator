@@ -93,7 +93,6 @@ public:
 	void DungeonIn();
 	UFUNCTION()
 		void DungeonInRecovery();
-		void FadeOut();
 
 	AObjectPool* ObjectPool;
 	void Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>, MONSTER_CODE, int, FVector);

@@ -16,7 +16,6 @@ public:
 	AMonster();
 protected:
 	//나 자신의 몬스터 코드
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MonsterCode)
 		MONSTER_CODE m_MonsterCode;
 	//나의 몬스터 번호
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MonsterCode)
@@ -72,15 +71,15 @@ public:
 	//Set Monster value initialize
 	virtual void init();
 	UFUNCTION()
-		float GetHP();
-	UFUNCTION()
-		MONSTER_CODE SetMonsterCode(MONSTER_CODE);
-	UFUNCTION()
-		int SetMonsterNum(int);
+	float GetHP();
+
+	int SetMonsterNum(int);
 
 	/** Actor Hidden 확인여부 */
 	UPROPERTY(VisibleInstanceOnly, Category = isSpawn)
 	bool bisActive;
+
+	MONSTER_CODE SetMonsterCode(MONSTER_CODE);
 
 	void Monster_SetActive(AMonster*, bool);
 
