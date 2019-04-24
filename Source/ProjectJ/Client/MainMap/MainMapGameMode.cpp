@@ -766,8 +766,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 		case PGAMEDATA_MONSTER_MOVE_INFO: // 몬스터 이동정보 - ([int] 몬스터코드, [int] 몬스터숫자, [float*3] 좌표)
 			StorageManager::GetInstance()->ChangeData(Data->data, MonsterCode, MonsterNum, MosterPosition.X, MosterPosition.Y, MosterPosition.Z);
 			StorageManager::GetInstance()->PopData();
-		
-			Get_MonsterPosition(ObjectPool->Get_SpawnMoster_Map(), static_cast<MONSTER_CODE>(MonsterCode),MonsterNum,MosterPosition);
+			
+			Get_MonsterPosition(StageManager->GetObjectPool()->Get_SpawnMoster_Map(), static_cast<MONSTER_CODE>(MonsterCode), MonsterNum, MosterPosition); //Get_SpawnMoster_Map(), static_cast<MONSTER_CODE>(MonsterCode),MonsterNum,MosterPosition);
 			break;
 		case PGAMEDATA_PARTY_DUNGEON_STAGE_ENTER_RESULT:
 			StorageManager::GetInstance()->ChangeData(Data->data, UserCount); 
