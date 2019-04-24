@@ -8,8 +8,11 @@
 #include "Client/Monster/StageOne/Bear/Bear.h"
 #include "Client/Monster/StageOne/Dinosaur/Dinosaur.h"
 #include "Client/Monster/StageTwo/Dog/Dog.h"
+#include "Client/Monster/StageOne/Spider/Spider.h"
 #include "Client/Monster/MonsterAIController.h"
 #include "Components/BoxComponent.h"
+#include "Engine/World.h"
+#include "TimerManager.h"
 #include "UObject/ConstructorHelpers.h" // 경로 탐색 헤더
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 
@@ -71,16 +74,21 @@ void AObjectPool::Tick(float DeltaTime)
 			break;
 		case PGAMEDATA_STAGE_MONSTER_INFO: // 스테이지 몬스터 정보 - (몬스터코드,몬스터숫자,좌표)
 
-			int KindMonster;
+			/*int KindMonster;
 			int SpawnMonster_Num;
-			FVector SpawnPos;
+			FVector SpawnPos;*/
 
 			StorageManager::GetInstance()->ChangeData(Data->data, KindMonster, SpawnMonster_Num, SpawnPos.X, SpawnPos.Y, SpawnPos.Z);
 			StorageManager::GetInstance()->PopData();
-
-			Recive_SpawnObject_Info(SpawnMonster_Num, static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
+			Timer();
+			/*GetWorld()->GetTimerManager().SetTimer(SpawnUpdateTimer, this, &AObjectPool::Recive_SpawnObject_Info, SpawnTime, true, 0);
+		*/
+			//Recive_SpawnObject_Info(SpawnMonster_Num, static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
 			break;
-
+		case PGAMEDATA_STAGE_MONSTER_SPAWN_TIME: // 스테이지 몬스터 스폰 시간 - ([float] 몬스터 스폰시간)
+			StorageManager::GetInstance()->ChangeData(Data->data, SpawnTime);
+			StorageManager::GetInstance()->PopData();
+			break;
 		}
 	}
 }
@@ -107,9 +115,9 @@ void AObjectPool::PoolSetting()
 		}
 
 		////kind of Monster AND Monster's Maximum size
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 5, ABear::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 5, ASpider::StaticClass());
 		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM, 5, ADinosaur::StaticClass());
-		//Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[enumMonsterType::Dog].Monster_Volum_Array, 5, ADog::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::BOSS_SPIDER].Monster_Volum_Array, MONSTER_CODE::BOSS_SPIDER, 2, ADog::StaticClass());
 	
 	}
 	catch (bool) {
@@ -204,9 +212,9 @@ bool AObjectPool::check_RecycleObject(AMonster* _spawnMonster)
 		return false;
 }
 
-void AObjectPool::Recive_SpawnObject_Info(int _MonsterNum, MONSTER_CODE _MonsterCode, FVector _SpawnGatePosition)
+void AObjectPool::Recive_SpawnObject_Info()
 {
-
+	//int _MonsterNum, MONSTER_CODE _MonsterCode, FVector _SpawnGatePosition
 	//스폰좌표 3가지
 	//4892, 15000, 6451 / 4844, 22780, 6451 / 8584, 18840, 6090
 
@@ -215,7 +223,8 @@ void AObjectPool::Recive_SpawnObject_Info(int _MonsterNum, MONSTER_CODE _Monster
 
 	//SpawnPosition Get
 	//Last, Non_Active's Monster Find
-	ReadyMonster(_MonsterCode, _MonsterNum, _SpawnGatePosition);
+
+	ReadyMonster(static_cast<MONSTER_CODE>(KindMonster), SpawnMonster_Num, SpawnPos);
 
 }
 
@@ -303,5 +312,19 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 			UE_LOG(LogTemp, Error, TEXT("SpawnActor Error is Nullptr"));
 		}
 	}
+
+	/*bool C2SMoveTimerActive = MoveTimerActive();
+
+	if (!C2SMoveTimerActive)
+	{
+		GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.1f, true, 0);
+	}*/
+}
+
+void AObjectPool::Timer()
+{
+	
+	GetWorld()->GetTimerManager().SetTimer(SpawnUpdateTimer, this, &AObjectPool::Recive_SpawnObject_Info, SpawnTime, true, 0);
+
 }
 

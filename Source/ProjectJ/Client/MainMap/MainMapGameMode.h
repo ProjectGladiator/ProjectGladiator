@@ -96,6 +96,5 @@ public:
 
 	UStageManager* GetStageManager();
 
-	AObjectPool* ObjectPool;
 	void Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>, MONSTER_CODE, int, FVector);
 };
