@@ -56,6 +56,8 @@ public:
 	void ChangeData(void* data, bool& type);
 	// int형 변환
 	void ChangeData(void* data, int& _count);
+	// float형 변환
+	void ChangeData(void* data, float& _num);
 	// 파티방번호, 파티원숫자
 	void ChangeData(void* data, int& _partyroomnum,int& _partyusercount);
 	// 채널 이동 결과
