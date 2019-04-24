@@ -7,6 +7,7 @@
 #include "GameFramework/Actor.h"
 #include "NetWork/MonsterInfo.h"
 #include "ObjectPool.generated.h"
+
 USTRUCT()
 struct FMonsterstruct
 {
@@ -72,6 +73,21 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UParticleSystem* SpawnEffect;
 
+	UPROPERTY()
+	FTimerHandle SpawnUpdateTimer;
+
+	UPROPERTY()
+	float SpawnTime;
+
+	UPROPERTY()
+	bool bisTimer;
+	UPROPERTY()
+	int KindMonster;
+	UPROPERTY()
+	int SpawnMonster_Num;
+	UPROPERTY()
+	FVector SpawnPos;
+
 	/** SpawnObject Activate*/
 	void SpawnObject_SetActive(AMonster*, bool);
 
@@ -79,11 +95,14 @@ private:
 	bool check_RecycleObject(AMonster*);
 
 	//Get Spawn Info
-	void Recive_SpawnObject_Info(int, MONSTER_CODE, FVector);
+	void Recive_SpawnObject_Info();/*(int, MONSTER_CODE, FVector)*/
 
 	//Check Non-Active Monster
 	void ReadyMonster(MONSTER_CODE,int,FVector);
 
 	/**Create Maximum Monster Setting */
 	void Set_MonsterVolume_With_Array(TArray<class AMonster*>&, MONSTER_CODE,int, TSubclassOf<class AMonster>);
+
+	///**Timer To Spawn*/
+	void Timer();
 };
