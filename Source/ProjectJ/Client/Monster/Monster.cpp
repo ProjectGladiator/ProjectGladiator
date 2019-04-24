@@ -10,6 +10,7 @@
 #include "UObject/ConstructorHelpers.h" // 경로 탐색 헤더
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 #include "Kismet/GameplayStatics.h"
+#include "Client/MyCharacter/PC/MyCharacter.h"
 
 //서버 헤더
 #include "NetWork/StorageManager.h"
@@ -158,4 +159,14 @@ void AMonster::Monster_SetActive(AMonster * SpawnObject, bool _bActive)
 		UE_LOG(LogTemp, Error, TEXT("Monster Cannot Active \nSpawnActor is Gone"));
 	}
 
+}
+
+void AMonster::FirstTarget()
+{
+	auto MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	if (MyCharacter)
+	{
+		Target = MyCharacter;
+	}
 }

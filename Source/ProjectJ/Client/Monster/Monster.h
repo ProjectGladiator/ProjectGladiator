@@ -83,6 +83,7 @@ public:
 
 	void Monster_SetActive(AMonster*, bool);
 
+	void FirstTarget();
 };
 USTRUCT()
 struct FActiveMonsterInfo
