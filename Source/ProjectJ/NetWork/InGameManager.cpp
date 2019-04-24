@@ -1295,7 +1295,7 @@ void InGameManager::InGame_Recv_Stage_MonsterInfo(char * _buf)
 	int code = 0;
 	int monster_num = 0;
 	int monster_tpyes_count = 0;
-	int monster_spawn_time = 0;
+	float monster_spawn_time = 0;
 
 	float xyz[3] = { 0 };
 
@@ -1306,8 +1306,8 @@ void InGameManager::InGame_Recv_Stage_MonsterInfo(char * _buf)
 	StorageManager::GetInstance()->PushData(PGAMEDATA_STAGE_MONSTER_TPYES_COUNT, (void*)&monster_tpyes_count, sizeof(int));
 
 	// 몬스터 스폰 시간
-	memcpy(&monster_spawn_time, ptr_buf, sizeof(int));
-	ptr_buf += sizeof(int);
+	memcpy(&monster_spawn_time, ptr_buf, sizeof(float));
+	ptr_buf += sizeof(float);
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_STAGE_MONSTER_SPAWN_TIME, (void*)&monster_spawn_time, sizeof(int));
 

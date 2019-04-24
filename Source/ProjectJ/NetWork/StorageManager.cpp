@@ -91,6 +91,13 @@ void StorageManager::ChangeData(void * data, int &_count)
 	memcpy(&_count, ptr, sizeof(int));
 }
 
+// float형 변환
+void StorageManager::ChangeData(void * data, float & _num)
+{
+	char* ptr = (char*)data;
+	memcpy(&_num, ptr, sizeof(float));
+}
+
 // 파티방번호, 파티원숫자
 void StorageManager::ChangeData(void * data, int & _partyroomnum, int & _partyusercount)
 {
