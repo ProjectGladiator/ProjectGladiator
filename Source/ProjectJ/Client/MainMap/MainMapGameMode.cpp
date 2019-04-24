@@ -1106,6 +1106,11 @@ void AMainMapGameMode::DungeonInRecovery()
 	}
 }
 
+UStageManager * AMainMapGameMode::GetStageManager()
+{
+	return StageManager;
+}
+
 void AMainMapGameMode::Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>_MonsterMapData,MONSTER_CODE _MC,int _Num, FVector _MosterPosition)
 {
 	if (_MonsterMapData[_MC].Monster_Volum_Array[_Num] == nullptr)
