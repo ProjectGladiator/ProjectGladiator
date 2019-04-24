@@ -3,6 +3,7 @@
 #include "Monster.h"
 //클라 헤더
 #include "MonsterAIController.h"
+#include "Client/MainMap/Manager/ObjectPool.h"
 #include "Client/Monster/Manager/AIManager.h"
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
 #include "GameFrameWork/CharacterMovementComponent.h" //캐릭터 속도 관련 헤더
@@ -70,7 +71,17 @@ void AMonster::OnMonsterAttackChanged()
 
 void AMonster::Death()
 {
+	AObjectPool ObjectPool;
+	TArray<FActiveMonsterInfo> TempArray = ObjectPool.Get_ActiveMonster_Array();
 
+	for (int i_Num = 0; i_Num < TempArray.Num(); i_Num++)
+	{
+		if (TempArray[i_Num].MonsterCode == m_MonsterCode && TempArray[i_Num].MonsterNum == m_MonsterNum)
+		{
+			TempArray.RemoveAt(i_Num);
+			//TempArray.Sort();
+		}
+	}
 }
 
 // Called when the game starts or when spawned
@@ -84,18 +95,6 @@ void AMonster::BeginPlay()
 void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//PacketData* Data;
-	//if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
-	//{
-	//	switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
-	//	{
-	//	case PGAMEDATA_MONSTER_MOVE_INFO: // 몬스터 이동정보 - ([int] 몬스터코드, [int] 몬스터숫자, [float*3] 좌표)
-	//		StorageManager::GetInstance()->ChangeData(Data->data, KindMonster, SpawnMonster_Num, SpawnPos.X, SpawnPos.Y, SpawnPos.Z);
-	//		StorageManager::GetInstance()->PopData();
-	//		break;
-	//	}
-	//}
-
 }
 
 // Called to bind functionality to input
@@ -155,7 +154,8 @@ void AMonster::Monster_SetActive(AMonster * SpawnObject, bool _bActive)
 	}
 	else
 	{
-		GLog->Log(FString::Printf(TEXT("Monster Cannot Active")));
+		//GLog->Log(FString::Printf(TEXT("Monster Cannot Active")));
+		UE_LOG(LogTemp, Error, TEXT("Monster Cannot Active \nSpawnActor is Gone"));
 	}
 
 }

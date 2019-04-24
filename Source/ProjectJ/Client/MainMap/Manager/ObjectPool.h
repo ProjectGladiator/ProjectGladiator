@@ -32,14 +32,9 @@ class PROJECTJ_API AObjectPool : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AObjectPool();
-	///** This Data Structure is Monster's Type and list of Array*/
-	//TMap<MONSTER_CODE, FMonsterstruct> DefaultSpawnArea_Map;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
-	//enumMonsterType MonsterType_Enum;
-		
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -47,10 +42,6 @@ public:
 	/** Find a random point with in the BoxComponent*/
 	UFUNCTION(BlueprintPure, Category = "Spawning")
 		FVector GetRandomPointInVolume();
-
-	/** Set PoolVolume to Start*/
-	UPROPERTY(EditAnywhere, Category = "Spawning")
-	int initPoolVolume;
 
 	/** ObjectPool init function*/
 	void PoolSetting();
@@ -74,13 +65,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Spawning", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* DefaultSpawnArea;
 
-
 	/** if you want to use this, check to attribute*/
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 		bool bis_Testpool_Set;
-
-	//Object Position
-	FVector SpawnPos_Vector;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UParticleSystem* SpawnEffect;
@@ -91,17 +78,11 @@ private:
 	/** Monster Set useful*/
 	bool check_RecycleObject(AMonster*);
 
-	/** Monster Class input whatToSpawn_Array*/
-	void SetStaticMonsterClass();
-
 	//Get Spawn Info
 	void Recive_SpawnObject_Info(int, MONSTER_CODE, FVector);
 
 	//Check Non-Active Monster
 	void ReadyMonster(MONSTER_CODE,int,FVector);
-
-	//SpawnPos Selecter
-	void WhereToGate();
 
 	/**Create Maximum Monster Setting */
 	void Set_MonsterVolume_With_Array(TArray<class AMonster*>&, MONSTER_CODE,int, TSubclassOf<class AMonster>);

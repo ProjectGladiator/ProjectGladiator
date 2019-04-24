@@ -89,7 +89,7 @@ struct FActiveMonsterInfo
 {
 	GENERATED_USTRUCT_BODY()
 
-		int MonsterNum;
+	int MonsterNum;
 	MONSTER_CODE MonsterCode;
 	AMonster* Monster;
 

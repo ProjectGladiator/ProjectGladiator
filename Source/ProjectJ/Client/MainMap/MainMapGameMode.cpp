@@ -1108,7 +1108,11 @@ void AMainMapGameMode::DungeonInRecovery()
 
 void AMainMapGameMode::Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>_MonsterMapData,MONSTER_CODE _MC,int _Num, FVector _MosterPosition)
 {
-
-
-	_MonsterMapData[_MC].Monster_Volum_Array[_Num]->SetActorLocation(_MosterPosition);
+	if (_MonsterMapData[_MC].Monster_Volum_Array[_Num] == nullptr)
+	{
+		//GLog->Log(FString::Printf(TEXT("Get Monster* is Fail")));
+		UE_LOG(LogTemp, Error, TEXT("Get MonsterPosition is Fail\ngo To MainMapGameMode, Check to Get_MonsterPosition Function"));
+	}
+	else
+		_MonsterMapData[_MC].Monster_Volum_Array[_Num]->SetActorLocation(_MosterPosition);
 }

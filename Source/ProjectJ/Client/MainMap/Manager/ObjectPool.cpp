@@ -83,8 +83,6 @@ void AObjectPool::Tick(float DeltaTime)
 
 		}
 	}
-	//종류 int 갯수
-	/*ReadyMonster(enumMonsterType::Bear);*/
 }
 
 FVector AObjectPool::GetRandomPointInVolume()
@@ -206,11 +204,6 @@ bool AObjectPool::check_RecycleObject(AMonster* _spawnMonster)
 		return false;
 }
 
-void AObjectPool::SetStaticMonsterClass()
-{
-
-}
-
 void AObjectPool::Recive_SpawnObject_Info(int _MonsterNum, MONSTER_CODE _MonsterCode, FVector _SpawnGatePosition)
 {
 
@@ -263,11 +256,6 @@ void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, int _MonsterNum, FVect
 	}
 }
 
-void AObjectPool::WhereToGate()
-{
-	//Set Effect to Spawn
-}
-
 void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _MonsterTypeArray, MONSTER_CODE _MonsterCode, int _MaximumSize, TSubclassOf<class AMonster> _MonsterClass)
 {
 	//SpawnParameter with CollisionHandling Set
@@ -276,6 +264,8 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 	//Use SpawnActorOption, ESpawnActorCollisionHandlingMethod::[ AlwaysSpawn OR AdjustIfPossibleButAlwaysSpawn ]
 	SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
+	//Object Position
+	FVector SpawnPos_Vector;
 	//Default SpawnVector Pos
 	SpawnPos_Vector = DefaultSpawnArea->Bounds.Origin;
 
@@ -297,6 +287,7 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 			////isActive Check bool Attribute make false
 			SpawnActor->bisActive = false;
 
+			//Set up Monster's Code and Num
 			SpawnActor->SetMonsterCode(_MonsterCode);
 			SpawnActor->SetMonsterNum(i_spawnObject);
 
@@ -309,7 +300,7 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 		else if (SpawnActor == nullptr)
 		{
 			//GLog->Log(FString::Printf(TEXT("SpawnActor Error")));
-			UE_LOG(LogTemp, Warning, TEXT("SpawnActor Error"));
+			UE_LOG(LogTemp, Error, TEXT("SpawnActor Error is Nullptr"));
 		}
 	}
 }
