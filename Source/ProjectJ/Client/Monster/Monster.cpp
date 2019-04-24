@@ -159,6 +159,3 @@ void AMonster::Monster_SetActive(AMonster * SpawnObject, bool _bActive)
 	}
 
 }
-
-
-

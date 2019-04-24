@@ -84,3 +84,13 @@ public:
 	void Monster_SetActive(AMonster*, bool);
 
 };
+USTRUCT()
+struct FActiveMonsterInfo
+{
+	GENERATED_USTRUCT_BODY()
+
+		int MonsterNum;
+	MONSTER_CODE MonsterCode;
+	AMonster* Monster;
+
+};

@@ -5,7 +5,6 @@
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "NetWork/DataProtocol.h"
-#include "Client/Monster/Monster.h"
 #include "Client/Monster/StageOne/Bear/Bear.h"
 #include "Client/Monster/StageOne/Dinosaur/Dinosaur.h"
 #include "Client/Monster/StageTwo/Dog/Dog.h"
@@ -113,24 +112,7 @@ void AObjectPool::PoolSetting()
 		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 5, ABear::StaticClass());
 		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM, 5, ADinosaur::StaticClass());
 		//Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[enumMonsterType::Dog].Monster_Volum_Array, 5, ADog::StaticClass());
-	/*	
-		int* KindMonster;
-		int* SpawnMonster_Num;
-		FVector SpawnPos;
-
-		int k = 0;
-		int SN = 3;
-
-		KindMonster = &k;
-		SpawnMonster_Num = &SN;
-
-		Recive_SpawnObject_Info(*SpawnMonster_Num, static_cast<enumMonsterType>(*KindMonster), FVector(300, 300, 500));*/
-
-		/*MonsterType_Enum = enumMonsterType::Bear;
-		int temp = 2;*/
-
-		/*Recive_SpawnObject_Info(3, MonsterType_Enum, FVector(4892, 15000, 6451));
-		Recive_SpawnObject_Info(temp, enumMonsterType::Dinosaur, FVector(4844, 22780, 6451));*/
+	
 	}
 	catch (bool) {
 		if (bis_Testpool_Set == true)
@@ -175,6 +157,16 @@ void AObjectPool::Pooling(int _counter)
 			UE_LOG(LogTemp, Warning, TEXT("_counter is (-)value"));
 		}
 	}
+}
+
+TMap<MONSTER_CODE, FMonsterstruct> AObjectPool::Get_SpawnMoster_Map()
+{
+	return DefaultSpawnArea_Map;
+}
+
+TArray<FActiveMonsterInfo> AObjectPool::Get_ActiveMonster_Array()
+{
+	return ActiveMonster_Array;
 }
 
 void AObjectPool::SpawnObject_SetActive(AMonster* SpawnObject, bool _bActive)
@@ -243,12 +235,24 @@ void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, int _MonsterNum, FVect
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Monster Recycle"));
 			++Monster_Spawn_Counter;
+
 			//Active Actor to bisActive make true;
 			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->bisActive = true;
+			
 			//Get Monster's init
 			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->init();
 			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->SetActorLocation(_MonsterPostion);
 			SpawnObject_SetActive(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster], true);
+
+			//Temporary Struct to Put in ActvieMonster_Array
+			FActiveMonsterInfo TempActiveMonsterInfo;
+			TempActiveMonsterInfo.MonsterCode = _MonsterCode;
+			TempActiveMonsterInfo.MonsterNum = _MonsterNum;
+			TempActiveMonsterInfo.Monster = DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster];
+			
+			//ActiveMonster's Array is Send To Server MonsterInfo
+			ActiveMonster_Array.Emplace(TempActiveMonsterInfo);
+			
 		}
 		else if (Monster_Spawn_Counter == _MonsterNum)
 		{

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Client/Monster/Monster.h"
 #include "GameFramework/Actor.h"
 #include "NetWork/MonsterInfo.h"
 #include "ObjectPool.generated.h"
@@ -14,14 +15,14 @@ struct FMonsterstruct
 	TArray<class AMonster*> Monster_Volum_Array;
 };
 /** Monster Type Enum*/
-UENUM()
-enum class enumMonsterType : uint8
-{
-	//Stage 1
-	Bear, Dinosaur, Spider, SpiderBoss, Worm,
-	//Stage 2
-	Dog, Grount
-};
+//UENUM()
+//enum class enumMonsterType : uint8
+//{
+//	//Stage 1
+//	Bear, Dinosaur, Spider, SpiderBoss, Worm,
+//	//Stage 2
+//	Dog, Grount
+//};
 UCLASS()
 class PROJECTJ_API AObjectPool : public AActor
 {
@@ -31,8 +32,8 @@ class PROJECTJ_API AObjectPool : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AObjectPool();
-	/** This Data Structure is Monster's Type and list of Array*/
-	TMap<MONSTER_CODE, FMonsterstruct> DefaultSpawnArea_Map;
+	///** This Data Structure is Monster's Type and list of Array*/
+	//TMap<MONSTER_CODE, FMonsterstruct> DefaultSpawnArea_Map;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -51,20 +52,24 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	int initPoolVolume;
 
-	/** Current Pool Scale*/
-	//UPROPERTY(VisibleAnywhere, Category = "Spawning")
-	//int currentPool_count;
-
 	/** ObjectPool init function*/
 	void PoolSetting();
 
 	/** ObjectPool Pooling*/
 	void Pooling(int);
 
-	/** Send To Server Get Next Pooling Massage */
+	/** Get SpawnMonster_Map*/
+	TMap<MONSTER_CODE, FMonsterstruct> Get_SpawnMoster_Map();
+	/** Get ActvieMonster_Array*/
+	TArray<FActiveMonsterInfo> Get_ActiveMonster_Array();
 
-	/** Get To Server Start Pooling Massage */
 private:
+	/** This Data Structure is Monster's Type and list of Array*/
+	TMap<MONSTER_CODE, FMonsterstruct> DefaultSpawnArea_Map;
+
+	/** This Array is Activing Monster's Struct*/
+	TArray<FActiveMonsterInfo> ActiveMonster_Array;
+
 	/** Box Component to specify where pickups should be spawned*/
 	UPROPERTY(VisibleAnywhere, Category = "Spawning", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* DefaultSpawnArea;
@@ -73,9 +78,6 @@ private:
 	/** if you want to use this, check to attribute*/
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 		bool bis_Testpool_Set;
-
-	//UPROPERTY(VisibleAnywhere, Category = "Spawning")
-	//TArray<class AMonster*> Spawn_Array;
 
 	//Object Position
 	FVector SpawnPos_Vector;
