@@ -738,7 +738,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
 
-			MyCharacter->GetMyCharacterUI()->GetMainWidget()->SetGameStageStartCountInit(60);
+			MyCharacter->GetMyCharacterUI()->GetMainWidget()->SetGameStageStartCountInit(10);
 
 			DungeonIn();
 			break;
