@@ -95,14 +95,14 @@ private:
 	bool check_RecycleObject(AMonster*);
 
 	//Get Spawn Info
-	void Recive_SpawnObject_Info();/*(int, MONSTER_CODE, FVector)*/
+	void Recive_SpawnObject_Info();
 
 	//Check Non-Active Monster
-	void ReadyMonster(MONSTER_CODE,int,FVector);
+	void ReadyMonster(MONSTER_CODE,FVector);
 
 	/**Create Maximum Monster Setting */
 	void Set_MonsterVolume_With_Array(TArray<class AMonster*>&, MONSTER_CODE,int, TSubclassOf<class AMonster>);
 
-	///**Timer To Spawn*/
+	/**Timer To Spawn*/
 	void Timer();
 };

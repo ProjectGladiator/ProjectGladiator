@@ -74,17 +74,9 @@ void AObjectPool::Tick(float DeltaTime)
 			StorageManager::GetInstance()->PopData();
 			break;
 		case PGAMEDATA_STAGE_MONSTER_INFO: // 스테이지 몬스터 정보 - (몬스터코드,몬스터숫자,좌표)
-
-			/*int KindMonster;
-			int SpawnMonster_Num;
-			FVector SpawnPos;*/
-
 			StorageManager::GetInstance()->ChangeData(Data->data, KindMonster, SpawnMonster_Num, SpawnPos.X, SpawnPos.Y, SpawnPos.Z);
 			StorageManager::GetInstance()->PopData();
 			Timer();
-			/*GetWorld()->GetTimerManager().SetTimer(SpawnUpdateTimer, this, &AObjectPool::Recive_SpawnObject_Info, SpawnTime, true, 0);
-		*/
-			//Recive_SpawnObject_Info(SpawnMonster_Num, static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
 			break;
 		case PGAMEDATA_STAGE_MONSTER_SPAWN_TIME: // 스테이지 몬스터 스폰 시간 - ([float] 몬스터 스폰시간)
 			StorageManager::GetInstance()->ChangeData(Data->data, SpawnTime);
@@ -116,7 +108,7 @@ void AObjectPool::PoolSetting()
 		}
 
 		////kind of Monster AND Monster's Maximum size
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 5, ASpider::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 5, ABear::StaticClass());
 		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM, 5, ADinosaur::StaticClass());
 		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::BOSS_SPIDER].Monster_Volum_Array, MONSTER_CODE::BOSS_SPIDER, 2, ADog::StaticClass());
 	
@@ -230,44 +222,46 @@ void AObjectPool::Recive_SpawnObject_Info()
 	}
 	else
 	{
-		ReadyMonster(static_cast<MONSTER_CODE>(KindMonster), SpawnMonsterCounter, SpawnPos);
+		ReadyMonster(static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
 		//Counter Update
 		++SpawnMonsterCounter;
 	}
 }
 
-void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, int _MonsterNum, FVector _MonsterPostion)
+void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, FVector _MonsterPostion)
 {
-	/*for (int i_Monster = 0; i_Monster < DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array.Num(); i_Monster++)
+	for (int i_Monster = 0; i_Monster < DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array.Num(); i_Monster++)
 	{
-	}*/
-	if (check_RecycleObject(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[_MonsterNum]))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Monster Recycle"));
+		if (check_RecycleObject(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]))
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Monster Recycle"));
 
-		//Active Actor to bisActive make true;
-		DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[_MonsterNum]->bisActive = true;
+			//Active Actor to bisActive make true;
+			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->bisActive = true;
 
-		//Get Monster's init
-		DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[_MonsterNum]->init();
-		DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[_MonsterNum]->SetActorLocation(_MonsterPostion);
-		SpawnObject_SetActive(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[_MonsterNum], true);
+			//Get Monster's init
+			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->init();
+			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->SetActorLocation(_MonsterPostion);
+			SpawnObject_SetActive(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster], true);
 
-		//Setting Target
-		DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[_MonsterNum]->FirstTarget();
+			//Setting Target
+			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->FirstTarget();
 
-		//Temporary Struct to Put in ActvieMonster_Array
-		FActiveMonsterInfo TempActiveMonsterInfo;
-		TempActiveMonsterInfo.MonsterCode = _MonsterCode;
-		TempActiveMonsterInfo.MonsterNum = _MonsterNum;
-		TempActiveMonsterInfo.Monster = DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[_MonsterNum];
+			//Temporary Struct to Put in ActvieMonster_Array
+			FActiveMonsterInfo TempActiveMonsterInfo;
+			TempActiveMonsterInfo.MonsterCode = _MonsterCode;
+			TempActiveMonsterInfo.MonsterNum = i_Monster;
+			TempActiveMonsterInfo.Monster = DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster];
 
-		//ActiveMonster's Array is Send To Server MonsterInfo
-		ActiveMonster_Array.Emplace(TempActiveMonsterInfo);
+			//ActiveMonster's Array is Send To Server MonsterInfo
+			ActiveMonster_Array.Emplace(TempActiveMonsterInfo);
 
-	}
-	/*else*/
+			break;
+		}
+		/*else*/
 		//UE_LOG(LogTemp, Warning, TEXT("Monster Recycle Fail"));
+	}
+	
 }
 
 void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _MonsterTypeArray, MONSTER_CODE _MonsterCode, int _MaximumSize, TSubclassOf<class AMonster> _MonsterClass)
@@ -317,13 +311,6 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 			UE_LOG(LogTemp, Error, TEXT("SpawnActor Error is Nullptr"));
 		}
 	}
-
-	/*bool C2SMoveTimerActive = MoveTimerActive();
-
-	if (!C2SMoveTimerActive)
-	{
-		GetWorld()->GetTimerManager().SetTimer(C2S_MoveUpdateTimer, this, &AMyCharacter::C2S_MoveConfirm, 0.1f, true, 0);
-	}*/
 }
 
 void AObjectPool::Timer()
