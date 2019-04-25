@@ -11,6 +11,9 @@
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 #include "Kismet/GameplayStatics.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
+#include "Client/MyCharacter/PC/Widget/MyCharacterUI.h"
+#include "Client/MyCharacter/PC/Widget/MainWidget.h"
+#include "Client/MyCharacter/PC/Widget/Party/Widget/PartyWidget.h"
 
 //서버 헤더
 #include "NetWork/StorageManager.h"
@@ -167,6 +170,18 @@ void AMonster::FirstTarget()
 
 	if (MyCharacter)
 	{
-		Target = MyCharacter;
+		for (int i = 0; i < MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySize(); i++)
+		{
+			FPartySlot PartySlot = MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySlot(i);
+
+			if (PartySlot.PartyUser)
+			{
+				if (PartySlot.PartyUser->GetPartyLeader())
+				{
+					Target = PartySlot.PartyUser;
+				}
+			}
+		}
+		
 	}
 }
