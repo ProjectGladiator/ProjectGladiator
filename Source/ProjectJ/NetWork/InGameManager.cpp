@@ -1669,6 +1669,11 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 		InGame_Recv_Stage_MonsterInfo(buf);
 		result = RT_INGAME_MONSTER_INFO_RESULT;
 		break;
+	case SERVER_INGAME_MONSTER_MOVE_RESULT:
+		// 몬스터 이동정보 옴
+		InGame_Recv_Monster_MoveInfo(buf);
+		result = RT_INGAME_MONSTER_MOVE_INFO_RESULT;
+		break;
 	default:
 		break;
 	}
