@@ -1120,7 +1120,10 @@ void AMainMapGameMode::Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>_Mo
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("GetMonsterPosition"));
+		//UE_LOG(LogTemp, Warning, TEXT("before MonsterPosition: %d"),_MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation());
+		GLog->Log(FString::Printf(TEXT("before MonsterPosition: %d,%d,%d"),_MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().X, _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().Y, _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().Z));
 		_MonsterMapData[_MC].Monster_Volum_Array[_Num]->SetActorLocation(_MosterPosition);
+		GLog->Log(FString::Printf(TEXT("After MonsterPosition: %d,%d,%d"), _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().X, _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().Y, _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().Z));
+		//UE_LOG(LogTemp, Warning, TEXT("After MonsterPosition: %d"), _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation());
 	}
 }
