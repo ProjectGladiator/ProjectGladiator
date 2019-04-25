@@ -1119,5 +1119,8 @@ void AMainMapGameMode::Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>_Mo
 		UE_LOG(LogTemp, Error, TEXT("Get MonsterPosition is Fail\ngo To MainMapGameMode, Check to Get_MonsterPosition Function"));
 	}
 	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("GetMonsterPosition"));
 		_MonsterMapData[_MC].Monster_Volum_Array[_Num]->SetActorLocation(_MosterPosition);
+	}
 }

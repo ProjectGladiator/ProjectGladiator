@@ -80,7 +80,7 @@ private:
 	float SpawnTime;
 
 	UPROPERTY()
-	bool bisTimer;
+	int SpawnMonsterCounter;
 	UPROPERTY()
 	int KindMonster;
 	UPROPERTY()
