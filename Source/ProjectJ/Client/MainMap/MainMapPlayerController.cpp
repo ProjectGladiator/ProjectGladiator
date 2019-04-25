@@ -214,6 +214,12 @@ void AMainMapPlayerController::C2S_ReqInGameDungeon()
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
+void AMainMapPlayerController::C2S_ReqMonsterInfo(const int32& _MonsterCode, const int32& _MonsterNumber, const FVector& _MonsterLocation)
+{
+	InGameManager::GetInstance()->InGame_Req_Monster_Move_Info(_MonsterCode, _MonsterNumber, _MonsterLocation.X, _MonsterLocation.Y, _MonsterLocation.Z);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
 void AMainMapPlayerController::Possess(APawn * InPawn)
 {
 	Super::Possess(InPawn);

@@ -61,8 +61,8 @@ void ClientCharacterInGameState::Click(AMainMapPlayerController * _MainMapPlayer
 				{
 					GLog->Log(FString::Printf(TEXT("OtherController이 없음")));
 				}
-			}	
-			else 
+			}
+			else
 			{
 				auto OtherNonPlayerCharacter = Cast<AMyNonPlayerCharacter>(HitResult.Actor);
 
@@ -73,7 +73,7 @@ void ClientCharacterInGameState::Click(AMainMapPlayerController * _MainMapPlayer
 				//내 캐릭터가 아닌 다른 캐릭터일때 
 				//ClickCharacterInfoHidden(); //상대방 UI를 숨긴다.
 			}
-		}	
+		}
 		else
 		{
 			ClickCharacterInfoHidden(); //상대방 UI를 숨긴다.
@@ -83,7 +83,17 @@ void ClientCharacterInGameState::Click(AMainMapPlayerController * _MainMapPlayer
 
 void ClientCharacterInGameState::Tick(float _DeltaTime)
 {
+	bool IsPartyLeader = false;
 
+	if (MyCharacter)
+	{
+		IsPartyLeader = MyCharacter->GetPartyLeader();
+
+		if (IsPartyLeader)
+		{
+			MyCharacter->MonsterInfoAssemble();
+		}
+	}
 }
 
 void ClientCharacterInGameState::MoveForward(float Value)

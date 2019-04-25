@@ -56,16 +56,18 @@ public:
 	void C2S_ReqMenuLogOut();
 	void C2S_ReqUserList();
 	void C2S_ReqChannelChange(int32 ChannelIndex);
-	
+
 	void C2S_ReqPartyJoin(char* ReqCharacterCode);
 	void C2S_ReqPartyAccept(bool _IsAccept, char* ReqCharacterCode, int32 _PartyRoomNum);
 	void C2S_ReqPartyLeave();
 	void C2S_ReqPartyKick(char* _PartyKickUserCode);
 	void C2S_ReqPartyLeaderDelegate(char* _NewPartyLeaderUserCode);
-	
-	void C2S_ReqGameStageStart();
 
+	void C2S_ReqGameStageStart();
 	void C2S_ReqInGameDungeon();
+
+	void C2S_ReqMonsterInfo(const int32& _MonsterCode, const int32& _MonsterNumber, const FVector& _MonsterLocation);
+
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;
 

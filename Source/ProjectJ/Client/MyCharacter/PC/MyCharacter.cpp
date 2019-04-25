@@ -30,6 +30,7 @@
 #include "Client/Menu/MenuWidget.h"
 #include "Client/MyCharacter/PC/Widget/Chatting/ChattingWidget.h"
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
+#include "Client/MainMap/Manager/StageManager.h"
 //#include "Client/State/ClientState/Character/ClientCharacterInGameState.h"
 
 //서버 헤더
@@ -686,4 +687,25 @@ void AMyCharacter::MyCharacterNickWidgetVisible()
 void AMyCharacter::SpawnGameStageStartEffect()
 {
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), GameStageStartEffect, GetActorLocation(), FRotator::ZeroRotator, true);
+}
+
+void AMyCharacter::MonsterInfoAssemble()
+{
+	auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));
+
+	if (MainMapGameMode)
+	{
+		TArray<FActiveMonsterInfo> MonsterInfos = MainMapGameMode->GetStageManager()->GetObjectPool()->Get_ActiveMonster_Array();
+
+		if (MainMapPlayerController)
+		{
+			for (int i = 0; i < MonsterInfos.Num(); i++)
+			{
+				if (MonsterInfos[i].Monster)
+				{
+					MainMapPlayerController->C2S_ReqMonsterInfo(MonsterInfos[i].MonsterCode, MonsterInfos[i].MonsterNum, MonsterInfos[i].Monster->GetActorLocation());
+				}
+			}
+		}
+	}
 }

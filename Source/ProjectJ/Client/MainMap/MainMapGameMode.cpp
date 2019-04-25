@@ -779,7 +779,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 
 			StorageManager::GetInstance()->ChangeData(Data->data, PartyReqCharacterCode, x, y, z);
 			StorageManager::GetInstance()->PopData();
-
+		
 			GameStageStartSpawnLocation.X = x;
 			GameStageStartSpawnLocation.Y = y;
 			GameStageStartSpawnLocation.Z = z;

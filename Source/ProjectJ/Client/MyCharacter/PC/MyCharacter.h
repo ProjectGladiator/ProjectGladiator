@@ -57,6 +57,13 @@ private:
 protected:
 	class ClientState* ClientCharacterState;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Component, Meta = (AllowPrivateAccess = true))
+		class USpringArmComponent* SpringArm;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Component, Meta = (AllowPrivateAccess = true))
+		class UCameraComponent* Camera;
+	UPROPERTY()
+		class AMainMapPlayerController* MainMapPlayerController;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 		float MaxHP; //최대 HP값
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
@@ -85,12 +92,6 @@ protected:
 	UPROPERTY()
 		class UMyAnimInstance* MyAnimInstance;
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		class USpringArmComponent* SpringArm;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-		class UCameraComponent* Camera;
-	UPROPERTY()
-		class AMainMapPlayerController* MainMapPlayerController;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -162,7 +163,7 @@ public:
 	void SetCharacterCode(char* _NewCharacterCode, char* _NewNickName);
 
 	void C2S_MoveConfirm();
-	
+
 	void S2C_MoveUpdate();
 
 	UFUNCTION()
@@ -211,4 +212,6 @@ public:
 	void MyCharacterNickWidgetVisible();
 
 	void SpawnGameStageStartEffect();
+
+	void MonsterInfoAssemble();
 };
