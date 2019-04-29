@@ -1368,40 +1368,28 @@ void InGameManager::InGame_Recv_Monster_MoveInfo(char * _buf)
 	int num = 0;
 	float xyz[3];
 
-	memcpy(&count, ptr_buf, sizeof(int));
+	// 몬스터 코드
+	memcpy(&code, ptr_buf, sizeof(int));
 	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &code, sizeof(int));
+	ptr_data += sizeof(int);
 
-	for (int i = 0; i < count; i++)
-	{
-		memset(data, 0, sizeof(data));
-		ptr_data = data;
-		size = 0;
-		code = 0;
-		num = 0;
+	// 몬스터 숫자
+	memcpy(&num, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &num, sizeof(int));
+	ptr_data += sizeof(int);
 
-		// 코드 사이즈
-		memcpy(&code, ptr_buf, sizeof(int));
-		ptr_buf += sizeof(int);
-		size += sizeof(int);
-		memcpy(ptr_data, &code, sizeof(int));
-		ptr_data += sizeof(int);
+	// position x, y, z
+	memcpy(xyz, ptr_buf, sizeof(float) * 3);
+	ptr_buf += sizeof(float) * 3;
+	size += sizeof(float) * 3;
+	memcpy(ptr_data, xyz, sizeof(float) * 3);
+	ptr_data += sizeof(float) * 3;
 
-		// 캐릭터 직업코드
-		memcpy(&num, ptr_buf, sizeof(int));
-		ptr_buf += sizeof(int);
-		size += sizeof(int);
-		memcpy(ptr_data, &num, sizeof(int));
-		ptr_data += sizeof(int);
-
-		// position x, y, z
-		memcpy(xyz, ptr_buf, sizeof(float) * 3);
-		ptr_buf += sizeof(float) * 3;
-		size += sizeof(float) * 3;
-		memcpy(ptr_data, xyz, sizeof(float) * 3);
-		ptr_data += sizeof(float) * 3;
-
-		StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_MOVE_INFO, data, size);
-	}
+	StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_MOVE_INFO, data, size);
 }
 
 // 파티 초대 요청
