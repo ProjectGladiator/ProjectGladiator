@@ -20,7 +20,8 @@ protected:
 	//나의 몬스터 번호
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MonsterCode)
 		int m_MonsterNum;
-
+	UPROPERTY()
+		FVector CurrentLocation;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 		float MaxHP;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
@@ -84,6 +85,8 @@ public:
 	void Monster_SetActive(AMonster*, bool);
 
 	void FirstTarget();
+
+	void S2C_LocationUpdate(const FVector& _NewLocation);
 };
 USTRUCT()
 struct FActiveMonsterInfo

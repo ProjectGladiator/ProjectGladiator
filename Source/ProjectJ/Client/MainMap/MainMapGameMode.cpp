@@ -1123,7 +1123,8 @@ void AMainMapGameMode::Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>_Mo
 		FVector TempbeforeMonsterPosition = _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation();
 		GLog->Log(FString::Printf(TEXT("before MonsterPosition: %f,%f,%f"),_MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().X, _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().Y, _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().Z));
 		
-		_MonsterMapData[_MC].Monster_Volum_Array[_Num]->SetActorLocation(_MosterPosition);
+		_MonsterMapData[_MC].Monster_Volum_Array[_Num]->S2C_LocationUpdate(_MosterPosition);
+		//_MonsterMapData[_MC].Monster_Volum_Array[_Num]->SetActorLocation(_MosterPosition);
 
 		FVector TempAfterMonsterPosition = _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation();
 		GLog->Log(FString::Printf(TEXT("After MonsterPosition: %f,%f,%f"), _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().X, _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().Y, _MonsterMapData[_MC].Monster_Volum_Array[_Num]->GetActorLocation().Z));

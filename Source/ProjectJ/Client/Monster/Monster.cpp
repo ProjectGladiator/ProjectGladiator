@@ -93,12 +93,15 @@ void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
 
+	CurrentLocation = GetActorLocation();
 }
 
 // Called every frame
 void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	FVector UpdateLocation = FMath::VInterpTo(GetActorLocation(), CurrentLocation, DeltaTime, 0.5f);
 }
 
 // Called to bind functionality to input
@@ -184,4 +187,9 @@ void AMonster::FirstTarget()
 		}
 		
 	}
+}
+
+void AMonster::S2C_LocationUpdate(const FVector& _NewLocation)
+{
+	CurrentLocation = _NewLocation;
 }

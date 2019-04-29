@@ -127,6 +127,14 @@ void AMyCharacter::ClickedReactionMontagePlay()
 // Called every frame
 void AMyCharacter::Tick(float DeltaTime)
 {
+	if (MainMapPlayerController)
+	{
+		if (ClientCharacterState)
+		{
+			ClientCharacterState->Tick(DeltaTime);
+		}
+	}
+
 	Super::Tick(DeltaTime);
 
 	if (OtherCharacterController)
@@ -145,13 +153,7 @@ void AMyCharacter::Tick(float DeltaTime)
 		}
 	}
 
-	if (MainMapPlayerController)
-	{
-		if (ClientCharacterState)
-		{
-			ClientCharacterState->Tick(DeltaTime);
-		}
-	}
+	
 }
 
 // Called to bind functionality to input
