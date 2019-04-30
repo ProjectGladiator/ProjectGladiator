@@ -33,15 +33,15 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
 		{
 		case PGAMEDATA_PLAYER_OTHERMOVEINFO:
-			GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
+			//GLog->Log(FString::Printf(TEXT("다른 캐릭터 이동 정보 들어옴")));
 
 			memset(&otherinfo, 0, sizeof(otherinfo));
 			StorageManager::GetInstance()->ChangeData(Data->data, otherinfo);
 			StorageManager::GetInstance()->PopData();
 
-			GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
+			//GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
 
-			GLog->Log(FString::Printf(TEXT("\nOtherCharacter Location X : %f Y : %f Z : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
+			//GLog->Log(FString::Printf(TEXT("\nOtherCharacter Location X : %f Y : %f Z : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
 			if (MainMapGameMode)
 			{
 				OtherCharacter = MainMapGameMode->GetLoginUser(otherinfo.code);
@@ -67,16 +67,16 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 			OtherCharacter = nullptr;
 			break;
 		case PGAMEDATA_PLAYER_OTHERROTATION:
-			GLog->Log(FString::Printf(TEXT("다른 캐릭터 회전 정보 들어옴")));
+			//GLog->Log(FString::Printf(TEXT("다른 캐릭터 회전 정보 들어옴")));
 
 			memset(&otherinfo, 0, sizeof(otherinfo));
 
 			StorageManager::GetInstance()->ChangeData(Data->data, otherinfo);
 			StorageManager::GetInstance()->PopData();
 
-			GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
+		//	GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
 
-			GLog->Log(FString::Printf(TEXT("\nOther Character Rotation : Roll : %f Pitch : %f Yaw : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
+			//GLog->Log(FString::Printf(TEXT("\nOther Character Rotation : Roll : %f Pitch : %f Yaw : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
 
 			if (MainMapGameMode)
 			{

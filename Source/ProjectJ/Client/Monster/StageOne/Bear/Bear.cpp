@@ -80,6 +80,8 @@ void ABear::BeginPlay()
 
 void ABear::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+
 	if (Target)
 	{
 		float Distance = AIManager->DistanceCalculate(this, Target);

@@ -100,8 +100,13 @@ void AMonster::BeginPlay()
 void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	
+	FVector UpdateLocation = FMath::VInterpTo(GetActorLocation(), CurrentLocation, DeltaTime, 1.0f);
+	GLog->Log(FString::Printf(TEXT("AMonster Tick GetActorLocation X : %f Y : %f Z : %f\n"), GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z));
+	GLog->Log(FString::Printf(TEXT("AMonster Tick ServerLocation   X : %f Y : %f Z : %f\n"), CurrentLocation.X, CurrentLocation.Y, CurrentLocation.Z));
+	GLog->Log(FString::Printf(TEXT("AMonster Tick UpdateLocation   X : %f Y : %f Z : %f\n"), UpdateLocation.X, UpdateLocation.Y, UpdateLocation.Z));
 
-	FVector UpdateLocation = FMath::VInterpTo(GetActorLocation(), CurrentLocation, DeltaTime, 0.5f);
+	SetActorLocation(UpdateLocation);
 }
 
 // Called to bind functionality to input
@@ -185,7 +190,7 @@ void AMonster::FirstTarget()
 				}
 			}
 		}
-		
+
 	}
 }
 
