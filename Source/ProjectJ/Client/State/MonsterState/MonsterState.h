@@ -36,6 +36,15 @@ enum class EDogState : uint8
 };
 
 UENUM(BlueprintType)
+enum class EDogAttackState : uint8
+{
+	Ready,
+	Idle,
+	DefaultAttack,
+	ChargeAttack
+};
+
+UENUM(BlueprintType)
 enum class ESpiderState : uint8
 {
 	Ready,

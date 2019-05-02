@@ -20,6 +20,8 @@ private:
 		class ADogAIController* DogAIController;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
 		EDogState CurrentState;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
+		EDogAttackState CurrentAttackState;
 	UPROPERTY()
 		class UDogAnimInstance* DogAnimInstance;
 protected:
@@ -33,12 +35,10 @@ public:
 
 	EDogState GetCurrentState();
 
+	EDogAttackState GetCurrentAttackState();
+
 	UFUNCTION()
 		virtual void AttackHit() override;
-	//UFUNCTION()
-	//	virtual void OnMonsterAttackEnded() override;
-	//UFUNCTION()
-	//	virtual void OnComboSave() override;
 	UFUNCTION()
 		virtual void Death() override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;

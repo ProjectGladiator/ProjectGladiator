@@ -56,14 +56,10 @@ void ABear::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//MaxHP = 100.0f;
-	//CurrentHP = MaxHP;
 	init();
 
 	TargetLimitDistance = 150.0f;
 	AttackInfo.SetAttackInfo(150.0f, 80.0f, 120.0f);
-
-	CurrentState = EBearState::Idle;
 
 	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 

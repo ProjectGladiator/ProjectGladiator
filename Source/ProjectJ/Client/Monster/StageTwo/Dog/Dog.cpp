@@ -57,19 +57,18 @@ ADog::ADog()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 #pragma endregion 매쉬를 월드에 적용하기 위한 위치값
 
-	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 700.0f;
 }
 
 void ADog::BeginPlay()
 {
 	Super::BeginPlay();
-
+	SetAIController(DogAIController);
 #pragma region HP, TagetLimit_Distance, AttackRange, State Set
-	//MaxHP = 100.0f;
-	//CurrentHP = MaxHP;
+	
 	init();
 
-	TargetLimitDistance = 50.0f;
+	TargetLimitDistance = 150.0f;
 
 	AttackInfo.SetAttackInfo(50.0f, 80.0f, 120.0f);
 
@@ -83,8 +82,6 @@ void ADog::BeginPlay()
 	if (DogAnimInstance)
 	{
 		DogAnimInstance->OnMonsterAttackHit.AddDynamic(this, &ADog::AttackHit);
-		//DogAnimInstance->OnMonsterComboSave.AddDynamic(this, &ADog::OnComboSave);
-		//DogAnimInstance->OnMonsterAttackEnded.AddDynamic(this, &ADog::OnMonsterAttackEnded);
 		DogAnimInstance->OnDeath.AddDynamic(this, &ADog::Death);
 	}
 }
@@ -103,6 +100,8 @@ void ADog::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 			//대기 상태
+		case EDogState::Ready:
+			break;
 		case EDogState::Idle:
 		{
 			CurrentState = EDogState::Chase;
@@ -119,6 +118,7 @@ void ADog::Tick(float DeltaTime)
 			{
 			case EPathFollowingRequestResult::AlreadyAtGoal:
 				//GLog->Log(FString::Printf(TEXT("골에 도착")));
+				CurrentAttackState = EDogAttackState::DefaultAttack;
 				CurrentState = EDogState::Attack;
 				break;
 			case EPathFollowingRequestResult::Failed:
@@ -135,40 +135,24 @@ void ADog::Tick(float DeltaTime)
 			//공격 상태
 		case EDogState::Attack:
 		{
-			// 콤보 존재시 공격중에 콤보활성화 bool문
-			if (IsAttack)
-			{
-				IsCombo = true;
-			}
-			//처음 공격시 활성화 문
-			else
-			{
-				GLog->Log(FString::Printf(TEXT("개 처음 공격")));
-				IsAttack = true;
-
-			/*	if (DogAnimInstance)
-				{
-					DogAnimInstance->PlayAttackMontage(0);
-					CurrentCombo += 1;
-					DogAnimInstance->JumpAttackMontageSection(0, CurrentCombo);
-				}*/
-			}
-
 #pragma region  RotateToTarget
-			FRotator DogRotator = GetActorRotation();
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
 
-			FRotator ToCharacterRotator = UKismetMathLibrary::NormalizedDeltaRotator(LooAtRotation, DogRotator);
+			FRotator ToCharacterRotator = UKismetMathLibrary::NormalizedDeltaRotator(LooAtRotation, GetActorRotation());
 
 			//GLog->Log(FString::Printf(TEXT("ToCharacterRotator Yaw :%f\n"), ToCharacterRotator.Yaw));
 
 			//GLog->Log(FString::Printf(TEXT("Pitch : %f Yaw : %f"), LooAtRotation.Pitch, LooAtRotation.Yaw));
 			SetActorRotation(LooAtRotation);
 
-			if (Distance > TargetLimitDistance*2.0f)
+			
+			if (Distance > TargetLimitDistance*1.5f)
 			{
-				IsCombo = false;
 				CurrentState = EDogState::Chase;
+			}
+			else
+			{
+
 			}
 #pragma endregion 공격시 타겟을 향해 회전
 		}
@@ -183,6 +167,7 @@ void ADog::Tick(float DeltaTime)
 			{
 				//We Not Use Destroy Function
 				//Destroy();
+				bisActive = false;
 				Monster_SetActive(this, bisActive);
 			}
 		}
@@ -214,6 +199,11 @@ void ADog::SetAIController(AMonsterAIController * NewAIController)
 EDogState ADog::GetCurrentState()
 {
 	return CurrentState;
+}
+
+EDogAttackState ADog::GetCurrentAttackState()
+{
+	return CurrentAttackState;
 }
 
 void ADog::AttackHit()

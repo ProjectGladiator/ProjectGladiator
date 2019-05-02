@@ -33,11 +33,14 @@ protected:
 		TArray<class UAnimMontage*> AttackMontages;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsAttack)
 		bool IsAttack;
+	UFUNCTION()
+		void AnimNotify_StartAttackAnimation(UAnimNotify* Notify);
 
 	FName GetMonsterAttackMontageSection(int32 NewSection);
 
 	virtual void PlayAttackMontage(int32 MontageSequence); //공격 애니메이션 몽타주 실행
 	virtual void JumpAttackMontageSection(int32 MontageSequence, int32 NewSection); //공격 애니메이션 몽타주 섹션 점프 해주는 함수
+	
 public:
 	FOnDeathDelegate OnDeath;
 	FOnMonsterAttackHitDelegate OnMonsterAttackHit;
@@ -47,5 +50,6 @@ public:
 
 	UFUNCTION()
 		virtual void NativeUpdateAnimation(float DeltaSeconds) override; // 틱 함수
+	UFUNCTION()
 	void SetIsAttack(bool _IsAttack);
 };

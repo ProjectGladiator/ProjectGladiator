@@ -158,6 +158,11 @@ EDinosaurState ADinosaur::GetCurrentState()
 	return CurrentState;
 }
 
+void ADinosaur::init()
+{
+	Super::init();
+}
+
 EDinosaurAttackState ADinosaur::GetCurrentAttackState()
 {
 	return CurrentAttackState;

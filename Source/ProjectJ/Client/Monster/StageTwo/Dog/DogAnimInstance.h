@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -19,6 +19,8 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
 		EDogState CurrentState;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
+	EDogAttackState CurrentAttackState;
 	UFUNCTION()
 		void AnimNotify_MonsterAttackHit(UAnimNotify* Notify);
 	//UFUNCTION()
@@ -27,4 +29,7 @@ private:
 	//	void ANimNotify_MonsterAttackEnded();
 	UFUNCTION()
 		void AnimNotify_Death(UAnimNotify* Notify);
+public:
+	UFUNCTION()
+		virtual void NativeUpdateAnimation(float DeltaSeconds) override; // 틱 함수	
 };
