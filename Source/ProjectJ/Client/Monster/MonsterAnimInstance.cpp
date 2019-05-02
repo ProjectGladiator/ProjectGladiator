@@ -11,6 +11,12 @@ UMonsterAnimInstance::UMonsterAnimInstance()
 
 }
 
+void UMonsterAnimInstance::AnimNotify_StartAttackAnimation(UAnimNotify * Notify)
+{
+	OnMonsterAttackHit.Broadcast();
+	GLog->Log(FString::Printf(TEXT("StartAttackAnimation start!! Send To Server")));
+}
+
 FName UMonsterAnimInstance::GetMonsterAttackMontageSection(int32 NewSection)
 {
 	return FName(*FString::Printf(TEXT("MonsterAttack%d"), NewSection));

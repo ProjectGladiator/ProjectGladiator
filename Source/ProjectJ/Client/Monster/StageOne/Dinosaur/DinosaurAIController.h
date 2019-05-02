@@ -14,7 +14,6 @@ class PROJECTJ_API ADinosaurAIController : public AMonsterAIController
 {
 	GENERATED_BODY()
 public:
-	int a;
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;
 };
