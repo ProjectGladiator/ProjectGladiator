@@ -101,7 +101,7 @@ void ABear::Tick(float DeltaTime)
 			{
 			case EPathFollowingRequestResult::AlreadyAtGoal:
 				//GLog->Log(FString::Printf(TEXT("골에 도착")));
-				//CurrentState = EBearState::Attack;
+				CurrentState = EBearState::Attack;
 				break;
 			case EPathFollowingRequestResult::Failed:
 				//GLog->Log(FString::Printf(TEXT("요청 실패")));
