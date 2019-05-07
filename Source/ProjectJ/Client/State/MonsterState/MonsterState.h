@@ -64,6 +64,26 @@ enum class ESpiderAttackState : uint8
 };
 
 UENUM(BlueprintType)
+enum class EGrountState : uint8
+{
+	Ready,
+	Idle,
+	Chase,
+	Attack,
+	Death
+};
+
+UENUM(BlueprintType)
+enum class EGrountAttackState : uint8
+{
+	Ready,
+	Idle,
+	Chase,
+	Attack,
+	Death
+};
+
+UENUM(BlueprintType)
 enum class EDinosaurState : uint8
 {
 	Ready,

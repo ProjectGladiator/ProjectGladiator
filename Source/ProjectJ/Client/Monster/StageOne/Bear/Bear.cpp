@@ -61,8 +61,7 @@ void ABear::BeginPlay()
 	TargetLimitDistance = 150.0f;
 	AttackInfo.SetAttackInfo(150.0f, 80.0f, 120.0f);
 
-	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
+	
 	BearAnimInstance = Cast<UBearAnimInstance>(GetMesh()->GetAnimInstance());
 
 	if (BearAnimInstance)
