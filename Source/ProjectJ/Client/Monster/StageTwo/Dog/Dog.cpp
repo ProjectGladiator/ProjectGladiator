@@ -20,13 +20,15 @@
 //Some ServerHeader
 #pragma endregion 서버 헤더
 
+#define SK_Address "SkeletalMesh'/Game/Assets/Monster/QuadrapedCreatures/Barghest/Meshes/SK_BARGHEST.SK_BARGHEST'"
+#define AnimBP_Address "AnimBlueprint'/Game/Blueprints/Monster/StageTwo/Dog/Blueprints/ABP_Dog.ABP_Dog_C'"
 ADog::ADog()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	AIControllerClass = ADogAIController::StaticClass();
 
 #pragma region SkeletalMesh Set
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SK_Dog(TEXT("SkeletalMesh'/Game/Assets/Monster/QuadrapedCreatures/Barghest/Meshes/SK_BARGHEST.SK_BARGHEST'"));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SK_Dog(TEXT(SK_Address));
 
 	if (SK_Dog.Succeeded())
 	{
@@ -36,7 +38,7 @@ ADog::ADog()
 
 #pragma region AnimBlueprint Set
 	// 애님블루프린트 찾아 메쉬에 세팅
-	static ConstructorHelpers::FObjectFinder<UClass>ABP_Dog(TEXT("AnimBlueprint'/Game/Blueprints/Monster/StageTwo/Dog/Blueprints/ABP_Dog.ABP_Dog_C'"));
+	static ConstructorHelpers::FObjectFinder<UClass>ABP_Dog(TEXT(AnimBP_Address));
 
 	if (ABP_Dog.Succeeded())  //찾는것에 성공햇으면
 	{
@@ -74,8 +76,6 @@ void ADog::BeginPlay()
 
 	CurrentState = EDogState::Idle;
 #pragma endregion 수치로 표현되는 초기화 값 모음
-
-	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
 
 	DogAnimInstance = Cast<UDogAnimInstance>(GetMesh()->GetAnimInstance());
 
@@ -140,9 +140,6 @@ void ADog::Tick(float DeltaTime)
 
 			FRotator ToCharacterRotator = UKismetMathLibrary::NormalizedDeltaRotator(LooAtRotation, GetActorRotation());
 
-			//GLog->Log(FString::Printf(TEXT("ToCharacterRotator Yaw :%f\n"), ToCharacterRotator.Yaw));
-
-			//GLog->Log(FString::Printf(TEXT("Pitch : %f Yaw : %f"), LooAtRotation.Pitch, LooAtRotation.Yaw));
 			SetActorRotation(LooAtRotation);
 
 			

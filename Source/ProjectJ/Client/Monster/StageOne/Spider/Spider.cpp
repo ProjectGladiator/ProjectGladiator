@@ -63,8 +63,6 @@ void ASpider::BeginPlay()
 
 	CurrentState = ESpiderState::Idle;
 
-	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
 	SpiderAnimInstance = Cast<USpiderAnimInstance>(GetMesh()->GetAnimInstance());
 
 	if (SpiderAnimInstance)

@@ -72,8 +72,6 @@ void ADinosaur::BeginPlay()
 	CurrentState = EDinosaurState::Idle;
 	CurrentAttackState = EDinosaurAttackState::Idle;
 
-	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
 	DinosaurAnimInstance = Cast<UDinosaurAnimInstance>(GetMesh()->GetAnimInstance());
 
 	if (DinosaurAnimInstance)
