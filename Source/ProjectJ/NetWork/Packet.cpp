@@ -125,6 +125,33 @@ void Packet::pack(PROTOCOL p, void * data, int size)
 	EncryptManager::GetInstance()->encoding(sendBuf + sizeof(PROTOCOL), sendSize);
 }
 
+// 비트연산 pack
+void Packet::pack(UINT64 p, void * data, int size)
+{
+	int int64size = 0;
+
+	memset(sendBuf, 0, sizeof(sendBuf));
+
+	char* ptr = sendBuf;
+	sendSize = sizeof(p) + size;
+
+	memcpy(ptr, &sendSize, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(ptr, &p, sizeof(p));
+	ptr += sizeof(p);
+
+	int64size = sizeof(p);
+
+	memcpy(ptr, data, size);
+
+	// 암호화
+	EncryptManager::GetInstance()->encoding(sendBuf + sizeof(int), sendSize);
+
+	sendSize += sizeof(size);			// 보낼 사이즈
+	sentSize = 0;						// 보낸 사이즈(초기화)
+}
+
 void Packet::Quepack(PROTOCOL p, void * data, int size)
 {
 	SendQueue* temp = new SendQueue();
@@ -210,6 +237,48 @@ void Packet::unProtocol(PROTOCOL * p)
 
 	memcpy(&protocol, ptr, sizeof(PROTOCOL));
 	*p = protocol;
+}
+
+// 비트연산 프로토콜 pack. _existingprotocol : 기존 프로토콜, _additionalprotocol : 추가할 프로토콜
+UINT64 Packet::BitPackProtocol(UINT64 _existingprotocol, UINT64 _additionalprotocol)
+{
+	UINT64 protocol = 0;
+	protocol = _existingprotocol | _additionalprotocol;
+
+	return protocol;
+}
+
+// 비트연산 프로토콜 pack. 기존프로토콜, 큰틀프로토콜, 중간틀프로토콜, 세부프로토콜
+UINT64 Packet::BitPackProtocol(UINT64 _existingprotocol, UINT64 _first_additionalprotocol, UINT64 _second_additionalprotocol, UINT64 _third_additionalprotocol)
+{
+	UINT64 protocol = 0;
+	protocol = _existingprotocol | _first_additionalprotocol;
+	protocol = protocol | _second_additionalprotocol;
+	protocol = protocol | _third_additionalprotocol;
+
+	return protocol;
+}
+
+// 비트 연산 프로토콜 unpack
+void Packet::BitunPack(UINT64 & _p, void * _data)
+{
+	char* ptr = recvBuf;
+	UINT64 protocol = 0;
+
+	EncryptManager::GetInstance()->decoding(recvBuf, recvSize);
+
+	memcpy(&protocol, ptr, sizeof(UINT64));
+	ptr += sizeof(UINT64);
+
+	memcpy(_data, ptr, recvSize - sizeof(UINT64));
+	_p = protocol;
+
+	// InitializeBuffer
+	memcpy(recvBuf, recvBuf + recvSize, recvedSize);
+
+	recvSize = 0;						// 초기화
+	recvedSize = 0;						// 초기화
+
 }
 
 // sendSize만큼 보냈는지

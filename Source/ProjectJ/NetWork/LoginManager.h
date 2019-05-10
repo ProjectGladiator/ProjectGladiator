@@ -53,6 +53,7 @@ public:
 	bool IdOverlapCheck(char* _buf);			// 아이디 중복체크 결과
 	void reqJoin(char* _id, char* _pw);			// 회원가입 요청
 	void reqLogin(char* _id, char* _pw);		// 로그인 요청
+	RESULT TitleRecvResult();					// 타이틀화면일때
 	RESULT InitRecvResult();					// 
 	RESULT JoinRecvResult();					// 
 	bool Join(char* _buf);						// 회원가입 결과

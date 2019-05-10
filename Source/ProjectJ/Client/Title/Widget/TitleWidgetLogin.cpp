@@ -54,9 +54,9 @@ void UTitleWidgetLogin::UserIn()
 {
 	if (MainMapPlayerController)
 	{
-		LoginManager::GetInstance()->logoutMenuChoice();
-		// 패킷 전송 - Send
-		NetworkClient_main::NetworkManager::GetInstance()->Send();
+		//LoginManager::GetInstance()->logoutMenuChoice();
+		//// 패킷 전송 - Send
+		//NetworkClient_main::NetworkManager::GetInstance()->Send();
 
 		MainMapGameMode->UserInWidgetToggle(); //회원가입 위젯을 켜고
 		MainMapGameMode->LoginWidgetToggle(); //로그인 위젯을 끈다

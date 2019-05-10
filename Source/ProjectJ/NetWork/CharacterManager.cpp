@@ -46,13 +46,15 @@ void CharacterManager::EndManager()
 
 }
 
+// 슬롯정보 요청
 void CharacterManager::Character_Req_Slot()
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_CHRACTER, PROTOCOL_CHARACER_MENU, PROTOCOL_REQ_CHARACTER_SLOT);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_REQ_CHARACTER_SLOT, buf, 0);
-
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
 bool CharacterManager::Character_Slot(char* _buf)
@@ -173,17 +175,10 @@ bool CharacterManager::Character_Recv_Slot(char * _buf)
 	return true;
 }
 
-void CharacterManager::Character_Req_New_Character()
-{
-	char buf[BUFSIZE];
-	memset(buf, 0, sizeof(buf));
-
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_NEW_CHARACTER_MENU, buf, 0);
-
-}
-
+// 캐릭터 생성요청(닉네임,직업코드)
 void CharacterManager::Character_Req_Character(char * _nick, int _code)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
@@ -199,12 +194,16 @@ void CharacterManager::Character_Req_Character(char * _nick, int _code)
 	ptr += nicklen;
 
 	memcpy(ptr, &_code, sizeof(int));
+	
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_CHRACTER, PROTOCOL_CHARACER_MENU, PROTOCOL_REQ_CHARACTER_CREATE);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_REQ_CHARACTER, buf, size);
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, size);
 }
 
+// 캐릭터 삭제요청
 void CharacterManager::Character_Req_Delete(int _index)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
@@ -214,29 +213,10 @@ void CharacterManager::Character_Req_Delete(int _index)
 
 	memcpy(ptr, &_index, sizeof(int));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_CHARACTER_DELETE, buf, size);
-}
+	
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_CHRACTER, PROTOCOL_CHARACER_MENU, PROTOCOL_CHARACTER_DELETE);
 
-void CharacterManager::Character_Choice(int _select)
-{
-	char buf[BUFSIZE];
-	memset(buf, 0, sizeof(buf));
-	char* ptr = buf;
-
-	int size = sizeof(int);
-
-	memcpy(ptr, &_select, sizeof(int));
-
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_CHARACTER_ENTER, buf, 0);
-
-}
-
-void CharacterManager::Character_Exit()
-{
-	char buf[BUFSIZE];
-	memset(buf, 0, sizeof(buf));
-
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_CHARACTER_EXIT, buf, 0);
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, size);
 }
 
 void CharacterManager::Character_Slot_Empty(bool _check)
@@ -251,14 +231,11 @@ void CharacterManager::Character_Slot_Empty(bool _check)
 
 	memcpy(ptr, &check, sizeof(bool));
 	StorageManager::GetInstance()->PushData(PCHARACTERDATA_SLOT_INFO, (void*)&buf, size);
-
-	//LogManager::GetInstance()->SetTime();
-	//LogManager::GetInstance()->LogWrite(buf);
-	
 }
 
 void CharacterManager::Character_Req_Enter(int _index)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
@@ -268,7 +245,9 @@ void CharacterManager::Character_Req_Enter(int _index)
 
 	memcpy(ptr, &_index, sizeof(int));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_CHARACTER_ENTER, buf, size);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_CHRACTER, PROTOCOL_CHARACER_MENU, PROTOCOL_CHARACTER_ENTER);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, size);
 }
 
 bool CharacterManager::Character_Recv_Create(char * _buf)
@@ -406,53 +385,69 @@ bool CharacterManager::Character_Recv_Delete(char * _buf)
 
 RESULT CharacterManager::CharacterInitRecvResult()
 {
-	PROTOCOL protocol;
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
-
-	RESULT result;
+	memset(buf, 0, sizeof(buf));
+	RESULT result = RT_DEFAULT;
 	bool check;
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->unPack(&protocol, buf);
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitunPack(protocol, buf);
 
-	switch (protocol)
+	// 프로토콜 중간틀 캐릭터선택화면이면
+	if ((protocol&PROTOCOL_CHARACER_MENU) == PROTOCOL_CHARACER_MENU)
 	{
-	case SERVER_CHARACTER_SLOT_RESULT:
-		check = Character_Slot(buf);
-		if (check == true)
+		// 캐릭터 생성요청 결과
+		if ((protocol&PROTOCOL_CHARACTER_RESULT) == PROTOCOL_CHARACTER_RESULT)
 		{
-			check = Character_Recv_Slot(buf);
-			result = RT_CHARACTER_SLOTRESULT;
+			check = Character_Recv_Create(buf);
+			StorageManager::GetInstance()->PushData(PCHARACTERDATA_CREATE_RESULT, (void*)&check, sizeof(bool));
+			if (check == true)
+			{
+				result = RT_CHARACTER_CREATE_SUCCESS;
+			}
+			else
+			{
+				result = RT_CHARACTER_CREATE_FAIL;
+			}
 		}
-		else
+		// 캐릭터 삭제 요청 결과
+		else if ((protocol&PROTOCOL_CHARACTER_DELETE_RESULT) == PROTOCOL_CHARACTER_DELETE_RESULT)
 		{
-			Character_Slot_Empty(check);
-			result = RT_CHARACTER_SLOTRESULT;
-		}
-		break;
-	case SERVER_CHARACTER_ENTER_RESULT:
-		check = Character_Recv_Enter(buf);
-		if (check)
-		{
-			result = RT_CHARACTER_ENTERGAME_SUCCESS;
-		}
-		else
-		{
-			result = RT_CHARACTER_ENTERGAME_FAIL;
-		}
-		break;
-	case SERVER_CHARACTER_DELETE_RESULT:
-		// 캐릭터 삭제
-		check = Character_Recv_Delete(buf);
+			// 캐릭터 삭제
+			check = Character_Recv_Delete(buf);
 
-		StorageManager::GetInstance()->PushData(PCHARACTERDATA_DELETE_RESULT, (void*)&check, sizeof(bool));
+			StorageManager::GetInstance()->PushData(PCHARACTERDATA_DELETE_RESULT, (void*)&check, sizeof(bool));
 
-		result = RT_CHARACTER_DELETE;
-		break;
-	case SERVER_CHARACTER_MENU:
-		result = RT_CHARACTER_ENTERCREATE;
-		break;
-	default:
-		break;
+			result = RT_CHARACTER_DELETE;
+		}
+		// 캐릭터 선택 입장 요청 결과
+		else if ((protocol&PROTOCOL_CHARACTER_ENTER_RESULT) == PROTOCOL_CHARACTER_ENTER_RESULT)
+		{
+			check = Character_Recv_Enter(buf);
+			if (check)
+			{
+				result = RT_CHARACTER_ENTERGAME_SUCCESS;
+			}
+			else
+			{
+				result = RT_CHARACTER_ENTERGAME_FAIL;
+			}
+		}
+		// 슬롯 정보 요청 결과
+		else if ((protocol&PROTOCOL_CHARACTER_SLOT_INFO) == PROTOCOL_CHARACTER_SLOT_INFO)
+		{
+			check = Character_Slot(buf);
+			if (check == true)
+			{
+				check = Character_Recv_Slot(buf);
+				result = RT_CHARACTER_SLOTRESULT;
+			}
+			else
+			{
+				Character_Slot_Empty(check);
+				result = RT_CHARACTER_SLOTRESULT;
+			}
+		}
 	}
 	
 	return result;

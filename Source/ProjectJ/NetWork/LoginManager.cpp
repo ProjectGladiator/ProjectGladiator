@@ -72,6 +72,7 @@ void LoginManager::exitJoin()
 // 아이디 중복체크 요청
 void LoginManager::reqIdOverlapCheck(char* _id)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
@@ -85,7 +86,9 @@ void LoginManager::reqIdOverlapCheck(char* _id)
 
 	memcpy(ptr, _id, idlen);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_REQ_ID_OVERLAP_CHECK, buf, size);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_TITLE, PROTOCOL_LOGIN, PROTOCOL_REQ_ID_OVERLAP_CHECK);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, size);
 }
 
 // 아이디 중복체크 결과
@@ -109,6 +112,7 @@ bool LoginManager::IdOverlapCheck(char* _buf)
 // 회원가입 요청
 void LoginManager::reqJoin(char* _id, char* _pw)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
@@ -129,12 +133,15 @@ void LoginManager::reqJoin(char* _id, char* _pw)
 
 	memcpy(ptr, _pw, pwlen);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_REQ_JOIN, buf, size);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_TITLE, PROTOCOL_LOGIN, PROTOCOL_REQ_JOIN);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, size);
 }
 
 // 로그인 요청
 void LoginManager::reqLogin(char* _id, char* _pw)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
@@ -155,7 +162,127 @@ void LoginManager::reqLogin(char* _id, char* _pw)
 
 	memcpy(ptr, _pw, pwlen);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_REQ_LOGIN, buf, size);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_TITLE, PROTOCOL_LOGIN,PROTOCOL_REQ_LOGIN);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, size);
+}
+
+// 타이틀화면일때
+RESULT LoginManager::TitleRecvResult()
+{
+	UINT64 protocol = 0;
+	char buf[BUFSIZE];
+
+	RESULT state;
+	bool result = false;
+	bool isLogin = false;
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitunPack(protocol, buf);
+
+	// 프로토콜 중간틀 타이틀이면
+	if ((protocol&PROTOCOL_LOGIN) == PROTOCOL_LOGIN)
+	{
+		// 로그인 요청
+		if ((protocol&PROTOCOL_LOGIN_RESULT) == PROTOCOL_LOGIN_RESULT)
+		{
+			isLogin = Login(buf);
+			if (isLogin == true)
+			{
+				// 로그인성공 이후 상태변경
+				NetworkClient_main::NetworkManager::GetInstance()->GetUser()->setLogin();
+				state = RT_LOGIN;
+			}
+			else
+			{
+				// 로그인실패
+				state = RT_LOGINFAIL;
+			}
+			StorageManager::GetInstance()->PushData(PLOGIN_LOGIN_RESULT, (void*)&isLogin, sizeof(bool));
+		}
+		// 아이디 중복확인
+		else if ((protocol&PROTOCOL_ID_OVERLAP_CHECK) == PROTOCOL_ID_OVERLAP_CHECK)
+		{
+			result = IdOverlapCheck(buf);
+			StorageManager::GetInstance()->PushData(PLOGIN_IDOVERLAP_RESULT, (void*)&result, sizeof(bool));
+			if (result == true)
+			{
+				// ID 중복체크 결과 중복없을때
+				state = RT_ID_OVERLAP_SUCCESS;
+			}
+			else
+			{
+				// ID 중복체크 결과 중복있을때
+				state = RT_ID_OVERLAP_FAIL;
+			}
+		}
+		// 가입 요청
+		else if ((protocol&PROTOCOL_JOIN_RESULT) == PROTOCOL_JOIN_RESULT)
+		{
+			result = Join(buf);
+			StorageManager::GetInstance()->PushData(PLOGIN_JOIN_RESULT, (void*)&result, sizeof(bool));
+			if (result == true)
+			{
+				// 회원가입 성공일때
+				state = RT_JOIN;
+			}
+			else
+			{
+				// 회원가입 실패일때
+				state = RT_JOIN_FAIL;
+			}
+		}
+	}
+
+	//switch (protocol)
+	//{
+	//case SERVER_LOGIN_SUCCESS:
+	//	isLogin = Login(buf);
+	//	if (isLogin == true)
+	//	{
+	//		// 로그인성공 이후 상태변경
+	//		NetworkClient_main::NetworkManager::GetInstance()->GetUser()->setLogin();
+	//		state = RT_LOGIN;
+	//	}
+	//	else
+	//	{
+	//		// 로그인실패
+	//		state = RT_LOGINFAIL;
+	//	}
+	//	StorageManager::GetInstance()->PushData(PLOGIN_LOGIN_RESULT, (void*)&isLogin, sizeof(bool));
+	//	break;
+	//case SERVER_ID_OVERLAP_CHECK:
+	//	result = IdOverlapCheck(buf);
+	//	StorageManager::GetInstance()->PushData(PLOGIN_IDOVERLAP_RESULT, (void*)&result, sizeof(bool));
+	//	if (result == true)
+	//	{
+	//		// ID 중복체크 결과 중복없을때
+	//		state = RT_ID_OVERLAP_SUCCESS;
+	//	}
+	//	else
+	//	{
+	//		// ID 중복체크 결과 중복있을때
+	//		state = RT_ID_OVERLAP_FAIL;
+	//	}
+	//	break;
+	//case SERVER_JOIN_SUCCESS:
+	//	result = Join(buf);
+	//	StorageManager::GetInstance()->PushData(PLOGIN_JOIN_RESULT, (void*)&result, sizeof(bool));
+	//	if (result == true)
+	//	{
+	//		// 회원가입 성공일때
+	//		state = RT_JOIN;
+	//	}
+	//	else
+	//	{
+	//		// 회원가입 실패일때
+	//		state = RT_JOIN_FAIL;
+	//	}
+	//	break;
+	//default:
+	//	break;
+	//}
+
+	return state;
 }
 
 RESULT LoginManager::InitRecvResult()
@@ -184,10 +311,6 @@ RESULT LoginManager::InitRecvResult()
 			result = RT_LOGINFAIL;
 		}
 		StorageManager::GetInstance()->PushData(PLOGIN_LOGIN_RESULT, (void*)&isLogin, sizeof(bool));
-		break;
-	case SERVER_JOIN:
-		// 회원가입 매뉴
-		result = RT_JOINMENU;
 		break;
 	default:
 		break;
@@ -235,8 +358,6 @@ RESULT LoginManager::JoinRecvResult()
 			state = RT_JOIN_FAIL;
 		}
 		break;
-	case SERVER_EXIT_JOIN:
-		state = RT_JOIN_MENU_EXIT;
 	default:
 		break;
 	}

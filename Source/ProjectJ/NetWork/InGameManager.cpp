@@ -49,15 +49,19 @@ void InGameManager::EndManager()
 // 현재 접속중인 유저리스트 요청
 void InGameManager::InGame_Req_UserList()
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_OTHERPLAYERLIST, buf, 0);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_CHARACER, PROTOCOL_REQ_OTHERPLAYERLIST);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
 // 이동 요청
 void InGameManager::InGame_Req_Move(float _px, float _py, float _pz)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	char* ptr = buf;
 	int datasize = 0;
@@ -76,12 +80,15 @@ void InGameManager::InGame_Req_Move(float _px, float _py, float _pz)
 	datasize += sizeof(float);
 	ptr += sizeof(float);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MOVE_REPORT, buf, datasize);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_CHARACER, PROTOCOL_MOVE_REPORT);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
 
 // 회전 요청
 void InGameManager::InGame_Req_Rotation(float _rx, float _ry, float _rz)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	char* ptr = buf;
 	int datasize = 0;
@@ -100,21 +107,27 @@ void InGameManager::InGame_Req_Rotation(float _rx, float _ry, float _rz)
 	datasize += sizeof(float);
 	ptr += sizeof(float);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MOVE_ROTATION, buf, datasize);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_CHARACER, PROTOCOL_MOVE_ROTATION);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
 
 // 채널 정보 요청
 void InGameManager::InGame_Req_ChannelInfo()
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_CHANNEL_INFO, buf, 0);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_CHANNEL, PROTOCOL_REQ_CHANNEL_INFO);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
 // 채널 이동 요청
 void InGameManager::InGame_Req_ChannelChange(int _channelnum)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	char* ptr = buf;
 	int datasize = 0;
@@ -124,40 +137,40 @@ void InGameManager::InGame_Req_ChannelChange(int _channelnum)
 	memcpy(ptr, &_channelnum, sizeof(int));
 	datasize += sizeof(int);
 	ptr += sizeof(int);
+	
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_CHANNEL, PROTOCOL_REQ_CHANNEL_CHANGE);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_CHANNEL_CHANGE, buf, datasize);
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
 
 // 캐릭터 선택화면으로 요청
 void InGameManager::InGame_Req_Menu_Character()
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MENU_REQ_CHARACTER, buf, 0);
-	char msg[BUFSIZE];
-	memset(msg, 0, sizeof(msg));
-	//sprintf(msg,"InGame_Req_Menu_Character :: 캐릭터선택화면");
-	LogManager::GetInstance()->LogWrite(msg);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGMAE_MENU, PROTOCOL_MENU_REQ_CHARACTER);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
 // 로그아웃 요청
 void InGameManager::InGame_Req_Menu_Title()
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MENU_REQ_LOGOUT, buf, 0);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGMAE_MENU, PROTOCOL_MENU_REQ_LOGOUT);
 
-	char msg[BUFSIZE];
-	memset(msg, 0, sizeof(msg));
-	//sprintf(msg, "InGame_Req_Menu_Title :: 로그아웃");
-	LogManager::GetInstance()->LogWrite(msg);
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
 // 강퇴요청
 void InGameManager::InGame_Req_KickUser(char * _code)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 	int codelen = strlen(_code) + 1;
@@ -172,21 +185,27 @@ void InGameManager::InGame_Req_KickUser(char * _code)
 	ptr += codelen;
 	datasize += codelen;
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_USER_KICK, buf, datasize);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_PARTY, PROTOCOL_REQ_USER_KICK);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
 
 // 탈퇴요청
 void InGameManager::InGame_Req_LeaveParty()
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_USER_LEAVE, buf, 0);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_PARTY, PROTOCOL_REQ_USER_LEAVE);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
 // 파티 리더 위임하기
 void InGameManager::InGame_Req_LeaderDelegate(char * _code)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 	int codelen = strlen(_code) + 1;
@@ -201,54 +220,10 @@ void InGameManager::InGame_Req_LeaderDelegate(char * _code)
 	ptr += codelen;
 	datasize += codelen;
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_LEADER_DELEGATE, buf, datasize);
-}
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_PARTY, PROTOCOL_REQ_LEADER_DELEGATE);
 
-// 이동 시작 요청
-//void InGameManager::InGame_Req_MoveStart(float _px, float _py, float _pz, float _rx, float _ry, float _rz, float _dirx, float _diry)
-//{
-//	char buf[BUFSIZE];
-//	char* ptr = buf;
-//	int datasize = 0;
-//	memset(buf, 0, sizeof(buf));
-//
-//	// 위치값
-//	memcpy(ptr, &_px, sizeof(float));
-//	datasize += sizeof(float);
-//	ptr += sizeof(float);
-//
-//	memcpy(ptr, &_py, sizeof(float));
-//	datasize += sizeof(float);
-//	ptr += sizeof(float);
-//
-//	memcpy(ptr, &_pz, sizeof(float));
-//	datasize += sizeof(float);
-//	ptr += sizeof(float);
-//
-//	// 회전값
-//	memcpy(ptr, &_rx, sizeof(float));
-//	datasize += sizeof(float);
-//	ptr += sizeof(float);
-//
-//	memcpy(ptr, &_ry, sizeof(float));
-//	datasize += sizeof(float);
-//	ptr += sizeof(float);
-//
-//	memcpy(ptr, &_rz, sizeof(float));
-//	datasize += sizeof(float);
-//	ptr += sizeof(float);
-//
-//	// 방향값
-//	memcpy(ptr, &_dirx, sizeof(float));
-//	datasize += sizeof(float);
-//	ptr += sizeof(float);
-//
-//	memcpy(ptr, &_diry, sizeof(float));
-//	datasize += sizeof(float);
-//	ptr += sizeof(float);
-//
-//	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MOVE_START, buf, datasize);
-//}
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
+}
 
 // 현재 접속중인 유저리스트 받음
 bool InGameManager::InGame_Recv_UserList(char * _buf)
@@ -1237,7 +1212,7 @@ void InGameManager::InGame_Recv_Stage_Enter_Result(char * _buf)
 	memcpy(&count, ptr_buf, sizeof(int));
 	ptr_buf += sizeof(int);
 
-	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_STAGE_ENTER_RESULT, (void*)&count, sizeof(int));
+	//StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_STAGE_ENTER_RESULT, (void*)&count, sizeof(int));
 
 	for (int i = 0; i < count; i++)
 	{
@@ -1375,7 +1350,7 @@ void InGameManager::InGame_Recv_Monster_MoveInfo(char * _buf)
 	memcpy(ptr_data, &code, sizeof(int));
 	ptr_data += sizeof(int);
 
-	// 몬스터 숫자
+	// 캐릭터 직업코드
 	memcpy(&num, ptr_buf, sizeof(int));
 	ptr_buf += sizeof(int);
 	size += sizeof(int);
@@ -1390,11 +1365,13 @@ void InGameManager::InGame_Recv_Monster_MoveInfo(char * _buf)
 	ptr_data += sizeof(float) * 3;
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_MOVE_INFO, data, size);
+
 }
 
 // 파티 초대 요청
 void InGameManager::InGame_Req_Party_Invite(char * _code)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 	int codelen = strlen(_code) + 1;
@@ -1409,12 +1386,15 @@ void InGameManager::InGame_Req_Party_Invite(char * _code)
 	ptr += codelen;
 	datasize += codelen;
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_ROOM_INVITE, buf, datasize);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_PARTY, PROTOCOL_REQ_PARTY_ROOM_INVITE);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
 
 // 파티 초대 응답 [_result : 초대수락할지거절할지] [_code : 초대보낸사람의 코드를 넣습니다] [_partyroomnum : 초대보낸사람의 파티방번호를 넣습니다]
 void InGameManager::InGame_Req_Party_Invite_Result(bool _result, char * _code, int _partyroomnum)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 	char* ptr = buf;
@@ -1440,50 +1420,63 @@ void InGameManager::InGame_Req_Party_Invite_Result(bool _result, char * _code, i
 	ptr += sizeof(int);
 	datasize += sizeof(int);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_PARTY_ROOM_ANSWER_INVITE, buf, datasize);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_PARTY, PROTOCOL_PARTY_ROOM_ANSWER_INVITE);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
 
 // 던전 입장 요청
 void InGameManager::InGame_Req_Dungeon_Enter()
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_DUNGEON_ENTER, buf, 0);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_DUNGEON, PROTOCOL_REQ_DUNGEON_ENTER);
 
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
 // 던전 퇴장 요청
 void InGameManager::InGame_Req_Dungeon_Leave()
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_DUNGEON_LEAVE, buf, 0);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_DUNGEON, PROTOCOL_REQ_DUNGEON_LEAVE);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
 // 스테이지 입장
 void InGameManager::InGame_Req_Dungeon_Stage_Enter()
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_DUNGEON_STAGE_IN, buf, 0);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_DUNGEON, PROTOCOL_DUNGEON_STAGE_IN);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
 // 몬스터 정보 요청
 void InGameManager::InGame_Req_Monster_Info()
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MONSTER_INFO, buf, 0);
-	
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGMAE_MONSTER, PROTOCOL_REQ_MONSTER_INFO);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
 // 파티리더가 몬스터 이동 정보 전송
 void InGameManager::InGame_Req_Monster_Move_Info(int _code, int _num, float _px, float _py, float _pz)
 {
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	char* ptr = buf;
 	int datasize = 0;
@@ -1512,19 +1505,271 @@ void InGameManager::InGame_Req_Monster_Move_Info(int _code, int _num, float _px,
 	datasize += sizeof(float);
 	ptr += sizeof(float);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(CLIENT_INGAME_MONSTER_MOVE, buf, datasize);
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGMAE_MONSTER, PROTOCOL_MONSTER_MOVE);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
 
 RESULT InGameManager::InGameInitRecvResult(User * _user)
 {
-	PROTOCOL protocol;
+	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 
 	RESULT result;
 	bool check;
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->unPack(&protocol, buf);
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitunPack(protocol, buf);
 
+	// 프로토콜 중간틀 캐릭터관련 이면
+	if ((protocol&PROTOCOL_INGAME_CHARACER) == PROTOCOL_INGAME_CHARACER)
+	{
+		// 유저들 정보
+		if ((protocol&PROTOCOL_INGAME_OTHERPLAYERLIST_INFO) == PROTOCOL_INGAME_OTHERPLAYERLIST_INFO)
+		{
+			check = InGame_Recv_UserList(buf);
+			if (check)
+			{
+				result = RT_INGAME_OTHERPLAYER_LIST;
+			}
+		}
+		// 유저 이동 결과
+		else if ((protocol&PROTOCOL_INGAME_MOVE_RESULT) == PROTOCOL_INGAME_MOVE_RESULT)
+		{
+			check = InGame_Recv_MoveResult(buf);
+			if (check)	// 이동 성공
+			{
+				result = RT_INGAME_MOVE;
+			}
+			else		// 이동 실패
+			{
+				result = RT_INGAME_MOVE;
+			}
+		}
+		// 다른 유저 이동 정보
+		else if ((protocol&PROTOCOL_INGAME_MOVE_OTHERPLAYERINFO) == PROTOCOL_INGAME_MOVE_OTHERPLAYERINFO)
+		{
+			InGame_Recv_OtherUserMoveInfo(buf, PGAMEDATA_PLAYER_OTHERMOVEINFO);
+			result = RT_INGAME_OTHERPLAYER_INFO;
+		}
+		// 다른 유저 회전 정보
+		else if ((protocol&PROTOCOL_INGAME_MOVE_ROTATION) == PROTOCOL_INGAME_MOVE_ROTATION)
+		{
+			InGame_Recv_OtherUserRotation(buf);
+			result = RT_INGAME_MOVE;
+		}
+		// 다른 유저 접속정보
+		else if ((protocol&PROTOCOL_INGAME_OTHERPLAYER_CONNECT) == PROTOCOL_INGAME_OTHERPLAYER_CONNECT)
+		{
+			InGame_Recv_ConnectUserInfo(buf);
+			result = RT_INGAME_OTHERPLAYER_INFO;
+		}
+		// 다른 유저 나간정보
+		else if ((protocol&PROTOCOL_INGAME_OTHERPLAYER_LEAVE) == PROTOCOL_INGAME_OTHERPLAYER_LEAVE)
+		{
+			InGame_Recv_OtherUserLeave(buf);
+			result = RT_INGAME_OTHERPLAYER_LEAVE;
+		}
+
+	}
+
+	// 프로토콜 중간틀 애니메이션관련 이면
+	if ((protocol&PROTOCOL_INGAME_ANIMATION) == PROTOCOL_INGAME_ANIMATION)
+	{
+		// 캐릭터 애니메이션
+		if ((protocol&PROTOCOL_CHARACER_ANIMATION) == PROTOCOL_CHARACER_ANIMATION)
+		{
+
+		}
+		// 몬스터 애니메이션
+		else if ((protocol&PROTOCOL_MONSTER_ANIMATION) == PROTOCOL_MONSTER_ANIMATION)
+		{
+
+		}
+	}
+
+	// 프로토콜 중간틀 채널관련 이면
+	if ((protocol&PROTOCOL_INGAME_CHANNEL) == PROTOCOL_INGAME_CHANNEL)
+	{
+		// 채널 정보
+		if ((protocol&PROTOCOL_CHANNLE_INFO) == PROTOCOL_CHANNLE_INFO)
+		{
+			InGame_Recv_ChannelInfo(buf);
+			result = RT_INGAME_CHANNEL_INFO;
+		}
+		// 채널 변경 결과
+		else if ((protocol&PROTOCOL_CHANNLE_CHANGE_RESULT) == PROTOCOL_CHANNLE_CHANGE_RESULT)
+		{
+			InGame_Recv_ChannelChange(buf);
+			result = RT_INGAME_CHANNEL_CHANGE;
+		}
+		// 채널 이동한 유저 정보
+		else if ((protocol&PROTOCOL_CHANNLE_USER_CHANGE) == PROTOCOL_CHANNLE_USER_CHANGE)
+		{
+			InGame_Recv_OtherUserLeave(buf);
+			result = RT_INGAME_OTHERPLAYER_LEAVE;
+		}
+	}
+
+	// 프로토콜 중간틀 파티관련 이면
+	if ((protocol&PROTOCOL_INGAME_PARTY) == PROTOCOL_INGAME_PARTY)
+	{
+		// 파티 초대(특정유저에게)
+		if ((protocol&PROTOCOL_PARTY_ROOM_INVITE) == PROTOCOL_PARTY_ROOM_INVITE)
+		{
+			InGame_Recv_Invite(buf);
+			result = RT_INGAME_PARTY_INVITE;
+		}
+		// 파티 초대 결과
+		else if ((protocol&PROTOCOL_PARTY_ROOM_INVITE_RESULT) == PROTOCOL_PARTY_ROOM_INVITE_RESULT)
+		{
+			InGame_Recv_Invite_Result(buf);
+			result = RT_INGAME_PARTY_INVITE_RESULT;
+		}
+		// 참여 결과
+		else if ((protocol&PROTOCOL_PARTY_ROOM_JOIN_RESULT) == PROTOCOL_PARTY_ROOM_JOIN_RESULT)
+		{
+			InGame_Recv_Join_Result(buf);
+			result = RT_INGAME_PARTY_JOIN_RESULT;
+		}
+		// 새로운 파티원이 들어옴
+		else if ((protocol&PROTOCOL_PARTY_ROOM_ADD_USER) == PROTOCOL_PARTY_ROOM_ADD_USER)
+		{
+			InGame_Recv_Party_User_Info(buf);
+			result = RT_INGAME_PARTY_ADD_USER;
+		}
+		// 강퇴당한사람에게 보내는 프로토콜
+		else if ((protocol&PROTOCOL_PARTY_USER_KICK) == PROTOCOL_PARTY_USER_KICK)
+		{
+			// 프로토콜만 온다
+			InGame_Recv_Kick();
+			result = RT_INGAME_PARTY_KICK;
+		}
+		// 강퇴당한 유저 정보
+		else if ((protocol&PROTOCOL_PARTY_USER_KICK_INFO) == PROTOCOL_PARTY_USER_KICK_INFO)
+		{
+			// 유저코드 온다
+			InGame_Recv_Kick_User_Info(buf);
+			result = RT_INGAME_PARTY_KICK_USER_INFO;
+		}
+		// 강퇴결과
+		else if ((protocol&PROTOCOL_PARTY_USER_KICK_RESULT) == PROTOCOL_PARTY_USER_KICK_RESULT)
+		{
+			// 결과 온다. 성공이면 뒤에 코드도 온다
+			InGame_Recv_Kick_Result(buf);
+			result = RT_INGAME_PARTY_KICK_RESULT;
+		}
+		// 탈퇴하는 유저 정보
+		else if ((protocol&PROTOCOL_PARTY_USER_LEAVE_INFO) == PROTOCOL_PARTY_USER_LEAVE_INFO)
+		{
+			// 캐릭터 코드 온다
+			InGame_Recv_Leave_User_Info(buf);
+			result = RT_INGAME_PARTY_LEAVE_INFO;
+		}
+		// 탈퇴결과
+		else if ((protocol&PROTOCOL_PARTY_USER_LEAVE_RESULT) == PROTOCOL_PARTY_USER_LEAVE_RESULT)
+		{
+			// 성공 실패 여부만 온다
+			InGame_Recv_Leave_Result(buf);
+			result = RT_INGAME_PARTY_LEAVE_RESULT;
+		}
+		// 파티방 사라졌을때 보내는 프로토콜
+		else if ((protocol&PROTOCOL_PARTY_ROOM_REMOVE_RESULT) == PROTOCOL_PARTY_ROOM_REMOVE_RESULT)
+		{
+			// 파티방 터졌다는 프로토콜만 온다
+			InGame_Recv_PartyRoom_Remove(buf);
+			result = RT_INGAME_PARTY_ROOM_REMOVE;
+		}
+		// 리더 위임 받은 유저 정보
+		else if ((protocol&PROTOCOL_PARTY_LEADER_DELEGATE) == PROTOCOL_PARTY_LEADER_DELEGATE)
+		{
+			// 파티방 구 리더, 새로운 리더 코드가 온다
+			InGame_Recv_PartyRoom_Leader_Info(buf);
+			result = RT_INGAME_PARTY_LEADER_DELEGATE;
+		}
+		// 리더 위임 결과
+		else if ((protocol&PROTOCOL_PARTY_LEADER_DELEGATE_RESULT) == PROTOCOL_PARTY_LEADER_DELEGATE_RESULT)
+		{
+			// 리더 위임 결과가 오고 성공이면 뒤에 코드도 온다.
+			InGame_Recv_PartyRoom_Leader_Delegate_Result(buf);
+			result = RT_INGAME_PARTY_LEADER_DELEGATE_RESULT;
+		}
+		// 파티원정보
+		else if ((protocol&PROTOCOL_PARTY_USER_INFO) == PROTOCOL_PARTY_USER_INFO)
+		{
+
+		}
+	}
+
+	// 프로토콜 중간틀 던전관련 이면
+	if ((protocol&PROTOCOL_INGAME_DUNGEON) == PROTOCOL_INGAME_DUNGEON)
+	{
+		// 던전 입장 결과
+		if ((protocol&PROTOCOL_DUNGEON_ENTER_RESULT) == PROTOCOL_DUNGEON_ENTER_RESULT)
+		{
+			// 던전 스폰 위치 옴(Vector3)
+			InGame_Recv_Leave_Dungeon_Enter_Result(buf);
+			result = RT_INGAME_DUNGEON_ENTER_RESULT;
+		}
+		// 던전 퇴장 결과
+		else if ((protocol&PROTOCOL_DUNGEON_LEAVE_RESULT) == PROTOCOL_DUNGEON_LEAVE_RESULT)
+		{
+			// 채널번호옴
+			InGame_Recv_Leave_Dungeon_Leave_Result(buf);
+			result = RT_INGAME_DUNGEON_LEAVE_RESULT;
+		}
+		// 스테이지 입장 결과
+		else if ((protocol&PROTOCOL_DUNGEON_STAGE_IN_RESULT) == PROTOCOL_DUNGEON_STAGE_IN_RESULT)
+		{
+			// 스테이지 입장 결과옴(Vector3)
+			InGame_Recv_Stage_Enter_Result(buf);
+			result = RT_INGAME_DUNGEON_STAGE_ENTER_RESULT;
+		}
+	}
+
+
+	// 프로토콜 중간틀 몬스터관련 이면
+	if ((protocol&PROTOCOL_INGMAE_MONSTER) == PROTOCOL_INGMAE_MONSTER)
+	{
+		// 몬스터 이동 정보
+		if ((protocol&PROTOCOL_MONSTER_MOVE_RESULT) == PROTOCOL_MONSTER_MOVE_RESULT)
+		{
+			// 몬스터 이동정보 옴
+			InGame_Recv_Monster_MoveInfo(buf);
+			result = RT_INGAME_MONSTER_MOVE_INFO_RESULT;
+		}
+		// 몬스터 정보
+		else if ((protocol&PROTOCOL_MONSTER_INFO) == PROTOCOL_MONSTER_INFO)
+		{
+			// 몬스터 정보 옴
+			InGame_Recv_Stage_MonsterInfo(buf);
+			result = RT_INGAME_MONSTER_INFO_RESULT;
+		}
+	}
+
+	// 프로토콜 중간틀 매뉴관련 이면
+	if ((protocol&PROTOCOL_INGMAE_MENU) == PROTOCOL_INGMAE_MENU)
+	{
+		// 캐릭터 생성요청 결과
+		if ((protocol&PROTOCOL_MENU_RESULT_CHARACTER) == PROTOCOL_MENU_RESULT_CHARACTER)
+		{
+			InGame_Recv_CharacterSelect();
+			result = RT_INGAME_MENU_CHARACTER;
+		}
+		// 캐릭터 삭제 요청 결과
+		else if ((protocol&PROTOCOL_MENU_RESULT_LOGOUT) == PROTOCOL_MENU_RESULT_LOGOUT)
+		{
+			InGame_Recv_Logout();
+			result = RT_INGAME_MENU_LOGOUT;
+		}
+		// 캐릭터 삭제 요청 결과
+		else if ((protocol&PROTOCOL_OTHERPLAYER_LEAVE) == PROTOCOL_OTHERPLAYER_LEAVE)
+		{
+
+		}
+	}
+
+
+	/*
 	switch (protocol)
 	{
 	case SERVER_INGAME_OTHERPLAYER_CONNECT:
@@ -1665,6 +1910,7 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 	default:
 		break;
 	}
+	*/
 
 	return result;
 }

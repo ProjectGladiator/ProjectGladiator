@@ -28,23 +28,11 @@ bool CharacterState::Read(User * _user)
 		{
 			state = CHARACTER_INIT_RECV;
 		}
-		else if (result == RT_CHARACTER_ENTERCREATE)
-		{
-			state = CHARACTER_REQ_RECV;
-		}
-		break;
-
-	case CharacterState::CHARACTER_REQ_RECV:
-		result = charactermanager->CharacterNewRecvResult();
-		if (result == RT_CHARACTER_CREATE_SUCCESS)
+		else if (result == RT_CHARACTER_CREATE_SUCCESS)
 		{
 			state = CHARACTER_INIT_RECV;
 		}
 		else if (result == RT_CHARACTER_CREATE_FAIL)
-		{
-			state = CHARACTER_REQ_RECV;
-		}
-		else if (result == RT_CHARACTER_EXIT)
 		{
 			state = CHARACTER_INIT_RECV;
 		}

@@ -11,36 +11,61 @@ bool LoginState::Read(User* _user)
 	switch (state)
 	{
 	case LoginState::INIT_RECV:
-		result = loginmanager->InitRecvResult();
+		result = loginmanager->TitleRecvResult();
 		if (result == RT_LOGIN)
 		{
 			state = INIT_RECV;
 			_user->SetState(_user->getCharacterState());
 			// 로그인 성공
 		}
-		else if(result == RT_LOGINFAIL)
+		else if (result == RT_LOGINFAIL)
 		{
 			state = INIT_RECV;
 		}
-		else if (result == RT_JOINMENU)
+		else if (result == RT_ID_OVERLAP_SUCCESS || result == RT_ID_OVERLAP_FAIL)
 		{
-			state = JOIN_RECV;
+			state = INIT_RECV;
 		}
-		break;
-	case LoginState::JOIN_RECV:
-		result = loginmanager->JoinRecvResult();
-		if (result == RT_ID_OVERLAP_SUCCESS || result == RT_ID_OVERLAP_FAIL)
-		{
-			state = JOIN_RECV;
-		}
-		else if (result == RT_JOIN || result == RT_JOIN_MENU_EXIT)
+		else if (result == RT_JOIN)
 		{
 			state = INIT_RECV;
 		}
 		else if (result == RT_JOIN_FAIL)
 		{
-			state = JOIN_RECV;
+			state = INIT_RECV;
 		}
+		break;
+
+	//	result = loginmanager->InitRecvResult();
+	//	if (result == RT_LOGIN)
+	//	{
+	//		state = INIT_RECV;
+	//		_user->SetState(_user->getCharacterState());
+	//		// 로그인 성공
+	//	}
+	//	else if(result == RT_LOGINFAIL)
+	//	{
+	//		state = INIT_RECV;
+	//	}
+	//	else if (result == RT_JOINMENU)
+	//	{
+	//		state = JOIN_RECV;
+	//	}
+	//	break;
+	//case LoginState::JOIN_RECV:
+	//	result = loginmanager->JoinRecvResult();
+	//	if (result == RT_ID_OVERLAP_SUCCESS || result == RT_ID_OVERLAP_FAIL)
+	//	{
+	//		state = JOIN_RECV;
+	//	}
+	//	else if (result == RT_JOIN || result == RT_JOIN_MENU_EXIT)
+	//	{
+	//		state = INIT_RECV;
+	//	}
+	//	else if (result == RT_JOIN_FAIL)
+	//	{
+	//		state = JOIN_RECV;
+	//	}
 	}
 	return true;
 }

@@ -97,9 +97,6 @@ void UCharacterSelectWidget::MyCharacterDelete()
 
 void UCharacterSelectWidget::MyCharacterCreate()
 {
-	CharacterManager::GetInstance()->Character_Req_New_Character();
-	NetworkClient_main::NetworkManager::GetInstance()->Send();
-
 	if (MainMapGameMode && MainMapPlayerController)
 	{
 		MainMapGameMode->CharacterCreateWidgetToggle();

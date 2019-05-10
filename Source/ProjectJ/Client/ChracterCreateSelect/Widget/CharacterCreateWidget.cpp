@@ -72,9 +72,6 @@ void UCharacterCreateWidget::Cancel()
 {
 	if (MainMapPlayerController)
 	{
-		CharacterManager::GetInstance()->Character_Exit();
-		NetworkClient_main::NetworkManager::GetInstance()->Send();
-
 		MainMapGameMode->CharacterCreateWidgetToggle();
 		MainMapGameMode->CharacterSelectWidgetToggle();
 		MainMapPlayerController->ToCharacterSelect();
