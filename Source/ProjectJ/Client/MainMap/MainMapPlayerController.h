@@ -68,6 +68,8 @@ public:
 
 	void C2S_ReqMonsterInfo(const int32& _MonsterCode, const int32& _MonsterNumber, const FVector& _MonsterLocation);
 
+	void C2S_ReqJump();
+
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;
 

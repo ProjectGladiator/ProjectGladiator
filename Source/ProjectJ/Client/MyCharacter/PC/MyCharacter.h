@@ -19,7 +19,6 @@ public:
 private:
 	char nick[NICKNAMESIZE];
 	char CharacterCode[CHARACTERCODE];
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat, Meta = (AllowPrivateAccess = true))
 		int32 Level; //현재 레벨
 	UPROPERTY()

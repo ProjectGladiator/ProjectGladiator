@@ -27,6 +27,8 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 	FVector OtherCharacterLocation; //서버로부터 받은 다른 캐릭터 위치 정보 저장용 벡터
 	FRotator OtherCharacterRotation;
 	AMyCharacter* OtherCharacter = nullptr; //맵에 접속해 있는 다른 캐릭터
+	char TempJumpStartCharacterCode[30];
+	char* JumpStartCharacterCode = TempJumpStartCharacterCode;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -101,6 +103,22 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 			}
 
 			OtherCharacter = nullptr;
+			break;
+		case PGAMEDATA_PLAYER_OTHER_START_JUMP: //다른 유저 점프
+			memset(TempJumpStartCharacterCode, 0, sizeof(TempJumpStartCharacterCode));
+
+			StorageManager::GetInstance()->ChangeData(Data->data, JumpStartCharacterCode);
+			StorageManager::GetInstance()->PopData();
+
+			if (MainMapGameMode)
+			{
+				OtherCharacter = MainMapGameMode->GetLoginUser(JumpStartCharacterCode);
+
+				if (OtherCharacter)
+				{
+					OtherCharacter->Jump();
+				}
+			}
 			break;
 		}
 	}

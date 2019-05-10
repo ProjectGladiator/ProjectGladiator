@@ -314,7 +314,11 @@ void AMyCharacter::MouseToggle()
 
 void AMyCharacter::JumpStart()
 {
-	Jump();
+	if (MainMapPlayerController)
+	{
+		MainMapPlayerController->C2S_ReqJump();
+		Jump();
+	}
 }
 
 float AMyCharacter::GetCurrentHP()
@@ -434,13 +438,13 @@ void AMyCharacter::S2C_MoveUpdate()
 }
 
 //서버에서 받아온 위치와 회전값을 클라이언트에 필요한 내용으로 바꿔주는 함수
-void AMyCharacter::S2C_ControlOtherCharacterMove(FVector& _GoalLocation)
+void AMyCharacter::S2C_ControlOtherCharacterMove(FVector& _GoalLocation) //목표 위치 값을 받는다.
 {
-	GoalLocation = _GoalLocation;
+	GoalLocation = _GoalLocation; //목표 위치 값을 저장해둔다.
 
-	GoalDirection = GoalLocation - GetActorLocation();
+	GoalDirection = GoalLocation - GetActorLocation(); //목표 위치 값 쪽의 방향을 구한다.
 
-	bool GoalDirectionNormalizeSuccess = GoalDirection.Normalize();
+	bool GoalDirectionNormalizeSuccess = GoalDirection.Normalize(); // 방향을 정규화 시켜준다.
 
 	if (GoalDirectionNormalizeSuccess)
 	{

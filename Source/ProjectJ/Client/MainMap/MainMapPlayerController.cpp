@@ -220,6 +220,12 @@ void AMainMapPlayerController::C2S_ReqMonsterInfo(const int32& _MonsterCode, con
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
+void AMainMapPlayerController::C2S_ReqJump()
+{
+	InGameManager::GetInstance()->InGame_Character_Start_Jump();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
 void AMainMapPlayerController::Possess(APawn * InPawn)
 {
 	Super::Possess(InPawn);
