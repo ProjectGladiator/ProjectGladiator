@@ -68,8 +68,7 @@ void AWorm::BeginPlay()
 
 	TargetLimitDistance = 100.0f;
 	AttackInfo.SetAttackInfo(0, 0, 300.0f);
-	Target = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
-
+	
 	WormAnimInstance = Cast<UWormAnimInstance>(GetMesh()->GetAnimInstance());
 
 	if (WormAnimInstance)
