@@ -112,6 +112,30 @@ void InGameManager::InGame_Req_Rotation(float _rx, float _ry, float _rz)
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
 
+// 점프 시작했다고 알림
+void InGameManager::InGame_Character_Start_Jump()
+{
+	UINT64 protocol = 0;
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_CHARACER, PROTOCOL_INGAME_MOVE_START_JUMP);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
+}
+
+//// 착지했다고 알림
+//void InGameManager::InGame_Character_End_Jump()
+//{
+//	UINT64 protocol = 0;
+//	char buf[BUFSIZE];
+//	memset(buf, 0, sizeof(buf));
+//
+//	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_CHARACER, PROTOCOL_INGAME_MOVE_END_JUMP);
+//
+//	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
+//}
+
 // 채널 정보 요청
 void InGameManager::InGame_Req_ChannelInfo()
 {
@@ -525,6 +549,66 @@ void InGameManager::InGame_Recv_OtherUserLeave(char * _buf)
 	ptr_data += len;
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_LEAVE_PLAYER, data, size);
+}
+
+// 다른 유저 점프 했다는 정보
+void InGameManager::InGame_Recv_OtherUser_Start_Jump(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	char code[CHARACTERCODESIZE];
+	char* ptr_data = data;
+	int size = 0;
+	int len = 0;
+
+	memset(code, 0, CHARACTERCODESIZE);
+
+	// 코드 사이즈
+	memcpy(&len, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &len, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 코드
+	memcpy(code, ptr_buf, len);
+	ptr_buf += len;
+	size += len;
+	memcpy(ptr_data, code, len);
+	ptr_data += len;
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_OTHER_START_JUMP, data, size);
+}
+
+// 다른 유저 착지 했다는 정보
+void InGameManager::InGame_Recv_OtherUser_End_Jump(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	char code[CHARACTERCODESIZE];
+	char* ptr_data = data;
+	int size = 0;
+	int len = 0;
+
+	memset(code, 0, CHARACTERCODESIZE);
+
+	// 코드 사이즈
+	memcpy(&len, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &len, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 코드
+	memcpy(code, ptr_buf, len);
+	ptr_buf += len;
+	size += len;
+	memcpy(ptr_data, code, len);
+	ptr_data += len;
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_OTHER_END_JUMP, data, size);
 }
 
 // 채널 정보
@@ -1569,7 +1653,18 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 			InGame_Recv_OtherUserLeave(buf);
 			result = RT_INGAME_OTHERPLAYER_LEAVE;
 		}
-
+		// 다른 유저 나간정보
+		else if ((protocol&PROTOCOL_INGAME_MOVE_OTHERPLAYER_START_JUMP) == PROTOCOL_INGAME_MOVE_OTHERPLAYER_START_JUMP)
+		{
+			InGame_Recv_OtherUser_Start_Jump(buf);
+			result = RT_INGAME_OTHERPLAYER_INFO;
+		}
+		// 다른 유저 나간정보
+		else if ((protocol&PROTOCOL_INGAME_MOVE_OTHERPLAYER_END_JUMP) == PROTOCOL_INGAME_MOVE_OTHERPLAYER_END_JUMP)
+		{
+			InGame_Recv_OtherUser_End_Jump(buf);
+			result = RT_INGAME_OTHERPLAYER_INFO;
+		}
 	}
 
 	// 프로토콜 중간틀 애니메이션관련 이면

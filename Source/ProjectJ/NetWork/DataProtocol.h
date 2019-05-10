@@ -22,6 +22,8 @@ namespace DataProtocol {
 		PGAMEDATA_PLAYER_OTHERMOVEINFO,					// 다른유저 이동 정보
 		PGAMEDATA_PLAYER_OTHERMOVEORDER,				// 다른유저 이동 명령
 		PGAMEDATA_PLAYER_OTHERROTATION,					// 다른유저 회전
+		PGAMEDATA_PLAYER_OTHER_START_JUMP,				// 다른유저 점프 - (캐릭터코드)
+		PGAMEDATA_PLAYER_OTHER_END_JUMP,				// 다른유저 착지 - (캐릭터코드)
 		PGAMEDATA_USERLIST_USER,						// 유저 정보
 		PGAMEDATA_USERLIST_EMPTY,
 		PGAMEDATA_USERLIST_COUNT,						// 유저리스트 카운트

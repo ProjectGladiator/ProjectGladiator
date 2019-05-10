@@ -52,6 +52,8 @@
 #define PROTOCOL_INGAME_CHARACER 0x100							// [중간틀 - 인게임] 캐릭터관련
 
 // 인게임 세부틀(PROTOCOL_INGAME_CHARACER) - 캐릭터 관련
+#define PROTOCOL_INGAME_MOVE_OTHERPLAYER_END_JUMP 0x800000000	// [세부틀 - 캐릭터관련] [서버->클라] 다른 유저 점프 끝났다는 정보(착지)
+#define PROTOCOL_INGAME_MOVE_OTHERPLAYER_START_JUMP 0x400000000	// [세부틀 - 캐릭터관련] [서버->클라] 다른 유저 점프 했다는 정보
 #define PROTOCOL_INGAME_OTHERPLAYER_LEAVE 0x200000000			// [세부틀 - 캐릭터관련] [서버->클라] 다른 유저 나간정보
 #define PROTOCOL_INGAME_OTHERPLAYER_CONNECT 0x100000000			// [세부틀 - 캐릭터관련] [서버->클라] 다른 유저 접속정보
 
@@ -105,7 +107,6 @@
 // -- 서버 END -- //
 
 
-
 // -- 클라 -- //
 
 // 큰틀
@@ -134,7 +135,7 @@
 #define PROTOCOL_REQ_CHARACTER_CREATE 0x8000000					// [세부틀 - 캐릭터선택화면] [클라->서버] 캐릭터 생성 요청
 #define PROTOCOL_CHARACTER_DELETE 0x4000000					    // [세부틀 - 캐릭터선택화면] [클라->서버] 캐릭터 삭제 요청
 #define PROTOCOL_CHARACTER_ENTER 0x2000000					    // [세부틀 - 캐릭터선택화면] [클라->서버] 캐릭터 접속 요청
-#define PROTOCOL_REQ_CHARACTER_SLOT 0x1000000				    // [세부틀 - 캐릭터선택화면] [클라->서버] 캐릭터 슬롯 정보 요청
+#define PROTOCOL_REQ_CHARACTER_SLOT 0x1000000				    // [세부틀 - 캐릭터선택화면] [클라->서버] 캐릭터 슬롯 정보 요총
 
 
 // 인게임 중간틀				
@@ -149,6 +150,9 @@
 
 
 // 인게임 세부틀(PROTOCOL_INGAME_CHARACER) - 캐릭터 관련
+#define PROTOCOL_INGAME_MOVE_END_JUMP 0x100000000				// [세부틀 - 캐릭터관련] [클라->서버] 점프 끝났다는 정보(착지)
+
+#define PROTOCOL_INGAME_MOVE_START_JUMP 0x80000000				// [세부틀 - 캐릭터관련] [클라->서버] 점프 시작했다는 정보
 #define PROTOCOL_MOVE_ROTATION 0x40000000						// [세부틀 - 캐릭터관련] [클라->서버] 회전 정보
 #define PROTOCOL_MOVE_REPORT 0x20000000							// [세부틀 - 캐릭터관련] [클라->서버] 이동 정보
 #define PROTOCOL_REQ_OTHERPLAYERLIST 0x10000000					// [세부틀 - 캐릭터관련] [클라->서버] 다른 유저 요청

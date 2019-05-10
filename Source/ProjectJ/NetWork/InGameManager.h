@@ -24,6 +24,10 @@ private:
 	void InGame_Recv_OtherUserRotation(char* _buf);
 	// 다른 유저 나간정보
 	void InGame_Recv_OtherUserLeave(char* _buf);
+	// 다른 유저 점프 했다는 정보
+	void InGame_Recv_OtherUser_Start_Jump(char* _buf);
+	// 다른 유저 착지 했다는 정보
+	void InGame_Recv_OtherUser_End_Jump(char* _buf);
 	// 채널 정보
 	void InGame_Recv_ChannelInfo(char* _buf);
 	// 캐릭터 선택화면으로 받았을때
@@ -86,6 +90,10 @@ public:
 	void InGame_Req_Move(float _px, float _py, float _pz);
 	// 회전정보 서버에 전송
 	void InGame_Req_Rotation(float _rx, float _ry, float _rz);
+	// 점프 시작했다고 알림
+	void InGame_Character_Start_Jump();
+	// 착지했다고 알림
+	//void InGame_Character_End_Jump();
 	// 채널 정보 요청
 	void InGame_Req_ChannelInfo();
 	// 채널 이동 요청
