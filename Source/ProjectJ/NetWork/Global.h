@@ -418,7 +418,7 @@ enum RESULT {
 #define CHARACTERCODESIZE 30
 #define PRODUCT_NAMESIZE 50
 #define ENCRYPT_KEY 951324896
-#define SERVERIP "127.0.0.1"
+//#define SERVERIP "127.0.0.1"
 //#define SERVERIP "192.168.0.141"	// 402ip 영준 그램노트북
 //#define SERVERIP "192.168.0.136"	// 202ip 영준 그램노트북
 //#define SERVERIP "192.168.0.134"	// 202ip 호연노트북
@@ -427,7 +427,7 @@ enum RESULT {
 //#define SERVERIP "192.168.43.58"	// 호연핫스팟 호연노트북
 //#define SERVERIP "172.30.35.30"	// KT Free Wifi 호연노트북
 //#define SERVERIP "192.168.43.180"	// 호연핫스팟 영준그램노트북
-//#define SERVERIP "192.168.0.17"	// consult room 호연노트북
+#define SERVERIP "192.168.0.17"	// consult room 호연노트북
 //#define SERVERIP "127.0.43.180"
 //#define SERVERIP "192.168.123.181"
 //#define SERVERIP "182.227.211.86"
