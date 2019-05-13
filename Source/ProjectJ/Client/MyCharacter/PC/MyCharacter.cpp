@@ -409,7 +409,7 @@ void AMyCharacter::SetCharacterCode(char * _NewCharacterCode, char* _NewNickName
 	memcpy(nick, _NewNickName, sizeof(nick));
 }
 
-//클라이언트에서 서버로 위치와 회전값을 보내주는 함수
+//클라이언트에서 서버로 위치값을 보내주는 함수
 void AMyCharacter::C2S_MoveConfirm()
 {
 	FVector Location = GetActorLocation();

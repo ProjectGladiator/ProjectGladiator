@@ -178,9 +178,8 @@ void AMainMapGameMode::BeginPlay()
 		InGameStartDoor = Cast<AInGameStartDoor>(InGameStartDoors[0]);
 	}
 
-	FLatentActionInfo MapLoadInfo;
-	UGameplayStatics::LoadStreamLevel(this, TEXT("InGameStageArea"), true, true, MapLoadInfo);
-	UGameplayStatics::LoadStreamLevel(this, TEXT("CharacterCreate"), true, true, MapLoadInfo);
+	FLatentActionInfo InGameStageAreaMapLoadInfo;
+	UGameplayStatics::LoadStreamLevel(this, TEXT("InGameStageArea"), true, true, InGameStageAreaMapLoadInfo);
 }
 
 void AMainMapGameMode::Tick(float DeltaTime)
@@ -235,6 +234,8 @@ void AMainMapGameMode::Tick(float DeltaTime)
 	int MonsterCode=-1;
 	int MonsterNum=-1;
 	FVector MosterPosition;
+
+	char* Nick;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -419,6 +420,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			StorageManager::GetInstance()->ChangeData(Data->data, character_info);
 			StorageManager::GetInstance()->PopData();
 
+			Nick = character_info->nick;
 			GLog->Log(ANSI_TO_TCHAR(character_info->code));
 
 			x = character_info->xyz[0]; y = character_info->xyz[1]; z = character_info->xyz[2];
