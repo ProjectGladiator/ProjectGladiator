@@ -10,8 +10,7 @@
 #include "Client/MyCharacter/PC/Widget/CharacterInteraction/Widget/CharacterInteractionWidget.h"
 #include "Client/MainMap/MainMapOtherPlayerController.h"
 #include "Client/MainMap/MainMapPlayerController.h"
-
-
+#include <Windows.h>
 //서버 헤더
 
 void UMyCharacterWidget::NativeConstruct()
@@ -78,7 +77,13 @@ void UMyCharacterWidget::SetInit(AMyCharacter* _MyCharacter, APlayerController* 
 			{
 				char* NickName = MyCharacterSlotInfo.ClickCharacter->GetCharacterNickName();
 
-				MyCharacterNickName->SetText(FText::FromString(ANSI_TO_TCHAR(NickName)));
+				WCHAR CharacterNick[20];
+				memset(CharacterNick, 0, sizeof(CharacterNick));
+
+				int nLen = MultiByteToWideChar(CP_ACP, 0, NickName, strlen(NickName), NULL, NULL);
+				MultiByteToWideChar(CP_UTF8, 0, NickName, strlen(NickName), CharacterNick, nLen);
+
+				MyCharacterNickName->SetText(FText::FromString((TEXT("%s"), CharacterNick)));
 				HPUpdate();
 				MPUpdate();
 			}

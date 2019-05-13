@@ -3,6 +3,8 @@
 #include "MyCharacterNickNameWidget.h"
 //클라 헤더
 #include "Components/TextBlock.h"
+#include <Windows.h>
+
 //서버 헤더
 
 void UMyCharacterNickNameWidget::NativeConstruct()
@@ -16,6 +18,12 @@ void UMyCharacterNickNameWidget::SetCharacterNickNameToWidget(char * _MyCharacte
 {
 	if (CharacterNickNameText)
 	{
-		CharacterNickNameText->SetText(FText::FromString(ANSI_TO_TCHAR(_MyCharacterNick)));
+		WCHAR CharacterNick[20];
+		memset(CharacterNick, 0, sizeof(CharacterNick));
+
+		int nLen = MultiByteToWideChar(CP_ACP, 0, _MyCharacterNick, strlen(_MyCharacterNick), NULL, NULL);
+		MultiByteToWideChar(CP_UTF8, 0, _MyCharacterNick, strlen(_MyCharacterNick), CharacterNick, nLen);
+
+		CharacterNickNameText->SetText(FText::FromString((TEXT("%s"), CharacterNick)));
 	}
 }

@@ -10,6 +10,7 @@
 #include "Client/MyCharacter/PC/Widget/Party/Widget/PartyWidget.h"
 #include "Client/MyCharacter/PC/Widget/Party/Widget/PartyInteractionWidget.h"
 #include "Kismet/GameplayStatics.h"
+#include <Windows.h>
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -82,7 +83,13 @@ void UPartySlotWiget::PartySlotUpdate(FPartySlot& _PartySlot, int32 _Index)
 		PartySlotInfo = _PartySlot;
 		PartySlotIndex = _Index;
 
-		NickNameText->SetText(FText::FromString(ANSI_TO_TCHAR(PartySlotInfo.NickName)));
+		WCHAR CharacterNick[20];
+		memset(CharacterNick, 0, sizeof(CharacterNick));
+
+		int nLen = MultiByteToWideChar(CP_ACP, 0, _PartySlot.NickName, strlen(_PartySlot.NickName), NULL, NULL);
+		MultiByteToWideChar(CP_UTF8, 0, _PartySlot.NickName, strlen(_PartySlot.NickName), CharacterNick, nLen);
+
+		NickNameText->SetText(FText::FromString((TEXT("%s"), CharacterNick)));
 
 		float HP = PartySlotInfo.HP;
 		float MP = PartySlotInfo.MP;

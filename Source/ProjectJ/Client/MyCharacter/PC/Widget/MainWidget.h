@@ -104,6 +104,8 @@ public:
 	int32 GetPartySize();
 	FPartySlot GetPartySlot(int32 _Index);
 
+
+
 	UFUNCTION()
 		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수	
 	UFUNCTION()
