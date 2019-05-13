@@ -111,6 +111,7 @@ void UCharacterSelectWidget::MyCharacterSlotUpdate(PacketData * _data)
 {
 	bool EmptySlot;
 	int SlotCount;
+	int nLen = 0;
 	PacketData* Data = _data;
 
 	CharacterSlot* characterslot = new CharacterSlot[3];
@@ -131,26 +132,32 @@ void UCharacterSelectWidget::MyCharacterSlotUpdate(PacketData * _data)
 		{
 			FString name = characterslot[i].name;
 			FString level = FString::FromInt(characterslot[i].level);
-			FString nick = characterslot[i].nick;
+			//FString nick = characterslot[i].nick;
 
 			//const wchar_t* ptr = *nick;
 			//char* con_nick = new char[128];
 			//WideCharToMultiByte(CP_ACP, 0, ptr, -1, con_nick, 128, (LPCCH)'?', NULL);
 			//MultiByteToWideChar(CP_UTF8, 0, pszCode, lstrlen(pszCode) + 1, bstrWide,nLength);
 
+			WCHAR text_nick[20];
+			memset(text_nick, 0, sizeof(text_nick));
+
+			nLen = MultiByteToWideChar(CP_ACP, 0, characterslot[i].nick, strlen(characterslot[i].nick), NULL, NULL);
+			MultiByteToWideChar(CP_UTF8, 0, characterslot[i].nick, strlen(characterslot[i].nick), text_nick, nLen);
+			
 			if (i == 0)
 			{
-				CharacterButtonOne->CharacterInfoInput(FText::FromString((TEXT("%s"), nick)), FText::FromString(level), FText::FromString(name));
+				CharacterButtonOne->CharacterInfoInput(FText::FromString((TEXT("%s"), text_nick)), FText::FromString(level), FText::FromString(name));
 				CharacterButtonOne->SetVisibility(ESlateVisibility::Visible);
 			}
 			else if (i == 1)
 			{
-				CharacterButtonTwo->CharacterInfoInput(FText::FromString((TEXT("%s"), nick)), FText::FromString(level), FText::FromString(name));
+				CharacterButtonTwo->CharacterInfoInput(FText::FromString((TEXT("%s"), text_nick)), FText::FromString(level), FText::FromString(name));
 				CharacterButtonTwo->SetVisibility(ESlateVisibility::Visible);
 			}
 			else if (i == 2)
 			{
-				CharacterButtonThree->CharacterInfoInput(FText::FromString((TEXT("%s"), nick)), FText::FromString(level), FText::FromString(name));
+				CharacterButtonThree->CharacterInfoInput(FText::FromString((TEXT("%s"), text_nick)), FText::FromString(level), FText::FromString(name));
 				CharacterButtonThree->SetVisibility(ESlateVisibility::Visible);
 			}
 			//delete[] con_nick;
