@@ -28,6 +28,8 @@ private:
 	void InGame_Recv_OtherUser_Start_Jump(char* _buf);
 	// 다른 유저 착지 했다는 정보
 	void InGame_Recv_OtherUser_End_Jump(char* _buf);
+	// 다른 유저 공격했다는 정보
+	void InGame_Recv_OtherUser_Attack(char* _buf);
 	// 채널 정보
 	void InGame_Recv_ChannelInfo(char* _buf);
 	// 캐릭터 선택화면으로 받았을때
@@ -84,6 +86,7 @@ public:
 	bool MangerInitialize();
 	void EndManager();
 
+	/*--캐릭터--*/
 	// 현재 접속중인 유저리스트 요청
 	void InGame_Req_UserList();
 	// 이동요청 서버에 전송
@@ -94,10 +97,18 @@ public:
 	void InGame_Character_Start_Jump();
 	// 착지했다고 알림
 	//void InGame_Character_End_Jump();
+	// 공격 하겠다고 알림
+	void InGame_Character_Attack();
+	// 공격했는데 몬스터랑 피격판정난것같다.몬스터코드,몬스터번호
+	void InGame_Character_Attack_Success(int _monstercode, int _monsternum);
+
+	/*--채널--*/
 	// 채널 정보 요청
 	void InGame_Req_ChannelInfo();
 	// 채널 이동 요청
 	void InGame_Req_ChannelChange(int _channelnum);
+
+	/*--매뉴--*/
 	// 캐릭터 선택화면으로 요청
 	void InGame_Req_Menu_Character();
 	// 로그아웃 요청
@@ -105,24 +116,27 @@ public:
 	// 게임종료 요청 서버에 전송
 	// 아직 미구현
 
+	/*--파티--*/
 	// 강퇴요청
 	void InGame_Req_KickUser(char* _code);
 	// 탈퇴요청
 	void InGame_Req_LeaveParty();
 	// 파티 리더 위임하기
 	void InGame_Req_LeaderDelegate(char* _code);
-
 	// 파티 초대 요청
-	void InGame_Req_Party_Invite(char* _code);												
+	void InGame_Req_Party_Invite(char* _code);
 	// 파티 초대 응답
-	void InGame_Req_Party_Invite_Result(bool _result, char* _code, int _partyroomnum);		
+	void InGame_Req_Party_Invite_Result(bool _result, char* _code, int _partyroomnum);
+
+	/*--던전/스테이지--*/
 	// 던전 입장 요청
 	void InGame_Req_Dungeon_Enter();
 	// 던전 퇴장 요청
 	void InGame_Req_Dungeon_Leave();
-
 	// 스테이지 입장
 	void InGame_Req_Dungeon_Stage_Enter();
+
+	/*--몬스터--*/
 	// 몬스터 정보 요청
 	void InGame_Req_Monster_Info();
 	// 파티리더가 몬스터 이동 정보 전송

@@ -52,6 +52,10 @@
 #define PROTOCOL_INGAME_CHARACER 0x100							// [중간틀 - 인게임] 캐릭터관련
 
 // 인게임 세부틀(PROTOCOL_INGAME_CHARACER) - 캐릭터 관련
+#define PROTOCOL_INGAME_OTHERPLAYER_ATTACK_SUCCESS 0x4000000000	// [세부틀 - 캐릭터관련] [서버->클라] 다른 유저 공격성공했다
+#define PROTOCOL_INGAME_ATTACK_RESULT 0x2000000000				// [세부틀 - 캐릭터관련] [서버->클라] 유저 공격 결과
+#define PROTOCOL_INGAME_OTHERPLAYER_ATTACK 0x1000000000			// [세부틀 - 캐릭터관련] [서버->클라] 다른 유저 공격했다
+
 #define PROTOCOL_INGAME_MOVE_OTHERPLAYER_END_JUMP 0x800000000	// [세부틀 - 캐릭터관련] [서버->클라] 다른 유저 점프 끝났다는 정보(착지)
 #define PROTOCOL_INGAME_MOVE_OTHERPLAYER_START_JUMP 0x400000000	// [세부틀 - 캐릭터관련] [서버->클라] 다른 유저 점프 했다는 정보
 #define PROTOCOL_INGAME_OTHERPLAYER_LEAVE 0x200000000			// [세부틀 - 캐릭터관련] [서버->클라] 다른 유저 나간정보
@@ -150,6 +154,8 @@
 
 
 // 인게임 세부틀(PROTOCOL_INGAME_CHARACER) - 캐릭터 관련
+#define PROTOCOL_INGAME_ATTACK_SUCCESS 0x400000000				// [세부틀 - 캐릭터관련] [클라->서버] 공격했는데 몬스터랑 피격판정이난것같다.
+#define PROTOCOL_INGAME_ATTACK 0x200000000						// [세부틀 - 캐릭터관련] [클라->서버] 공격했다는 정보
 #define PROTOCOL_INGAME_MOVE_END_JUMP 0x100000000				// [세부틀 - 캐릭터관련] [클라->서버] 점프 끝났다는 정보(착지)
 
 #define PROTOCOL_INGAME_MOVE_START_JUMP 0x80000000				// [세부틀 - 캐릭터관련] [클라->서버] 점프 시작했다는 정보
