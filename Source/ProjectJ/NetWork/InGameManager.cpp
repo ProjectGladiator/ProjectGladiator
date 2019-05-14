@@ -1734,7 +1734,7 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 		// 다른 유저 공격했다
 		else if ((protocol&PROTOCOL_INGAME_OTHERPLAYER_ATTACK) == PROTOCOL_INGAME_OTHERPLAYER_ATTACK)
 		{
-			InGame_Recv_OtherUser_End_Jump(buf);
+			InGame_Recv_OtherUser_Attack(buf);
 			result = RT_INGAME_OTHERPLAYER_INFO;
 		}
 		// 공격 실패 성공 여부
