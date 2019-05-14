@@ -142,14 +142,20 @@ void AMyCharacter::Tick(float DeltaTime)
 
 		SetActorRotation(CompleteRotator);
 
-		//if (GetActorLocation().Equals(GoalLocation, 40.0f))
-		//{
-		//	//GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
-		//	if (GetWorld()->GetTimerManager().IsTimerActive(S2C_MoveTimer))
-		//	{
-		//		GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
-		//	}
-		//}
+
+		if (FMath::Abs(GetActorLocation().X - GoalLocation.X) <= 40.0f &&
+			FMath::Abs(GetActorLocation().Y - GoalLocation.Y) <= 40.0f)
+		{
+			GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
+			if (GetWorld()->GetTimerManager().IsTimerActive(S2C_MoveTimer))
+			{
+				GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
+			}
+		}
+		else
+		{
+			GLog->Log(FString::Printf(TEXT("위치가 다름")));
+		}
 	}
 }
 
@@ -427,11 +433,6 @@ void AMyCharacter::S2C_MoveUpdate()
 
 	AddMovementInput(GoalDirection, 1.0f);
 
-	if (GetActorLocation().Equals(GoalLocation, 20.0f))
-	{
-		//GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
-		GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
-	}
 }
 
 //서버에서 받아온 위치와 회전값을 클라이언트에 필요한 내용으로 바꿔주는 함수
