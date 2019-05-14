@@ -345,9 +345,9 @@ void AMyCharacter::LeftClick()
 {
 	if (MainMapPlayerController)
 	{
-		if (IsClick)
+		if (IsClick) // 현재 캐릭터 생성창인지 확인해주는 변수
 		{
-
+			MainMapPlayerController->C2S_ReqAttack();
 			if (ClientCharacterState)
 			{
 				ClientCharacterState->Click(MainMapPlayerController);

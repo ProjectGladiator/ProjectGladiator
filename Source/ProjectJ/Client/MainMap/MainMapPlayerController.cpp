@@ -226,6 +226,12 @@ void AMainMapPlayerController::C2S_ReqJump()
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
+void AMainMapPlayerController::C2S_ReqAttack()
+{
+	InGameManager::GetInstance()->InGame_Character_Attack();
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
 void AMainMapPlayerController::Possess(APawn * InPawn)
 {
 	Super::Possess(InPawn);

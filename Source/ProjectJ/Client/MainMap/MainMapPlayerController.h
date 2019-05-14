@@ -70,6 +70,8 @@ public:
 
 	void C2S_ReqJump();
 
+	void C2S_ReqAttack();
+
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;
 
