@@ -152,10 +152,6 @@ void AMyCharacter::Tick(float DeltaTime)
 				GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
 			}
 		}
-		else
-		{
-			GLog->Log(FString::Printf(TEXT("위치가 다름")));
-		}
 	}
 }
 
