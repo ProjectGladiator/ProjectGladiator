@@ -44,6 +44,11 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		{
 			IsAccelerating = false;
 		}
+
+		if (IsJump)
+		{
+			MyCharacter->MoveImplementation();
+		}
 	}
 }
 
