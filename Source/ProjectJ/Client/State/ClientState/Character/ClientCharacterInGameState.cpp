@@ -13,6 +13,7 @@
 #include "Client/MyCharacter/PC/Widget/Info/MyCharacterWidget.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MyCharacter/NPC/MyNonPlayerCharacter.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 //서버 헤더
 #include "NetWork/JobInfo.h"
@@ -93,6 +94,35 @@ void ClientCharacterInGameState::Tick(float _DeltaTime)
 		{
 			MyCharacter->MonsterInfoAssemble();
 		}
+
+		JumpCurrentFlag = MyCharacter->GetCharacterMovement()->IsFalling(); //현재 점프중인지 판단한다.
+
+		if (JumpCurrentFlag) //현재 점프중인데
+		{
+			if (!JumpPreviousFlag) //그 전에 점프중이아니라면 점프 시작이라고 생각 할 수 있다.
+			{
+				bool C2SMoveTimerActive = MyCharacter->MoveTimerActive(); //위치를 서버로 보내주는 타이머가 활성화 중인지 확인한다.
+
+				if (!C2SMoveTimerActive) //활성화 중이지 않으면 
+				{
+					MyCharacter->MoveImplementation(); //위치를 서버로 보내주는 타이머를 활성화 시켜준다.
+				}
+			}
+		}
+
+		if (!JumpCurrentFlag) //현재 점프중이 아니고
+		{
+			if (JumpPreviousFlag) //그 전에 점프중이였다면 점프가 끝난것이라고 생각 할 수 있다.
+			{
+				//이때 앞뒤, 옆뒤로 이동중이지 않다면 위치를 서버로 보내는 타이머를 죽여준다.
+				if (ForwadBackwardCurrentValue == 0 && LeftRightCurrentValue ==0)
+				{
+					MyCharacter->MoveUpdateTimerKill();
+				}
+			}
+		}
+
+		JumpPreviousFlag = JumpCurrentFlag;
 	}
 }
 
@@ -106,7 +136,12 @@ void ClientCharacterInGameState::MoveForward(float Value)
 		{
 			if (ForwadBackwardPreviousValue == 0)
 			{
-				MyCharacter->MoveImplementation();
+				bool C2SMoveTimerActive = MyCharacter->MoveTimerActive();
+
+				if (!C2SMoveTimerActive)
+				{
+					MyCharacter->MoveImplementation();
+				}
 				//GLog->Log(FString::Printf(TEXT("앞 뒤 움직임 시작")));
 			}
 		}
@@ -121,7 +156,7 @@ void ClientCharacterInGameState::MoveForward(float Value)
 
 					bool C2SMoveTimerActive = MyCharacter->MoveTimerActive();
 
-					if (C2SMoveTimerActive)
+					if (C2SMoveTimerActive && !JumpCurrentFlag)
 					{
 						MyCharacter->MoveUpdateTimerKill();
 					}
@@ -152,7 +187,12 @@ void ClientCharacterInGameState::MoveRight(float Value)
 		{
 			if (LeftRightPreviousValue == 0)
 			{
-				MyCharacter->MoveImplementation();
+				bool C2SMoveTimerActive = MyCharacter->MoveTimerActive();
+
+				if (!C2SMoveTimerActive)
+				{
+					MyCharacter->MoveImplementation();
+				}
 				//GLog->Log(FString::Printf(TEXT("좌 우 움직임 시작")));
 			}
 		}
@@ -167,7 +207,7 @@ void ClientCharacterInGameState::MoveRight(float Value)
 
 					bool C2SMoveTimerActive = MyCharacter->MoveTimerActive();
 
-					if (C2SMoveTimerActive)
+					if (C2SMoveTimerActive && !JumpCurrentFlag)
 					{
 						MyCharacter->MoveUpdateTimerKill();
 					}

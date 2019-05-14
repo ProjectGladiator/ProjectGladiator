@@ -18,6 +18,9 @@ private:
 	float LeftRightPreviousValue;
 	float LookUpCurrentValue;
 	float TurnCurrentValue;
+
+	bool JumpCurrentFlag;
+	bool JumpPreviousFlag;
 public:
 	ClientCharacterInGameState(class AMyCharacter* _MyCharacter);
 	~ClientCharacterInGameState();

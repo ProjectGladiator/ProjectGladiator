@@ -105,7 +105,6 @@ void AMyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
-	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
 void AMyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -143,17 +142,15 @@ void AMyCharacter::Tick(float DeltaTime)
 
 		SetActorRotation(CompleteRotator);
 
-		if (GetActorLocation().Equals(GoalLocation, 40.0f))
-		{
-			//GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
-			if (GetWorld()->GetTimerManager().IsTimerActive(S2C_MoveTimer))
-			{
-				GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
-			}
-		}
+		//if (GetActorLocation().Equals(GoalLocation, 40.0f))
+		//{
+		//	//GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
+		//	if (GetWorld()->GetTimerManager().IsTimerActive(S2C_MoveTimer))
+		//	{
+		//		GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
+		//	}
+		//}
 	}
-
-	
 }
 
 // Called to bind functionality to input
@@ -221,7 +218,7 @@ void AMyCharacter::MoveImplementation()
 
 void AMyCharacter::MoveUpdateTimerKill()
 {
-	//GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 킬")));
+	GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 킬")));
 	GetWorld()->GetTimerManager().ClearTimer(C2S_MoveUpdateTimer);
 }
 
@@ -414,7 +411,7 @@ void AMyCharacter::C2S_MoveConfirm()
 {
 	FVector Location = GetActorLocation();
 
-	//GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.1s")));
+	GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.1s")));
 
 	MainMapPlayerController->C2S_MoveConfirm(Location);
 }
@@ -428,13 +425,13 @@ void AMyCharacter::S2C_MoveUpdate()
 
 	//GLog->Log(FString::Printf(TEXT("%d"), GoalDistance));
 
+	AddMovementInput(GoalDirection, 1.0f);
+
 	if (GetActorLocation().Equals(GoalLocation, 20.0f))
 	{
 		//GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
 		GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
 	}
-
-	AddMovementInput(GoalDirection, 1.0f);
 }
 
 //서버에서 받아온 위치와 회전값을 클라이언트에 필요한 내용으로 바꿔주는 함수
@@ -521,12 +518,12 @@ void AMyCharacter::SetDefaultMyCharacter()
 {
 	if (MyCharacterUI)
 	{
-		auto MyCharacterController = Cast<AMainMapPlayerController>(GetController());
+		MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 
-		if (MyCharacterController)
+		if (MainMapPlayerController)
 		{
 			MyCharacterUI->GetMainWidget()->InventoryCreate(20);
-			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, MyCharacterController);
+			MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->SetInit(this, MainMapPlayerController);
 			MyCharacterUI->GetMyCharacterInteraction()->MyCharacterWidgetVisible();
 			MyCharacterUI->GetMyCharacterInteraction()->SetMyCharacterNickNameWidget(CharacterNickWidget, nick);
 			MyCharacterUI->GetMainWidget()->GetMenuWidget()->MenuInit(this);
