@@ -47,7 +47,7 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 
 		if (IsJump)
 		{
-			MyCharacter->MoveImplementation();
+			MyCharacter->C2S_MoveConfirm();
 		}
 	}
 }
