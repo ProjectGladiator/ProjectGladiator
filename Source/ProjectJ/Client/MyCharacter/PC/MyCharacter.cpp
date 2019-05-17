@@ -105,6 +105,7 @@ void AMyCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
+	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }
 
 void AMyCharacter::EndPlay(const EEndPlayReason::Type EndPlayReason)

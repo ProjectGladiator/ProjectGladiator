@@ -53,7 +53,7 @@ void ClientCharacterTitleState::Click(AMainMapPlayerController * _MainMapPlayerC
 
 void ClientCharacterTitleState::Tick(float _DeltaTime)
 {
-
+	
 }
 
 ClientCharacterTitleState::ClientCharacterTitleState()
