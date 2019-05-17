@@ -386,6 +386,8 @@ bool CharacterManager::Character_Recv_Delete(char * _buf)
 RESULT CharacterManager::CharacterInitRecvResult()
 {
 	UINT64 protocol = 0;
+	UINT64 compartrprotocol = 0;
+	UINT64 tempprotocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
 	RESULT result = RT_DEFAULT;
@@ -393,12 +395,18 @@ RESULT CharacterManager::CharacterInitRecvResult()
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitunPack(protocol, buf);
 
-	// 프로토콜 중간틀 캐릭터선택화면이면
-	if ((protocol&PROTOCOL_CHARACER_MENU) == PROTOCOL_CHARACER_MENU)
+	compartrprotocol = PROTOCOL_CHARACER_MENU;
+
+	tempprotocol = 0;
+
+	tempprotocol = protocol & compartrprotocol;
+	switch (tempprotocol)
 	{
-		// 캐릭터 생성요청 결과
-		if ((protocol&PROTOCOL_CHARACTER_RESULT) == PROTOCOL_CHARACTER_RESULT)
+	case PROTOCOL_CHARACER_MENU: // 중간틀 로그인이면
+		tempprotocol = protocol & PROTOCOL_SERVER_CHARACTER_MENU_COMPART;
+		switch (tempprotocol)
 		{
+		case PROTOCOL_CHARACTER_RESULT: // 캐릭터 생성요청 결과
 			check = Character_Recv_Create(buf);
 			StorageManager::GetInstance()->PushData(PCHARACTERDATA_CREATE_RESULT, (void*)&check, sizeof(bool));
 			if (check == true)
@@ -409,20 +417,16 @@ RESULT CharacterManager::CharacterInitRecvResult()
 			{
 				result = RT_CHARACTER_CREATE_FAIL;
 			}
-		}
-		// 캐릭터 삭제 요청 결과
-		else if ((protocol&PROTOCOL_CHARACTER_DELETE_RESULT) == PROTOCOL_CHARACTER_DELETE_RESULT)
-		{
-			// 캐릭터 삭제
+			break;
+		case PROTOCOL_CHARACTER_DELETE_RESULT: // 캐릭터 삭제 요청 결과
+				// 캐릭터 삭제
 			check = Character_Recv_Delete(buf);
 
 			StorageManager::GetInstance()->PushData(PCHARACTERDATA_DELETE_RESULT, (void*)&check, sizeof(bool));
 
 			result = RT_CHARACTER_DELETE;
-		}
-		// 캐릭터 선택 입장 요청 결과
-		else if ((protocol&PROTOCOL_CHARACTER_ENTER_RESULT) == PROTOCOL_CHARACTER_ENTER_RESULT)
-		{
+			break;
+		case PROTOCOL_CHARACTER_ENTER_RESULT: // 캐릭터 선택 입장 요청 결과
 			check = Character_Recv_Enter(buf);
 			if (check)
 			{
@@ -432,10 +436,8 @@ RESULT CharacterManager::CharacterInitRecvResult()
 			{
 				result = RT_CHARACTER_ENTERGAME_FAIL;
 			}
-		}
-		// 슬롯 정보 요청 결과
-		else if ((protocol&PROTOCOL_CHARACTER_SLOT_INFO) == PROTOCOL_CHARACTER_SLOT_INFO)
-		{
+			break;
+		case PROTOCOL_CHARACTER_SLOT_INFO: // 슬롯 정보 요청 결과
 			check = Character_Slot(buf);
 			if (check == true)
 			{
@@ -447,7 +449,13 @@ RESULT CharacterManager::CharacterInitRecvResult()
 				Character_Slot_Empty(check);
 				result = RT_CHARACTER_SLOTRESULT;
 			}
+			break;
+		default:
+			break;
 		}
+		break;
+	default:
+		break;
 	}
 	
 	return result;

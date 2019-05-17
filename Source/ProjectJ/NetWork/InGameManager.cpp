@@ -1663,6 +1663,9 @@ void InGameManager::InGame_Req_Monster_Move_Info(int _code, int _num, float _px,
 RESULT InGameManager::InGameInitRecvResult(User * _user)
 {
 	UINT64 protocol = 0;
+	UINT64 compartrprotocol = 0;
+	UINT64 tempprotocol = 0;
+
 	char buf[BUFSIZE];
 
 	RESULT result;
@@ -1670,426 +1673,290 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitunPack(protocol, buf);
 
-	// 프로토콜 중간틀 캐릭터관련 이면
-	if ((protocol&PROTOCOL_INGAME_CHARACER) == PROTOCOL_INGAME_CHARACER)
+	compartrprotocol = PROTOCOL_INGAME_CHARACER;
+
+	while (1)
 	{
-		// 유저들 정보
-		if ((protocol&PROTOCOL_INGAME_OTHERPLAYERLIST_INFO) == PROTOCOL_INGAME_OTHERPLAYERLIST_INFO)
+		tempprotocol = 0;
+
+		tempprotocol = protocol & compartrprotocol;
+		switch (tempprotocol)
 		{
-			check = InGame_Recv_UserList(buf);
-			if (check)
+		case PROTOCOL_INGAME_CHARACER:	// 프로토콜 중간틀 캐릭터 관련 이면
+			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_CHARACTER_COMPART;
+			switch (tempprotocol)
 			{
-				result = RT_INGAME_OTHERPLAYER_LIST;
-			}
-		}
-		// 유저 이동 결과
-		else if ((protocol&PROTOCOL_INGAME_MOVE_RESULT) == PROTOCOL_INGAME_MOVE_RESULT)
-		{
-			check = InGame_Recv_MoveResult(buf);
-			if (check)	// 이동 성공
-			{
+			case PROTOCOL_INGAME_OTHERPLAYERLIST_INFO: // 유저들 정보
+				check = InGame_Recv_UserList(buf);
+				if (check)
+				{
+					result = RT_INGAME_OTHERPLAYER_LIST;
+				}
+				break;
+			case PROTOCOL_INGAME_MOVE_RESULT: // 유저 이동 결과
+				check = InGame_Recv_MoveResult(buf);
+				if (check)	// 이동 성공
+				{
+					result = RT_INGAME_MOVE;
+				}
+				else		// 이동 실패
+				{
+					result = RT_INGAME_MOVE;
+				}
+				break;
+			case PROTOCOL_INGAME_MOVE_OTHERPLAYERINFO: // 다른 유저 이동 정보
+				InGame_Recv_OtherUserMoveInfo(buf, PGAMEDATA_PLAYER_OTHERMOVEINFO);
+				result = RT_INGAME_OTHERPLAYER_INFO;
+				break;
+			case PROTOCOL_INGAME_MOVE_ROTATION: // 다른 유저 회전 정보
+				InGame_Recv_OtherUserRotation(buf);
 				result = RT_INGAME_MOVE;
+				break;
+			case PROTOCOL_INGAME_OTHERPLAYER_CONNECT: // 다른 유저 접속정보
+				InGame_Recv_ConnectUserInfo(buf);
+				result = RT_INGAME_OTHERPLAYER_INFO;
+				break;
+			case PROTOCOL_INGAME_OTHERPLAYER_LEAVE: // 다른 유저 나간정보
+				InGame_Recv_OtherUserLeave(buf);
+				result = RT_INGAME_OTHERPLAYER_LEAVE;
+				break;
+			case PROTOCOL_INGAME_MOVE_OTHERPLAYER_START_JUMP: // 다른 유저 점프
+				InGame_Recv_OtherUser_Start_Jump(buf);
+				result = RT_INGAME_OTHERPLAYER_INFO;
+				break;
+			case PROTOCOL_INGAME_MOVE_OTHERPLAYER_END_JUMP: // 다른 유저 착지
+				InGame_Recv_OtherUser_End_Jump(buf);
+				result = RT_INGAME_OTHERPLAYER_INFO;
+				break;
+			case PROTOCOL_INGAME_OTHERPLAYER_ATTACK: // 다른 유저 공격했다
+				InGame_Recv_OtherUser_Attack(buf);
+				result = RT_INGAME_OTHERPLAYER_INFO;
+				break;
+			case PROTOCOL_INGAME_ATTACK_RESULT: // 공격 실패 성공 여부
+				/*InGame_Recv_OtherUser_End_Jump(buf);
+				result = RT_INGAME_OTHERPLAYER_INFO;*/
+				break;
+			case PROTOCOL_INGAME_OTHERPLAYER_ATTACK_SUCCESS: // 다른 유저가 공격성공했다
+				/*InGame_Recv_OtherUser_End_Jump(buf);
+				result = RT_INGAME_OTHERPLAYER_INFO;*/
+				break;
+			default:
+				break;
 			}
-			else		// 이동 실패
+			break;
+		case PROTOCOL_INGAME_ANIMATION: // 프로토콜 중간틀 애니메이션 관련 이면
+			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_ANIMATION_COMPART;
+			switch (tempprotocol)
 			{
-				result = RT_INGAME_MOVE;
+			case PROTOCOL_CHARACER_ANIMATION: // 캐릭터 애니메이션
+				break;
+			case PROTOCOL_MONSTER_ANIMATION: // 몬스터 애니메이션
+				break;
+			default:
+				break;
 			}
-		}
-		// 다른 유저 이동 정보
-		else if ((protocol&PROTOCOL_INGAME_MOVE_OTHERPLAYERINFO) == PROTOCOL_INGAME_MOVE_OTHERPLAYERINFO)
-		{
-			InGame_Recv_OtherUserMoveInfo(buf, PGAMEDATA_PLAYER_OTHERMOVEINFO);
-			result = RT_INGAME_OTHERPLAYER_INFO;
-		}
-		// 다른 유저 회전 정보
-		else if ((protocol&PROTOCOL_INGAME_MOVE_ROTATION) == PROTOCOL_INGAME_MOVE_ROTATION)
-		{
-			InGame_Recv_OtherUserRotation(buf);
-			result = RT_INGAME_MOVE;
-		}
-		// 다른 유저 접속정보
-		else if ((protocol&PROTOCOL_INGAME_OTHERPLAYER_CONNECT) == PROTOCOL_INGAME_OTHERPLAYER_CONNECT)
-		{
-			InGame_Recv_ConnectUserInfo(buf);
-			result = RT_INGAME_OTHERPLAYER_INFO;
-		}
-		// 다른 유저 나간정보
-		else if ((protocol&PROTOCOL_INGAME_OTHERPLAYER_LEAVE) == PROTOCOL_INGAME_OTHERPLAYER_LEAVE)
-		{
-			InGame_Recv_OtherUserLeave(buf);
-			result = RT_INGAME_OTHERPLAYER_LEAVE;
-		}
-		// 다른 유저 점프
-		else if ((protocol&PROTOCOL_INGAME_MOVE_OTHERPLAYER_START_JUMP) == PROTOCOL_INGAME_MOVE_OTHERPLAYER_START_JUMP)
-		{
-			InGame_Recv_OtherUser_Start_Jump(buf);
-			result = RT_INGAME_OTHERPLAYER_INFO;
-		}
-		// 다른 유저 착지
-		else if ((protocol&PROTOCOL_INGAME_MOVE_OTHERPLAYER_END_JUMP) == PROTOCOL_INGAME_MOVE_OTHERPLAYER_END_JUMP)
-		{
-			InGame_Recv_OtherUser_End_Jump(buf);
-			result = RT_INGAME_OTHERPLAYER_INFO;
-		}
-		// 다른 유저 공격했다
-		else if ((protocol&PROTOCOL_INGAME_OTHERPLAYER_ATTACK) == PROTOCOL_INGAME_OTHERPLAYER_ATTACK)
-		{
-			InGame_Recv_OtherUser_Attack(buf);
-			result = RT_INGAME_OTHERPLAYER_INFO;
-		}
-		// 공격 실패 성공 여부
-		else if ((protocol&PROTOCOL_INGAME_ATTACK_RESULT) == PROTOCOL_INGAME_ATTACK_RESULT)
-		{
-			/*InGame_Recv_OtherUser_End_Jump(buf);
-			result = RT_INGAME_OTHERPLAYER_INFO;*/
-		}
-		// 다른 유저가 공격성공했다
-		else if ((protocol&PROTOCOL_INGAME_OTHERPLAYER_ATTACK_SUCCESS) == PROTOCOL_INGAME_OTHERPLAYER_ATTACK_SUCCESS)
-		{
-			/*InGame_Recv_OtherUser_End_Jump(buf);
-			result = RT_INGAME_OTHERPLAYER_INFO;*/
-		}
-	}
+			break;
+		case PROTOCOL_INGAME_CHANNEL:	// 프로토콜 중간틀 채널 관련 이면
+			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_CHANNEL_COMPART;
+			switch (tempprotocol)
+			{
+			case PROTOCOL_CHANNLE_INFO: // 채널 정보
+				InGame_Recv_ChannelInfo(buf);
+				result = RT_INGAME_CHANNEL_INFO;
+				break;
+			case PROTOCOL_CHANNLE_CHANGE_RESULT: // 채널 변경 결과
+				InGame_Recv_ChannelChange(buf);
+				result = RT_INGAME_CHANNEL_CHANGE;
+				break;
+			case PROTOCOL_CHANNLE_USER_CHANGE: // 채널 이동한 유저 정보
+				InGame_Recv_OtherUserLeave(buf);
+				result = RT_INGAME_OTHERPLAYER_LEAVE;
+				break;
+			default:
+				break;
+			}
+			break;
+		case PROTOCOL_INGAME_PARTY:		// 프로토콜 중간틀 파티 관련 이면
+			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_PARTY_COMPART;
+			switch (tempprotocol)
+			{
+			case PROTOCOL_PARTY_ROOM_INVITE: // 파티 초대(특정유저에게)
+			{
+				InGame_Recv_Invite(buf);
+				result = RT_INGAME_PARTY_INVITE;
+				break;
+			}
+			case PROTOCOL_PARTY_ROOM_ANSWER_INVITE: // 파티 초대 결과
+			{
+				InGame_Recv_Invite_Result(buf);
+				result = RT_INGAME_PARTY_INVITE_RESULT;
+				break;
+			}
+			case PROTOCOL_PARTY_ROOM_JOIN_RESULT: // 참여 결과
+			{
+				InGame_Recv_Join_Result(buf);
+				result = RT_INGAME_PARTY_JOIN_RESULT;
+				break;
+			}
+			case PROTOCOL_PARTY_ROOM_ADD_USER: // 새로운 파티원이 들어옴
+			{
+				InGame_Recv_Party_User_Info(buf);
+				result = RT_INGAME_PARTY_ADD_USER;
+				break;
+			}
+			case PROTOCOL_REQ_LEADER_DELEGATE: // 강퇴당한사람에게 보내는 프로토콜
+			{
+				// 프로토콜만 온다
+				InGame_Recv_Kick();
+				result = RT_INGAME_PARTY_KICK;
+				break;
+			}
+			case PROTOCOL_PARTY_USER_KICK_INFO: // 강퇴당한 유저 정보
+			{
+				// 유저코드 온다
+				InGame_Recv_Kick_User_Info(buf);
+				result = RT_INGAME_PARTY_KICK_USER_INFO;
+				break;
+			}
+			case PROTOCOL_PARTY_USER_KICK_RESULT: // 강퇴결과
+			{
+				// 결과 온다. 성공이면 뒤에 코드도 온다
+				InGame_Recv_Kick_Result(buf);
+				result = RT_INGAME_PARTY_KICK_RESULT;
+				break;
+			}
+			case PROTOCOL_PARTY_USER_LEAVE_INFO: // 탈퇴하는 유저 정보
+			{
+				// 캐릭터 코드 온다
+				InGame_Recv_Leave_User_Info(buf);
+				result = RT_INGAME_PARTY_LEAVE_INFO;
+				break;
+			}
+			case PROTOCOL_PARTY_USER_LEAVE_RESULT: // 탈퇴결과
+			{
+				// 성공 실패 여부만 온다
+				InGame_Recv_Leave_Result(buf);
+				result = RT_INGAME_PARTY_LEAVE_RESULT;
+				break;
+			}
+			case PROTOCOL_PARTY_ROOM_REMOVE_RESULT: // 파티방 사라졌을때 보내는 프로토콜
+			{
+				// 파티방 터졌다는 프로토콜만 온다
+				InGame_Recv_PartyRoom_Remove(buf);
+				result = RT_INGAME_PARTY_ROOM_REMOVE;
+				break;
+			}
+			case PROTOCOL_PARTY_LEADER_DELEGATE: // 리더 위임 받은 유저 정보
+			{
+				// 파티방 구 리더, 새로운 리더 코드가 온다
+				InGame_Recv_PartyRoom_Leader_Info(buf);
+				result = RT_INGAME_PARTY_LEADER_DELEGATE;
+				break;
+			}
+			case PROTOCOL_PARTY_LEADER_DELEGATE_RESULT: // 강퇴당한사람에게 보내는 프로토콜
+			{
+				// 리더 위임 결과가 오고 성공이면 뒤에 코드도 온다.
+				InGame_Recv_PartyRoom_Leader_Delegate_Result(buf);
+				result = RT_INGAME_PARTY_LEADER_DELEGATE_RESULT;
+				break;
+			}
+			case PROTOCOL_PARTY_USER_INFO: // 파티원정보
+			{
+				break;
+			}
 
-	// 프로토콜 중간틀 애니메이션관련 이면
-	if ((protocol&PROTOCOL_INGAME_ANIMATION) == PROTOCOL_INGAME_ANIMATION)
-	{
-		// 캐릭터 애니메이션
-		if ((protocol&PROTOCOL_CHARACER_ANIMATION) == PROTOCOL_CHARACER_ANIMATION)
-		{
-
-		}
-		// 몬스터 애니메이션
-		else if ((protocol&PROTOCOL_MONSTER_ANIMATION) == PROTOCOL_MONSTER_ANIMATION)
-		{
-
-		}
-	}
-
-	// 프로토콜 중간틀 채널관련 이면
-	if ((protocol&PROTOCOL_INGAME_CHANNEL) == PROTOCOL_INGAME_CHANNEL)
-	{
-		// 채널 정보
-		if ((protocol&PROTOCOL_CHANNLE_INFO) == PROTOCOL_CHANNLE_INFO)
-		{
-			InGame_Recv_ChannelInfo(buf);
-			result = RT_INGAME_CHANNEL_INFO;
-		}
-		// 채널 변경 결과
-		else if ((protocol&PROTOCOL_CHANNLE_CHANGE_RESULT) == PROTOCOL_CHANNLE_CHANGE_RESULT)
-		{
-			InGame_Recv_ChannelChange(buf);
-			result = RT_INGAME_CHANNEL_CHANGE;
-		}
-		// 채널 이동한 유저 정보
-		else if ((protocol&PROTOCOL_CHANNLE_USER_CHANGE) == PROTOCOL_CHANNLE_USER_CHANGE)
-		{
-			InGame_Recv_OtherUserLeave(buf);
-			result = RT_INGAME_OTHERPLAYER_LEAVE;
-		}
-	}
-
-	// 프로토콜 중간틀 파티관련 이면
-	if ((protocol&PROTOCOL_INGAME_PARTY) == PROTOCOL_INGAME_PARTY)
-	{
-		// 파티 초대(특정유저에게)
-		if ((protocol&PROTOCOL_PARTY_ROOM_INVITE) == PROTOCOL_PARTY_ROOM_INVITE)
-		{
-			InGame_Recv_Invite(buf);
-			result = RT_INGAME_PARTY_INVITE;
-		}
-		// 파티 초대 결과
-		else if ((protocol&PROTOCOL_PARTY_ROOM_INVITE_RESULT) == PROTOCOL_PARTY_ROOM_INVITE_RESULT)
-		{
-			InGame_Recv_Invite_Result(buf);
-			result = RT_INGAME_PARTY_INVITE_RESULT;
-		}
-		// 참여 결과
-		else if ((protocol&PROTOCOL_PARTY_ROOM_JOIN_RESULT) == PROTOCOL_PARTY_ROOM_JOIN_RESULT)
-		{
-			InGame_Recv_Join_Result(buf);
-			result = RT_INGAME_PARTY_JOIN_RESULT;
-		}
-		// 새로운 파티원이 들어옴
-		else if ((protocol&PROTOCOL_PARTY_ROOM_ADD_USER) == PROTOCOL_PARTY_ROOM_ADD_USER)
-		{
-			InGame_Recv_Party_User_Info(buf);
-			result = RT_INGAME_PARTY_ADD_USER;
-		}
-		// 강퇴당한사람에게 보내는 프로토콜
-		else if ((protocol&PROTOCOL_PARTY_USER_KICK) == PROTOCOL_PARTY_USER_KICK)
-		{
-			// 프로토콜만 온다
-			InGame_Recv_Kick();
-			result = RT_INGAME_PARTY_KICK;
-		}
-		// 강퇴당한 유저 정보
-		else if ((protocol&PROTOCOL_PARTY_USER_KICK_INFO) == PROTOCOL_PARTY_USER_KICK_INFO)
-		{
-			// 유저코드 온다
-			InGame_Recv_Kick_User_Info(buf);
-			result = RT_INGAME_PARTY_KICK_USER_INFO;
-		}
-		// 강퇴결과
-		else if ((protocol&PROTOCOL_PARTY_USER_KICK_RESULT) == PROTOCOL_PARTY_USER_KICK_RESULT)
-		{
-			// 결과 온다. 성공이면 뒤에 코드도 온다
-			InGame_Recv_Kick_Result(buf);
-			result = RT_INGAME_PARTY_KICK_RESULT;
-		}
-		// 탈퇴하는 유저 정보
-		else if ((protocol&PROTOCOL_PARTY_USER_LEAVE_INFO) == PROTOCOL_PARTY_USER_LEAVE_INFO)
-		{
-			// 캐릭터 코드 온다
-			InGame_Recv_Leave_User_Info(buf);
-			result = RT_INGAME_PARTY_LEAVE_INFO;
-		}
-		// 탈퇴결과
-		else if ((protocol&PROTOCOL_PARTY_USER_LEAVE_RESULT) == PROTOCOL_PARTY_USER_LEAVE_RESULT)
-		{
-			// 성공 실패 여부만 온다
-			InGame_Recv_Leave_Result(buf);
-			result = RT_INGAME_PARTY_LEAVE_RESULT;
-		}
-		// 파티방 사라졌을때 보내는 프로토콜
-		else if ((protocol&PROTOCOL_PARTY_ROOM_REMOVE_RESULT) == PROTOCOL_PARTY_ROOM_REMOVE_RESULT)
-		{
-			// 파티방 터졌다는 프로토콜만 온다
-			InGame_Recv_PartyRoom_Remove(buf);
-			result = RT_INGAME_PARTY_ROOM_REMOVE;
-		}
-		// 리더 위임 받은 유저 정보
-		else if ((protocol&PROTOCOL_PARTY_LEADER_DELEGATE) == PROTOCOL_PARTY_LEADER_DELEGATE)
-		{
-			// 파티방 구 리더, 새로운 리더 코드가 온다
-			InGame_Recv_PartyRoom_Leader_Info(buf);
-			result = RT_INGAME_PARTY_LEADER_DELEGATE;
-		}
-		// 리더 위임 결과
-		else if ((protocol&PROTOCOL_PARTY_LEADER_DELEGATE_RESULT) == PROTOCOL_PARTY_LEADER_DELEGATE_RESULT)
-		{
-			// 리더 위임 결과가 오고 성공이면 뒤에 코드도 온다.
-			InGame_Recv_PartyRoom_Leader_Delegate_Result(buf);
-			result = RT_INGAME_PARTY_LEADER_DELEGATE_RESULT;
-		}
-		// 파티원정보
-		else if ((protocol&PROTOCOL_PARTY_USER_INFO) == PROTOCOL_PARTY_USER_INFO)
-		{
-
-		}
-	}
-
-	// 프로토콜 중간틀 던전관련 이면
-	if ((protocol&PROTOCOL_INGAME_DUNGEON) == PROTOCOL_INGAME_DUNGEON)
-	{
-		// 던전 입장 결과
-		if ((protocol&PROTOCOL_DUNGEON_ENTER_RESULT) == PROTOCOL_DUNGEON_ENTER_RESULT)
-		{
-			// 던전 스폰 위치 옴(Vector3)
-			InGame_Recv_Leave_Dungeon_Enter_Result(buf);
-			result = RT_INGAME_DUNGEON_ENTER_RESULT;
-		}
-		// 던전 퇴장 결과
-		else if ((protocol&PROTOCOL_DUNGEON_LEAVE_RESULT) == PROTOCOL_DUNGEON_LEAVE_RESULT)
-		{
-			// 채널번호옴
-			InGame_Recv_Leave_Dungeon_Leave_Result(buf);
-			result = RT_INGAME_DUNGEON_LEAVE_RESULT;
-		}
-		// 스테이지 입장 결과
-		else if ((protocol&PROTOCOL_DUNGEON_STAGE_IN_RESULT) == PROTOCOL_DUNGEON_STAGE_IN_RESULT)
-		{
-			// 스테이지 입장 결과옴(Vector3)
-			InGame_Recv_Stage_Enter_Result(buf);
-			result = RT_INGAME_DUNGEON_STAGE_ENTER_RESULT;
-		}
-	}
-
-
-	// 프로토콜 중간틀 몬스터관련 이면
-	if ((protocol&PROTOCOL_INGMAE_MONSTER) == PROTOCOL_INGMAE_MONSTER)
-	{
-		// 몬스터 이동 정보
-		if ((protocol&PROTOCOL_MONSTER_MOVE_RESULT) == PROTOCOL_MONSTER_MOVE_RESULT)
-		{
-			// 몬스터 이동정보 옴
-			InGame_Recv_Monster_MoveInfo(buf);
-			result = RT_INGAME_MONSTER_MOVE_INFO_RESULT;
-		}
-		// 몬스터 정보
-		else if ((protocol&PROTOCOL_MONSTER_INFO) == PROTOCOL_MONSTER_INFO)
-		{
-			// 몬스터 정보 옴
-			InGame_Recv_Stage_MonsterInfo(buf);
-			result = RT_INGAME_MONSTER_INFO_RESULT;
-		}
-	}
-
-	// 프로토콜 중간틀 매뉴관련 이면
-	if ((protocol&PROTOCOL_INGMAE_MENU) == PROTOCOL_INGMAE_MENU)
-	{
-		// 캐릭터 생성요청 결과
-		if ((protocol&PROTOCOL_MENU_RESULT_CHARACTER) == PROTOCOL_MENU_RESULT_CHARACTER)
-		{
-			InGame_Recv_CharacterSelect();
+			default:
+				break;
+			}
+			break;
+		case PROTOCOL_INGAME_DUNGEON:	// 프로토콜 중간틀 던전 관련 이면
+			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_DUNGEON_COMPART;
+			switch (tempprotocol)
+			{
+			case PROTOCOL_DUNGEON_ENTER_RESULT: // 던전 입장 결과
+			{
+				// 던전 스폰 위치 옴(Vector3)
+				InGame_Recv_Leave_Dungeon_Enter_Result(buf);
+				result = RT_INGAME_DUNGEON_ENTER_RESULT;
+				break;
+			}
+			case PROTOCOL_DUNGEON_LEAVE_RESULT: // 던전 퇴장 결과
+			{
+				// 채널번호옴
+				InGame_Recv_Leave_Dungeon_Leave_Result(buf);
+				result = RT_INGAME_DUNGEON_LEAVE_RESULT;
+				break;
+			}
+			case PROTOCOL_DUNGEON_STAGE_IN_RESULT: // 스테이지 입장 결과
+			{
+				// 스테이지 입장 결과옴(Vector3)
+				InGame_Recv_Stage_Enter_Result(buf);
+				result = RT_INGAME_DUNGEON_STAGE_ENTER_RESULT;
+				break;
+			}
+			default:
+				break;
+			}
+			break;
+		case PROTOCOL_INGMAE_MONSTER: 	// 프로토콜 중간틀 몬스터 관련 이면
+			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_MONSTER_COMPART;
+			switch (tempprotocol)
+			{
+			case PROTOCOL_MONSTER_MOVE_RESULT: // 몬스터 이동 정보
+			{
+				// 몬스터 이동정보 옴
+				InGame_Recv_Monster_MoveInfo(buf);
+				result = RT_INGAME_MONSTER_MOVE_INFO_RESULT;
+				break;
+			}
+			case PROTOCOL_MONSTER_INFO: // 몬스터 정보
+			{
+				// 몬스터 정보 옴
+				InGame_Recv_Stage_MonsterInfo(buf);
+				result = RT_INGAME_MONSTER_INFO_RESULT;
+				break;
+			}
+			default:
+				break;
+			}
+			break;
+		case PROTOCOL_INGMAE_MENU:		// 프로토콜 중간틀 매뉴 관련 이면
+			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_MENU_COMPART;
+			switch (tempprotocol)
+			{
+			case PROTOCOL_MENU_RESULT_CHARACTER: // 캐릭터 선택화면으로 결과
+			{	InGame_Recv_CharacterSelect();
 			result = RT_INGAME_MENU_CHARACTER;
+				break;
+			}
+			case PROTOCOL_MENU_RESULT_LOGOUT: // 로그아웃 결과
+			{
+				InGame_Recv_Logout();
+				result = RT_INGAME_MENU_LOGOUT;
+				break;
+			}
+			case PROTOCOL_MENU_RESULT_EXIT:  // 게임종료결과
+			{
+				// 아직 안만듬
+				break;
+			}
+			default:
+				break;
+			}
+			break;
+		default:
+			break;
 		}
-		// 캐릭터 삭제 요청 결과
-		else if ((protocol&PROTOCOL_MENU_RESULT_LOGOUT) == PROTOCOL_MENU_RESULT_LOGOUT)
-		{
-			InGame_Recv_Logout();
-			result = RT_INGAME_MENU_LOGOUT;
-		}
-		// 캐릭터 삭제 요청 결과
-		else if ((protocol&PROTOCOL_OTHERPLAYER_LEAVE) == PROTOCOL_OTHERPLAYER_LEAVE)
-		{
 
+		// 마지막 프로토콜이면 탈출
+		if (compartrprotocol == PROTOCOL_INGMAE_MENU)
+		{
+			break;
 		}
+
+		// protocol이랑 비교할 대상 쉬프트 연산
+		compartrprotocol = compartrprotocol << 1;
 	}
-
-
-	/*
-	switch (protocol)
-	{
-	case SERVER_INGAME_OTHERPLAYER_CONNECT:
-		InGame_Recv_ConnectUserInfo(buf);
-		result = RT_INGAME_OTHERPLAYER_INFO;
-		break;
-	case SERVER_INGAME_MOVE_RESULT:
-		check = InGame_Recv_MoveResult(buf);
-		if (check)	// 이동 성공
-		{
-			result = RT_INGAME_MOVE;
-		}
-		else		// 이동 실패
-		{
-			result = RT_INGAME_MOVE;
-		}
-		break;
-	case SERVER_INGAME_MOVE_ORDER:
-		InGame_Recv_OtherUserMoveInfo(buf, PGAMEDATA_PLAYER_OTHERMOVEORDER);
-		result = RT_INGAME_OTHERPLAYER_INFO;
-		break;
-	case SERVER_INGAME_MOVE_OTHERPLAYERINFO:
-		InGame_Recv_OtherUserMoveInfo(buf, PGAMEDATA_PLAYER_OTHERMOVEINFO);
-		result = RT_INGAME_OTHERPLAYER_INFO;
-		break;
-	case SERVER_INGAME_OTHERPLAYERLIST_RESULT:
-		check = InGame_Recv_UserList(buf);
-		if (check)
-		{
-			result = RT_INGAME_OTHERPLAYER_LIST;
-		}
-		break;
-	case SERVER_INGAME_MOVE_ROTATION:
-		InGame_Recv_OtherUserRotation(buf);
-		result = RT_INGAME_MOVE;
-		break;
-	case SERVER_INGAME_OTHERPLAYER_LEAVE:
-		InGame_Recv_OtherUserLeave(buf);
-		result = RT_INGAME_OTHERPLAYER_LEAVE;
-		break;
-	case SERVER_INGAME_CHANNLE_INFO_RESULT:
-		InGame_Recv_ChannelInfo(buf);
-		result = RT_INGAME_CHANNEL_INFO;
-		break;
-	case SERVER_INGAME_CHANNLE_CHANGE_RESULT:
-		InGame_Recv_ChannelChange(buf);
-		result = RT_INGAME_CHANNEL_CHANGE;
-		break;
-	case SERVER_INGAME_MENU_RESULT_CHARACTER:
-		InGame_Recv_CharacterSelect();
-		result = RT_INGAME_MENU_CHARACTER;
-		break;
-	case SERVER_INGAME_MENU_RESULT_LOGOUT:
-		InGame_Recv_Logout();
-		result = RT_INGAME_MENU_LOGOUT;
-		break;
-	case SERVER_INGAME_PARTY_ROOM_INVITE:
-		InGame_Recv_Invite(buf);
-		result = RT_INGAME_PARTY_INVITE;
-		break;
-	case SERVER_INGAME_PARTY_ROOM_INVITE_RESULT:
-		InGame_Recv_Invite_Result(buf);
-		result = RT_INGAME_PARTY_INVITE_RESULT;
-		break;
-	case SERVER_INGAME_PARTY_ROOM_JOIN_RESULT:
-		InGame_Recv_Join_Result(buf);
-		result = RT_INGAME_PARTY_JOIN_RESULT;
-		break;
-	case SERVER_INGAME_PARTY_ROOM_ADD_USER:
-		InGame_Recv_Party_User_Info(buf);
-		result = RT_INGAME_PARTY_ADD_USER;
-		break;
-	case SERVER_INGAME_PARTY_USER_KICK:
-		// 프로토콜만 온다
-		InGame_Recv_Kick();
-		result = RT_INGAME_PARTY_KICK;
-		break;
-	case SERVER_INGAME_PARTY_USER_KICK_INFO:
-		// 유저코드 온다
-		InGame_Recv_Kick_User_Info(buf);
-		result = RT_INGAME_PARTY_KICK_USER_INFO;
-		break;
-	case SERVER_INGAME_PARTY_USER_KICK_RESULT:
-		// 결과 온다. 성공이면 뒤에 코드도 온다
-		InGame_Recv_Kick_Result(buf);
-		result = RT_INGAME_PARTY_KICK_RESULT;
-		break;
-	case SERVER_INGAME_PARTY_USER_LEAVE_INFO:
-		// 캐릭터 코드 온다
-		InGame_Recv_Leave_User_Info(buf);
-		result = RT_INGAME_PARTY_LEAVE_INFO;
-		break;
-	case SERVER_INGAME_PARTY_USER_LEAVE_RESULT:
-		// 성공 실패 여부만 온다
-		InGame_Recv_Leave_Result(buf);
-		result = RT_INGAME_PARTY_LEAVE_RESULT;
-		break;
-	case SERVER_INGAME_PARTY_ROOM_REMOVE_RESULT:
-		// 파티방 터졌다는 프로토콜만 온다
-		InGame_Recv_PartyRoom_Remove(buf);
-		result = RT_INGAME_PARTY_ROOM_REMOVE;
-		break;
-	case SERVER_INGAME_PARTY_LEADER_DELEGATE:
-		// 파티방 구 리더, 새로운 리더 코드가 온다
-		InGame_Recv_PartyRoom_Leader_Info(buf);
-		result = RT_INGAME_PARTY_LEADER_DELEGATE;
-		break;
-	case SERVER_INGAME_PARTY_LEADER_DELEGATE_RESULT:
-		// 리더 위임 결과가 오고 성공이면 뒤에 코드도 온다.
-		InGame_Recv_PartyRoom_Leader_Delegate_Result(buf);
-		result = RT_INGAME_PARTY_LEADER_DELEGATE_RESULT;
-		break;
-	case SERVER_INGAME_DUNGEON_ENTER_RESULT:
-		// 던전 스폰 위치 옴(Vector3)
-		InGame_Recv_Leave_Dungeon_Enter_Result(buf);
-		result = RT_INGAME_DUNGEON_ENTER_RESULT;
-		break;
-	case SERVER_INGAME_DUNGEON_LEAVE_RESULT:
-		// 채널번호옴
-		InGame_Recv_Leave_Dungeon_Leave_Result(buf);
-		result = RT_INGAME_DUNGEON_LEAVE_RESULT;
-		break;
-	case SERVER_INGAME_DUNGEON_STAGE_IN_REULST:
-		// 스테이지 입장 결과옴(Vector3)
-		InGame_Recv_Stage_Enter_Result(buf);
-		result = RT_INGAME_DUNGEON_STAGE_ENTER_RESULT;
-		break;
-	case SERVER_INGAME_MONSTER_INFO:
-		// 몬스터 정보 옴
-		InGame_Recv_Stage_MonsterInfo(buf);
-		result = RT_INGAME_MONSTER_INFO_RESULT;
-		break;
-	case SERVER_INGAME_MONSTER_MOVE_RESULT:
-		// 몬스터 이동정보 옴
-		InGame_Recv_Monster_MoveInfo(buf);
-		result = RT_INGAME_MONSTER_MOVE_INFO_RESULT;
-		break;
-	default:
-		break;
-	}
-	*/
 
 	return result;
 }
