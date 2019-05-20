@@ -97,10 +97,10 @@ public:
 	void InGame_Character_Start_Jump();
 	// 착지했다고 알림
 	//void InGame_Character_End_Jump();
-	// 공격 하겠다고 알림
-	void InGame_Character_Attack();
+	// 공격 하겠다고 알림(무슨 공격했는지)
+	void InGame_Character_Attack(int _attacknum);
 	// 공격했는데 몬스터랑 피격판정난것같다.몬스터코드,몬스터번호
-	void InGame_Character_Attack_Success(int _monstercode, int _monsternum);
+	void InGame_Character_Attack_Success(int _monstercode, int _monsternum, int _attacknum);
 
 	/*--채널--*/
 	// 채널 정보 요청

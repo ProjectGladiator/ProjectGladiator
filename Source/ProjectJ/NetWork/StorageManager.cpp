@@ -492,6 +492,22 @@ void StorageManager::ChangeData(void * data, int & _code, int & _count, float & 
 	ptr += sizeof(float);
 }
 
+// 공격정보 (코드,공격번호)
+void StorageManager::ChangeData(void * data, char * _code, int _attacknum)
+{
+	int len = 0;
+	char* ptr = (char*)data;
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_code, ptr, len);
+	ptr += len;
+
+	memcpy(&_attacknum, ptr, sizeof(int));
+	ptr += sizeof(int);
+}
+
 // Front 삭제
 bool StorageManager::PopData()
 {	

@@ -138,19 +138,24 @@ void InGameManager::InGame_Character_Start_Jump()
 //}
 
 // 공격 하겠다고 알림
-void InGameManager::InGame_Character_Attack()
+void InGameManager::InGame_Character_Attack(int _attacknum)
 {
 	UINT64 protocol = 0;
 	char buf[BUFSIZE];
 	memset(buf, 0, sizeof(buf));
+	char* ptr = buf;
+	int datasize = 0;
+
+	memcpy(ptr, &_attacknum, sizeof(int));
+	datasize += sizeof(int);
 
 	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_CHARACER, PROTOCOL_INGAME_ATTACK);
 
-	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
 
 // 공격했는데 몬스터랑 피격판정난것같다.몬스터코드,몬스터번호
-void InGameManager::InGame_Character_Attack_Success(int _monstercode, int _monsternum)
+void InGameManager::InGame_Character_Attack_Success(int _monstercode, int _monsternum, int _attacknum)
 {
 	UINT64 protocol = 0;
 	char buf[BUFSIZE];
@@ -164,6 +169,10 @@ void InGameManager::InGame_Character_Attack_Success(int _monstercode, int _monst
 	ptr += sizeof(int);
 	// 몬스터 번호
 	memcpy(ptr, &_monsternum, sizeof(int));
+	datasize += sizeof(int);
+	ptr += sizeof(int);
+	// 공격 번호
+	memcpy(ptr, &_attacknum, sizeof(int));
 	datasize += sizeof(int);
 	ptr += sizeof(int);
 
@@ -657,6 +666,7 @@ void InGameManager::InGame_Recv_OtherUser_Attack(char * _buf)
 	char* ptr_data = data;
 	int size = 0;
 	int len = 0;
+	int attacknum = 0;
 
 	memset(code, 0, CHARACTERCODESIZE);
 
@@ -673,6 +683,13 @@ void InGameManager::InGame_Recv_OtherUser_Attack(char * _buf)
 	size += len;
 	memcpy(ptr_data, code, len);
 	ptr_data += len;
+
+	// 공격번호
+	memcpy(&attacknum, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &attacknum, sizeof(int));
+	ptr_data += sizeof(int);
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_PLAYER_ATTACK, data, size);
 }
