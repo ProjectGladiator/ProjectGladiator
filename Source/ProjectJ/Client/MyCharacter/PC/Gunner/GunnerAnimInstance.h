@@ -17,8 +17,6 @@ public:
 	UGunnerAnimInstance();
 private:
 	UFUNCTION()
-		void AnimNotify_SaveAttack(UAnimNotify* Notify); //콤보 저장 노티파이
-	UFUNCTION()
 		void AnimNotify_ResetCombo(UAnimNotify* Notify); //콤보 리셋 노티파이
 	UFUNCTION()
 		void AnimNotify_AttackHit(UAnimNotify* Notify);
@@ -27,6 +25,6 @@ private:
 public:
 	virtual void PlayClickedReactionMontage() override;  //캐릭터 생성창 선택 애니메이션 실행
 	virtual void PlayLevelStartMontage() override;  //캐릭터 선택창 슬롯 선택 애니메이션 실행
-	virtual void PlayAttackMontage() override; //공격 애니메이션 실행
+	virtual void PlayAttackMontage(float _RateScale) override; //공격 애니메이션 실행
 	virtual void JumpAttackMontageSection(int32 NewSection) override; //공격 애니메이션 몽타주 섹션 점프 해주는 함수
 };

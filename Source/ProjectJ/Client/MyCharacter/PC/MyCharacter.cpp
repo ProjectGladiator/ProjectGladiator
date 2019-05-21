@@ -175,7 +175,8 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction(TEXT("Alt"), IE_Pressed, this, &AMyCharacter::MouseToggle);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AMyCharacter::JumpStart);
-	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &AMyCharacter::LeftClick);
+	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Pressed, this, &AMyCharacter::LeftClickOn);
+	PlayerInputComponent->BindAction(TEXT("Attack"), IE_Released, this, &AMyCharacter::LeftClickOff);
 
 	PlayerInputComponent->BindAction(TEXT("Inventory"), IE_Pressed, this, &AMyCharacter::InventoryToggle);
 
@@ -284,12 +285,18 @@ void AMyCharacter::ViewReduce()
 
 void AMyCharacter::RightClickOn()
 {
-	IsRightClick = true;
+	if (!MainMapPlayerController->bShowMouseCursor)
+	{
+		IsRightClick = true;
+	}
 }
 
 void AMyCharacter::RightClickOff()
 {
-	IsRightClick = false;
+	if (!MainMapPlayerController->bShowMouseCursor)
+	{
+		IsRightClick = false;
+	}
 }
 
 void AMyCharacter::MouseToggle()
@@ -341,7 +348,7 @@ float AMyCharacter::GetMaxMP()
 	return MaxMP;
 }
 
-void AMyCharacter::LeftClick()
+void AMyCharacter::LeftClickOn()
 {
 	if (MainMapPlayerController)
 	{
@@ -358,6 +365,11 @@ void AMyCharacter::LeftClick()
 			GLog->Log(FString::Printf(TEXT("IsClick가 false")));
 		}
 	}
+}
+
+void AMyCharacter::LeftClickOff()
+{
+
 }
 
 void AMyCharacter::OnAttackMontageEnded()

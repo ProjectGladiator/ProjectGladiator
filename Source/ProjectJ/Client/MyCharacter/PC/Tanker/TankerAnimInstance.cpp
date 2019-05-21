@@ -91,13 +91,13 @@ void UTankerAnimInstance::PlayLevelStartMontage()
 	}
 }
 
-void UTankerAnimInstance::PlayAttackMontage()
+void UTankerAnimInstance::PlayAttackMontage(float _RateScale)
 {
 	if (AttackMontage)
 	{
 		if (!Montage_IsPlaying(AttackMontage))
 		{
-			Montage_Play(AttackMontage, 1.0f);
+			Montage_Play(AttackMontage, _RateScale);
 		}
 	}
 	else

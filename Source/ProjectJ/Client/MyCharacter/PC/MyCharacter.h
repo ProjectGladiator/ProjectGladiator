@@ -74,7 +74,8 @@ protected:
 
 	UPROPERTY()
 		bool IsRightClick; //마우스 오른쪽 버튼 눌럿는지 안눌럿는지
-
+	UPROPERTY()
+		float AttackSpeed;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason)override;
@@ -135,7 +136,9 @@ public:
 	float GetMaxMP();
 
 	UFUNCTION()
-		virtual void LeftClick();
+		virtual void LeftClickOn();
+	UFUNCTION()
+		virtual void LeftClickOff();
 
 	UFUNCTION()
 		virtual void RightClickOn();

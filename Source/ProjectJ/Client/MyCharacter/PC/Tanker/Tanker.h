@@ -26,7 +26,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-		virtual void LeftClick() override;
+		virtual void LeftClickOn() override;
 	UFUNCTION()
 		virtual void RightClickOn() override;
 	UFUNCTION()

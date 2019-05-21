@@ -13,6 +13,8 @@
 #include "Camera/CameraComponent.h" //카메라 컴포넌트 헤더파일
 #include "GunnerCameraShake.h" //총잡이 카메라 흔들기
 #include "GameFramework/SpringArmComponent.h" //스프링암 컴포넌트 헤더파일
+#include "Client/MainMap/MainMapPlayerController.h"
+#include "TimerManager.h"
 
 //서버 헤더
 AGunner::AGunner()
@@ -67,6 +69,8 @@ void AGunner::BeginPlay()
 {
 	Super::BeginPlay();
 
+	AttackSpeed = 3.0f;
+
 	MyAnimInstance = Cast<UGunnerAnimInstance>(GetMesh()->GetAnimInstance()); //총잡이 애님인스턴스를 구해서 GunnerAnimInstance에 저장
 
 	if (MyAnimInstance) //null이 아니면
@@ -76,6 +80,16 @@ void AGunner::BeginPlay()
 		//OnComboSave( 콤보 저장 ) 델리게이트를 이용해서 총잡이에 있는 OnComboMontageSave 연동
 		MyAnimInstance->OnComboSave.AddDynamic(this, &AGunner::OnComboMontageSave);
 		MyAnimInstance->OnAttackHit.AddDynamic(this, &AGunner::OnAttackHit);
+	}
+}
+
+void AGunner::ClickedReactionMontagePlay()
+{
+	if (MyAnimInstance) //총잡이 애님인스턴스가 null인지 확인
+	{
+		//제대로 있으면
+		//캐릭터 선택 애니메이션 실행
+		MyAnimInstance->PlayClickedReactionMontage();
 	}
 }
 
@@ -91,49 +105,29 @@ void AGunner::Tick(float DeltaTime)
 	}
 }
 
-void AGunner::ClickedReactionMontagePlay()
+void AGunner::LeftClickOn()
 {
-	if (MyAnimInstance) //총잡이 애님인스턴스가 null인지 확인
-	{
-		//제대로 있으면
-		//캐릭터 선택 애니메이션 실행
-		MyAnimInstance->PlayClickedReactionMontage();
-	}
-}
+	Super::LeftClickOn();
 
-void AGunner::LeftClick()
-{
-	if (IsAttack)
+	if (MainMapPlayerController)
 	{
-		IsCombo = true;
-	}
-	else
-	{
-		GLog->Log(FString::Printf(TEXT("총잡이 상태에서 왼쪽 클릭")));
-		IsAttack = true;
-
-		if (MyAnimInstance)
+		if (!MainMapPlayerController->bShowMouseCursor)
 		{
-			MyAnimInstance->PlayAttackMontage();
-			CurrentCombo += 1;
-			MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
+			IsRepeatShoot = true;
+			MyAnimInstance->PlayAttackMontage(AttackSpeed);
+
+			if (IsRepeatShoot)
+			{
+				GetWorld()->GetTimerManager().SetTimer(RepeatShootTimer, this, &AMyCharacter::LeftClickOn, 1.0f / AttackSpeed, true, 1.0f / AttackSpeed);
+			}
 		}
 	}
 }
 
-void AGunner::OnComboMontageSave()
+void AGunner::LeftClickOff()
 {
-	if (IsCombo)
-	{
-		GLog->Log(FString::Printf(TEXT("콤보 공격 시작함")));
-		IsCombo = false;
-		if (MyAnimInstance)
-		{
-			MyAnimInstance->PlayAttackMontage();
-			CurrentCombo += 1;
-			MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
-		}
-	}
+	IsRepeatShoot = false;
+	GetWorld()->GetTimerManager().ClearTimer(RepeatShootTimer);
 }
 
 void AGunner::OnAttackHit()
@@ -145,12 +139,12 @@ void AGunner::OnAttackHit()
 	TArray<AActor*> IgnoreActors; //라인 트레이스에 무시되는 변수들을 담는 배열을 선언한다.
 	IgnoreActors.Add(this); //자신을 등록한다.
 
-	FHitResult HitResult; 
+	FHitResult HitResult;
 
 	if (IsRightClick) //오른쪽 마우스 클릭 상태이면
 	{
 		//카메라에서 라인트레이스를 쏜다.
-		
+
 		//라인트레이스 시작 위치를 카메라의 월드위치로 초기화 시킨다.
 		FVector TraceStart = Camera->GetComponentLocation();
 
@@ -163,7 +157,7 @@ void AGunner::OnAttackHit()
 		FRotator ComposeRotator = UKismetMathLibrary::ComposeRotators(Camera->GetComponentRotation(), CrossHairRotator);
 		//더한 회전값의 앞쪽 방향의 벡터를 구해준다.
 		FVector Dir = UKismetMathLibrary::Conv_RotatorToVector(ComposeRotator);
-		
+
 		//라인트레이스 끝 위치를 시작위치에서 앞에서 계산해준 방향쪽으로 9000.0f 만큼 곱한 곳으로 정한다.
 		FVector TraceEnd = TraceStart + (Dir*9000.0f);
 
@@ -174,7 +168,7 @@ void AGunner::OnAttackHit()
 			ObjectTypes,
 			false,
 			IgnoreActors,
-			EDrawDebugTrace::None,
+			EDrawDebugTrace::ForDuration,
 			HitResult,
 			true);
 
@@ -202,7 +196,7 @@ void AGunner::OnAttackHit()
 				ObjectTypes,
 				false,
 				IgnoreActors,
-				EDrawDebugTrace::None,
+				EDrawDebugTrace::ForDuration,
 				HitResult,
 				true);
 		}
@@ -226,7 +220,7 @@ void AGunner::OnAttackHit()
 			ObjectTypes,
 			false,
 			IgnoreActors,
-			EDrawDebugTrace::None,
+			EDrawDebugTrace::ForDuration,
 			HitResult,
 			true);
 	}
@@ -253,7 +247,7 @@ void AGunner::OnAttackHit()
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffectWorld, HitResult.ImpactPoint);
 		}
 	}
-	
+
 	//카메라를 흔들어준다.
 	UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->PlayCameraShake(UGunnerCameraShake::StaticClass());
 }

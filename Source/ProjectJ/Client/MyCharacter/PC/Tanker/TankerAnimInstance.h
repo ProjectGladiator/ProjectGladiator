@@ -28,7 +28,7 @@ private:
 public:
 	virtual void PlayClickedReactionMontage() override;
 	virtual void PlayLevelStartMontage() override;
-	virtual void PlayAttackMontage() override;
+	virtual void PlayAttackMontage(float _RateScale) override;
 	virtual void PlayRightClickAbilityMontage() override;
 	virtual void PlayStopRightClickAbilityMontage() override;
 	virtual void JumpAttackMontageSection(int32 NewSection) override;

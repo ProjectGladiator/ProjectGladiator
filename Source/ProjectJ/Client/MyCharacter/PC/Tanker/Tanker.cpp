@@ -11,7 +11,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 #include "GameFramework/CharacterMovementComponent.h" //캐릭터 속력 관련 헤더파일
-#include "Client/MainMap/MainMapPlayerController.h"
+#include "Client/MainMap/MainMapPlayerController.h"//메인맵 플레이어 컨트롤러 헤더
 //서버 헤더
 
 ATanker::ATanker()
@@ -54,6 +54,8 @@ void ATanker::BeginPlay()
 {
 	Super::BeginPlay();
 
+	AttackSpeed = 1.0f;
+
 	MyAnimInstance = Cast<UTankerAnimInstance>(GetMesh()->GetAnimInstance());
 
 	if (MyAnimInstance)
@@ -80,13 +82,13 @@ void ATanker::Tick(float DeltaTime)
 	//GLog->Log(FString::Printf(TEXT("IsRightClick :%d \n IsAttack : %d"), IsRightClick,IsAttack));
 }
 
-void ATanker::LeftClick()
+void ATanker::LeftClickOn()
 {
-	Super::LeftClick();
+	Super::LeftClickOn();
 
 	if (MainMapPlayerController)
 	{
-		if (!IsRightClick && !MainMapPlayerController->bShowMouseCursor)
+		if (!IsRightClick && !MainMapPlayerController->bShowMouseCursor) // 오른쪽 클릭 상태가 아니고 커서가 보이지 않는 상황이면
 		{
 			if (IsAttack)
 			{
@@ -99,7 +101,7 @@ void ATanker::LeftClick()
 
 				if (MyAnimInstance)
 				{
-					MyAnimInstance->PlayAttackMontage();
+					MyAnimInstance->PlayAttackMontage(AttackSpeed);
 					CurrentCombo += 1;
 					MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
 				}
@@ -145,7 +147,6 @@ void ATanker::OnComboMontageSave()
 		IsCombo = false;
 		if (MyAnimInstance)
 		{
-			//MyAnimInstance->PlayAttackMontage();
 			CurrentCombo += 1;
 			MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
 		}

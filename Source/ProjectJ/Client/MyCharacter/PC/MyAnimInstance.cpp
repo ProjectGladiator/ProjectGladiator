@@ -57,7 +57,7 @@ void UMyAnimInstance::PlayLevelStartMontage()
 	//캐릭터 선택창에서 슬롯 선택시 출력해줄 애니메이션 자식 함수에서 따로 구현
 }
 
-void UMyAnimInstance::PlayAttackMontage()
+void UMyAnimInstance::PlayAttackMontage(float _RateScale)
 {
 	//공격 애니메이션 실행 자식 함수에서 따로 구현
 }

@@ -134,7 +134,7 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 
 				if (OtherCharacter)
 				{
-					OtherCharacter->LeftClick();
+					OtherCharacter->LeftClickOn();
 				}
 			}
 			break;

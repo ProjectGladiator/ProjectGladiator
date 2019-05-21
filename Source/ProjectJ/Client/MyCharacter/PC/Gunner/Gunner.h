@@ -20,17 +20,21 @@ private:
 		class UParticleSystem* HitEffectWorld;
 	UPROPERTY()
 		float CrossHairSpread;
+	UPROPERTY()
+		FTimerHandle RepeatShootTimer;
+	UPROPERTY()
+		bool IsRepeatShoot;
 public:
 	AGunner(); //생성자
 	
 	virtual void BeginPlay() override;
-	virtual void Tick(float DeltaTime) override;
 	virtual void ClickedReactionMontagePlay() override;	//캐릭터 생성창에서 선택시 실행할 애니메이션 함수
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION()
-		virtual void LeftClick() override; // 마우스 왼쪽 클릭시 호출해줄 함수 ( 기본 공격 애니메이션 출력 )
+		virtual void LeftClickOn() override; // 마우스 왼쪽 클릭시 호출해줄 함수 ( 기본 공격 애니메이션 출력 )
 	UFUNCTION()
-		virtual void OnComboMontageSave() override; //콤보 공격 실행 함수
+		virtual void LeftClickOff() override;
 	UFUNCTION()
 		virtual void OnAttackHit() override;
 

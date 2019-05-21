@@ -38,11 +38,6 @@ UGunnerAnimInstance::UGunnerAnimInstance()
 	}
 }
 
-void UGunnerAnimInstance::AnimNotify_SaveAttack(UAnimNotify * Notify)
-{
-	OnComboSave.Broadcast(); //OnComboSave 델리게이트에 연결된 모든 함수를 호출한다.
-}
-
 void UGunnerAnimInstance::AnimNotify_ResetCombo(UAnimNotify * Notify)
 {
 
@@ -88,13 +83,13 @@ void UGunnerAnimInstance::PlayLevelStartMontage()
 	}
 }
 
-void UGunnerAnimInstance::PlayAttackMontage()
+void UGunnerAnimInstance::PlayAttackMontage(float _RateScale)
 {
 	if (AttackMontage) //공격 애니메이션 몽타주가 있는지 확인하고
 	{
 		if (!Montage_IsPlaying(AttackMontage)) //현재 플레이 중이 아니면
 		{
-			Montage_Play(AttackMontage, 1.0f); //몽타주를 실행한다.
+			Montage_Play(AttackMontage, _RateScale); //몽타주를 실행한다.
 		}
 	}
 	else

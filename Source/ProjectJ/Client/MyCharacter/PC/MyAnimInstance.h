@@ -50,7 +50,7 @@ public:
 	
 	virtual void PlayLevelStartMontage(); //캐릭터 선택창 슬롯 선택 애니메이션 실행
 	
-	virtual void PlayAttackMontage(); //공격 애니메이션 실행
+	virtual void PlayAttackMontage(float _RateScale); //공격 애니메이션 실행
 	
 	virtual void PlayRightClickAbilityMontage();
 	virtual void PlayStopRightClickAbilityMontage();

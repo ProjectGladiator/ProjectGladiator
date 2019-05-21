@@ -7,6 +7,8 @@
 #include "Animation/AnimBlueprint.h" //애니메이션블루프린트 헤더
 #include "WarriorAnimInstance.h" //전사 애님 인스턴스 헤더
 #include "Kismet/KismetSystemLibrary.h"  //라인 트레이스 헤더 관련 헤더
+#include "Client/MainMap/MainMapPlayerController.h" //메인맵 플레이어 컨트롤러 헤더
+
 //서버 헤더
 
 AWarrior::AWarrior()
@@ -45,6 +47,8 @@ void AWarrior::BeginPlay()
 {
 	Super::BeginPlay();
 
+	AttackSpeed = 1.0f;
+
 	MyAnimInstance = Cast<UWarriorAnimInstance>(GetMesh()->GetAnimInstance());
 
 	if (MyAnimInstance)
@@ -63,22 +67,30 @@ void AWarrior::ClickedReactionMontagePlay()
 	}	
 }
 
-void AWarrior::LeftClick()
+void AWarrior::LeftClickOn()
 {
-	if (IsAttack)
+	Super::LeftClickOn();
+
+	if (MainMapPlayerController)
 	{
-		IsCombo = true;
-	}
-	else
-	{
-		GLog->Log(FString::Printf(TEXT("전사 상태에서 왼쪽 클릭")));
-		IsAttack = true;
-		
-		if (MyAnimInstance)
+		if (!MainMapPlayerController->bShowMouseCursor)
 		{
-			MyAnimInstance->PlayAttackMontage();
-			CurrentCombo += 1;
-			MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
+			if (IsAttack)
+			{
+				IsCombo = true;
+			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("전사 상태에서 왼쪽 클릭")));
+				IsAttack = true;
+
+				if (MyAnimInstance)
+				{
+					MyAnimInstance->PlayAttackMontage(AttackSpeed);
+					CurrentCombo += 1;
+					MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
+				}
+			}
 		}
 	}
 }
@@ -96,7 +108,6 @@ void AWarrior::OnComboMontageSave()
 		IsCombo = false;
 		if (MyAnimInstance)
 		{
-			MyAnimInstance->PlayAttackMontage();
 			CurrentCombo += 1;
 			MyAnimInstance->JumpAttackMontageSection(CurrentCombo);
 		}
