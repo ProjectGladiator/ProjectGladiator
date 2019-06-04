@@ -1761,14 +1761,24 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 				break;
 			}
 			break;
-		case PROTOCOL_INGAME_ANIMATION: // 프로토콜 중간틀 애니메이션 관련 이면
-			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_ANIMATION_COMPART;
+		case PROTOCOL_INGMAE_MONSTER: 	// 프로토콜 중간틀 몬스터 관련 이면
+			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_MONSTER_COMPART;
 			switch (tempprotocol)
 			{
-			case PROTOCOL_CHARACER_ANIMATION: // 캐릭터 애니메이션
+			case PROTOCOL_MONSTER_MOVE_RESULT: // 몬스터 이동 정보
+			{
+				// 몬스터 이동정보 옴
+				InGame_Recv_Monster_MoveInfo(buf);
+				result = RT_INGAME_MONSTER_MOVE_INFO_RESULT;
 				break;
-			case PROTOCOL_MONSTER_ANIMATION: // 몬스터 애니메이션
+			}
+			case PROTOCOL_MONSTER_INFO: // 몬스터 정보
+			{
+				// 몬스터 정보 옴
+				InGame_Recv_Stage_MonsterInfo(buf);
+				result = RT_INGAME_MONSTER_INFO_RESULT;
 				break;
+			}
 			default:
 				break;
 			}
@@ -1915,28 +1925,7 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 				break;
 			}
 			break;
-		case PROTOCOL_INGMAE_MONSTER: 	// 프로토콜 중간틀 몬스터 관련 이면
-			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_MONSTER_COMPART;
-			switch (tempprotocol)
-			{
-			case PROTOCOL_MONSTER_MOVE_RESULT: // 몬스터 이동 정보
-			{
-				// 몬스터 이동정보 옴
-				InGame_Recv_Monster_MoveInfo(buf);
-				result = RT_INGAME_MONSTER_MOVE_INFO_RESULT;
-				break;
-			}
-			case PROTOCOL_MONSTER_INFO: // 몬스터 정보
-			{
-				// 몬스터 정보 옴
-				InGame_Recv_Stage_MonsterInfo(buf);
-				result = RT_INGAME_MONSTER_INFO_RESULT;
-				break;
-			}
-			default:
-				break;
-			}
-			break;
+
 		case PROTOCOL_INGMAE_MENU:		// 프로토콜 중간틀 매뉴 관련 이면
 			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_MENU_COMPART;
 			switch (tempprotocol)
@@ -1952,11 +1941,23 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 				result = RT_INGAME_MENU_LOGOUT;
 				break;
 			}
-			case PROTOCOL_MENU_RESULT_EXIT:  // 게임종료결과
-			{
-				// 아직 안만듬
+			//case PROTOCOL_MENU_RESULT_EXIT:  // 게임종료결과
+			//{
+			//	// 아직 안만듬
+			//	break;
+			//}
+			default:
 				break;
 			}
+			break;
+		case PROTOCOL_INGAME_ANIMATION: // 프로토콜 중간틀 애니메이션 관련 이면
+			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_ANIMATION_COMPART;
+			switch (tempprotocol)
+			{
+			case PROTOCOL_CHARACER_ANIMATION: // 캐릭터 애니메이션
+				break;
+			case PROTOCOL_MONSTER_ANIMATION: // 몬스터 애니메이션
+				break;
 			default:
 				break;
 			}
