@@ -155,7 +155,7 @@ void InGameManager::InGame_Character_Attack(int _attacknum)
 }
 
 // 공격했는데 몬스터랑 피격판정난것같다.몬스터코드,몬스터번호
-void InGameManager::InGame_Character_Attack_Success(int _monstercode, int _monsternum, int _attacknum)
+void InGameManager::InGame_Character_Attack_Success(int _monstercode, int _monsternum, int _attacknum, float _x, float _y, float _z)
 {
 	UINT64 protocol = 0;
 	char buf[BUFSIZE];
@@ -175,6 +175,18 @@ void InGameManager::InGame_Character_Attack_Success(int _monstercode, int _monst
 	memcpy(ptr, &_attacknum, sizeof(int));
 	datasize += sizeof(int);
 	ptr += sizeof(int);
+	// x
+	memcpy(ptr, &_x, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+	// y
+	memcpy(ptr, &_y, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+	// z
+	memcpy(ptr, &_z, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
 
 	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_CHARACER, PROTOCOL_INGAME_ATTACK_SUCCESS);
 
@@ -1532,7 +1544,192 @@ void InGameManager::InGame_Recv_Monster_MoveInfo(char * _buf)
 	ptr_data += sizeof(float) * 3;
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_MOVE_INFO, data, size);
+}
 
+// 몬스터 피경정보
+void InGameManager::InGame_Recv_Monster_Attack(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(data));
+	char* ptr_data = data;
+	int size = 0;
+
+	bool result = false;
+	int code = 0;
+	int num = 0;
+	int damage = 0;
+
+	// 피격 결과
+	memcpy(&result, ptr_buf, sizeof(bool));
+	ptr_buf += sizeof(bool);
+
+	if (result)
+	{		
+		// 몬스터 코드
+		memcpy(&code, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		memcpy(ptr_data, &code, sizeof(int));
+		ptr_data += sizeof(int);
+		size += sizeof(int);
+
+		// 몬스터 번호
+		memcpy(&num, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		memcpy(ptr_data, &num, sizeof(int));
+		ptr_data += sizeof(int);
+		size += sizeof(int);
+
+		// 데미지
+		memcpy(&damage, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		memcpy(ptr_data, &damage, sizeof(int));
+		ptr_data += sizeof(int);
+		size += sizeof(int);
+
+		StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_ATTACK_SUCCESS, data, size);
+	}
+	else
+	{
+		StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_ATTACK_FAIL, data, size);
+	}
+}
+
+// 몬스터 처치정보
+void InGameManager::InGame_Recv_Monster_Die(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(data));
+	char* ptr_data = data;
+	int size = 0;
+
+	bool result = false;
+	bool check = false;
+	int code = 0;
+	int num = 0;
+	int damage = 0;
+
+	// 피격 결과
+	memcpy(&result, ptr_buf, sizeof(bool));
+	ptr_buf += sizeof(bool);
+	memcpy(ptr_data, &result, sizeof(bool));
+	ptr_data += sizeof(bool);
+	size += sizeof(bool);
+
+	if (result)
+	{
+		// 몬스터 코드
+		memcpy(&code, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		size += sizeof(int);
+		memcpy(ptr_data, &code, sizeof(int));
+		ptr_data += sizeof(int);
+
+		// 몬스터 번호
+		memcpy(&num, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		size += sizeof(int);
+		memcpy(ptr_data, &num, sizeof(int));
+		ptr_data += sizeof(int);
+
+		// 데미지
+		memcpy(&damage, ptr_buf, sizeof(int));
+		ptr_buf += sizeof(int);
+		size += sizeof(int);
+		memcpy(ptr_data, &damage, sizeof(int));
+		ptr_data += sizeof(int);
+
+		// 사망했는지
+		memcpy(&check, ptr_buf, sizeof(bool));
+		ptr_buf += sizeof(bool);
+
+		StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_ATTACK_DIE, data, size);
+	}
+}
+
+// 다른 유저 몬스터 피격정보
+void InGameManager::InGame_Recv_OtherMonster_Attack(char * _buf)
+{
+	int count = 0;
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(data));
+	char* ptr_data = data;
+	int size = 0;
+
+	int code = 0;
+	int num = 0;
+	int damage = 0;
+
+	// 몬스터 코드
+	memcpy(&code, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &code, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 몬스터 번호
+	memcpy(&num, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &num, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 데미지
+	memcpy(&damage, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &damage, sizeof(int));
+	ptr_data += sizeof(int);
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK, data, size);
+}
+
+// 다른 유저 몬스터 처치정보
+void InGameManager::InGame_Recv_OtherMonster_Die(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(data));
+	char* ptr_data = data;
+	int size = 0;
+
+	bool check = false;
+	int code = 0;
+	int num = 0;
+	int damage = 0;
+
+	// 몬스터 코드
+	memcpy(&code, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &code, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 몬스터 번호
+	memcpy(&num, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &num, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 데미지
+	memcpy(&damage, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	size += sizeof(int);
+	memcpy(ptr_data, &damage, sizeof(int));
+	ptr_data += sizeof(int);
+
+	// 사망했는지
+	memcpy(&check, ptr_buf, sizeof(bool));
+	ptr_buf += sizeof(bool);
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK_DIE, data, size);
 }
 
 // 파티 초대 요청
@@ -1749,14 +1946,7 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 				InGame_Recv_OtherUser_Attack(buf);
 				result = RT_INGAME_OTHERPLAYER_INFO;
 				break;
-			case PROTOCOL_INGAME_ATTACK_RESULT: // 공격 실패 성공 여부
-				/*InGame_Recv_OtherUser_End_Jump(buf);
-				result = RT_INGAME_OTHERPLAYER_INFO;*/
-				break;
-			case PROTOCOL_INGAME_OTHERPLAYER_ATTACK_SUCCESS: // 다른 유저가 공격성공했다
-				/*InGame_Recv_OtherUser_End_Jump(buf);
-				result = RT_INGAME_OTHERPLAYER_INFO;*/
-				break;
+
 			default:
 				break;
 			}
@@ -1779,6 +1969,22 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 				result = RT_INGAME_MONSTER_INFO_RESULT;
 				break;
 			}
+			case PROTOCOL_INGAME_ATTACK_RESULT: //유저 공격 결과(몬스터가데미지만받음 or 공격안받음)
+				InGame_Recv_Monster_Attack(buf);
+				result = RT_INGAME_OTHERPLAYER_INFO;
+				break;
+			case PROTOCOL_INGAME_OTHERPLAYER_ATTACK_SUCCESS: // 다른 유저 공격성공했다(몬스터가데미지만받음)
+				InGame_Recv_OtherMonster_Attack(buf);
+				result = RT_INGAME_OTHERPLAYER_INFO;
+				break;
+			case PROTOCOL_INGAME_ATTACK_RESULT_MONSTER_DIE: // 유저 공격 결과(몬스터가죽음)
+				InGame_Recv_Monster_Die(buf);
+				result = RT_INGAME_OTHERPLAYER_INFO;
+				break;
+			case PROTOCOL_INGAME_OTHERPLAYER_ATTACK_MONSTER_DIE: // 다른 유저 공격성공했다(몬스터가죽음)
+				InGame_Recv_OtherMonster_Die(buf);
+				result = RT_INGAME_OTHERPLAYER_INFO;
+				break;
 			default:
 				break;
 			}

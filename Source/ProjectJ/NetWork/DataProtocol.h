@@ -54,7 +54,12 @@ namespace DataProtocol {
 		PGAMEDATA_STAGE_MONSTER_TPYES_COUNT,			// 스테이지 몬스터 종류의 갯수가 몇개인지 - ([int] 몬스터 종류가 몇마리인지)
 		PGAMEDATA_STAGE_MONSTER_SPAWN_TIME,				// 스테이지 몬스터 스폰 시간 - ([int] 몬스터 스폰시간)
 		PGAMEDATA_STAGE_MONSTER_INFO,					// 스테이지 몬스터 정보 - ([int] 몬스터코드,[int] 몬스터숫자, [float*3] 좌표)
-		PGAMEDATA_MONSTER_MOVE_INFO						// 몬스터 이동정보 - ([int] 몬스터코드, [int] 몬스터숫자, [float*3] 좌표)
+		PGAMEDATA_MONSTER_MOVE_INFO,					// 몬스터 이동정보 - ([int] 몬스터코드, [int] 몬스터숫자, [float*3] 좌표)
+		PGAMEDATA_MONSTER_ATTACK_SUCCESS,				// 몬스터 공격받음(공격성공 살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
+		PGAMEDATA_MONSTER_ATTACK_FAIL,					// 몬스터 공격받음(공격실패) - (프로토콜만)
+		PGAMEDATA_MONSTER_ATTACK_DIE,					// 몬스터 공격받음(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
+		PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK,			// 다른 유저가 몬스터 공격함(살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
+		PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK_DIE		// 다른 유저가 몬스터 공격함(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
 	};
 	// 공통 프로토콜
 	enum PGLOBAL {

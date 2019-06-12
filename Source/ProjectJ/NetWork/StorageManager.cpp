@@ -508,6 +508,21 @@ void StorageManager::ChangeData(void * data, char * _code, int _attacknum)
 	ptr += sizeof(int);
 }
 
+// 몬스터 피격정보
+void StorageManager::ChangeData(void * data, int & _monstercode, int & _monsternum, int & _damage)
+{
+	char* ptr = (char*)data;
+
+	memcpy(&_monstercode, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&_monsternum, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&_damage, ptr, sizeof(int));
+	ptr += sizeof(int);
+}
+
 // Front 삭제
 bool StorageManager::PopData()
 {	

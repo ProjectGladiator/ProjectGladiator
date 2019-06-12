@@ -94,6 +94,8 @@ public:
 	void ChangeData(void* data, int& _code, int& _count, float& _pos_x, float& _pos_y, float& _pos_z);
 	// 공격정보 (코드,공격번호)
 	void ChangeData(void* data, char* _code, int _attacknum);
+	// 몬스터 피격정보
+	void ChangeData(void* data, int& _monstercode, int& _monsternum, int& _damage);
 
 	bool PopData();
 };

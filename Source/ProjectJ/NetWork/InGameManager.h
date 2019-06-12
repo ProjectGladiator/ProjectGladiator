@@ -77,6 +77,14 @@ private:
 	void InGame_Recv_Stage_MonsterInfo(char* _buf);
 	// 몬스터 이동정보
 	void InGame_Recv_Monster_MoveInfo(char* _buf);
+	// 몬스터 피경정보
+	void InGame_Recv_Monster_Attack(char* _buf);
+	// 몬스터 처치정보
+	void InGame_Recv_Monster_Die(char* _buf);
+	// 다른 유저 몬스터 피격정보
+	void InGame_Recv_OtherMonster_Attack(char* _buf);
+	// 다른 유저 몬스터 처치정보
+	void InGame_Recv_OtherMonster_Die(char* _buf);
 
 public:
 	static void CreateInstance();
@@ -99,8 +107,8 @@ public:
 	//void InGame_Character_End_Jump();
 	// 공격 하겠다고 알림(무슨 공격했는지)
 	void InGame_Character_Attack(int _attacknum);
-	// 공격했는데 몬스터랑 피격판정난것같다.몬스터코드,몬스터번호
-	void InGame_Character_Attack_Success(int _monstercode, int _monsternum, int _attacknum);
+	// 공격했는데 몬스터랑 피격판정난것같다.몬스터코드,몬스터번호,공격번호,방향벡터
+	void InGame_Character_Attack_Success(int _monstercode, int _monsternum, int _attacknum, float _x, float _y, float _z);
 
 	/*--채널--*/
 	// 채널 정보 요청
