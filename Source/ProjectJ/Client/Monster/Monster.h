@@ -71,6 +71,7 @@ public:
 	
 	//Set Monster value initialize
 	virtual void init();
+	virtual void Firstinit(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum);
 	UFUNCTION()
 	float GetHP();
 
