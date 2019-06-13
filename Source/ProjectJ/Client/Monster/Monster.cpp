@@ -80,7 +80,7 @@ void AMonster::Death()
 
 	for (int i_Num = 0; i_Num < TempArray.Num(); i_Num++)
 	{
-		if (TempArray[i_Num].MonsterCode == m_MonsterCode && TempArray[i_Num].MonsterNum == m_MonsterNum)
+		if (TempArray[i_Num].MonsterCode == _MonsterCode && TempArray[i_Num].MonsterNum == m_MonsterNum)
 		{
 			TempArray.RemoveAt(i_Num);
 			//TempArray.Sort();
@@ -136,7 +136,7 @@ float AMonster::GetHP()
 
 MONSTER_CODE AMonster::SetMonsterCode(MONSTER_CODE _MonsterCode)
 {
-	return m_MonsterCode = _MonsterCode;
+	return _MonsterCode = _MonsterCode;
 }
 
 int AMonster::SetMonsterNum(int _MonsterNum)
@@ -197,4 +197,14 @@ void AMonster::FirstTarget()
 void AMonster::S2C_LocationUpdate(const FVector& _NewLocation)
 {
 	CurrentLocation = _NewLocation;
+}
+
+MONSTER_CODE AMonster::GetMonsterCode()
+{
+	return _MonsterCode;
+}
+
+int AMonster::GetMonsterNum()
+{
+	return m_MonsterNum;
 }

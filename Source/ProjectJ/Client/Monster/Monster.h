@@ -16,7 +16,7 @@ public:
 	AMonster();
 protected:
 	//나 자신의 몬스터 코드
-		MONSTER_CODE m_MonsterCode;
+		MONSTER_CODE _MonsterCode;
 	//나의 몬스터 번호
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MonsterCode)
 		int m_MonsterNum;
@@ -87,6 +87,9 @@ public:
 	void FirstTarget();
 
 	void S2C_LocationUpdate(const FVector& _NewLocation);
+
+	MONSTER_CODE GetMonsterCode();
+	int GetMonsterNum();
 };
 USTRUCT()
 struct FActiveMonsterInfo
