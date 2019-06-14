@@ -16,7 +16,7 @@ public:
 	AMonster();
 protected:
 	//나 자신의 몬스터 코드
-		MONSTER_CODE _MonsterCode;
+		MONSTER_CODE m_MonsterCode;
 	//나의 몬스터 번호
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MonsterCode)
 		int m_MonsterNum;
