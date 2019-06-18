@@ -97,4 +97,6 @@ public:
 	UStageManager* GetStageManager();
 
 	void Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>, MONSTER_CODE, int, FVector);
+
+	AMainMapPlayerController* GetMainMapPlayerController();
 };

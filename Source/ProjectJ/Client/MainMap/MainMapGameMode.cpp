@@ -1134,3 +1134,15 @@ void AMainMapGameMode::Get_MonsterPosition(TMap<MONSTER_CODE, FMonsterstruct>_Mo
 		//UE_LOG(LogTemp, Warning, TEXT("Gap MonsterPosition X: %d, Y: %d, Z: %d"), TempbeforeMonsterPosition.X - TempAfterMonsterPosition.X, TempbeforeMonsterPosition.Y - TempAfterMonsterPosition.Y, TempbeforeMonsterPosition.Z - TempAfterMonsterPosition.Z);
 	}
 }
+
+AMainMapPlayerController * AMainMapGameMode::GetMainMapPlayerController()
+{
+	if (MainMapPlayerController)
+	{
+		return MainMapPlayerController;
+	}
+	else
+	{
+		return nullptr;
+	}
+}

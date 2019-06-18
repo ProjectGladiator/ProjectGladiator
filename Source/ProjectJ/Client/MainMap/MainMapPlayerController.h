@@ -70,7 +70,9 @@ public:
 
 	void C2S_ReqJump();
 
-	void C2S_ReqAttack();
+	void C2S_ReqAttack(int _Attacknum);
+	
+	void C2S_HitInfo(int _MonsterCode,int _MonsterNum, int _AttackNum, float _X , float _Y, float _Z);
 
 	UFUNCTION()
 		virtual void Possess(APawn* InPawn) override;
