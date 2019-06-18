@@ -31,6 +31,7 @@
 #include "Client/MyCharacter/PC/Widget/Chatting/ChattingWidget.h"
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 #include "Client/MainMap/Manager/StageManager.h"
+
 //#include "Client/State/ClientState/Character/ClientCharacterInGameState.h"
 
 //서버 헤더
@@ -147,7 +148,7 @@ void AMyCharacter::Tick(float DeltaTime)
 		if (FMath::Abs(GetActorLocation().X - GoalLocation.X) <= 40.0f &&
 			FMath::Abs(GetActorLocation().Y - GoalLocation.Y) <= 40.0f)
 		{
-			GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
+			//GLog->Log(FString::Printf(TEXT("목표 위치에 도착")));
 			if (GetWorld()->GetTimerManager().IsTimerActive(S2C_MoveTimer))
 			{
 				GetWorld()->GetTimerManager().ClearTimer(S2C_MoveTimer);
@@ -191,6 +192,8 @@ void AMyCharacter::MoveForward(float Value)
 {
 	if (ClientCharacterState)
 	{
+		//앞뒤로 움직일때
+		PlayerMessageQue.InQueue(PlayerMessage::PLAYER_UP_MOVE);
 		ClientCharacterState->MoveForward(Value);
 	}
 }
@@ -199,6 +202,7 @@ void AMyCharacter::MoveRight(float Value)
 {
 	if (ClientCharacterState)
 	{
+		//양옆으로 움직일때
 		ClientCharacterState->MoveRight(Value);
 	}
 }
@@ -222,7 +226,7 @@ void AMyCharacter::MoveImplementation()
 
 void AMyCharacter::MoveUpdateTimerKill()
 {
-	GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 킬")));
+	//GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 킬")));
 	GetWorld()->GetTimerManager().ClearTimer(C2S_MoveUpdateTimer);
 }
 
@@ -354,7 +358,7 @@ void AMyCharacter::LeftClickOn()
 	{
 		if (IsClick) // 현재 캐릭터 생성창인지 확인해주는 변수
 		{
-			MainMapPlayerController->C2S_ReqAttack();
+			MainMapPlayerController->C2S_ReqAttack(1);
 			if (ClientCharacterState)
 			{
 				ClientCharacterState->Click(MainMapPlayerController);
@@ -426,7 +430,7 @@ void AMyCharacter::C2S_MoveConfirm()
 {
 	FVector Location = GetActorLocation();
 
-	GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.1s")));
+	//GLog->Log(FString::Printf(TEXT("C2S_MoveConfirm 함수 호출 0.1s")));
 
 	MainMapPlayerController->C2S_MoveConfirm(Location);
 }
@@ -441,7 +445,6 @@ void AMyCharacter::S2C_MoveUpdate()
 	//GLog->Log(FString::Printf(TEXT("%d"), GoalDistance));
 
 	AddMovementInput(GoalDirection, 1.0f);
-
 }
 
 //서버에서 받아온 위치와 회전값을 클라이언트에 필요한 내용으로 바꿔주는 함수

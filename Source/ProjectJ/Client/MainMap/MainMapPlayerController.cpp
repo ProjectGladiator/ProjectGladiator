@@ -226,10 +226,16 @@ void AMainMapPlayerController::C2S_ReqJump()
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
-void AMainMapPlayerController::C2S_ReqAttack()
+void AMainMapPlayerController::C2S_ReqAttack(int _Attacknum)
 {
-	//InGameManager::GetInstance()->InGame_Character_Attack();
-	//NetworkClient_main::NetworkManager::GetInstance()->Send();
+	InGameManager::GetInstance()->InGame_Character_Attack(_Attacknum);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
+void AMainMapPlayerController::C2S_HitInfo(int _MonsterCode, int _MonsterNum, int _AttackNum, float _X, float _Y, float _Z)
+{
+	InGameManager::GetInstance()->InGame_Character_Attack_Success(_MonsterCode, _MonsterNum, _AttackNum, _X, _Y, _Z);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
 void AMainMapPlayerController::Possess(APawn * InPawn)
