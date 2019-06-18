@@ -154,12 +154,12 @@ float AWorm::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 
 	CurrentHP -= DamageAmount;
 
-	if (CurrentHP <= 0)
+	/*if (CurrentHP <= 0)
 	{
 		SetActorEnableCollision(false);
 		CurrentHP = 0;
 		CurrentState = EWormState::Death;
 		WormAnimInstance->PlayAttackMontage(0);
-	}
+	}*/
 	return DamageAmount;
 }

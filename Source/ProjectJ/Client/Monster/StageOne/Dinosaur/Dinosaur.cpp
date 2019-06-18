@@ -186,12 +186,12 @@ float ADinosaur::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent
 {
 	CurrentHP -= DamageAmount;
 
-	if (CurrentHP <= 0)
+	/*if (CurrentHP <= 0)
 	{
 		GetCapsuleComponent()->SetCollisionProfileName("OverlapOnlyPawn");
 		CurrentHP = 0;
 		CurrentState = EDinosaurState::Death;
-	}
+	}*/
 
 	return DamageAmount;
 }

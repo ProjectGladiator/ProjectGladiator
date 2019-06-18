@@ -204,11 +204,11 @@ float ASpiderBoss::TakeDamage(float DamageAmount, FDamageEvent const & DamageEve
 
 	CurrentHP -= DamageAmount;
 
-	if (CurrentHP <= 0)
+	/*if (CurrentHP <= 0)
 	{
 		SetActorEnableCollision(false);
 		CurrentHP = 0;
 		CurrentState = ESpiderBossState::Death;
-	}
+	}*/
 	return DamageAmount;
 }

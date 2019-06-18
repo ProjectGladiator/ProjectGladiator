@@ -99,7 +99,13 @@ void AMonster::BeginPlay()
 void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+
+	//PGAMEDATA_MONSTER_ATTACK_SUCCESS,				// 몬스터 공격받음(공격성공 살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
 	
+	//	PGAMEDATA_MONSTER_ATTACK_FAIL,					// 몬스터 공격받음(공격실패) - (프로토콜만)
+	//	PGAMEDATA_MONSTER_ATTACK_DIE,					// 몬스터 공격받음(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
+
 	FVector UpdateLocation = FMath::VInterpTo(GetActorLocation(), CurrentLocation, DeltaTime, 1.0f);
 
 	GLog->Log(FString::Printf(TEXT("AMonster Tick GetActorLocation X : %f Y : %f Z : %f\n"), GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z));
@@ -140,6 +146,11 @@ void AMonster::Firstinit(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
 float AMonster::GetHP()
 {
 	return CurrentHP;
+}
+
+void AMonster::SetHP(float _currentHP)
+{
+	CurrentHP = _currentHP;
 }
 
 MONSTER_CODE AMonster::SetMonsterCode(MONSTER_CODE _MonsterCode)

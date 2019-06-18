@@ -11,6 +11,7 @@
 UCLASS()
 class PROJECTJ_API AMonster : public ACharacter
 {
+	friend class AObjectPool;
 	GENERATED_BODY()
 public:
 	AMonster();
@@ -72,8 +73,11 @@ public:
 	//Set Monster value initialize
 	virtual void init();
 	virtual void Firstinit(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum);
+
 	UFUNCTION()
 	float GetHP();
+	UFUNCTION()
+	void SetHP(float _currentHP);
 
 	int SetMonsterNum(int);
 
@@ -92,6 +96,7 @@ public:
 	MONSTER_CODE GetMonsterCode();
 	int GetMonsterNum();
 };
+
 USTRUCT()
 struct FActiveMonsterInfo
 {

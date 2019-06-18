@@ -226,12 +226,12 @@ float ABear::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AC
 
 	CurrentHP -= DamageAmount;
 
-	if (CurrentHP <= 0)
-	{
-		SetActorEnableCollision(false);
-		CurrentHP = 0;
-		CurrentState = EBearState::Death;
-	}
+	//if (CurrentHP <= 0)
+	//{
+	//	SetActorEnableCollision(false);
+	//	CurrentHP = 0;
+	//	CurrentState = EBearState::Death;
+	//}
 
 	return DamageAmount;
 }

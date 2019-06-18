@@ -246,12 +246,12 @@ float ASpider::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, 
 
 	CurrentHP -= DamageAmount;
 
-	if (CurrentHP <= 0)
+	/*if (CurrentHP <= 0)
 	{
 		SetActorEnableCollision(false);
 		CurrentHP = 0;
 		CurrentState = ESpiderState::Death;
-	}
+	}*/
 
 	return DamageAmount;
 }
