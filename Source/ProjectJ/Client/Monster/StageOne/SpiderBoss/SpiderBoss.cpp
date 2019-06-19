@@ -195,7 +195,8 @@ void ASpiderBoss::OnMonsterAttackEnded()
 void ASpiderBoss::Death()
 {
 	GLog->Log(FString::Printf(TEXT("거미 보스 사망")));
-	DeathFlag = true;
+	Super::Death();
+	CurrentState = ESpiderBossState::Death;
 }
 
 float ASpiderBoss::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)

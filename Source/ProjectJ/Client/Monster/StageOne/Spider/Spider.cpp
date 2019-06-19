@@ -219,7 +219,8 @@ void ASpider::OnMonsterAttackChanged()
 
 void ASpider::Death()
 {
-	DeathFlag = true;
+	Super::Death();
+	CurrentState = ESpiderState::Death;
 }
 
 void ASpider::RandomAttack()

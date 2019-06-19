@@ -179,7 +179,8 @@ void ADinosaur::AttackHit()
 
 void ADinosaur::Death()
 {
-	DeathFlag = true;
+	Super::Death();
+	CurrentState = EDinosaurState::Death;
 }
 
 float ADinosaur::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)

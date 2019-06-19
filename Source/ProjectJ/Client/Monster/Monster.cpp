@@ -75,9 +75,12 @@ void AMonster::OnMonsterAttackChanged()
 
 void AMonster::Death()
 {
+	//옵젝풀 선언
 	AObjectPool ObjectPool;
+	//임시 활성화 몬스터 배열 생성
 	TArray<FActiveMonsterInfo> TempArray = ObjectPool.Get_ActiveMonster_Array();
 
+	//사망처리 몬스터 배열에서 찾아 빼주는 작업
 	for (int i_Num = 0; i_Num < TempArray.Num(); i_Num++)
 	{
 		if (TempArray[i_Num].MonsterCode == m_MonsterCode && TempArray[i_Num].MonsterNum == m_MonsterNum)
@@ -86,6 +89,8 @@ void AMonster::Death()
 			//TempArray.Sort();
 		}
 	}
+	//사망표식
+	DeathFlag = true;
 }
 
 // Called when the game starts or when spawned

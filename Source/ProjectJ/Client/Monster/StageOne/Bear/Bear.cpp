@@ -80,7 +80,10 @@ void ABear::Tick(float DeltaTime)
 	if (Target)
 	{
 		float Distance = AIManager->DistanceCalculate(this, Target);
-	
+		if (DeathFlag == true)
+		{
+			CurrentState = EBearState::Death;
+		}
 		switch (CurrentState)
 		{
 		case EBearState::Ready:
@@ -155,7 +158,7 @@ void ABear::Tick(float DeltaTime)
 				//We Not Use Destroy Function
 				//Destroy();
 				bisActive = false;
-				
+				GLog->Log(FString::Printf(TEXT("몬스터 사망")));
 				//Monster_SetActive(this, bisActive);
 				CurrentState = EBearState::Ready;
 				//DeathFlag = true;
@@ -217,14 +220,17 @@ void ABear::OnComboSave()
 
 void ABear::Death()
 {
-	DeathFlag = true;
+	//부모의 Death를 따라감
+	Super::Death();
+	//Death 상태로 변경 CurrentState 변경
+	CurrentState = EBearState::Death;
 }
 
 float ABear::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	CurrentHP -= DamageAmount;
+	//CurrentHP -= DamageAmount;
 
 	//if (CurrentHP <= 0)
 	//{

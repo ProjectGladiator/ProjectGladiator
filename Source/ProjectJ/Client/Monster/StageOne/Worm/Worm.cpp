@@ -145,7 +145,8 @@ void AWorm::SetAIController(AMonsterAIController * NewAIController)
 
 void AWorm::Death()
 {
-	DeathFlag = true;
+	Super::Death();
+	CurrentState = EWormState::Death;
 }
 
 float AWorm::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)

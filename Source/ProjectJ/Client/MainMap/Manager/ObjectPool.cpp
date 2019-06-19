@@ -124,6 +124,8 @@ void AObjectPool::Tick(float DeltaTime)
 					
 
 					GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
+
+					//Monster의 Death Function 호출
 					ActiveMonster_Array[i_Num].Monster->Death();
 				}
 			}
