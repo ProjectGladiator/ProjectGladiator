@@ -105,4 +105,6 @@ private:
 
 	/**Timer To Spawn*/
 	void Timer();
+
+	void Remove_ActiveMonsterArry(int _MonsterCode, int _MonsterNum);
 };

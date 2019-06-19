@@ -80,10 +80,7 @@ void ABear::Tick(float DeltaTime)
 	if (Target)
 	{
 		float Distance = AIManager->DistanceCalculate(this, Target);
-		if (DeathFlag == true)
-		{
-			CurrentState = EBearState::Death;
-		}
+		
 		switch (CurrentState)
 		{
 		case EBearState::Ready:
@@ -160,10 +157,8 @@ void ABear::Tick(float DeltaTime)
 				bisActive = false;
 				GLog->Log(FString::Printf(TEXT("몬스터 사망")));
 				//Monster_SetActive(this, bisActive);
-				CurrentState = EBearState::Ready;
+				CurrentState = EBearState::Death;
 				//DeathFlag = true;
-				DeathInVisibleValue = 0;
-				GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 			}
 			break;
 		}

@@ -127,6 +127,7 @@ void AObjectPool::Tick(float DeltaTime)
 
 					//Monster의 Death Function 호출
 					ActiveMonster_Array[i_Num].Monster->Death();
+					Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
 				}
 			}
 			break;
@@ -161,6 +162,7 @@ void AObjectPool::Tick(float DeltaTime)
 
 					GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
 					ActiveMonster_Array[i_Num].Monster->Death();
+					Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
 				}
 			}
 			break;
@@ -395,5 +397,23 @@ void AObjectPool::Timer()
 	//Timer에 Handle, 사용하는객체(클래스), 반복할 메소드, 반복시간
 	GetWorld()->GetTimerManager().SetTimer(SpawnUpdateTimer, this, &AObjectPool::Recive_SpawnObject_Info, SpawnTime, true, 0);
 
+}
+
+void AObjectPool::Remove_ActiveMonsterArry(int _MonsterCode, int _MonsterNum)
+{
+	////옵젝풀 선언
+	//AObjectPool ObjectPool;
+	////임시 활성화 몬스터 배열 생성
+	//TArray<FActiveMonsterInfo> TempArray = ObjectPool.Get_ActiveMonster_Array();
+
+	//사망처리 몬스터 배열에서 찾아 빼주는 작업
+	for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+	{
+		if (ActiveMonster_Array[i_Num].MonsterCode == _MonsterCode && ActiveMonster_Array[i_Num].MonsterNum == _MonsterNum)
+		{
+			ActiveMonster_Array.RemoveAt(i_Num);
+			//TempArray.Sort();
+		}
+	}
 }
 

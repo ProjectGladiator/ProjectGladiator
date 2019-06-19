@@ -192,8 +192,8 @@ void AMyCharacter::MoveForward(float Value)
 {
 	if (ClientCharacterState)
 	{
-		//앞뒤로 움직일때
-		PlayerMessageQue.InQueue(PlayerMessage::PLAYER_UP_MOVE);
+		////앞뒤로 움직일때
+		//PlayerMessageQue.InQueue(PlayerMessage::PLAYER_UP_MOVE);
 		ClientCharacterState->MoveForward(Value);
 	}
 }

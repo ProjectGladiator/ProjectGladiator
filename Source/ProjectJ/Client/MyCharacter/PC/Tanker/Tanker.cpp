@@ -185,7 +185,7 @@ void ATanker::OnAttackHit()
 	//GLog->Log(FString::Printf(TEXT("TraceEnd %f %f %f"), TraceEnd.X, TraceEnd.Y, TraceEnd.Z));
 	//GLog->Log(FString::Printf(TEXT("CircleCollision %f %f %f"), CircleCollision.X, CircleCollision.Y, CircleCollision.Z));
 
-	MainMapPlayerController->C2S_HitInfo(10001, 0, 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
+	//MainMapPlayerController->C2S_HitInfo(10001, 0, 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
 
 	if (HitResult.GetActor())
 	{
