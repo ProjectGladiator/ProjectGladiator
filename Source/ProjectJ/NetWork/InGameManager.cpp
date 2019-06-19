@@ -1615,9 +1615,6 @@ void InGameManager::InGame_Recv_Monster_Die(char * _buf)
 	// 피격 결과
 	memcpy(&result, ptr_buf, sizeof(bool));
 	ptr_buf += sizeof(bool);
-	memcpy(ptr_data, &result, sizeof(bool));
-	ptr_data += sizeof(bool);
-	size += sizeof(bool);
 
 	if (result)
 	{
@@ -1731,6 +1728,45 @@ void InGameManager::InGame_Recv_OtherMonster_Die(char * _buf)
 
 	StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK_DIE, data, size);
 }
+
+//// 몬스터 공격 애니메이션
+//void InGameManager::InGame_Recv_Monster_Attack_Animation(char * _buf)
+//{
+//	char* ptr_buf = _buf;
+//
+//	char data[BUFSIZE];
+//	memset(data, 0, sizeof(data));
+//	char* ptr_data = data;
+//	int size = 0;
+//
+//	int code = 0;
+//	int num = 0;
+//	int attacknum = 0;
+//
+//	// 몬스터 코드
+//	memcpy(&code, ptr_buf, sizeof(int));
+//	ptr_buf += sizeof(int);
+//	size += sizeof(int);
+//	memcpy(ptr_data, &code, sizeof(int));
+//	ptr_data += sizeof(int);
+//
+//	// 몬스터 번호
+//	memcpy(&num, ptr_buf, sizeof(int));
+//	ptr_buf += sizeof(int);
+//	size += sizeof(int);
+//	memcpy(ptr_data, &num, sizeof(int));
+//	ptr_data += sizeof(int);
+//
+//	// 데미지
+//	memcpy(&attacknum, ptr_buf, sizeof(int));
+//	ptr_buf += sizeof(int);
+//	size += sizeof(int);
+//	memcpy(ptr_data, &attacknum, sizeof(int));
+//	ptr_data += sizeof(int);
+//
+//
+//	StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK_DIE, data, size);
+//}
 
 // 파티 초대 요청
 void InGameManager::InGame_Req_Party_Invite(char * _code)
@@ -1873,6 +1909,35 @@ void InGameManager::InGame_Req_Monster_Move_Info(int _code, int _num, float _px,
 
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
+
+//// 파티리더가 몬스터 공격 정보 보냄(캐릭터코드, 몬스터코드, 몬스터번호, 공격번호)
+//void InGameManager::InGame_Req_Monster_Attack(int _monstercode, int _monsternum, int _attacknum)
+//{
+//	UINT64 protocol = 0;
+//	char buf[BUFSIZE];
+//	memset(buf, 0, sizeof(buf));
+//	char* ptr = buf;
+//	int datasize = 0;
+//
+//	// 몬스터 코드
+//	memcpy(ptr, &_monstercode, sizeof(int));
+//	ptr += sizeof(int);
+//	datasize += sizeof(int);
+//
+//	// 몬스터 번호
+//	memcpy(ptr, &_monsternum, sizeof(int));
+//	ptr += sizeof(int);
+//	datasize += sizeof(int);
+//
+//	// 공격 번호
+//	memcpy(ptr, &_attacknum, sizeof(int));
+//	ptr += sizeof(int);
+//	datasize += sizeof(int);
+//
+//	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGMAE_MONSTER, PROTOCOL_REQ_MONSTER_ATTACK);
+//
+//	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
+//}
 
 RESULT InGameManager::InGameInitRecvResult(User * _user)
 {
@@ -2131,7 +2196,6 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 				break;
 			}
 			break;
-
 		case PROTOCOL_INGMAE_MENU:		// 프로토콜 중간틀 매뉴 관련 이면
 			tempprotocol = protocol & PROTOCOL_SERVER_INGAME_MENU_COMPART;
 			switch (tempprotocol)
@@ -2164,6 +2228,9 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 				break;
 			case PROTOCOL_MONSTER_ANIMATION: // 몬스터 애니메이션
 				break;
+			//case PROTOCOL_MONSTER_ANIMATION_ATTACK: // 몬스터 공격 애니메이션
+
+			//	break;
 			default:
 				break;
 			}
