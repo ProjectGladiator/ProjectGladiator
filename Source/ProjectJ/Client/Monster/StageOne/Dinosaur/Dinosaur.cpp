@@ -134,12 +134,19 @@ void ADinosaur::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			if (DeathFlag)
+			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 0)
 			{
+				GLog->Log(FString::Printf(TEXT("재배치 준비")));
 				//We Not Use Destroy Function
 				//Destroy();
+
+				//bisActive  true -> false 재배치 준비를 위해.
 				bisActive = false;
-				Monster_SetActive(this, bisActive);
+
+				//몬스터 상태는 Ready로 변경
+				CurrentState = EDinosaurState::Ready;
+				DeathFlag = true;
 			}
 			break;
 		}
@@ -159,6 +166,12 @@ EDinosaurState ADinosaur::GetCurrentState()
 void ADinosaur::init()
 {
 	Super::init();
+
+	CurrentState = EDinosaurState::Idle;
+
+	//추후 수정
+	/*MaxHP = 100.0f;
+	CurrentHP = MaxHP;*/
 }
 
 EDinosaurAttackState ADinosaur::GetCurrentAttackState()

@@ -123,11 +123,19 @@ void AWorm::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			if (DeathFlag)
+			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 0)
 			{
+				GLog->Log(FString::Printf(TEXT("재배치 준비")));
 				//We Not Use Destroy Function
 				//Destroy();
-				Monster_SetActive(this, bisActive);
+
+				//bisActive  true -> false 재배치 준비를 위해.
+				bisActive = false;
+
+				//몬스터 상태는 Ready로 변경
+				CurrentState = EWormState::Ready;
+				DeathFlag = true;
 			}
 			break;
 		}
@@ -136,6 +144,15 @@ void AWorm::Tick(float DeltaTime)
 	{
 		GLog->Log(FString::Printf(TEXT("AI 컨트롤러가 없음")));
 	}
+}
+
+void AWorm::init()
+{
+	Super::init();
+	CurrentState = EWormState::Idle;
+		//추후 수정
+	//current_HP
+	/*MaxHP = 100.0f;*/
 }
 
 void AWorm::SetAIController(AMonsterAIController * NewAIController)

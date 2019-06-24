@@ -150,15 +150,19 @@ void ABear::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			if (DeathFlag)
+			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 0)
 			{
+				GLog->Log(FString::Printf(TEXT("재배치 준비")));
 				//We Not Use Destroy Function
 				//Destroy();
+
+				//bisActive  true -> false 재배치 준비를 위해.
 				bisActive = false;
-				GLog->Log(FString::Printf(TEXT("몬스터 사망")));
-				//Monster_SetActive(this, bisActive);
-				CurrentState = EBearState::Death;
-				//DeathFlag = true;
+
+				//몬스터 상태는 Ready로 변경
+				CurrentState = EBearState::Ready;
+				DeathFlag = true;
 			}
 			break;
 		}
@@ -171,10 +175,14 @@ void ABear::Tick(float DeltaTime)
 
 void ABear::init()
 {
+	
 	Super::init();
 	CurrentState = EBearState::Idle;
+
+	//추후 수정
 	/*MaxHP = 100.0f;
 	CurrentHP = MaxHP;*/
+	
 }
 
 void ABear::SetAIController(AMonsterAIController * NewAIController)

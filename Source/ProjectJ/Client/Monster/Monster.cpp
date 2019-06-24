@@ -75,7 +75,6 @@ void AMonster::OnMonsterAttackChanged()
 
 void AMonster::Death()
 {
-	
 	//사망표식
 	DeathFlag = true;
 }

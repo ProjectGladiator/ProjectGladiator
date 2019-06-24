@@ -31,6 +31,7 @@ protected:
 	virtual void BeginPlay() override;
 public:
 	virtual void Tick(float DeltaTime) override;
+	virtual void init() override;
 
 	void SetAIController(class AMonsterAIController* NewAIController);
 

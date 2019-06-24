@@ -55,6 +55,8 @@ void ASpider::BeginPlay()
 {
 	Super::BeginPlay();
 
+	init();
+
 	MaxHP = 100.0f;
 	CurrentHP = MaxHP;
 
@@ -156,11 +158,19 @@ void ASpider::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			if (DeathFlag)
+			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 0)
 			{
+				GLog->Log(FString::Printf(TEXT("재배치 준비")));
 				//We Not Use Destroy Function
 				//Destroy();
-				Monster_SetActive(this, bisActive);
+
+				//bisActive  true -> false 재배치 준비를 위해.
+				bisActive = false;
+
+				//몬스터 상태는 Ready로 변경
+				CurrentState = ESpiderState::Ready;
+				DeathFlag = true;
 			}
 			break;
 		}
@@ -169,6 +179,15 @@ void ASpider::Tick(float DeltaTime)
 	{
 		GLog->Log(FString::Printf(TEXT("거미 : 타겟이 존재하지 않음")));
 	}
+}
+
+void ASpider::init()
+{
+	Super::init();
+	CurrentState = ESpiderState::Idle;
+	//추후 수정
+	/*MaxHP = 100.0f;
+	CurrentHP = MaxHP;*/
 }
 
 void ASpider::SetAIController(AMonsterAIController * NewAIController)
