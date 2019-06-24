@@ -26,10 +26,10 @@ AObjectPool::AObjectPool()
 	PrimaryActorTick.bCanEverTick = true;
 
 	// create the Box Component the spawn volume
-	DefaultSpawnArea = CreateDefaultSubobject<UBoxComponent>(TEXT("WhereToSpawn"));
+	ReadySpawnArea = CreateDefaultSubobject<UBoxComponent>(TEXT("WhereToSpawn"));
 
 	//Root -> Boxcomponent
-	RootComponent = DefaultSpawnArea;
+	RootComponent = ReadySpawnArea;
 
 	//sameMonster class Array 
 	FMonsterstruct MonsterArray;
@@ -173,9 +173,9 @@ void AObjectPool::Tick(float DeltaTime)
 FVector AObjectPool::GetRandomPointInVolume()
 {
 	//Origin Spawn Area
-	FVector SpawnOrigin = DefaultSpawnArea->Bounds.Origin;
+	FVector SpawnOrigin = ReadySpawnArea->Bounds.Origin;
 	//Extent Spawn Area
-	FVector SpawnExtent = DefaultSpawnArea->Bounds.BoxExtent;
+	FVector SpawnExtent = ReadySpawnArea->Bounds.BoxExtent;
 
 	return UKismetMathLibrary::RandomPointInBoundingBox(SpawnOrigin, SpawnExtent);
 }
@@ -280,14 +280,14 @@ bool AObjectPool::check_RecycleObject(AMonster* _spawnMonster)
 
 void AObjectPool::Recive_SpawnObject_Info()
 {
+	//Timer()에서 이 함수를 SpawnTimer마다 호출되도록함.
 
 	//Get SpawnMonster's type Array
 	//Get The Array's Num
 	//Get SpawnPosition
 	//Last,Find Non_Active Monster 
 
-	//@@ 뭔가 잘못됨 마리수를 정해놓지도 않았고 최대 량만큼 돌고 다시 또 돌려고 하고있음 디버그하면서 찾아봐야함
-
+	//SpawnMonster 카운터가 Num과 일치했을때.
 	if (SpawnMonsterCounter == SpawnMonster_Num)
 	{
 		//SpawnCounter Reset
@@ -297,8 +297,9 @@ void AObjectPool::Recive_SpawnObject_Info()
 	}
 	else
 	{
+		//비활성화인 몬스터를 준비단계로 넘어가게 해주는 함수(몬스터 배열에서 순차적으로 비활성화 인것 부터 찾아서 사용한다)
 		ReadyMonster(static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
-		//Counter Update
+		//Counter Update SpawnMonster_Num의 카운터임
 		++SpawnMonsterCounter;
 	}
 }
@@ -307,6 +308,7 @@ void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, FVector _MonsterPostio
 {
 	for (int i_Monster = 0; i_Monster < DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array.Num(); i_Monster++)
 	{
+		//bisActive가 false인지 판별 후 넘어감
 		if (check_RecycleObject(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Monster Recycle"));
@@ -353,7 +355,7 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 	//Object Position
 	FVector SpawnPos_Vector;
 	//Default SpawnVector Pos
-	SpawnPos_Vector = DefaultSpawnArea->Bounds.Origin;
+	SpawnPos_Vector = ReadySpawnArea->Bounds.Origin;
 
 	for (int i_spawnObject = 0; i_spawnObject < _MaximumSize; i_spawnObject++)
 	{
@@ -393,7 +395,6 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 
 void AObjectPool::Timer()
 {
-
 	//Timer에 Handle, 사용하는객체(클래스), 반복할 메소드, 반복시간
 	GetWorld()->GetTimerManager().SetTimer(SpawnUpdateTimer, this, &AObjectPool::Recive_SpawnObject_Info, SpawnTime, true, 0);
 
@@ -401,11 +402,6 @@ void AObjectPool::Timer()
 
 void AObjectPool::Remove_ActiveMonsterArry(int _MonsterCode, int _MonsterNum)
 {
-	////옵젝풀 선언
-	//AObjectPool ObjectPool;
-	////임시 활성화 몬스터 배열 생성
-	//TArray<FActiveMonsterInfo> TempArray = ObjectPool.Get_ActiveMonster_Array();
-
 	//사망처리 몬스터 배열에서 찾아 빼주는 작업
 	for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
 	{

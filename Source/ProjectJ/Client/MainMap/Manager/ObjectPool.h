@@ -62,9 +62,9 @@ private:
 	/** This Array is Activing Monster's Struct*/
 	TArray<FActiveMonsterInfo> ActiveMonster_Array;
 
-	/** Box Component to specify where pickups should be spawned*/
+	/** Box Component to specify where pickups should be spawned(First Spawn And ReadyArea)*/
 	UPROPERTY(VisibleAnywhere, Category = "Spawning", meta = (AllowPrivateAccess = "true"))
-	class UBoxComponent* DefaultSpawnArea;
+	class UBoxComponent* ReadySpawnArea;
 
 	/** if you want to use this, check to attribute*/
 	UPROPERTY(EditAnywhere, Category = "Spawning")
