@@ -77,7 +77,7 @@ private:
 	void InGame_Recv_Stage_MonsterInfo(char* _buf);
 	// 몬스터 이동정보
 	void InGame_Recv_Monster_MoveInfo(char* _buf);
-	// 몬스터 피경정보
+	// 몬스터 피격정보
 	void InGame_Recv_Monster_Attack(char* _buf);
 	// 몬스터 처치정보
 	void InGame_Recv_Monster_Die(char* _buf);
@@ -85,6 +85,13 @@ private:
 	void InGame_Recv_OtherMonster_Attack(char* _buf);
 	// 다른 유저 몬스터 처치정보
 	void InGame_Recv_OtherMonster_Die(char* _buf);
+	// 유저 피격정보
+	void InGame_Recv_UnderAttack(char* _buf);
+	// 다른 유저 피격정보
+	void InGame_Recv_Other_UnderAttack(char* _buf);
+
+	// 몬스터 공격 애니메이션
+	//void InGame_Recv_Monster_Attack_Animation(char* _buf);
 
 public:
 	static void CreateInstance();
@@ -107,7 +114,7 @@ public:
 	//void InGame_Character_End_Jump();
 	// 공격 하겠다고 알림(무슨 공격했는지)
 	void InGame_Character_Attack(int _attacknum);
-	// 공격했는데 몬스터랑 피격판정난것같다.몬스터코드,몬스터번호,공격번호,방향벡터
+	// 공격했는데 몬스터랑 피격판정난것같다.(몬스터코드,몬스터번호,공격번호,공격 사거리 좌표)
 	void InGame_Character_Attack_Success(int _monstercode, int _monsternum, int _attacknum, float _x, float _y, float _z);
 
 	/*--채널--*/
@@ -149,7 +156,8 @@ public:
 	void InGame_Req_Monster_Info();
 	// 파티리더가 몬스터 이동 정보 전송
 	void InGame_Req_Monster_Move_Info(int _code, int _num, float _px, float _py, float _pz);
-
+	// 피격받은 유저가 몬스터 공격 정보 보냄(캐릭터코드, 몬스터코드, 몬스터번호, 공격번호, 공격사거리좌표)
+	void InGame_Req_Monster_Attack(int _monstercode, int _monsternum, int _attacknum, float _x, float _y, float _z);
 
 	RESULT InGameInitRecvResult(User* _user);			// 인게임 
 };

@@ -523,6 +523,43 @@ void StorageManager::ChangeData(void * data, int & _monstercode, int & _monstern
 	ptr += sizeof(int);
 }
 
+// 유저 피격정보(결과,데미지,살아있는지)
+void StorageManager::ChangeData(void * data, bool & _result, int & _damage, bool & _is_live)
+{
+	char* ptr = (char*)data;
+
+	memcpy(&_result, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+
+	if (_result)
+	{
+		memcpy(&_damage, ptr, sizeof(int));
+		ptr += sizeof(int);
+
+		memcpy(&_is_live, ptr, sizeof(bool));
+		ptr += sizeof(bool);
+	}
+}
+
+// 다른 유저 피격정보(캐릭터코드,데미지,살아있는지)
+void StorageManager::ChangeData(void * data, char * _code, int & _damage, bool & _is_live)
+{
+	int len = 0;
+	char* ptr = (char*)data;
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_code, ptr, len);
+	ptr += len;
+
+	memcpy(&_damage, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&_is_live, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+}
+
 // Front 삭제
 bool StorageManager::PopData()
 {	

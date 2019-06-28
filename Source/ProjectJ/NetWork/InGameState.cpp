@@ -104,6 +104,14 @@ bool InGameState::Read(User * _user)
 		{
 			state = INGAME_INIT_RECV;
 		}
+		else if (result == RT_INGAME_USER_UNDERATTACK_RESULT)
+		{
+			state = INGAME_INIT_RECV;
+		}
+		else if (result == RT_INGAME_OTHERUSER_UNDERATTACK_RESULT)
+		{
+			state = INGAME_INIT_RECV;
+		}
 		break;
 	}
 	return true;

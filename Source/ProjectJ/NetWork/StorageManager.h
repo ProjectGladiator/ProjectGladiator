@@ -94,8 +94,13 @@ public:
 	void ChangeData(void* data, int& _code, int& _count, float& _pos_x, float& _pos_y, float& _pos_z);
 	// 공격정보 (코드,공격번호)
 	void ChangeData(void* data, char* _code, int _attacknum);
-	// 몬스터 피격정보
+	// 몬스터 피격정보 (몬스터코드, 몬스터숫자,데미지)
 	void ChangeData(void* data, int& _monstercode, int& _monsternum, int& _damage);
+	// 유저 피격정보(결과,데미지,살아있는지)
+	void ChangeData(void* data, bool& _result, int& _damage, bool& _is_live);
+	// 다른 유저 피격정보(캐릭터코드,데미지,살아있는지)
+	void ChangeData(void* data, char* _code, int& _damage, bool& _is_live);
+
 
 	bool PopData();
 };
