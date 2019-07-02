@@ -263,6 +263,8 @@ float ATanker::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, 
 
 			CurrentHP -= ActualDamage;
 		}
+		MainMapPlayerController->C2S_HitInfo(AttackMonster->GetMonsterCode(), AttackMonster->GetMonsterNum(), 1, AttackMonster->GetAttackCircleDistanceInfo().X, AttackMonster->GetAttackCircleDistanceInfo().Y, AttackMonster->GetAttackCircleDistanceInfo().Z);
+
 	}
 
 	return DamageAmount;
