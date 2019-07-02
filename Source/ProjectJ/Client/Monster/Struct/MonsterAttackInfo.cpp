@@ -7,4 +7,5 @@ void FMonsterAttackInfo::SetAttackInfo(float _AttackStartLocation, float _Attack
 	AttackStartLocation = _AttackStartLocation;
 	AttackEndLocation = _AttackEndLocation;
 	AttackWidth = _AttackWidth;
+	AttackCircleDistance = FVector::ZeroVector;
 }

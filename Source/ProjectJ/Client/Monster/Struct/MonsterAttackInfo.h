@@ -13,6 +13,7 @@ public:
 	float AttackStartLocation;
 	float AttackEndLocation;
 	float AttackWidth;
+	FVector AttackCircleDistance;
 
-	void SetAttackInfo(float _AttackStartLocation, float _AttackEndLocation, float _AttackWidth);
+	void SetAttackInfo(float _AttackStartLocation, float _AttackEndLocation, float _AttackWidth );
 };

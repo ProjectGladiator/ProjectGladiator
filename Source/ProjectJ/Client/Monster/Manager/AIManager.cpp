@@ -101,13 +101,14 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 			HitResult,
 			true);
 
-		
 		if (HitResult.GetActor()->IsValidLowLevel())
 		{
 			AMyCharacter* HitMyCharacter = Cast<AMyCharacter>(HitResult.GetActor());
 
 			if (HitMyCharacter)
 			{
+				AttackInfo.AttackCircleDistance = Monster->GetActorLocation() + Monster->GetActorForwardVector() * (AttackInfo.AttackStartLocation + AttackInfo.AttackEndLocation);
+
 				/*auto Target = Cast<AMyCharacter>(HitResult.GetActor());
 
 				Target->LaunchCharacter(Monster->GetActorForwardVector()*10.0f, false, false);*/
