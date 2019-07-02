@@ -104,33 +104,38 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 		
 		if (HitResult.GetActor()->IsValidLowLevel())
 		{
-			/*auto Target = Cast<AMyCharacter>(HitResult.GetActor());
+			AMyCharacter* HitMyCharacter = Cast<AMyCharacter>(HitResult.GetActor());
 
-			Target->LaunchCharacter(Monster->GetActorForwardVector()*10.0f, false, false);*/
+			if (HitMyCharacter)
+			{
+				/*auto Target = Cast<AMyCharacter>(HitResult.GetActor());
 
-			if (RadialDamage)
-			{
-				UGameplayStatics::ApplyRadialDamage(GetWorld(),
-					10.0f,
-					Monster->GetActorLocation(),
-					300.0f,
-					nullptr,
-					IgnoreActors,
-					Monster,
-					UGameplayStatics::GetPlayerController(GetWorld(), 0),
-					false,
-					ECollisionChannel::ECC_WorldStatic
-				);
-			}
-			else
-			{
-				UGameplayStatics::ApplyPointDamage(HitResult.GetActor(),
-					10.0f,
-					Monster->GetActorForwardVector(),
-					HitResult,
-					Monster->GetController(),
-					Monster,
-					nullptr);
+				Target->LaunchCharacter(Monster->GetActorForwardVector()*10.0f, false, false);*/
+
+				if (RadialDamage)
+				{
+					UGameplayStatics::ApplyRadialDamage(GetWorld(),
+						10.0f,
+						Monster->GetActorLocation(),
+						300.0f,
+						nullptr,
+						IgnoreActors,
+						Monster,
+						UGameplayStatics::GetPlayerController(GetWorld(), 0),
+						false,
+						ECollisionChannel::ECC_WorldStatic
+					);
+				}
+				else
+				{
+					UGameplayStatics::ApplyPointDamage(HitResult.GetActor(),
+						10.0f,
+						Monster->GetActorForwardVector(),
+						HitResult,
+						Monster->GetController(),
+						Monster,
+						nullptr);
+				}
 			}
 		}
 		
