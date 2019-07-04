@@ -55,24 +55,10 @@ namespace DataProtocol {
 		PGAMEDATA_STAGE_MONSTER_SPAWN_TIME,				// 스테이지 몬스터 스폰 시간 - ([int] 몬스터 스폰시간)
 		PGAMEDATA_STAGE_MONSTER_INFO,					// 스테이지 몬스터 정보 - ([int] 몬스터코드,[int] 몬스터숫자, [float*3] 좌표)
 		PGAMEDATA_MONSTER_MOVE_INFO,					// 몬스터 이동정보 - ([int] 몬스터코드, [int] 몬스터숫자, [float*3] 좌표)
-		
 		PGAMEDATA_USER_ATTACKED_THE_MONSTER_RESULT,		// 유저가 몬스터를 공격한 결과 - ([bool] 성공실패결과, [int] 몬스터 코드, [int] 몬스터 번호, [int] 데미지, [bool] 죽었는지살았는지)
 		PGAMEDATA_OTHERUSER_ATTACKED_THE_MONSTER,		// 다른 유저가 몬스터를 공격한 결과 - ([int] 몬스터 코드, [int] 몬스터 번호, [int] 데미지, [bool] 죽었는지살았는지)
-		
 		PGAMEDATA_MONSTER_ATTACKED_THE_USER_RESULT,		// 몬스터가 유저를 공격한 결과 - ([bool] 공격결과(성공시 뒤에 값이들어옴), [int] 데미지, [bool] 죽었는지살았는지(true = 생존,false = 사망))
 		PGAMEDATA_MONSTER_ATTACKED_THE_OTHERUSER,		// 몬스터가 다른 유저를 공격함 - ([char] 유저 캐릭터 코드, [int] 데미지, [bool] 죽었는지살았는지(true = 생존,false = 사망))
-
-		// 삭제할 예정
-		PGAMEDATA_MONSTER_ATTACK_SUCCESS,				// 몬스터 공격받음(공격성공 살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-		PGAMEDATA_MONSTER_ATTACK_FAIL,					// 몬스터 공격받음(공격실패) - (프로토콜만)
-		PGAMEDATA_MONSTER_ATTACK_DIE,					// 몬스터 공격받음(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-		// 삭제할 예정
-		PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK,			// 다른 유저가 몬스터 공격함(살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-		PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK_DIE,		// 다른 유저가 몬스터 공격함(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-		// 삭제할 예정
-		PGAMEDATA_USER_ATTACK_RESULT,					// 몬스터가 유저를 공격한 결과 - ([bool] 공격결과(성공시 뒤에 값이들어옴), [int] 데미지, [bool] 죽었는지살았는지(true = 생존,false = 사망))
-		PGAMEDATA_USER_OTHERPLAYER_ATTACK				// 몬스터가 다른 유저를 공격함 - ([char] 유저 캐릭터 코드, [int] 데미지, [bool] 죽었는지살았는지(true = 생존,false = 사망))
-
 	};
 	// 공통 프로토콜
 	enum PGLOBAL {
