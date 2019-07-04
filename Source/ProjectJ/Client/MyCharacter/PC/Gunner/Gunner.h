@@ -38,7 +38,7 @@ public:
 	UFUNCTION()
 		virtual void OnAttackHit() override;
 
-	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
-
 	float GetCrossHairSpread();
+
+	virtual void MyTakeDamage(float _Damage) override;
 };

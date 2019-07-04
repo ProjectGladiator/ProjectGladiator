@@ -8,6 +8,7 @@
 #include "WarriorAnimInstance.h" //전사 애님 인스턴스 헤더
 #include "Kismet/KismetSystemLibrary.h"  //라인 트레이스 헤더 관련 헤더
 #include "Client/MainMap/MainMapPlayerController.h" //메인맵 플레이어 컨트롤러 헤더
+#include "Client/Monster/Monster.h"
 
 //서버 헤더
 
@@ -143,4 +144,9 @@ void AWarrior::OnAttackHit()
 	{
 		GLog->Log(FString::Printf(TEXT("%s"), *HitResults[i].BoneName.ToString()));
 	}
+}
+
+void AWarrior::MyTakeDamage(float _Damage)
+{
+	
 }

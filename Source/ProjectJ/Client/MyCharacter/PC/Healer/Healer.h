@@ -19,5 +19,5 @@ private:
 public:
 	virtual void BeginPlay() override;
 	
-	
+	virtual void MyTakeDamage(float _Damage) override;
 };

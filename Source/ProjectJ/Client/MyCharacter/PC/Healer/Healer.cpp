@@ -5,6 +5,8 @@
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 컴포넌트 헤더
 #include "UObject/ConstructorHelpers.h" // 경로 탐색 헤더
 #include "Animation/AnimBlueprint.h" //애니메이션 블루프린트 헤더
+#include "Client/MainMap/MainMapPlayerController.h" //메인맵 플레이어 컨트롤러 헤더
+#include "Client/Monster/Monster.h"
 
 //서버 헤더
 AHealer::AHealer()
@@ -40,4 +42,9 @@ AHealer::AHealer()
 void AHealer::BeginPlay()
 {
 	Super::BeginPlay();
+}
+
+void AHealer::MyTakeDamage(float _Damage)
+{
+
 }

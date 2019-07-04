@@ -725,3 +725,8 @@ void AMyCharacter::MonsterInfoAssemble()
 		}
 	}
 }
+
+void AMyCharacter::MyTakeDamage(float _Damage)
+{
+
+}

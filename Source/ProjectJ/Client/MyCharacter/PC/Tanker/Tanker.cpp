@@ -239,31 +239,7 @@ void ATanker::OnAttackHit()
 	}*/
 }
 
-float ATanker::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
+void ATanker::MyTakeDamage(float _Damage)
 {
-	float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	AMonster* AttackMonster = Cast<AMonster>(DamageCauser);
-
-	if (AttackMonster)
-	{
-		if (DamageEvent.IsOfType(FRadialDamageEvent::ClassID))
-		{
-			FRadialDamageEvent* RadialDamageEvent = (FRadialDamageEvent*)(&DamageEvent);
-
-			GLog->Log(FString::Printf(TEXT("탱커 데미지 범위 데미지 받음 : %f"), ActualDamage));
-
-			CurrentHP -= ActualDamage;
-		}
-		else if (DamageEvent.IsOfType(FPointDamageEvent::ClassID))
-		{
-			FPointDamageEvent* PointDamageEvent = (FPointDamageEvent*)(&DamageEvent);
-
-			GLog->Log(FString::Printf(TEXT("탱커 데미지 포인트 데미지 받음 : %f"), ActualDamage));
-
-			CurrentHP -= ActualDamage;
-		}
-	}
-
-	return DamageAmount;
 }
