@@ -84,6 +84,10 @@ void ABear::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case EBearState::Ready:
+			if (DeathFlag == true)
+			{
+				CurrentHP = true;
+			}
 			break;
 		case EBearState::Idle:
 			CurrentState = EBearState::Chase;

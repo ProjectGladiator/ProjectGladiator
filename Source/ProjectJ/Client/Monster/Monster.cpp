@@ -77,6 +77,7 @@ void AMonster::Death()
 {
 	//사망표식
 	DeathFlag = true;
+	CurrentHP = 0;
 }
 
 // Called when the game starts or when spawned
