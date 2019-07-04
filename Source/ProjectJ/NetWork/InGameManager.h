@@ -78,13 +78,9 @@ private:
 	// 몬스터 이동정보
 	void InGame_Recv_Monster_MoveInfo(char* _buf);
 	// 몬스터 피격정보
-	void InGame_Recv_Monster_Attack(char* _buf);
-	// 몬스터 처치정보
-	void InGame_Recv_Monster_Die(char* _buf);
+	void InGame_Recv_Monster_has_been_Attacked(char* _buf);
 	// 다른 유저 몬스터 피격정보
-	void InGame_Recv_OtherMonster_Attack(char* _buf);
-	// 다른 유저 몬스터 처치정보
-	void InGame_Recv_OtherMonster_Die(char* _buf);
+	void InGame_Recv_OtherMonster_has_been_Attack(char* _buf);
 	// 유저 피격정보
 	void InGame_Recv_UnderAttack(char* _buf);
 	// 다른 유저 피격정보

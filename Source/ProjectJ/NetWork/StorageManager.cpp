@@ -508,8 +508,32 @@ void StorageManager::ChangeData(void * data, char * _code, int _attacknum)
 	ptr += sizeof(int);
 }
 
-// 몬스터 피격정보
-void StorageManager::ChangeData(void * data, int & _monstercode, int & _monsternum, int & _damage)
+// 유저가 몬스터 공격한 정보 (성공실패, 몬스터코드, 몬스터숫자, 데미지, 살았는지죽었는지)
+void StorageManager::ChangeData(void * data, bool & _result, int & _monstercode, int & _monsternum, int & _damage, bool & _is_live)
+{
+	char* ptr = (char*)data;
+
+	memcpy(&_result, ptr, sizeof(bool));
+	ptr += sizeof(bool);
+
+	if (_result)
+	{
+		memcpy(&_monstercode, ptr, sizeof(int));
+		ptr += sizeof(int);
+
+		memcpy(&_monsternum, ptr, sizeof(int));
+		ptr += sizeof(int);
+
+		memcpy(&_damage, ptr, sizeof(int));
+		ptr += sizeof(int);
+
+		memcpy(&_is_live, ptr, sizeof(bool));
+		ptr += sizeof(bool);
+	}
+}
+
+// 다른 유저가 몬스터 공격한 정보 (몬스터코드, 몬스터숫자,데미지, 살았는지죽었는지)
+void StorageManager::ChangeData(void * data, int & _monstercode, int & _monsternum, int & _damage, bool& _is_live)
 {
 	char* ptr = (char*)data;
 
@@ -521,9 +545,12 @@ void StorageManager::ChangeData(void * data, int & _monstercode, int & _monstern
 
 	memcpy(&_damage, ptr, sizeof(int));
 	ptr += sizeof(int);
+
+	memcpy(&_is_live, ptr, sizeof(bool));
+	ptr += sizeof(bool);
 }
 
-// 유저 피격정보(결과,데미지,살아있는지)
+// 몬스터가 유저를 공격한 정보 (결과,데미지,살아있는지)
 void StorageManager::ChangeData(void * data, bool & _result, int & _damage, bool & _is_live)
 {
 	char* ptr = (char*)data;
@@ -541,7 +568,7 @@ void StorageManager::ChangeData(void * data, bool & _result, int & _damage, bool
 	}
 }
 
-// 다른 유저 피격정보(캐릭터코드,데미지,살아있는지)
+// 몬스터가 다른 유저를 공격한 정보(캐릭터코드,데미지,살아있는지)
 void StorageManager::ChangeData(void * data, char * _code, int & _damage, bool & _is_live)
 {
 	int len = 0;

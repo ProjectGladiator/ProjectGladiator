@@ -68,9 +68,9 @@ void AObjectPool::Tick(float DeltaTime)
 
 	PacketData* Data;
 
-	int Monster_Code;
-	int Monster_Num;
-	int Take_Damage;
+	int Monster_Code = 0;
+	int Monster_Num = 0;
+	int Take_Damage = 0;
 
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
@@ -91,8 +91,8 @@ void AObjectPool::Tick(float DeltaTime)
 			StorageManager::GetInstance()->PopData();
 			break;
 		case PGAMEDATA_MONSTER_ATTACK_SUCCESS: // 몬스터 공격받음(공격성공 살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
-			StorageManager::GetInstance()->PopData();
+			//StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
+			//StorageManager::GetInstance()->PopData();
 			for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
 			{
 				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
@@ -111,8 +111,8 @@ void AObjectPool::Tick(float DeltaTime)
 			StorageManager::GetInstance()->PopData();
 			break;
 		case PGAMEDATA_MONSTER_ATTACK_DIE:					// 몬스터 공격받음(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
-			StorageManager::GetInstance()->PopData();
+			//StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
+			//StorageManager::GetInstance()->PopData();
 			for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
 			{
 				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
@@ -133,8 +133,8 @@ void AObjectPool::Tick(float DeltaTime)
 			break;
 
 		case PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK:			// 다른 유저가 몬스터 공격함(살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
-			StorageManager::GetInstance()->PopData();
+			//StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
+			//StorageManager::GetInstance()->PopData();
 			for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
 			{
 				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
@@ -149,8 +149,8 @@ void AObjectPool::Tick(float DeltaTime)
 			}
 			break;			
 		case PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK_DIE:		// 다른 유저가 몬스터 공격함(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
-			StorageManager::GetInstance()->PopData();
+			//StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
+			//StorageManager::GetInstance()->PopData();
 			for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
 			{
 				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
