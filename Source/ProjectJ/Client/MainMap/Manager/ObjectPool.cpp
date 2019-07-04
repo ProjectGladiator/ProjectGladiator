@@ -134,42 +134,35 @@ void AObjectPool::Tick(float DeltaTime)
 			break;		
 			
 		case PGAMEDATA_OTHERUSER_ATTACKED_THE_MONSTER:// 다른 유저가 몬스터를 공격한 결과 - ([int] 몬스터 코드, [int] 몬스터 번호, [int] 데미지, [bool] 죽었는지살았는지)
-			StorageManager::GetInstance()->ChangeData(Data->data, isAttack_Result, Monster_Code, Monster_Num, Take_Damage, isAlive_Monster);
+			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage, isAlive_Monster);
 			StorageManager::GetInstance()->PopData();
-			//공격결과가 True이면
-			if (isAttack_Result)
+			
+			GLog->Log(FString::Printf(TEXT("공격 성공 메소드 실행.")));
+			if (isAlive_Monster)
 			{
-				GLog->Log(FString::Printf(TEXT("공격 성공 메소드 실행.")));
-				if (isAlive_Monster)
+				//몬스터 배열 사용
+				for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
 				{
-					//몬스터 배열 사용
-					for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+					//몬스터 코드와 번호 가 일치하는 원소를 찾음
+					if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
 					{
-						//몬스터 코드와 번호 가 일치하는 원소를 찾음
-						if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
-						{
-							GLog->Log(FString::Printf(TEXT("아군에게 맞아 데미지를 받기 시작합니다.")));
-							GLog->Log(FString::Printf(TEXT("데미지 받기 전 %f, 받은 데미지 %f"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
+						GLog->Log(FString::Printf(TEXT("아군에게 맞아 데미지를 받기 시작합니다.")));
+						GLog->Log(FString::Printf(TEXT("데미지 받기 전 %f, 받은 데미지 %f"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
 
-							ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
+						ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
 
-							GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
-						}
+						GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
 					}
 				}
-				else if (isAlive_Monster == false)
-				{
-					for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
-					{
-						//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
-						ActiveMonster_Array[i_Num].Monster->Death();
-						Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
-					}
-				}
-			}//END of if (isAttack_Result)
-			else
+			}
+			else if (isAlive_Monster == false)
 			{
-				GLog->Log(FString::Printf(TEXT("공격 결과가 실패로 들어왔습니다.")));
+				for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+				{
+					//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
+					ActiveMonster_Array[i_Num].Monster->Death();
+					Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+				}
 			}
 			break;
 		
