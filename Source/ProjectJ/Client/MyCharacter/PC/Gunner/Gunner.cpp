@@ -15,6 +15,7 @@
 #include "GameFramework/SpringArmComponent.h" //스프링암 컴포넌트 헤더파일
 #include "Client/MainMap/MainMapPlayerController.h"
 #include "TimerManager.h"
+#include "Client/Monster/Monster.h"
 
 //서버 헤더
 AGunner::AGunner()
@@ -252,15 +253,13 @@ void AGunner::OnAttackHit()
 	UGameplayStatics::GetPlayerCameraManager(GetWorld(), 0)->PlayCameraShake(UGunnerCameraShake::StaticClass());
 }
 
-float AGunner::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
-{
-	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
-
-	return DamageAmount;
-}
-
 float AGunner::GetCrossHairSpread()
 {
 	return CrossHairSpread;
+}
+
+void AGunner::MyTakeDamage(float _Damage)
+{
+	
 }
 

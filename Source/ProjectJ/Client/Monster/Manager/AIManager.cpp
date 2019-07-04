@@ -4,6 +4,7 @@
 //클라헤더
 #include "Client/Monster/Monster.h" //몬스터 관련 헤더
 #include "Client/MyCharacter/PC/MyCharacter.h" //캐릭터 부모 관련 헤더
+#include "Client/MainMap/MainMapPlayerController.h"
 #include "Kismet/KismetMathLibrary.h" //수학 관련 헤더
 #include "Client/Monster/MonsterAIController.h" //몬스터 AI 컨트롤러 관련 헤더
 #include "Kismet/KismetSystemLibrary.h" //라인 트레이스 관련 헤더
@@ -81,7 +82,6 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 		TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
 		ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
 
-
 		//TArray<FHitResult> HitResults;
 
 		TArray<AActor*>IgnoreActors;
@@ -107,7 +107,7 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 
 			if (HitMyCharacter)
 			{
-				AttackInfo.AttackCircleDistance = Monster->GetActorLocation() + Monster->GetActorForwardVector() * (AttackInfo.AttackStartLocation + AttackInfo.AttackEndLocation);
+				FVector AttackCircleDistnace = Monster->GetActorLocation() + Monster->GetActorForwardVector() * (AttackInfo.AttackStartLocation + AttackInfo.AttackEndLocation);
 
 				/*auto Target = Cast<AMyCharacter>(HitResult.GetActor());
 
@@ -136,6 +136,13 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 						Monster->GetController(),
 						Monster,
 						nullptr);
+				}
+
+				AMainMapPlayerController* MainMapPlayerController = Cast<AMainMapPlayerController>(HitMyCharacter->GetController());
+
+				if (MainMapPlayerController)
+				{
+					MainMapPlayerController->C2S_HitInfo(Monster->GetMonsterCode(), Monster->GetMonsterNum, 1, AttackCircleDistnace.X, AttackCircleDistnace.Y, AttackCircleDistnace.Z);
 				}
 			}
 		}

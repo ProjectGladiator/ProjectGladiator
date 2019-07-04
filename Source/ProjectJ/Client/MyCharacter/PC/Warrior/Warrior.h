@@ -27,4 +27,6 @@ public:
 		virtual void OnComboMontageSave() override;
 	UFUNCTION()
 		virtual void OnAttackHit() override;
+
+	virtual void MyTakeDamage(float _Damage) override;
 };

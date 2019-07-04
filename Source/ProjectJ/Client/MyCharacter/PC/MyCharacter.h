@@ -216,4 +216,6 @@ public:
 	void SpawnGameStageStartEffect();
 
 	void MonsterInfoAssemble();
+
+	virtual void MyTakeDamage(float _Damage);
 };
