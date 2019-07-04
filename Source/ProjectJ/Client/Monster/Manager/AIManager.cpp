@@ -142,7 +142,7 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 
 				if (MainMapPlayerController)
 				{
-					MainMapPlayerController->C2S_HitInfo(Monster->GetMonsterCode(), Monster->GetMonsterNum, 1, AttackCircleDistnace.X, AttackCircleDistnace.Y, AttackCircleDistnace.Z);
+					MainMapPlayerController->C2S_HitInfo(Monster->GetMonsterCode(), Monster->GetMonsterNum(), 1, AttackCircleDistnace.X, AttackCircleDistnace.Y, AttackCircleDistnace.Z);
 				}
 			}
 		}

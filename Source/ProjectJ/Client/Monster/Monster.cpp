@@ -219,8 +219,3 @@ int AMonster::GetMonsterNum()
 {
 	return m_MonsterNum;
 }
-
-FVector AMonster::GetAttackCircleDistanceInfo()
-{
-	return AttackInfo.AttackCircleDistance;
-}

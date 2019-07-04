@@ -95,8 +95,6 @@ public:
 
 	MONSTER_CODE GetMonsterCode();
 	int GetMonsterNum();
-
-	FVector GetAttackCircleDistanceInfo();
 };
 
 USTRUCT()
