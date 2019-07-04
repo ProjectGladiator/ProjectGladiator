@@ -121,9 +121,13 @@ void AObjectPool::Tick(float DeltaTime)
 				{
 					for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
 					{
-						//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
-						ActiveMonster_Array[i_Num].Monster->Death();
-						Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+						//몬스터 코드와 번호 가 일치하는 원소를 찾음
+						if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
+						{
+							//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
+							ActiveMonster_Array[i_Num].Monster->Death();
+							Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+						}
 					}
 				}
 			}//END of if (isAttack_Result)
@@ -157,11 +161,16 @@ void AObjectPool::Tick(float DeltaTime)
 			}
 			else if (isAlive_Monster == false)
 			{
+
 				for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
 				{
-					//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
-					ActiveMonster_Array[i_Num].Monster->Death();
-					Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+					//몬스터 코드와 번호 가 일치하는 원소를 찾음
+					if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
+					{
+						//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
+						ActiveMonster_Array[i_Num].Monster->Death();
+						Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+					}
 				}
 			}
 			break;
