@@ -36,5 +36,5 @@ public:
 	UFUNCTION()
 		virtual void OnAttackHit() override;
 
-	virtual void MyTakeDamage(float _Damage) override;
+	virtual void MyTakeDamage(float _Damage, bool _IsLive) override;
 };

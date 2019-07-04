@@ -92,6 +92,7 @@ protected:
 	UPROPERTY()
 		class UMyAnimInstance* MyAnimInstance;
 public:
+	bool IsDead;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -217,5 +218,5 @@ public:
 
 	void MonsterInfoAssemble();
 
-	virtual void MyTakeDamage(float _Damage);
+	virtual void MyTakeDamage(float _Damage, bool _IsLive = true);
 };

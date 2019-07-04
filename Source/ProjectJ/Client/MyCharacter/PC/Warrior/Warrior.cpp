@@ -146,7 +146,7 @@ void AWarrior::OnAttackHit()
 	}
 }
 
-void AWarrior::MyTakeDamage(float _Damage)
+void AWarrior::MyTakeDamage(float _Damage, bool _IsLive)
 {
 	
 }

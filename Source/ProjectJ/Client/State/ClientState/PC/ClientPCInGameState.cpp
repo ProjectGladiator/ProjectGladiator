@@ -4,6 +4,7 @@
 //클라 헤더
 #include "Client/MainMap/MainMapGameMode.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
+#include "Client/MainMap/MainMapPlayerController.h"
 
 //서버 헤더
 #include "NetWork/StorageManager.h"
@@ -27,10 +28,17 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 	FVector OtherCharacterLocation; //서버로부터 받은 다른 캐릭터 위치 정보 저장용 벡터
 	FRotator OtherCharacterRotation;
 	AMyCharacter* OtherCharacter = nullptr; //맵에 접속해 있는 다른 캐릭터
+	AMyCharacter* MyCharacter = nullptr; //내가 조종하는 캐릭터
 	char TempJumpStartCharacterCode[30];
 	char* JumpStartCharacterCode = TempJumpStartCharacterCode;
 	char TempAttackStartCharacterCode[30];
 	char* AttackStartCharacterCode = TempAttackStartCharacterCode;
+	char TempMonsterAttackedUserCharacterCode[30];
+	char * MonsterAttackedUsercharacter = TempMonsterAttackedUserCharacterCode;
+
+	bool IsAttackSuccess;
+	int ResultDamage;
+	bool IsLive;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -77,8 +85,6 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 
 			StorageManager::GetInstance()->ChangeData(Data->data, otherinfo);
 			StorageManager::GetInstance()->PopData();
-
-		//	GLog->Log(ANSI_TO_TCHAR(otherinfo.code));
 
 			//GLog->Log(FString::Printf(TEXT("\nOther Character Rotation : Roll : %f Pitch : %f Yaw : %f\n"), otherinfo.xyz[0], otherinfo.xyz[1], otherinfo.xyz[2]));
 
@@ -137,6 +143,41 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 					OtherCharacter->LeftClickOn();
 				}
 			}
+			break;
+		case PGAMEDATA_MONSTER_ATTACKED_THE_USER_RESULT:
+			StorageManager::GetInstance()->ChangeData(Data->data, IsAttackSuccess, ResultDamage, IsLive);
+			StorageManager::GetInstance()->PopData();
+
+			if (IsAttackSuccess)
+			{
+				MyCharacter = Cast<AMyCharacter>(MainMapGameMode->GetMainMapPlayerController()->GetPawn());
+
+				if (MyCharacter)
+				{
+					MyCharacter->MyTakeDamage(ResultDamage);
+				}
+			}
+			break;
+		case PGAMEDATA_MONSTER_ATTACKED_THE_OTHERUSER:
+			memset(TempMonsterAttackedUserCharacterCode, 0, sizeof(TempMonsterAttackedUserCharacterCode));
+
+			StorageManager::GetInstance()->ChangeData(Data->data, MonsterAttackedUsercharacter, ResultDamage, IsLive);
+			StorageManager::GetInstance()->PopData();
+
+			OtherCharacter = MainMapGameMode->GetLoginUser(MonsterAttackedUsercharacter);
+
+			if (OtherCharacter)
+			{
+				if (IsLive)
+				{
+					OtherCharacter->MyTakeDamage(ResultDamage);
+				}
+				else
+				{
+					OtherCharacter->MyTakeDamage(ResultDamage, false);
+				}
+			}
+
 			break;
 		}
 	}

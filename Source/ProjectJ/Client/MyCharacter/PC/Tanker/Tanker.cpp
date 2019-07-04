@@ -13,6 +13,9 @@
 #include "GameFramework/CharacterMovementComponent.h" //캐릭터 속력 관련 헤더파일
 #include "Client/MainMap/MainMapPlayerController.h"//메인맵 플레이어 컨트롤러 헤더
 #include "Client/Monster/Monster.h"
+#include "Client/MyCharacter/PC/Widget/MyCharacterUI.h" //내캐릭터 UI헤더
+#include "Client/MyCharacter/PC/Widget/CharacterInteraction/ClickCharacterInteraction.h"//클릭 상호작용 헤더
+#include "Client/MyCharacter/PC/Widget/Info/MyCharacterWidget.h" //내캐릭터 정보 위젯 헤더
 //서버 헤더
 
 ATanker::ATanker()
@@ -239,7 +242,16 @@ void ATanker::OnAttackHit()
 	}*/
 }
 
-void ATanker::MyTakeDamage(float _Damage)
+void ATanker::MyTakeDamage(float _Damage, bool _IsLive)
 {
+	CurrentHP -= _Damage;
+
+	if (CurrentHP <= 0)
+	{
+		CurrentHP = 0;
+		IsDead = true;
+	}
+
+	MyCharacterUI->GetMyCharacterInteraction()->GetMyCharacterWidget()->HPUpdate();
 
 }

@@ -97,6 +97,8 @@ AMyCharacter::AMyCharacter()
 		GameStageStartEffect = PT_GameStageStartEffect.Object;
 	}
 
+	IsDead = false;
+
 	Tags.Add(TEXT("Character"));
 }
 
@@ -726,7 +728,7 @@ void AMyCharacter::MonsterInfoAssemble()
 	}
 }
 
-void AMyCharacter::MyTakeDamage(float _Damage)
+void AMyCharacter::MyTakeDamage(float _Damage, bool _IsLive)
 {
 
 }

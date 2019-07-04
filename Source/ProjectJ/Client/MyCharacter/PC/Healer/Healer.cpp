@@ -44,7 +44,7 @@ void AHealer::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AHealer::MyTakeDamage(float _Damage)
+void AHealer::MyTakeDamage(float _Damage, bool _IsLive)
 {
 
 }

@@ -258,7 +258,7 @@ float AGunner::GetCrossHairSpread()
 	return CrossHairSpread;
 }
 
-void AGunner::MyTakeDamage(float _Damage)
+void AGunner::MyTakeDamage(float _Damage, bool _IsLive)
 {
 	
 }

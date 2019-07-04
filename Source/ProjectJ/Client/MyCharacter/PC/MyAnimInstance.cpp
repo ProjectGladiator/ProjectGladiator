@@ -26,6 +26,7 @@ void UMyAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	//MyCharacter가 존재하는지, 메모리상에 유효한지 확인한다.
 	if (MyCharacter && MyCharacter->IsValidLowLevelFast()) 
 	{
+		IsDead = MyCharacter->IsDead;
 		//캐릭터의 속력과 회전값으로 방향값을 구해서 Direction에 저장한다.
 		Direction = CalculateDirection(MyCharacter->GetCharacterMovement()->Velocity, MyCharacter->GetActorRotation());
 		//캐릭터의 속력을 구한다.
