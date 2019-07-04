@@ -68,9 +68,11 @@ void AObjectPool::Tick(float DeltaTime)
 
 	PacketData* Data;
 
-	int Monster_Code;
-	int Monster_Num;
-	int Take_Damage;
+	int Monster_Code = 0;
+	int Monster_Num = 0;
+	int Take_Damage = 0;
+	bool isAttack_Result = false;
+	bool isAlive_Monster = false;
 
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
@@ -90,82 +92,163 @@ void AObjectPool::Tick(float DeltaTime)
 			StorageManager::GetInstance()->ChangeData(Data->data, SpawnTime);
 			StorageManager::GetInstance()->PopData();
 			break;
-		case PGAMEDATA_MONSTER_ATTACK_SUCCESS: // 몬스터 공격받음(공격성공 살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
+		case PGAMEDATA_USER_ATTACKED_THE_MONSTER_RESULT:// 유저가 몬스터를 공격한 결과 - ([bool] 성공실패결과, [int] 몬스터 코드, [int] 몬스터 번호, [int] 데미지, [bool] 죽었는지살았는지)	
+			StorageManager::GetInstance()->ChangeData(Data->data, isAttack_Result, Monster_Code, Monster_Num, Take_Damage, isAlive_Monster);
 			StorageManager::GetInstance()->PopData();
-			for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
-			{
-				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
-				{
-					//GLog->Log(FString::Printf(TEXT("AMonster Tick GetActorLocation X : %f Y : %f Z : %f\n"), GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z));
-					GLog->Log(FString::Printf(TEXT("나에게 맞아 데미지를 받기 시작합니다.")));
-					GLog->Log(FString::Printf(TEXT("데미지 받기 전 %f, 받은 데미지 %f"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
-					
-					ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
 
-					GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
+			//공격결과가 True이면
+			if (isAttack_Result)
+			{
+				GLog->Log(FString::Printf(TEXT("공격 성공 메소드 실행.")));
+				if (isAlive_Monster)
+				{
+					//몬스터 배열 사용
+					for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+					{
+						//몬스터 코드와 번호 가 일치하는 원소를 찾음
+						if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
+						{
+							GLog->Log(FString::Printf(TEXT("나에게 맞아 데미지를 받기 시작합니다.")));
+							GLog->Log(FString::Printf(TEXT("데미지 받기 전 %f, 받은 데미지 %f"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
+
+							ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
+
+							GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
+						}
+					}
 				}
+				else if (isAlive_Monster == false)
+				{
+					for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+					{
+						//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
+						ActiveMonster_Array[i_Num].Monster->Death();
+						Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+					}
+				}
+			}//END of if (isAttack_Result)
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("공격 결과가 실패로 들어왔습니다.")));
+			}
+			break;		
+			
+		case PGAMEDATA_OTHERUSER_ATTACKED_THE_MONSTER:// 다른 유저가 몬스터를 공격한 결과 - ([int] 몬스터 코드, [int] 몬스터 번호, [int] 데미지, [bool] 죽었는지살았는지)
+			StorageManager::GetInstance()->ChangeData(Data->data, isAttack_Result, Monster_Code, Monster_Num, Take_Damage, isAlive_Monster);
+			StorageManager::GetInstance()->PopData();
+			//공격결과가 True이면
+			if (isAttack_Result)
+			{
+				GLog->Log(FString::Printf(TEXT("공격 성공 메소드 실행.")));
+				if (isAlive_Monster)
+				{
+					//몬스터 배열 사용
+					for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+					{
+						//몬스터 코드와 번호 가 일치하는 원소를 찾음
+						if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
+						{
+							GLog->Log(FString::Printf(TEXT("아군에게 맞아 데미지를 받기 시작합니다.")));
+							GLog->Log(FString::Printf(TEXT("데미지 받기 전 %f, 받은 데미지 %f"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
+
+							ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
+
+							GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
+						}
+					}
+				}
+				else if (isAlive_Monster == false)
+				{
+					for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+					{
+						//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
+						ActiveMonster_Array[i_Num].Monster->Death();
+						Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+					}
+				}
+			}//END of if (isAttack_Result)
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("공격 결과가 실패로 들어왔습니다.")));
 			}
 			break;
-		case PGAMEDATA_MONSTER_ATTACK_FAIL:					// 몬스터 공격받음(공격실패) - (프로토콜만)
-			StorageManager::GetInstance()->PopData();
-			break;
-		case PGAMEDATA_MONSTER_ATTACK_DIE:					// 몬스터 공격받음(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
-			StorageManager::GetInstance()->PopData();
-			for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
-			{
-				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
-				{
-					GLog->Log(FString::Printf(TEXT("나 에게 맞아 사형선고를 받기 시작합니다.")));
-					GLog->Log(FString::Printf(TEXT("데미지 받기 전 %d, 받은 데미지 %d"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
+		
+		//case PGAMEDATA_MONSTER_ATTACK_SUCCESS: // 몬스터 공격받음(공격성공 살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
+		//	//StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
+		//	//StorageManager::GetInstance()->PopData();
+		//	for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+		//	{
+		//		if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
+		//		{
+		//			//GLog->Log(FString::Printf(TEXT("AMonster Tick GetActorLocation X : %f Y : %f Z : %f\n"), GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z));
+		//			GLog->Log(FString::Printf(TEXT("나에게 맞아 데미지를 받기 시작합니다.")));
+		//			GLog->Log(FString::Printf(TEXT("데미지 받기 전 %f, 받은 데미지 %f"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
+		//			
+		//			ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
 
-					ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
-					
+		//			GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
+		//		}
+		//	}
+		//	break;
+		//case PGAMEDATA_MONSTER_ATTACK_FAIL:					// 몬스터 공격받음(공격실패) - (프로토콜만)
+		//	StorageManager::GetInstance()->PopData();
+		//	break;
+		//case PGAMEDATA_MONSTER_ATTACK_DIE:					// 몬스터 공격받음(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
+		//	//StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
+		//	//StorageManager::GetInstance()->PopData();
+		//	for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+		//	{
+		//		if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
+		//		{
+		//			GLog->Log(FString::Printf(TEXT("나 에게 맞아 사형선고를 받기 시작합니다.")));
+		//			GLog->Log(FString::Printf(TEXT("데미지 받기 전 %d, 받은 데미지 %d"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
 
-					GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
+		//			ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
+		//			
 
-					//Monster의 Death Function 호출
-					ActiveMonster_Array[i_Num].Monster->Death();
-					Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
-				}
-			}
-			break;
+		//			GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
 
-		case PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK:			// 다른 유저가 몬스터 공격함(살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
-			StorageManager::GetInstance()->PopData();
-			for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
-			{
-				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
-				{
-					GLog->Log(FString::Printf(TEXT("타 유저에게 맞아 데미지를 받기 시작합니다.")));
-					GLog->Log(FString::Printf(TEXT("데미지 받기 전 %d, 받은 데미지 %d"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
+		//			//Monster의 Death Function 호출
+		//			ActiveMonster_Array[i_Num].Monster->Death();
+		//			Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+		//		}
+		//	}
+		//	break;
 
-					ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
+		//case PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK:			// 다른 유저가 몬스터 공격함(살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
+		//	//StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
+		//	//StorageManager::GetInstance()->PopData();
+		//	for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+		//	{
+		//		if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
+		//		{
+		//			GLog->Log(FString::Printf(TEXT("타 유저에게 맞아 데미지를 받기 시작합니다.")));
+		//			GLog->Log(FString::Printf(TEXT("데미지 받기 전 %d, 받은 데미지 %d"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
 
-					GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
-				}
-			}
-			break;			
-		case PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK_DIE:		// 다른 유저가 몬스터 공격함(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
-			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
-			StorageManager::GetInstance()->PopData();
-			for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
-			{
-				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
-				{
-					GLog->Log(FString::Printf(TEXT("타 유저에게 맞아 사형선고를 받기 시작합니다.")));
-					GLog->Log(FString::Printf(TEXT("데미지 받기 전 %d, 받은 데미지 %d"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
+		//			ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
 
-					ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
+		//			GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
+		//		}
+		//	}
+		//	break;			
+		//case PGAMEDATA_MONSTER_OTHERPLAYER_ATTACK_DIE:		// 다른 유저가 몬스터 공격함(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
+		//	//StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage);
+		//	//StorageManager::GetInstance()->PopData();
+		//	for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+		//	{
+		//		if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
+		//		{
+		//			GLog->Log(FString::Printf(TEXT("타 유저에게 맞아 사형선고를 받기 시작합니다.")));
+		//			GLog->Log(FString::Printf(TEXT("데미지 받기 전 %d, 받은 데미지 %d"), ActiveMonster_Array[i_Num].Monster->GetHP(), Take_Damage));
 
-					GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
-					ActiveMonster_Array[i_Num].Monster->Death();
-					Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
-				}
-			}
-			break;
+		//			ActiveMonster_Array[i_Num].Monster->SetHP(ActiveMonster_Array[i_Num].Monster->GetHP() - Take_Damage);
+
+		//			GLog->Log(FString::Printf(TEXT("데미지 받은 후 %d"), ActiveMonster_Array[i_Num].Monster->GetHP()));
+		//			ActiveMonster_Array[i_Num].Monster->Death();
+		//			Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+		//		}
+		//	}
+		//	break;
 		}
 	}
 }
@@ -192,7 +275,8 @@ void AObjectPool::PoolSetting()
 		}
 
 		////kind of Monster AND Monster's Maximum size (예비로 최대량을 정해놓고 만들어둠)
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 10, ASpider::StaticClass());
+		//###########################################  MONSTER_CODE::SPIDER 를 꼭 ASPIDER로 돌려놔야함!!! ####################################
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 10, ABear::StaticClass());
 		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM,10, ADinosaur::StaticClass());
 		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::BOSS_SPIDER].Monster_Volum_Array, MONSTER_CODE::BOSS_SPIDER, 10, ADog::StaticClass());
 	
@@ -312,6 +396,12 @@ void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, FVector _MonsterPostio
 		if (check_RecycleObject(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Monster Recycle"));
+
+			/*##############################################
+			################################################*/
+			//DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->CurrentStat를 변경해야함
+			/*##############################################
+			################################################*/
 
 			//Active Actor to bisActive make true;
 			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->bisActive = true;
