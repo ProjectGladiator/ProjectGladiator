@@ -232,9 +232,16 @@ void AMainMapPlayerController::C2S_ReqAttack(int _Attacknum)
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 
-void AMainMapPlayerController::C2S_HitInfo(int _MonsterCode, int _MonsterNum, int _AttackNum, float _X, float _Y, float _Z)
+void AMainMapPlayerController::C2S_MyCharacterHitInfo(int _MonsterCode, int _MonsterNum, int _AttackNum, float _X, float _Y, float _Z)
 {
 	InGameManager::GetInstance()->InGame_Character_Attack_Success(_MonsterCode, _MonsterNum, _AttackNum, _X, _Y, _Z);
+	NetworkClient_main::NetworkManager::GetInstance()->Send();
+}
+
+void AMainMapPlayerController::C2S_MonsterHitInfo(int _MonsterCode, int _MonsterNum, int _AttackNum, float _X, float _Y, float _Z)
+{
+	GLog->Log(FString::Printf(TEXT("AMainMapPlayerController::C2S_MonsterHitInfo 호출")));
+	InGameManager::GetInstance()->InGame_Req_Monster_Attack(_MonsterCode, _MonsterNum, _AttackNum, _X, _Y, _Z);
 	NetworkClient_main::NetworkManager::GetInstance()->Send();
 }
 

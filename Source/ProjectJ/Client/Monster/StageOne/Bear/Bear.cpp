@@ -121,7 +121,7 @@ void ABear::Tick(float DeltaTime)
 			}
 			else
 			{
-				GLog->Log(FString::Printf(TEXT("곰 처음 공격")));
+				//GLog->Log(FString::Printf(TEXT("곰 처음 공격")));
 				IsAttack = true;
 
 				if (BearAnimInstance)
@@ -211,7 +211,7 @@ void ABear::OnMonsterAttackEnded()
 
 void ABear::OnComboSave()
 {
-	GLog->Log(FString::Printf(TEXT("곰 콤보 공격 시작")));
+	//GLog->Log(FString::Printf(TEXT("곰 콤보 공격 시작")));
 	if (IsCombo)
 	{
 		IsCombo = false;

@@ -113,7 +113,7 @@ void AWorm::Tick(float DeltaTime)
 		break;
 		case EWormState::Attack:
 		{
-			FHitResult HitResult=AIManager->AttackMeleeHitCreate(this, AttackInfo,true);
+			AIManager->AttackMeleeHitCreate(this, AttackInfo,true);
 			WormAnimInstance->PlayAttackMontage(0);
 
 			CurrentState = EWormState::Death;

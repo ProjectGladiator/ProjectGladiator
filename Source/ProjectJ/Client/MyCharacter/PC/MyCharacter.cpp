@@ -81,7 +81,7 @@ AMyCharacter::AMyCharacter()
 	CurrentMP = MaxHP;
 
 	Level = 0;
-
+	
 	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_PhysicsBody);
 
 	OtherCharacterController = nullptr;

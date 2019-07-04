@@ -58,6 +58,8 @@ void ATanker::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel2);
+
 	AttackSpeed = 1.0f;
 
 	MyAnimInstance = Cast<UTankerAnimInstance>(GetMesh()->GetAnimInstance());
@@ -188,7 +190,7 @@ void ATanker::OnAttackHit()
 	//GLog->Log(FString::Printf(TEXT("TraceEnd %f %f %f"), TraceEnd.X, TraceEnd.Y, TraceEnd.Z));
 	//GLog->Log(FString::Printf(TEXT("CircleCollision %f %f %f"), CircleCollision.X, CircleCollision.Y, CircleCollision.Z));
 
-	//MainMapPlayerController->C2S_HitInfo(10001, 0, 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
+	MainMapPlayerController->C2S_MyCharacterHitInfo(10001, 0, 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
 
 	if (HitResult.GetActor())
 	{
@@ -198,7 +200,7 @@ void ATanker::OnAttackHit()
 		{
 			if (MainMapPlayerController)
 			{
-				MainMapPlayerController->C2S_HitInfo(Monster->GetMonsterCode(), 0, 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
+				//MainMapPlayerController->C2S_HitInfo(Monster->GetMonsterCode(), 0, 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
 				GLog->Log(FString::Printf(TEXT("%d"), Monster->GetMonsterCode()));
 			}
 		}
@@ -244,6 +246,7 @@ void ATanker::OnAttackHit()
 
 void ATanker::MyTakeDamage(float _Damage, bool _IsLive)
 {
+	GLog->Log(FString::Printf(TEXT("Tanker MyTakeDamage 호출")));
 	CurrentHP -= _Damage;
 
 	if (CurrentHP <= 0)

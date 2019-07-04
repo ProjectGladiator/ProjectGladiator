@@ -72,17 +72,16 @@ EPathFollowingRequestResult::Type UAIManager::TargetChase(AMonsterAIController *
 	}
 }
 
-FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & AttackInfo, bool RadialDamage)
+void UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackInfo & AttackInfo, bool RadialDamage)
 {
 	FHitResult HitResult;
+	TArray<FHitResult> HitResults;
 
 	if (Monster->IsValidLowLevel())
 	{
 		GLog->Log(FString::Printf(TEXT("몬스터 공격중")));
 		TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
-		ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
-
-		//TArray<FHitResult> HitResults;
+		ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_GameTraceChannel2));
 
 		TArray<AActor*>IgnoreActors;
 		IgnoreActors.Add(Monster);
@@ -97,57 +96,33 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 			ObjectTypes,
 			false,
 			IgnoreActors,
-			EDrawDebugTrace::None,
+			EDrawDebugTrace::ForDuration,
 			HitResult,
 			true);
 
-		if (HitResult.GetActor()->IsValidLowLevel())
+		AMyCharacter* HitMyCharacter = Cast<AMyCharacter>(HitResult.GetActor());
+
+		if (HitMyCharacter)
 		{
-			AMyCharacter* HitMyCharacter = Cast<AMyCharacter>(HitResult.GetActor());
+			FVector AttackCircleDistnace = Monster->GetActorLocation() + Monster->GetActorForwardVector() * (AttackInfo.AttackStartLocation + AttackInfo.AttackEndLocation);
 
-			if (HitMyCharacter)
+			AMainMapPlayerController* MainMapPlayerController = Cast<AMainMapPlayerController>(HitMyCharacter->GetController());
+
+			if (MainMapPlayerController)
 			{
-				FVector AttackCircleDistnace = Monster->GetActorLocation() + Monster->GetActorForwardVector() * (AttackInfo.AttackStartLocation + AttackInfo.AttackEndLocation);
-
-				/*auto Target = Cast<AMyCharacter>(HitResult.GetActor());
-
-				Target->LaunchCharacter(Monster->GetActorForwardVector()*10.0f, false, false);*/
-
-				if (RadialDamage)
-				{
-					UGameplayStatics::ApplyRadialDamage(GetWorld(),
-						10.0f,
-						Monster->GetActorLocation(),
-						300.0f,
-						nullptr,
-						IgnoreActors,
-						Monster,
-						UGameplayStatics::GetPlayerController(GetWorld(), 0),
-						false,
-						ECollisionChannel::ECC_WorldStatic
-					);
-				}
-				else
-				{
-					UGameplayStatics::ApplyPointDamage(HitResult.GetActor(),
-						10.0f,
-						Monster->GetActorForwardVector(),
-						HitResult,
-						Monster->GetController(),
-						Monster,
-						nullptr);
-				}
-
-				AMainMapPlayerController* MainMapPlayerController = Cast<AMainMapPlayerController>(HitMyCharacter->GetController());
-
-				if (MainMapPlayerController)
-				{
-					MainMapPlayerController->C2S_HitInfo(Monster->GetMonsterCode(), Monster->GetMonsterNum(), 1, AttackCircleDistnace.X, AttackCircleDistnace.Y, AttackCircleDistnace.Z);
-				}
+				MainMapPlayerController->C2S_MonsterHitInfo(Monster->GetMonsterCode(), Monster->GetMonsterNum(), 1, AttackCircleDistnace.X, AttackCircleDistnace.Y, AttackCircleDistnace.Z);
+			}
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("MainMapPlayerController 가 존재 하지 않음")));
 			}
 		}
-		
-		/*UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
+		else
+		{
+			GLog->Log(FString::Printf(TEXT("HitMyCharacter 가 존재 하지 않음")));
+		}
+
+	/*	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
 			TraceStart,
 			TraceEnd,
 			AttackInfo.AttackWidth,
@@ -156,29 +131,40 @@ FHitResult UAIManager::AttackMeleeHitCreate(AMonster * Monster, FMonsterAttackIn
 			IgnoreActors,
 			EDrawDebugTrace::ForDuration,
 			HitResults,
-			true);*/
+			true);
 
-			/*for (int i = 0; i < HitResults.Num(); i++)
+		for (int i = 0; i < HitResults.Num(); i++)
+		{
+			if (HitResults[i].GetActor()->IsValidLowLevel())
 			{
-				UGameplayStatics::ApplyRadialDamage(GetWorld(),
-					10.0f,
-					HitResults[i].ImpactPoint,
-					300.0f,
-					nullptr,
-					IgnoreActors,
-					Monster,
-					UGameplayStatics::GetPlayerController(GetWorld(), 0),
-					false,
-					ECollisionChannel::ECC_Visibility
-				);
-			}*/
+				AMyCharacter* HitMyCharacter = Cast<AMyCharacter>(HitResults[i].GetActor());
+
+				if (HitMyCharacter)
+				{
+					FVector AttackCircleDistnace = Monster->GetActorLocation() + Monster->GetActorForwardVector() * (AttackInfo.AttackStartLocation + AttackInfo.AttackEndLocation);
+
+					AMainMapPlayerController* MainMapPlayerController = Cast<AMainMapPlayerController>(HitMyCharacter->GetController());
+
+					if (MainMapPlayerController)
+					{
+						MainMapPlayerController->C2S_MonsterHitInfo(Monster->GetMonsterCode(), Monster->GetMonsterNum(), 1, AttackCircleDistnace.X, AttackCircleDistnace.Y, AttackCircleDistnace.Z);
+					}
+					else
+					{
+						GLog->Log(FString::Printf(TEXT("MainMapPlayerController 가 존재 하지 않음")));
+					}
+				}
+				else
+				{
+					GLog->Log(FString::Printf(TEXT("HitMyCharacter 가 존재 하지 않음")));
+				}
+			}
+		}*/
 	}
 	else
 	{
 		GLog->Log(FString::Printf(TEXT("공격 하는 몬스터가 존재하지 않음")));
 	}
-
-	return HitResult;
 }
 
 FHitResult UAIManager::AttackRangeHitCreate(AMonster * Monster, float RangeDistance, const FName& SocketName, bool RadialDamage)
