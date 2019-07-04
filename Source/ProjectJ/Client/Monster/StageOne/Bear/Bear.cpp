@@ -86,7 +86,7 @@ void ABear::Tick(float DeltaTime)
 		case EBearState::Ready:
 			if (DeathFlag == true)
 			{
-				CurrentHP = true;
+				CurrentHP = MaxHP;
 			}
 			break;
 		case EBearState::Idle:
