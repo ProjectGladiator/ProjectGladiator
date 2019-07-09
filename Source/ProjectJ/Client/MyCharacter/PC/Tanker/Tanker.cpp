@@ -58,8 +58,6 @@ void ATanker::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel2);
-
 	AttackSpeed = 1.0f;
 
 	MyAnimInstance = Cast<UTankerAnimInstance>(GetMesh()->GetAnimInstance());
@@ -163,17 +161,16 @@ void ATanker::OnComboMontageSave()
 void ATanker::OnAttackHit()
 {
 	TArray<TEnumAsByte<EObjectTypeQuery>>ObjectTypes;
-	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_PhysicsBody));
+	ObjectTypes.Add(UEngineTypes::ConvertToObjectType(ECollisionChannel::ECC_GameTraceChannel3));
 
 	TArray<FHitResult> HitResults;
-	FHitResult HitResult;
 	TArray<AActor*>IgonreActors;
 	IgonreActors.Add(this);
 	
 	FVector TraceStart = GetActorLocation() + GetActorForwardVector() * 100.0f;
 	FVector TraceEnd = TraceStart + GetActorForwardVector() * 100.0f;
 
-	UKismetSystemLibrary::SphereTraceSingleForObjects(GetWorld(),
+	UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
 		TraceStart,
 		TraceEnd,
 		140.0f,
@@ -181,7 +178,7 @@ void ATanker::OnAttackHit()
 		false,
 		IgonreActors,
 		EDrawDebugTrace::ForDuration,
-		HitResult,
+		HitResults,
 		true);
 	
 	FVector CircleCollision = GetActorLocation() + GetActorForwardVector() * 200.0f;
@@ -190,36 +187,25 @@ void ATanker::OnAttackHit()
 	//GLog->Log(FString::Printf(TEXT("TraceEnd %f %f %f"), TraceEnd.X, TraceEnd.Y, TraceEnd.Z));
 	//GLog->Log(FString::Printf(TEXT("CircleCollision %f %f %f"), CircleCollision.X, CircleCollision.Y, CircleCollision.Z));
 
-	MainMapPlayerController->C2S_MyCharacterHitInfo(10001, 0, 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
-
-	if (HitResult.GetActor())
+	for (int i = 0; i < HitResults.Num(); i++)
 	{
-		AMonster* Monster = Cast<AMonster>(HitResult.GetActor());
-
-		if (Monster)
+		if (HitResults[i].GetActor()->IsValidLowLevel())
 		{
-			if (MainMapPlayerController)
+			AMonster* Monster = Cast<AMonster>(HitResults[i].GetActor());
+
+			if (Monster)
 			{
-				//MainMapPlayerController->C2S_HitInfo(Monster->GetMonsterCode(), 0, 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
-				GLog->Log(FString::Printf(TEXT("%d"), Monster->GetMonsterCode()));
+				if (MainMapPlayerController)
+				{
+					MainMapPlayerController->C2S_MyCharacterHitInfo(Monster->GetMonsterCode(), Monster->GetMonsterNum(), 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
+
+					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffectMonster, HitResults[i].ImpactPoint);
+				}
 			}
 		}
-		else
-		{
-			GLog->Log(FString::Printf(TEXT("부딪힌 액터는 있으나 몬스터가 아님")));
-		}
-
-		GLog->Log(FString::Printf(TEXT("%s"), *HitResult.BoneName.ToString()));
-
-		UGameplayStatics::ApplyDamage(
-			HitResult.GetActor(),
-			10.0f,
-			UGameplayStatics::GetPlayerController(GetWorld(), 0),
-			this,
-			nullptr);
-
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffectMonster, HitResult.ImpactPoint);
 	}
+
+	
 	/*UKismetSystemLibrary::SphereTraceMultiForObjects(GetWorld(),
 		TraceStart,
 		TraceEnd,

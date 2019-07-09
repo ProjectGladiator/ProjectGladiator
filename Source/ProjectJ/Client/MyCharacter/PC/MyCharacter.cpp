@@ -107,6 +107,8 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel2);
+
 	MyAnimInstance = Cast<UMyAnimInstance>(GetMesh()->GetAnimInstance());
 	MainMapPlayerController = Cast<AMainMapPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 }

@@ -85,6 +85,7 @@ void AMonster::BeginPlay()
 {
 	Super::BeginPlay();
 
+	GetMesh()->SetCollisionObjectType(ECollisionChannel::ECC_GameTraceChannel3);
 }
 
 // Called every frame
