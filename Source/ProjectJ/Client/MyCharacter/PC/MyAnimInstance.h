@@ -34,7 +34,7 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsRightClick, Meta = (AllowPrivateAccess = true))
 		bool IsRightClick;
 	//죽었는지 안 죽었는지
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsRightClick, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = IsDead, Meta = (AllowPrivateAccess = true))
 		bool IsDead;
 protected:
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly, Category = Montage)

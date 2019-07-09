@@ -196,7 +196,10 @@ void AMyCharacter::MoveForward(float Value)
 	{
 		////앞뒤로 움직일때
 		//PlayerMessageQue.InQueue(PlayerMessage::PLAYER_UP_MOVE);
-		ClientCharacterState->MoveForward(Value);
+		if (!IsDead)
+		{
+			ClientCharacterState->MoveForward(Value);
+		}
 	}
 }
 
@@ -205,7 +208,10 @@ void AMyCharacter::MoveRight(float Value)
 	if (ClientCharacterState)
 	{
 		//양옆으로 움직일때
-		ClientCharacterState->MoveRight(Value);
+		if (!IsDead)
+		{
+			ClientCharacterState->MoveRight(Value);
+		}
 	}
 }
 
@@ -236,7 +242,10 @@ void AMyCharacter::LookUp(float Value)
 {
 	if (ClientCharacterState)
 	{
-		ClientCharacterState->LookUp(Value);
+		if (!IsDead)
+		{
+			ClientCharacterState->LookUp(Value);
+		}
 	}
 }
 
@@ -244,7 +253,10 @@ void AMyCharacter::Turn(float Value)
 {
 	if (ClientCharacterState)
 	{
-		ClientCharacterState->Turn(Value);
+		if (!IsDead)
+		{
+			ClientCharacterState->Turn(Value);
+		}
 	}
 }
 
@@ -293,7 +305,10 @@ void AMyCharacter::RightClickOn()
 {
 	if (!MainMapPlayerController->bShowMouseCursor)
 	{
-		IsRightClick = true;
+		if (!IsDead)
+		{
+			IsRightClick = true;
+		}
 	}
 }
 
@@ -329,8 +344,11 @@ void AMyCharacter::JumpStart()
 {
 	if (MainMapPlayerController)
 	{
-		MainMapPlayerController->C2S_ReqJump();
-		Jump();
+		if (!IsDead)
+		{
+			MainMapPlayerController->C2S_ReqJump();
+			Jump();
+		}
 	}
 }
 
@@ -358,17 +376,20 @@ void AMyCharacter::LeftClickOn()
 {
 	if (MainMapPlayerController)
 	{
-		if (IsClick) // 현재 캐릭터 생성창인지 확인해주는 변수
+		if (!IsDead)
 		{
-			MainMapPlayerController->C2S_ReqAttack(1);
-			if (ClientCharacterState)
+			if (IsClick) // 현재 캐릭터 생성창인지 확인해주는 변수
 			{
-				ClientCharacterState->Click(MainMapPlayerController);
+				MainMapPlayerController->C2S_ReqAttack(1);
+				if (ClientCharacterState)
+				{
+					ClientCharacterState->Click(MainMapPlayerController);
+				}
 			}
-		}
-		else
-		{
-			GLog->Log(FString::Printf(TEXT("IsClick가 false")));
+			else
+			{
+				GLog->Log(FString::Printf(TEXT("IsClick가 false")));
+			}
 		}
 	}
 }
