@@ -154,7 +154,7 @@ void ABear::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			//GLog->Log(FString::Printf(TEXT("몬스터 사망")));
 			if (DeathInVisibleValue == 0)
 			{
 				GLog->Log(FString::Printf(TEXT("재배치 준비")));
