@@ -23,6 +23,8 @@ private:
 		EWormState CurrentState;
 	UPROPERTY()
 		class UWormAnimInstance* WormAnimInstance;
+	UPROPERTY()
+		float MaxHP;
 protected:
 	virtual void BeginPlay() override;
 public:

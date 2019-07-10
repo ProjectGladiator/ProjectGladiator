@@ -28,6 +28,8 @@ private:
 	EGrountAttackState CurrentAttackState;
 	UPROPERTY()
 		class UGrountAnimInstance* GrountAnimInstance;
+	UPROPERTY()
+		float MaxHP;
 
 protected:
 	virtual void BeginPlay() override;

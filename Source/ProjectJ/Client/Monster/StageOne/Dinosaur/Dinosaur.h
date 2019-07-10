@@ -25,6 +25,8 @@ private:
 		EDinosaurAttackState CurrentAttackState;
 	UPROPERTY()
 		class UDinosaurAnimInstance* DinosaurAnimInstance;
+	UPROPERTY()
+		float MaxHP;
 protected:
 	virtual void BeginPlay() override;
 public:

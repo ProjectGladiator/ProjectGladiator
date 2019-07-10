@@ -57,14 +57,15 @@ ADinosaur::ADinosaur()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
+	DeathFlag = false;
+	MaxHP = 30;
 }
 
 void ADinosaur::BeginPlay()
 {
 	Super::BeginPlay();
 
-	MaxHP = 100.0f;
-	CurrentHP = MaxHP;
+	init();
 
 	TargetLimitDistance = 500.0f;
 	AttackInfo.SetAttackInfo(150.0f, 70.0f, 120.0f);
@@ -90,9 +91,16 @@ void ADinosaur::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case EDinosaurState::Ready:
+			if (DeathFlag)
+			{
+				//init으로 초기화  CurrentHP = MaxHP;
+			}
 			break;
 		case EDinosaurState::Idle:
-			CurrentState = EDinosaurState::Chase;
+			if (!DeathFlag)
+			{
+				CurrentState = EDinosaurState::Chase;
+			}
 			break;
 		case EDinosaurState::Chase:
 		{
@@ -134,7 +142,7 @@ void ADinosaur::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			//GLog->Log(FString::Printf(TEXT("몬스터 사망")));
 			if (DeathInVisibleValue == 0)
 			{
 				GLog->Log(FString::Printf(TEXT("재배치 준비")));
@@ -169,9 +177,7 @@ void ADinosaur::init()
 
 	CurrentState = EDinosaurState::Idle;
 
-	//추후 수정
-	/*MaxHP = 100.0f;
-	CurrentHP = MaxHP;*/
+	CurrentHP = MaxHP;
 }
 
 EDinosaurAttackState ADinosaur::GetCurrentAttackState()

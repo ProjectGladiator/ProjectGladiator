@@ -24,6 +24,8 @@ private:
 		EDogAttackState CurrentAttackState;
 	UPROPERTY()
 		class UDogAnimInstance* DogAnimInstance;
+	UPROPERTY()
+		float MaxHP;
 protected:
 	virtual void BeginPlay() override;
 public:

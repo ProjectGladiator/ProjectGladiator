@@ -27,6 +27,8 @@ private:
 		class USpiderAnimInstance* SpiderAnimInstance;
 	UPROPERTY()
 		float RandomAttackValue;
+	UPROPERTY()
+		float MaxHP;
 protected:
 	virtual void BeginPlay() override;
 public:

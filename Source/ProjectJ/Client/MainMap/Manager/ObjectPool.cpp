@@ -9,6 +9,8 @@
 #include "Client/Monster/StageOne/Dinosaur/Dinosaur.h"
 #include "Client/Monster/StageTwo/Dog/Dog.h"
 #include "Client/Monster/StageOne/Spider/Spider.h"
+#include "Client/Monster/StageOne/SpiderBoss/SpiderBoss.h"
+#include "Client/Monster/StageOne/Worm/Worm.h"
 #include "Client/Monster/MonsterAIController.h"
 #include "Components/BoxComponent.h"
 #include "Engine/World.h"
@@ -33,10 +35,28 @@ AObjectPool::AObjectPool()
 
 	//sameMonster class Array 
 	FMonsterstruct MonsterArray;
+
 	//Set SpawnNum
+	//SPIDER = 10001,
+	//	WORM = 10002,
+	//	BOSS_SPIDER = 10003,
+	//	// 2스테이지
+	//	DOG = 20001,
+	//	ORCCANNONSOLDIER = 20002,
+	//	KING_OF_THEAXE = 20003,
+	//	//3스테이지
+	//	BEAR = 30001,
+	//	DINOSAUR = 30002,
+	//	DRAGON = 30003
 	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::SPIDER, MonsterArray);
 	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::WORM, MonsterArray);
 	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::BOSS_SPIDER, MonsterArray);
+	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::DOG, MonsterArray);
+	//DefaultSpawnArea_Map.Emplace(MONSTER_CODE::ORCCANNONSOLDIER, MonsterArray);
+	//DefaultSpawnArea_Map.Emplace(MONSTER_CODE::KING_OF_THEAXE, MonsterArray);
+	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::BEAR, MonsterArray);
+	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::DINOSAUR, MonsterArray);
+	//DefaultSpawnArea_Map.Emplace(MONSTER_CODE::KING_OF_THEAXE, MonsterArray);
 
 	////Test to Use this pool check
 	bis_Testpool_Set = false;
@@ -277,10 +297,13 @@ void AObjectPool::PoolSetting()
 		}
 
 		////kind of Monster AND Monster's Maximum size (예비로 최대량을 정해놓고 만들어둠)
-		//###########################################  MONSTER_CODE::SPIDER 를 꼭 ASPIDER로 돌려놔야함!!! ####################################
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 10, ABear::StaticClass());
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM,10, ADinosaur::StaticClass());
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::BOSS_SPIDER].Monster_Volum_Array, MONSTER_CODE::BOSS_SPIDER, 10, ADog::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 15, ASpider::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM,20, AWorm::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::BOSS_SPIDER].Monster_Volum_Array, MONSTER_CODE::BOSS_SPIDER, 1, ASpiderBoss::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::DOG].Monster_Volum_Array, MONSTER_CODE::DOG, 10, ADog::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::BEAR].Monster_Volum_Array, MONSTER_CODE::BEAR, 10, ABear::StaticClass());
+		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::DINOSAUR].Monster_Volum_Array, MONSTER_CODE::DINOSAUR, 10, ADinosaur::StaticClass());
+
 	
 	}
 	catch (bool) {

@@ -51,6 +51,9 @@ AGrount::AGrount()
 	GetMesh()->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
+
+	DeathFlag = false;
+	MaxHP = 300;
 }
 
 void AGrount::BeginPlay()
@@ -85,11 +88,15 @@ void AGrount::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case EGrountState::Ready:
+			if (DeathFlag)
+			{
+			}
 			break;
 		case EGrountState::Idle:
-		{
-			CurrentState = EGrountState::Chase;
-		}
+			if (!DeathFlag)
+			{
+				CurrentState = EGrountState::Chase;
+			}
 			break;
 		case EGrountState::Chase:
 		{
@@ -139,12 +146,18 @@ void AGrount::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			if (DeathFlag)
+			if (DeathInVisibleValue == 0)
 			{
+				GLog->Log(FString::Printf(TEXT("재배치 준비")));
 				//We Not Use Destroy Function
 				//Destroy();
+
+				//bisActive  true -> false 재배치 준비를 위해.
 				bisActive = false;
-				Monster_SetActive(this, bisActive);
+
+				//몬스터 상태는 Ready로 변경
+				CurrentState = EGrountState::Ready;
+				DeathFlag = true;
 			}
 		}
 			break;
@@ -159,7 +172,7 @@ void AGrount::Tick(float DeltaTime)
 void AGrount::init()
 {
 	Super::init();
-	MaxHP = 300.0f;
+	
 	CurrentHP = MaxHP;
 }
 

@@ -49,6 +49,8 @@ ASpider::ASpider()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
+	DeathFlag = false;
+	MaxHP = 20;
 }
 
 void ASpider::BeginPlay()
@@ -56,9 +58,6 @@ void ASpider::BeginPlay()
 	Super::BeginPlay();
 
 	init();
-
-	MaxHP = 100.0f;
-	CurrentHP = MaxHP;
 
 	TargetLimitDistance = 150.0f;
 	AttackInfo.SetAttackInfo(150.0f, 80.0f, 100.0f);
@@ -86,9 +85,16 @@ void ASpider::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case ESpiderState::Ready:
+			if (DeathFlag)
+			{
+				//init으로 초기화 CurrentHP = MaxHP;
+			}
 			break;
 		case ESpiderState::Idle:
-			CurrentState = ESpiderState::Chase;
+			if (!DeathFlag)
+			{
+				CurrentState = ESpiderState::Chase;
+			}
 			break;
 		case ESpiderState::Chase:
 		{
@@ -158,7 +164,7 @@ void ASpider::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			//GLog->Log(FString::Printf(TEXT("몬스터 사망")));
 			if (DeathInVisibleValue == 0)
 			{
 				GLog->Log(FString::Printf(TEXT("재배치 준비")));
@@ -185,6 +191,7 @@ void ASpider::init()
 {
 	Super::init();
 	CurrentState = ESpiderState::Idle;
+	CurrentHP = MaxHP;
 	//추후 수정
 	/*MaxHP = 100.0f;
 	CurrentHP = MaxHP;*/
