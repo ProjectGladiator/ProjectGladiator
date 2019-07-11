@@ -414,7 +414,7 @@ void UMainWidget::PartyJoin(AMyCharacter* _PartyInCharacter, char * _CharacterCo
 					PartySlot.MP = 0;
 				}
 
-				PartySlotWidget->PartySlotUpdate(PartySlot, Index);
+				PartySlotWidget->PartySlotInit(PartySlot, Index);
 			}
 			else
 			{

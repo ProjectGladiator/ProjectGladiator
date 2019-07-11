@@ -94,6 +94,19 @@ void UPartyWidget::PartyLeave(char * _CharacterCode)
 	}
 }
 
+void UPartyWidget::PartySlotUIUpdate(char * _PartyUserCode, int _Type)
+{
+	for (int i = 0; i < PartySlotWigets.Num(); i++)
+	{
+		FPartySlot SlotInfo = PartySlotWigets[i]->GetPartySlotInfo();
+
+		if (strcmp(SlotInfo.CharacterCode, _PartyUserCode) == 0)
+		{
+			PartySlotWigets[i]->PartySlotUpdate(_Type);
+		}
+	}
+}
+
 void UPartyWidget::PartyLeaderUpdate()
 {
 	for (int i = 0; i < PartySlotWigets.Num(); i++)

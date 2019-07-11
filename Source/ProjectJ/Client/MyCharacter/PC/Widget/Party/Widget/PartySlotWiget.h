@@ -7,6 +7,8 @@
 #include "Client/MyCharacter/PC/Widget/Party/Structure/FPartySlot.h"
 #include "PartySlotWiget.generated.h"
 
+#define PARTY_UI_HP_UPDATE 1
+
 /**
  *
  */
@@ -41,8 +43,10 @@ public:
 	virtual void NativeConstruct() override;
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
 
-	void PartySlotUpdate(FPartySlot& _PartySlot, int32 _Index);
+	void PartySlotInit(FPartySlot& _PartySlot, int32 _Index);
 	void PartySlotLeaderUpdate();
+
+	void PartySlotUpdate(int _Type);
 
 	void SetPartyWidget(UPartyWidget* _PartyWidget);
 

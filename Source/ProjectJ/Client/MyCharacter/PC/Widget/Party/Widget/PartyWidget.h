@@ -35,5 +35,6 @@ public:
 
 	void PartyLeave();
 	void PartyLeave(char* _CharacterCode);
+	void PartySlotUIUpdate(char* _PartyUserCode,int _Type);
 	void PartyLeaderUpdate();
 };
