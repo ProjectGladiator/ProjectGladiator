@@ -23,8 +23,8 @@ protected:
 		int m_MonsterNum;
 	UPROPERTY()
 		FVector CurrentLocation;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
-		float MaxHP;
+	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
+	//	float MaxHP;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 		float CurrentHP;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = AI)

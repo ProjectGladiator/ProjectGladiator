@@ -23,6 +23,8 @@ private:
 		EBearState CurrentState;
 	UPROPERTY()
 		class UBearAnimInstance* BearAnimInstance;
+	UPROPERTY()
+		float MaxHP;
 protected:
 	virtual void BeginPlay() override;
 public:

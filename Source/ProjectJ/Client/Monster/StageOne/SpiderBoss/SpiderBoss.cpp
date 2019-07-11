@@ -46,14 +46,16 @@ ASpiderBoss::ASpiderBoss()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
+
+	DeathFlag = false;
+	MaxHP = 300;
 }
 
 void ASpiderBoss::BeginPlay()
 {
 	Super::BeginPlay();
 
-	MaxHP = 100.0f;
-	CurrentHP = MaxHP;
+	init();
 
 	TargetLimitDistance = 150.0f;
 	AttackInfo.SetAttackInfo(150.0f, 80.0f, 100.0f);
@@ -84,9 +86,16 @@ void ASpiderBoss::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case ESpiderBossState::Ready:
+			if(DeathFlag)
+			{
+				//init으로 초기화
+			}
 			break;
 		case ESpiderBossState::Idle:
-			CurrentState = ESpiderBossState::Chase;
+			if (!DeathFlag)
+			{
+				CurrentState = ESpiderBossState::Chase;
+			}
 			break;
 		case ESpiderBossState::Chase:
 		{
@@ -141,11 +150,19 @@ void ASpiderBoss::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			if (DeathFlag)
+			//GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 0)
 			{
+				GLog->Log(FString::Printf(TEXT("재배치 준비")));
 				//We Not Use Destroy Function
 				//Destroy();
-				Monster_SetActive(this, bisActive);
+
+				//bisActive  true -> false 재배치 준비를 위해.
+				bisActive = false;
+
+				//몬스터 상태는 Ready로 변경
+				CurrentState = ESpiderBossState::Ready;
+				DeathFlag = true;
 			}
 			break;
 		}
@@ -154,6 +171,14 @@ void ASpiderBoss::Tick(float DeltaTime)
 	{
 		GLog->Log(FString::Printf(TEXT("거미 보스 : 타겟이 존재하지 않음")));
 	}
+}
+
+void ASpiderBoss::init()
+{
+	Super::init();
+	CurrentState = ESpiderBossState::Idle;
+
+	CurrentHP = MaxHP;
 }
 
 void ASpiderBoss::SetAIController(AMonsterAIController * NewAIController)
@@ -194,7 +219,7 @@ void ASpiderBoss::OnMonsterAttackEnded()
 
 void ASpiderBoss::Death()
 {
-	GLog->Log(FString::Printf(TEXT("거미 보스 사망")));
+	//GLog->Log(FString::Printf(TEXT("거미 보스 사망")));
 	Super::Death();
 	CurrentState = ESpiderBossState::Death;
 }

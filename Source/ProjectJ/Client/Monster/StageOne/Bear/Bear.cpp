@@ -50,6 +50,8 @@ ABear::ABear()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 510.0f;
+	DeathFlag = false;
+	MaxHP = 50;
 }
 
 void ABear::BeginPlay()
@@ -84,13 +86,16 @@ void ABear::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case EBearState::Ready:
-			if (DeathFlag == true)
+			if (DeathFlag)
 			{
-				CurrentHP = MaxHP;
+				//init으로 초기화 CurrentHP = MaxHP;
 			}
 			break;
 		case EBearState::Idle:
-			CurrentState = EBearState::Chase;
+			if (!DeathFlag)
+			{
+				CurrentState = EBearState::Chase;
+			}
 			break;
 		case EBearState::Chase:
 		{
@@ -183,9 +188,8 @@ void ABear::init()
 	Super::init();
 	CurrentState = EBearState::Idle;
 
-	//추후 수정
-	/*MaxHP = 100.0f;
-	CurrentHP = MaxHP;*/
+	CurrentHP = MaxHP;
+
 	
 }
 

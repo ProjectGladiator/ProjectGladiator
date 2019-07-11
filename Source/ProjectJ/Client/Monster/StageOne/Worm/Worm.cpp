@@ -55,16 +55,14 @@ AWorm::AWorm()
 	GetCharacterMovement()->MaxWalkSpeed = 320.0f;
 
 	DeathFlag = false;
-
-	CurrentState = EWormState::Idle;
+	MaxHP = 30;
 }
 
 void AWorm::BeginPlay()
 {
 	Super::BeginPlay();
 
-	MaxHP = 100.0f;
-	CurrentHP = MaxHP;
+	init();
 
 	TargetLimitDistance = 100.0f;
 	AttackInfo.SetAttackInfo(0, 0, 300.0f);
@@ -87,6 +85,10 @@ void AWorm::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case EWormState::Ready:
+			if (DeathFlag == true)
+			{
+				CurrentHP = MaxHP;
+			}
 			break;
 		case EWormState::Idle:
 			if (Target)
@@ -123,7 +125,7 @@ void AWorm::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			//GLog->Log(FString::Printf(TEXT("몬스터 사망")));
 			if (DeathInVisibleValue == 0)
 			{
 				GLog->Log(FString::Printf(TEXT("재배치 준비")));
@@ -150,6 +152,7 @@ void AWorm::init()
 {
 	Super::init();
 	CurrentState = EWormState::Idle;
+	CurrentHP = MaxHP;
 		//추후 수정
 	//current_HP
 	/*MaxHP = 100.0f;*/

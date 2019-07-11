@@ -22,6 +22,7 @@
 
 #define SK_Address "SkeletalMesh'/Game/Assets/Monster/QuadrapedCreatures/Barghest/Meshes/SK_BARGHEST.SK_BARGHEST'"
 #define AnimBP_Address "AnimBlueprint'/Game/Blueprints/Monster/StageTwo/Dog/Blueprints/ABP_Dog.ABP_Dog_C'"
+
 ADog::ADog()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -60,6 +61,8 @@ ADog::ADog()
 #pragma endregion 매쉬를 월드에 적용하기 위한 위치값
 
 	GetCharacterMovement()->MaxWalkSpeed = 700.0f;
+	DeathFlag = false;
+	MaxHP = 30;
 }
 
 void ADog::BeginPlay()
@@ -101,10 +104,17 @@ void ADog::Tick(float DeltaTime)
 		{
 			//대기 상태
 		case EDogState::Ready:
+			if (DeathFlag)
+			{
+				//초기화 init()
+			}
 			break;
 		case EDogState::Idle:
 		{
-			CurrentState = EDogState::Chase;
+			if (!DeathFlag)
+			{
+				CurrentState = EDogState::Chase;
+			}
 		}
 			break;
 			//추적 상태	
@@ -160,13 +170,20 @@ void ADog::Tick(float DeltaTime)
 			DeathInVisibleValue += 0.01;
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			if (DeathFlag)
+			if (DeathInVisibleValue == 0)
 			{
+				GLog->Log(FString::Printf(TEXT("재배치 준비")));
 				//We Not Use Destroy Function
 				//Destroy();
+
+				//bisActive  true -> false 재배치 준비를 위해.
 				bisActive = false;
-				Monster_SetActive(this, bisActive);
+
+				//몬스터 상태는 Ready로 변경
+				CurrentState = EDogState::Ready;
+				DeathFlag = true;
 			}
+			//Monster_SetActive(this, bisActive);
 		}
 			break;
 		}
@@ -183,7 +200,8 @@ void ADog::Tick(float DeltaTime)
 void ADog::init()
 {
 	Super::init();
-	MaxHP = 50.0f;
+	CurrentState = EDogState::Idle;
+	
 	CurrentHP = MaxHP;
 }
 
@@ -211,20 +229,21 @@ void ADog::AttackHit()
 void ADog::Death()
 {
 	DeathFlag = true;
+	CurrentState = EDogState::Death;
 }
 
 float ADog::TakeDamage(float DamageAmount, FDamageEvent const & DamageEvent, AController * EventInstigator, AActor * DamageCauser)
 {
 	Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 
-	CurrentHP -= DamageAmount;
+	//CurrentHP -= DamageAmount;
 
-	if (CurrentHP <= 0)
-	{
-		SetActorEnableCollision(false);
-		CurrentHP = 0;
-		CurrentState = EDogState::Death;
-	}
+	//if (CurrentHP <= 0)
+	//{
+	//	SetActorEnableCollision(false);
+	//	CurrentHP = 0;
+	//	CurrentState = EDogState::Death;
+	//}
 
 	return DamageAmount;
 }
