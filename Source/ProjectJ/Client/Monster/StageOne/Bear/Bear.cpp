@@ -51,7 +51,7 @@ ABear::ABear()
 
 	GetCharacterMovement()->MaxWalkSpeed = 510.0f;
 	DeathFlag = false;
-	MaxHP = 50;
+	MaxHP = 100;
 }
 
 void ABear::BeginPlay()

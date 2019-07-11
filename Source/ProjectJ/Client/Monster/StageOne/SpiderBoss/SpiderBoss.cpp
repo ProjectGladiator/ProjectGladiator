@@ -48,7 +48,7 @@ ASpiderBoss::ASpiderBoss()
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 
 	DeathFlag = false;
-	MaxHP = 300;
+	MaxHP = 100;
 }
 
 void ASpiderBoss::BeginPlay()

@@ -62,7 +62,7 @@ ADog::ADog()
 
 	GetCharacterMovement()->MaxWalkSpeed = 700.0f;
 	DeathFlag = false;
-	MaxHP = 30;
+	MaxHP = 100;
 }
 
 void ADog::BeginPlay()

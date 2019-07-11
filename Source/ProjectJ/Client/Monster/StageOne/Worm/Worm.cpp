@@ -55,7 +55,7 @@ AWorm::AWorm()
 	GetCharacterMovement()->MaxWalkSpeed = 320.0f;
 
 	DeathFlag = false;
-	MaxHP = 30;
+	MaxHP = 100;
 }
 
 void AWorm::BeginPlay()

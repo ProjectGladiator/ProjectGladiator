@@ -58,7 +58,7 @@ ADinosaur::ADinosaur()
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
 	DeathFlag = false;
-	MaxHP = 30;
+	MaxHP = 100;
 }
 
 void ADinosaur::BeginPlay()

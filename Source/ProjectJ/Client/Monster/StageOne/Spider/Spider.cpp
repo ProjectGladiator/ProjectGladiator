@@ -50,7 +50,7 @@ ASpider::ASpider()
 
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
 	DeathFlag = false;
-	MaxHP = 20;
+	MaxHP = 100;
 }
 
 void ASpider::BeginPlay()
