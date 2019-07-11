@@ -125,7 +125,7 @@ void UParty::PartyJoin(char* _CharacterCode, int32 _JobCode, char* _NickName, fl
 				PartySlot.MP = 0;
 			}
 
-			PartySlotWidget->PartySlotUpdate(PartySlot, Index);
+			PartySlotWidget->PartySlotInit(PartySlot, Index);
 		}
 		else
 		{

@@ -31,6 +31,7 @@
 #include "Client/MyCharacter/PC/Widget/Chatting/ChattingWidget.h"
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 #include "Client/MainMap/Manager/StageManager.h"
+#include "Client/MyCharacter/PC/Widget/Party/Widget/PartyWidget.h"
 
 //#include "Client/State/ClientState/Character/ClientCharacterInGameState.h"
 
@@ -609,6 +610,16 @@ UMyCharacterUI * AMyCharacter::GetMyCharacterUI()
 	else
 	{
 		return nullptr;
+	}
+}
+
+void AMyCharacter::PartyUserUIUpdate(char* _PartyUserCode, int _Type)
+{
+	switch (_Type)
+	{
+	case PARTY_UI_HP_UPDATE:
+		MyCharacterUI->GetMainWidget()->GetPartyWidget()->PartySlotUIUpdate(_PartyUserCode, _Type);
+		break;
 	}
 }
 

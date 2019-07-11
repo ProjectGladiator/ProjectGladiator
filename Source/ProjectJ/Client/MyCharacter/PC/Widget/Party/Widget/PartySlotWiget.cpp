@@ -76,7 +76,7 @@ FReply UPartySlotWiget::NativeOnMouseButtonDown(const FGeometry & InGeometry, co
 	return FReply::Handled();
 }
 
-void UPartySlotWiget::PartySlotUpdate(FPartySlot& _PartySlot, int32 _Index)
+void UPartySlotWiget::PartySlotInit(FPartySlot& _PartySlot, int32 _Index)
 {
 	if (NickNameText)
 	{
@@ -145,6 +145,19 @@ void UPartySlotWiget::PartySlotLeaderUpdate()
 		{
 			LeaderImage->SetVisibility(ESlateVisibility::Hidden);
 		}
+	}
+}
+
+void UPartySlotWiget::PartySlotUpdate(int _Type)
+{
+	float HPPercent;
+
+	switch (_Type)
+	{
+	case PARTY_UI_HP_UPDATE: //HP Update
+		HPPercent = PartySlotInfo.PartyUser->GetCurrentHP() / PartySlotInfo.PartyUser->GetMaxHP();
+		HPBar->SetPercent(HPPercent);
+		break;
 	}
 }
 

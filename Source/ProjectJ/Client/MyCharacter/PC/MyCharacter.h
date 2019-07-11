@@ -9,6 +9,8 @@
 #define NICKNAMESIZE 20
 #define CHARACTERCODE 30
 
+#define PARTY_UI_HP_UPDATE 1
+
 UCLASS()
 class PROJECTJ_API AMyCharacter : public ACharacter
 {
@@ -193,6 +195,7 @@ public:
 	AMainMapOtherPlayerController* GetOtherPlayerController();
 
 	UMyCharacterUI* GetMyCharacterUI();
+	void PartyUserUIUpdate(char* _PartyUserCode,int _Type);
 
 	void SetClickCharacter(AMyCharacter* _ClickCharacter);
 	AMyCharacter* GetClickCharacter();
