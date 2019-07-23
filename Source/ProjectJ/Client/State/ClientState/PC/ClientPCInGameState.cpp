@@ -145,6 +145,7 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 			}
 			break;
 		case PGAMEDATA_MONSTER_ATTACKED_THE_USER_RESULT:
+			GLog->Log(FString::Printf(TEXT("PGAMEDATA_MONSTER_ATTACKED_THE_USER_RESULT 프로토콜")));
 			StorageManager::GetInstance()->ChangeData(Data->data, IsAttackSuccess, ResultDamage, IsLive);
 			StorageManager::GetInstance()->PopData();
 
@@ -155,10 +156,12 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 				if (MyCharacter)
 				{
 					MyCharacter->MyTakeDamage(ResultDamage);
+					MyCharacter->PartyUserUIUpdate(MyCharacter->GetCharacterCode(), 1);
 				}
 			}
 			break;
 		case PGAMEDATA_MONSTER_ATTACKED_THE_OTHERUSER:
+			GLog->Log(FString::Printf(TEXT("PGAMEDATA_MONSTER_ATTACKED_THE_OTHERUSER 프로토콜")));
 			memset(TempMonsterAttackedUserCharacterCode, 0, sizeof(TempMonsterAttackedUserCharacterCode));
 
 			StorageManager::GetInstance()->ChangeData(Data->data, MonsterAttackedUsercharacter, ResultDamage, IsLive);
@@ -170,7 +173,14 @@ void ClientPCInGameState::Tick(float _DeltaTime)
 			{
 				if (IsLive)
 				{
+					MyCharacter = Cast<AMyCharacter>(MainMapGameMode->GetMainMapPlayerController()->GetPawn());
+
 					OtherCharacter->MyTakeDamage(ResultDamage);
+
+					if (MyCharacter)
+					{
+						MyCharacter->PartyUserUIUpdate(OtherCharacter->GetCharacterCode(), 1);
+					}
 				}
 				else
 				{
