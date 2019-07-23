@@ -103,6 +103,7 @@ void UPartyWidget::PartySlotUIUpdate(char * _PartyUserCode, int _Type)
 		if (strcmp(SlotInfo.CharacterCode, _PartyUserCode) == 0)
 		{
 			PartySlotWigets[i]->PartySlotUpdate(_Type);
+			break;
 		}
 	}
 }

@@ -155,6 +155,7 @@ void UPartySlotWiget::PartySlotUpdate(int _Type)
 	switch (_Type)
 	{
 	case PARTY_UI_HP_UPDATE: //HP Update
+		HPText->SetText(FText::FromString(FString::FromInt((int32)(PartySlotInfo.PartyUser->GetCurrentHP()))));
 		HPPercent = PartySlotInfo.PartyUser->GetCurrentHP() / PartySlotInfo.PartyUser->GetMaxHP();
 		HPBar->SetPercent(HPPercent);
 		break;
