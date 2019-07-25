@@ -55,9 +55,9 @@ void AGriffon::Tick(float DeltaTime)
 
 }
 
-void AGriffon::init()
+void AGriffon::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
 {
-
+	Super::Init(_MyMonsterCode, _MyMonsterNum);
 }
 
 void AGriffon::SetAIController(AMonsterAIController * NewAIController)

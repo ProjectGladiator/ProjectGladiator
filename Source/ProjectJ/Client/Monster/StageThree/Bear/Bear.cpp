@@ -58,7 +58,7 @@ void ABear::BeginPlay()
 {
 	Super::BeginPlay();
 
-	init();
+	//init();
 
 	TargetLimitDistance = 150.0f;
 	AttackInfo.SetAttackInfo(150.0f, 80.0f, 120.0f);
@@ -182,10 +182,9 @@ void ABear::Tick(float DeltaTime)
 	}
 }
 
-void ABear::init()
+void ABear::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
 {
-	
-	Super::init();
+	Super::Init(_MyMonsterCode, _MyMonsterNum);
 	CurrentState = EBearState::Idle;
 
 	CurrentHP = MaxHP;

@@ -65,7 +65,7 @@ void ADinosaur::BeginPlay()
 {
 	Super::BeginPlay();
 
-	init();
+	//init();
 
 	TargetLimitDistance = 500.0f;
 	AttackInfo.SetAttackInfo(150.0f, 70.0f, 120.0f);
@@ -171,9 +171,9 @@ EDinosaurState ADinosaur::GetCurrentState()
 	return CurrentState;
 }
 
-void ADinosaur::init()
+void ADinosaur::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
 {
-	Super::init();
+	Super::Init(_MyMonsterCode, _MyMonsterNum);
 
 	CurrentState = EDinosaurState::Idle;
 

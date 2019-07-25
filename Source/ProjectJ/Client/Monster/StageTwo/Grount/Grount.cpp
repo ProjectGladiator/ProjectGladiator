@@ -61,7 +61,7 @@ void AGrount::BeginPlay()
 	Super::BeginPlay();
 	SetAIController(GrountAIcontroller);
 
-	init();
+	//init();
 
 	TargetLimitDistance = 150.0f;
 	AttackInfo.SetAttackInfo(100, 100, 150);
