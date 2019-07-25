@@ -22,7 +22,7 @@ AGriffon::AGriffon()
 		GetMesh()->SetSkeletalMesh(SK_Griffon.Object);
 	}
 
-	static ConstructorHelpers::FObjectFinder<UClass>ABP_Griffon(TEXT("AnimBlueprint'/Game/Blueprints/Monster/StageThree/Griffon/ABP_Griffon.ABP_Griffon_C'"));
+	static ConstructorHelpers::FObjectFinder<UClass>ABP_Griffon(TEXT("AnimBlueprint'/Game/Blueprints/Monster/StageThree/Griffon/Blueprints/ABP_Griffon.ABP_Griffon_C'"));
 
 	if (ABP_Griffon.Succeeded())
 	{
