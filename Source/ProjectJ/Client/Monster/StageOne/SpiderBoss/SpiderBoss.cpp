@@ -69,6 +69,7 @@ void ASpiderBoss::BeginPlay()
 		SpiderBossAnimInstance->OnMonsterAttackHit.AddDynamic(this, &ASpiderBoss::AttackHit);
 		SpiderBossAnimInstance->OnMonsterComboSave.AddDynamic(this, &ASpiderBoss::OnComboSave);
 		SpiderBossAnimInstance->OnMonsterAttackEnded.AddDynamic(this, &ASpiderBoss::OnMonsterAttackEnded);
+		//기본 공격 스폰 차지 어택 정하는 부분이 없음 지금 오직 기본 공격만 함
 		SpiderBossAnimInstance->OnDeath.AddDynamic(this, &ASpiderBoss::Death);
 	}
 
@@ -105,6 +106,7 @@ void ASpiderBoss::Tick(float DeltaTime)
 			{
 			case EPathFollowingRequestResult::AlreadyAtGoal:
 				CurrentState = ESpiderBossState::Attack;
+				CurrentAttackState = ESpiderBossAttackState::DefaultAttack;
 				break;
 			case EPathFollowingRequestResult::Failed:
 				//GLog->Log(FString::Printf(TEXT("요청 실패")));
@@ -118,20 +120,34 @@ void ASpiderBoss::Tick(float DeltaTime)
 			break;
 		case ESpiderBossState::Attack:
 		{
-			if (IsAttack)
+			switch (CurrentAttackState)
 			{
-				IsCombo = true;
-			}
-			else
-			{
-				IsAttack = true;
-
-				if (SpiderBossAnimInstance)
+			case ESpiderBossAttackState::DefaultAttack:
+				if (IsAttack)
 				{
-					SpiderBossAnimInstance->PlayAttackMontage(0);
-					CurrentCombo += 1;
-					SpiderBossAnimInstance->JumpAttackMontageSection(0, CurrentCombo);
+					IsCombo = true;
 				}
+				else
+				{
+					IsAttack = true;
+
+					if (SpiderBossAnimInstance)
+					{
+						SpiderBossAnimInstance->PlayAttackMontage(0);
+						CurrentCombo += 1;
+						SpiderBossAnimInstance->JumpAttackMontageSection(0, CurrentCombo);
+					}
+				}
+				break;
+			case ESpiderBossAttackState::ChargeAttack:
+				if (!IsAttack)
+				{
+					IsAttack = true;
+					SpiderBossAnimInstance->PlayAttackMontage(1);
+				}
+				break;
+			case ESpiderBossAttackState::Summon:
+				break;
 			}
 
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
@@ -143,8 +159,6 @@ void ASpiderBoss::Tick(float DeltaTime)
 				CurrentState = ESpiderBossState::Chase;
 			}
 		}
-			break;
-		case ESpiderBossState::Summon:
 			break;
 		case ESpiderBossState::Death:
 			DeathInVisibleValue += 0.01;

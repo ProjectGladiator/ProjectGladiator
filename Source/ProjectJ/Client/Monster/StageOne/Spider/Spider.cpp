@@ -137,11 +137,7 @@ void ASpider::Tick(float DeltaTime)
 				}
 				break;
 			case ESpiderAttackState::ChargeAttack:
-				if (IsAttack)
-				{
-					
-				}
-				else
+				if (!IsAttack)
 				{
 					IsAttack = true;
 					SpiderAnimInstance->PlayAttackMontage(1);

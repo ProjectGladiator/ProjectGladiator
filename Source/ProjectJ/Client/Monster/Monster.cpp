@@ -197,7 +197,7 @@ void AMonster::FirstTarget()
 		for (int i = 0; i < MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySize(); i++)
 		{
 			FPartySlot PartySlot = MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySlot(i);
-
+			
 			if (PartySlot.PartyUser)
 			{
 				if (PartySlot.PartyUser->GetPartyLeader())
@@ -206,7 +206,6 @@ void AMonster::FirstTarget()
 				}
 			}
 		}
-
 	}
 }
 
