@@ -169,9 +169,9 @@ void AGrount::Tick(float DeltaTime)
 	}
 }
 
-void AGrount::init()
+void AGrount::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
 {
-	Super::init();
+	Super::Init(_MyMonsterCode, _MyMonsterNum);
 	
 	CurrentHP = MaxHP;
 }

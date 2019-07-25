@@ -115,11 +115,15 @@ void AMonster::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void AMonster::init()
+void AMonster::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
 {
 	//Init For Monster's type
 	//MaxHP = 100.0f;
 	//CurrentHP = MaxHP;
+
+	//init Code & Num
+	m_MonsterCode = _MyMonsterCode;
+	m_MonsterNum = _MyMonsterNum;
 
 	if (SpawnEffect)
 	{
@@ -128,13 +132,13 @@ void AMonster::init()
 	//bisActive = false;
 }
 
-void AMonster::Firstinit(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
-{
-	//init Code & Num
-	m_MonsterCode = _MyMonsterCode;
-	m_MonsterNum = _MyMonsterNum;
-	init();
-}
+//void AMonster::Firstinit(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
+//{
+//	//init Code & Num
+//	m_MonsterCode = _MyMonsterCode;
+//	m_MonsterNum = _MyMonsterNum;
+//	//init();
+//}
 
 float AMonster::GetHP()
 {

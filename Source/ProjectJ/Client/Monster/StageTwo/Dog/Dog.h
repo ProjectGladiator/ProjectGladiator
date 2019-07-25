@@ -31,7 +31,7 @@ protected:
 public:
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void init() override;
+	virtual void Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)  override;
 
 	void SetAIController(class AMonsterAIController* NewAIController);
 

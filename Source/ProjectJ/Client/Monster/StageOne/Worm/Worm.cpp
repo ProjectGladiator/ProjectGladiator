@@ -62,7 +62,7 @@ void AWorm::BeginPlay()
 {
 	Super::BeginPlay();
 
-	init();
+	//init();
 
 	TargetLimitDistance = 100.0f;
 	AttackInfo.SetAttackInfo(0, 0, 300.0f);
@@ -148,9 +148,9 @@ void AWorm::Tick(float DeltaTime)
 	}
 }
 
-void AWorm::init()
+void AWorm::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
 {
-	Super::init();
+	Super::Init(_MyMonsterCode, _MyMonsterNum);
 	CurrentState = EWormState::Idle;
 	CurrentHP = MaxHP;
 		//추후 수정

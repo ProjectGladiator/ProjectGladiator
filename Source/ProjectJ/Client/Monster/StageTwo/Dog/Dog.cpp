@@ -71,7 +71,7 @@ void ADog::BeginPlay()
 	SetAIController(DogAIController);
 #pragma region HP, TagetLimit_Distance, AttackRange, State Set
 	
-	init();
+	//init();
 
 	TargetLimitDistance = 150.0f;
 
@@ -197,9 +197,9 @@ void ADog::Tick(float DeltaTime)
 
 }
 
-void ADog::init()
+void ADog::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
 {
-	Super::init();
+	Super::Init(_MyMonsterCode, _MyMonsterNum);
 	CurrentState = EDogState::Idle;
 	
 	CurrentHP = MaxHP;

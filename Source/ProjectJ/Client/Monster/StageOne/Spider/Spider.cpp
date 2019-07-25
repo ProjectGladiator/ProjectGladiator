@@ -57,7 +57,7 @@ void ASpider::BeginPlay()
 {
 	Super::BeginPlay();
 
-	init();
+	//init();
 
 	TargetLimitDistance = 150.0f;
 	AttackInfo.SetAttackInfo(150.0f, 80.0f, 100.0f);
@@ -187,9 +187,9 @@ void ASpider::Tick(float DeltaTime)
 	}
 }
 
-void ASpider::init()
+void ASpider::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
 {
-	Super::init();
+	Super::Init(_MyMonsterCode, _MyMonsterNum);
 	CurrentState = ESpiderState::Idle;
 	CurrentHP = MaxHP;
 	//추후 수정
