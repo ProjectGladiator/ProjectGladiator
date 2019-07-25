@@ -110,6 +110,25 @@ enum class ESpiderBossState : uint8
 	Idle,
 	Chase,
 	Attack,
+	Death
+};
+
+UENUM(BlueprintType)
+enum class ESpiderBossAttackState : uint8
+{
+	Ready,
+	Idle,
+	DefaultAttack,
+	ChargeAttack,
 	Summon,
+};
+
+UENUM(BlueprintType)
+enum class EGriffonState : uint8
+{
+	Ready,
+	Idle,
+	Chase,
+	Attack,
 	Death
 };

@@ -19,8 +19,11 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Controller, Meta = (AllowPrivateAccess = true))
 		class ASpiderBossAIController* SpiderBossAIController;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Controller, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
 		ESpiderBossState CurrentState;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
+		ESpiderBossAttackState CurrentAttackState;
+
 	UPROPERTY()
 		class USpiderBossAnimInstance* SpiderBossAnimInstance;
 	UPROPERTY()

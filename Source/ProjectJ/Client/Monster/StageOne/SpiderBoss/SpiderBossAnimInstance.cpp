@@ -9,11 +9,25 @@
 
 USpiderBossAnimInstance::USpiderBossAnimInstance()
 {
-	static ConstructorHelpers::FObjectFinder<UAnimMontage>SpiderBossAttack_Montage(TEXT("AnimMontage'/Game/Blueprints/Monster/StageOne/SpiderBoss/Animations/SpiderBossAttackMontage.SpiderBossAttackMontage'"));
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>SpiderBossDefaultAttack_Montage(TEXT("AnimMontage'/Game/Blueprints/Monster/StageOne/SpiderBoss/Animations/SpiderBossDefaultAttackMontage.SpiderBossDefaultAttackMontage'"));
 
-	if (SpiderBossAttack_Montage.Succeeded())
+	if (SpiderBossDefaultAttack_Montage.Succeeded())
 	{
-		AttackMontages.Add(SpiderBossAttack_Montage.Object);
+		AttackMontages.Add(SpiderBossDefaultAttack_Montage.Object);
+	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>SpiderBossChargeAttack_Montage(TEXT("AnimMontage'/Game/Blueprints/Monster/StageOne/SpiderBoss/Animations/SpiderBossChargeAttackMontage.SpiderBossChargeAttackMontage'"));
+
+	if (SpiderBossChargeAttack_Montage.Succeeded())
+	{
+		AttackMontages.Add(SpiderBossChargeAttack_Montage.Object);
+	}
+
+	static ConstructorHelpers::FObjectFinder<UAnimMontage>SpiderBossSummon_Montage(TEXT("AnimMontage'/Game/Blueprints/Monster/StageOne/SpiderBoss/Animations/SpiderBossSummonMontage.SpiderBossSummonMontage'"));
+
+	if (SpiderBossSummon_Montage.Succeeded())
+	{
+		AttackMontages.Add(SpiderBossSummon_Montage.Object);
 	}
 }
 
