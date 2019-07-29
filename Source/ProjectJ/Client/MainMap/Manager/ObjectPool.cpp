@@ -107,7 +107,8 @@ void AObjectPool::Tick(float DeltaTime)
 		case PGAMEDATA_STAGE_MONSTER_INFO: // 스테이지 몬스터 정보 - (몬스터코드,몬스터숫자,좌표)
 			StorageManager::GetInstance()->ChangeData(Data->data, KindMonster, SpawnMonster_Num, SpawnPos.X, SpawnPos.Y, SpawnPos.Z);
 			StorageManager::GetInstance()->PopData();
-			Timer();
+			ReadyMonster(static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
+			//Timer();
 			break;
 		case PGAMEDATA_STAGE_MONSTER_SPAWN_TIME: // 스테이지 몬스터 스폰 시간 - ([float] 몬스터 스폰시간)
 			StorageManager::GetInstance()->ChangeData(Data->data, SpawnTime);
@@ -320,21 +321,20 @@ void AObjectPool::Recive_SpawnObject_Info()
 	//Get SpawnPosition
 	//Last,Find Non_Active Monster 
 
-	//SpawnMonster 카운터가 Num과 일치했을때.
-	if (SpawnMonsterCounter == SpawnMonster_Num)
-	{
-		//SpawnCounter Reset
-		SpawnMonsterCounter = 0;
-		//Timer Kill
-		GetWorld()->GetTimerManager().ClearTimer(SpawnUpdateTimer);
-	}
-	else
-	{
-		//비활성화인 몬스터를 준비단계로 넘어가게 해주는 함수(몬스터 배열에서 순차적으로 비활성화 인것 부터 찾아서 사용한다)
-		ReadyMonster(static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
-		//Counter Update SpawnMonster_Num의 카운터임
-		++SpawnMonsterCounter;
-	}
+	////SpawnMonster 카운터가 Num과 일치했을때.
+	//if (SpawnMonsterCounter == SpawnMonster_Num)
+	//{
+	//	//SpawnCounter Reset
+	//	SpawnMonsterCounter = 0;
+	//	//Timer Kill
+	//	GetWorld()->GetTimerManager().ClearTimer(SpawnUpdateTimer);
+	//}
+	//else
+	//{}
+	//비활성화인 몬스터를 준비단계로 넘어가게 해주는 함수(몬스터 배열에서 순차적으로 비활성화 인것 부터 찾아서 사용한다)
+	ReadyMonster(static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
+	//Counter Update SpawnMonster_Num의 카운터임
+	++SpawnMonsterCounter;
 }
 
 void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, FVector _MonsterPostion)
