@@ -256,12 +256,9 @@ void StorageManager::ChangeData(void * data, CharacterInfo *& _charinfo)
 }
 
 // 이동정보 결과용
-void StorageManager::ChangeData(void * data, bool& _result, float*& _posxyz)
+void StorageManager::ChangeData(void * data, float*& _posxyz)
 {
 	char* ptr = (char*)data;
-
-	memcpy(&_result, ptr, sizeof(bool));
-	ptr += sizeof(float) * 3;
 
 	memcpy(_posxyz, ptr, sizeof(float) * 3);
 	ptr += sizeof(float) * 3;

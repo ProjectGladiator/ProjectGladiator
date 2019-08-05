@@ -146,6 +146,11 @@ public:
 	void InGame_Req_Dungeon_Leave();
 	// 스테이지 입장
 	void InGame_Req_Dungeon_Stage_Enter();
+	// 다음 스테이지 입장 요청
+
+	// 현재 스테이지가 무엇인지
+
+	//
 
 	/*--몬스터--*/
 	// 몬스터 정보 요청

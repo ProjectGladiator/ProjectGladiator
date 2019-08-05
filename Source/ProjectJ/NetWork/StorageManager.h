@@ -69,7 +69,7 @@ public:
 	// 캐릭터 정보
 	void ChangeData(void* data, CharacterInfo*& _charinfo);
 	// 이동정보 결과용
-	void ChangeData(void* data, bool& _result, float*& _posxyz);
+	void ChangeData(void* data, float*& _posxyz);
 	// 플레이어 이동정보 결과용
 	void ChangeData(void* data, float*& _posxyz, float*& _rotxyz);
 	// 다른 플레이어 이동정보 결과용
