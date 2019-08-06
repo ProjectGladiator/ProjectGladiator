@@ -8,11 +8,11 @@ void ABruteAIController::Possess(APawn * InPawn)
 {
 	Super::Possess(InPawn);
 
-	auto Dog = Cast<ABrute>(InPawn);
+	auto Brute = Cast<ABrute>(InPawn);
 
-	if (Dog)
+	if (Brute)
 	{
-		Dog->SetAIController(this);
+		Brute->SetAIController(this);
 		//Dog->SetAIController(this);
 		GLog->Log(FString::Printf(TEXT("Brute Posses Success")));
 	}
