@@ -132,3 +132,22 @@ enum class EGriffonState : uint8
 	Attack,
 	Death
 };
+
+UENUM(BlueprintType)
+enum class EBruteState : uint8
+{
+	Ready,
+	Idle,
+	Chase,
+	Attack,
+	Death
+};
+UENUM(BlueprintType)
+enum class EBruteAttackState : uint8
+{
+	Ready,
+	Idle,
+	DefaultAttack,
+	KickAttack,
+	JumpLandAttack
+};
