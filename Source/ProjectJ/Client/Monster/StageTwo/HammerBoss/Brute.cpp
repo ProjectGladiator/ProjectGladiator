@@ -14,7 +14,7 @@
 #include "Components/CapsuleComponent.h" //캡슐 컴포넌트 헤더
 
 #include "BruteAIController.h" //AI 컨트롤러 헤더
-#include "BruteAnimInstance.h" //애님 인스턴스 헤더
+//#include "BruteAnimInstance.h" //애님 인스턴스 헤더
 #pragma endregion 클라이언트 헤더
 
 #pragma region ServerHeader
@@ -78,12 +78,12 @@ void ABrute::BeginPlay()
 	AttackInfo.SetAttackInfo(50.0f, 80.0f, 120.0f);
 	CurrentState = EBruteState::Idle;
 
-	BruteAnimInstance = Cast<UBruteAnimInstance>(GetMesh()->GetAnimInstance());
-	if (BruteAnimInstance)
+	//BruteAnimInstance = Cast<UBruteAnimInstance>(GetMesh()->GetAnimInstance());
+	/*if (BruteAnimInstance)
 	{
 		BruteAnimInstance->OnMonsterAttackHit.AddDynamic(this, &ABrute::AttackHit);
 		BruteAnimInstance->OnDeath.AddDynamic(this, &ABrute::Death);
-	}
+	}*/
 }
 
 void ABrute::Tick(float DeltaTime)

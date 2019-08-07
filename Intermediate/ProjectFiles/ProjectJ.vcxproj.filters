@@ -961,18 +961,12 @@
     <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageTwo\HammerBoss\BruteAIController.h">
       <Filter>Source\ProjectJ\Client\Monster\StageTwo\HammerBoss</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Source\ProjectJ\Client\Monster\StageTwo\HammerBoss\BruteAnimInstance.h">
-      <Filter>Source\ProjectJ\Client\Monster\StageTwo\HammerBoss</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageTwo\HammerBoss\Brute.cpp">
       <Filter>Source\ProjectJ\Client\Monster\StageTwo\HammerBoss</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageTwo\HammerBoss\BruteAIController.cpp">
-      <Filter>Source\ProjectJ\Client\Monster\StageTwo\HammerBoss</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\ProjectJ\Client\Monster\StageTwo\HammerBoss\BruteAnimInstance.cpp">
       <Filter>Source\ProjectJ\Client\Monster\StageTwo\HammerBoss</Filter>
     </ClCompile>
   </ItemGroup>

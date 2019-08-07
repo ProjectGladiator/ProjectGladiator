@@ -44,8 +44,8 @@ private:
 		EBruteState CurrentState;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
 		EBruteAttackState CurrentAttackState;
-	UPROPERTY()
-		class UBruteAnimInstance* BruteAnimInstance; //####### AnimInstance 확인할 것 #######
+	//UPROPERTY()
+	//	class UBruteAnimInstance* BruteAnimInstance; //####### AnimInstance 확인할 것 #######
 	UPROPERTY()
 		float MaxHP;
 };
