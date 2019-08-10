@@ -9,6 +9,7 @@
 #include "Client/MyCharacter/PC/Widget/Party/Widget/PartyWidget.h"
 #include "Client/MyCharacter/PC/Widget/Party/Widget/PartySlotWiget.h"
 #include "Client/MyCharacter/PC/Widget/Party/Widget/PartyAcceptRejectWidget.h"
+#include "Client/MyCharacter/PC/Widget/Party/Widget/PartyLeaderGameStartWidget.h"
 #include "Client/Menu/MenuWidget.h"
 #include "Client/MainMap/MainMapGameMode.h"
 #include "Client/MainMap/MainMapPlayerController.h"
@@ -69,6 +70,13 @@ void UMainWidget::NativeConstruct()
 	if (PartyAcceptRejectWidget)
 	{
 		PartyAcceptRejectWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+
+	PartyLeaderGameStartWidget = Cast<UPartyLeaderGameStartWidget>(GetWidgetFromName(TEXT("")));
+
+	if (PartyLeaderGameStartWidget)
+	{
+		PartyLeaderGameStartWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
 	ChattingWidget = Cast<UChattingWidget>(GetWidgetFromName(TEXT("ChattingWidget")));
@@ -482,6 +490,21 @@ int32 UMainWidget::GetPartySize()
 FPartySlot UMainWidget::GetPartySlot(int32 _Index)
 {
 	return PartySlots[_Index];
+}
+
+void UMainWidget::PartyLeaderGameStartWidgetToggle()
+{
+	if (PartyLeaderGameStartWidget)
+	{
+		if (PartyLeaderGameStartWidget->GetVisibility() == ESlateVisibility::Hidden)
+		{
+			PartyLeaderGameStartWidget->SetVisibility(ESlateVisibility::Visible);
+		}
+		else
+		{
+			PartyLeaderGameStartWidget->SetVisibility(ESlateVisibility::Hidden);
+		}
+	}
 }
 
 void UMainWidget::MapLoadComplete()

@@ -800,6 +800,12 @@ void AMainMapGameMode::Tick(float DeltaTime)
 						PartySlot.PartyUser->SpawnGameStageStartEffect();
 					}
 				}
+
+				//파티장 게임시작 버튼 활성화
+				if (MyCharacter->GetPartyLeader())
+				{
+					MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeaderGameStartWidgetToggle();
+				}
 			}
 			break;
 		}
