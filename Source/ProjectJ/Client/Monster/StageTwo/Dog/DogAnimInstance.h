@@ -23,10 +23,6 @@ private:
 	EDogAttackState CurrentAttackState;
 	UFUNCTION()
 		void AnimNotify_MonsterAttackHit(UAnimNotify* Notify);
-	//UFUNCTION()
-	//	void AnimNotify_MonsterSaveAttack(UAnimNotify* Notify);
-	//UFUNCTION()
-	//	void ANimNotify_MonsterAttackEnded();
 	UFUNCTION()
 		void AnimNotify_Death(UAnimNotify* Notify);
 public:
