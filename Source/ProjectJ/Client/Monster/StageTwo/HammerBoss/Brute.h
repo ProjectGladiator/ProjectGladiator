@@ -22,8 +22,8 @@ public :
 
 	void SetAIController(class AMonsterAIController* NewAIController);
 
-	EBruteState GetCurrnetState();
-	EBruteAttackState GetCurrentAttackState();
+	//EBruteState GetCurrnetState();
+	//EBruteAttackState GetCurrentAttackState();
 
 	//UFUNCTION()
 	//	virtual void AttackHit() override;
@@ -44,8 +44,11 @@ private:
 		EBruteState CurrentState;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
 		EBruteAttackState CurrentAttackState;
-	//UPROPERTY()
-	//	class UBruteAnimInstance* BruteAnimInstance; //####### AnimInstance 확인할 것 #######
+	UPROPERTY()
+		class UBruteAnimInstance* BruteAnimInstance; //####### AnimInstance 확인할 것 #######
 	UPROPERTY()
 		float MaxHP;
+public:
+	EBruteState GetCurrnetState();
+	EBruteAttackState GetCurrentAttackState();
 };
