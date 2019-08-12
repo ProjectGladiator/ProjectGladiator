@@ -45,6 +45,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ChattingWidget, Meta = (AllowPrivateAccess = true))
 		class UChattingWidget* ChattingWidget;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ChattingWidget, Meta = (AllowPrivateAccess = true))
+		class UPartyLeaderGameStartWidget* PartyLeaderGameStartWidget;
 
 	UPROPERTY()
 		class AMainMapGameMode* MainMapGameMode;
@@ -104,6 +106,8 @@ public:
 	int32 GetPartySize();
 	FPartySlot GetPartySlot(int32 _Index);
 
+	//파티장 게임 시작 버튼 토글함수
+	void PartyLeaderGameStartWidgetToggle();
 
 
 	UFUNCTION()
