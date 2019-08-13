@@ -24,4 +24,13 @@ private:
 	UPROPERTY(VisibleAnywhere, BlueprintType, Category = State, Meta = (AllowPrivateAccess = true))
 		EBruteAttackState CurrentAttackState;
 
+	UFUNCTION()
+		void AnimNotify_NomalAttackHit(UAnimNotify* Notify);
+	UFUNCTION()
+		void AnimNotify_KickAttackHit(UAnimNotify* Notify);
+	UFUNCTION()
+		void AnimNotify_JumpAttackHit(UAnimNotify* Notify);
+	UFUNCTION()
+		void AnimNotify_Death(UAnimNotify* Notify);
+
 };

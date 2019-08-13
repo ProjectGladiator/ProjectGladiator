@@ -11,6 +11,8 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterAttackHitDelegate); //몬스터 공
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterComboSaveDelegate); //몬스터 콤보 저장 애니메이션 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterAttackEndedDelegate); //공격 끝 애니메이션 델리게이트
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterAttackChanged);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterKickAttack); // Kick 공격 Animation 델리게이트
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnMonsterEarthQuake); // 지진 공격 Animation 델리게이트
 
 /**
  * 
@@ -47,6 +49,8 @@ public:
 	FOnMonsterComboSaveDelegate OnMonsterComboSave;
 	FOnMonsterAttackEndedDelegate OnMonsterAttackEnded;
 	FOnMonsterAttackChanged OnMonsterAttackChanged;
+	FOnMonsterKickAttack OnKickAttack;
+	FOnMonsterEarthQuake OnEarthQuake;
 
 	UFUNCTION()
 		virtual void NativeUpdateAnimation(float DeltaSeconds) override; // 틱 함수
