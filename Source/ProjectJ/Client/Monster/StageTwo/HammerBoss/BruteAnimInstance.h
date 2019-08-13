@@ -21,7 +21,7 @@ public:
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
 		EBruteState CurrentState;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintType, Category = State, Meta = (AllowPrivateAccess = true))
 		EBruteAttackState CurrentAttackState;
 
 };
