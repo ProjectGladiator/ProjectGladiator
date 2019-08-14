@@ -741,6 +741,11 @@ void AMyCharacter::SpawnGameStageStartEffect()
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), GameStageStartEffect, GetActorLocation(), FRotator::ZeroRotator, true);
 }
 
+void AMyCharacter::SetC2SMonsterInfoAssemble()
+{
+	GetWorld()->GetTimerManager().SetTimer(C2S_MonsterInfoAssemble, this, &AMyCharacter::MonsterInfoAssemble, 0.2f, true, 0);
+}
+
 void AMyCharacter::MonsterInfoAssemble()
 {
 	auto MainMapGameMode = Cast<AMainMapGameMode>(UGameplayStatics::GetGameMode(GetWorld()));

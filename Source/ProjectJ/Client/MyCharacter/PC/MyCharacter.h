@@ -51,6 +51,8 @@ private:
 	UPROPERTY()
 		FTimerHandle C2S_RotateUpdateTimer;
 	UPROPERTY()
+		FTimerHandle C2S_MonsterInfoAssemble; //서버로 몬스터 정보를 보내주는 타이머
+	UPROPERTY()
 		bool IsPartyLeader;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect, Meta = (AllowPrivateAccess = true))
@@ -195,7 +197,7 @@ public:
 	AMainMapOtherPlayerController* GetOtherPlayerController();
 
 	UMyCharacterUI* GetMyCharacterUI();
-	void PartyUserUIUpdate(char* _PartyUserCode,int _Type);
+	void PartyUserUIUpdate(char* _PartyUserCode, int _Type);
 
 	void SetClickCharacter(AMyCharacter* _ClickCharacter);
 	AMyCharacter* GetClickCharacter();
@@ -217,9 +219,13 @@ public:
 	void MyCharacterNickWidgetHidden();
 	void MyCharacterNickWidgetVisible();
 
+	//캐릭터를 스폰시 이펙트 뿌리기 함수
 	void SpawnGameStageStartEffect();
 
-	void MonsterInfoAssemble();
+	//몬스터 정보 관련 함수
+	void SetC2SMonsterInfoAssemble();
+	UFUNCTION()
+		void MonsterInfoAssemble();
 
 	virtual void MyTakeDamage(float _Damage, bool _IsLive = true);
 };

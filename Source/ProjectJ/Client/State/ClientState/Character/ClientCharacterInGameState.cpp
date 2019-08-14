@@ -88,13 +88,6 @@ void ClientCharacterInGameState::Tick(float _DeltaTime)
 
 	if (MyCharacter)
 	{
-		IsPartyLeader = MyCharacter->GetPartyLeader();
-
-		if (IsPartyLeader)
-		{
-			MyCharacter->MonsterInfoAssemble();
-		}
-
 		JumpCurrentFlag = MyCharacter->GetCharacterMovement()->IsFalling(); //현재 점프중인지 판단한다.
 
 		if (JumpCurrentFlag) //현재 점프중인데
