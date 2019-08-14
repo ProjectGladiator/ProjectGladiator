@@ -26,6 +26,9 @@
 
 ABrute::ABrute()
 {
+	/*SK_Address =L"SkeletalMesh'/Game/Assets/Monster/MixamoBrute/Anim/SK_BruteWR.SK_BruteWR'";
+	AnimBP_Address = L"Blueprint'/Game/Blueprints/Monster/StageTwo/HamerBoss/Blueprint/BP_bruteWR.BP_bruteWR_C'";
+*/
 	PrimaryActorTick.bCanEverTick = true;
 	AIControllerClass = ABruteAIController::StaticClass();
 

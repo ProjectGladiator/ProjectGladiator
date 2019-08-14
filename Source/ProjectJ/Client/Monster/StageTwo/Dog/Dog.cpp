@@ -20,16 +20,18 @@
 //Some ServerHeader
 #pragma endregion 서버 헤더
 
-#define SK_Address "SkeletalMesh'/Game/Assets/Monster/QuadrapedCreatures/Barghest/Meshes/SK_BARGHEST.SK_BARGHEST'"
-#define AnimBP_Address "AnimBlueprint'/Game/Blueprints/Monster/StageTwo/Dog/Blueprints/ABP_Dog.ABP_Dog_C'"
+//#define SK_Address "SkeletalMesh'/Game/Assets/Monster/QuadrapedCreatures/Barghest/Meshes/SK_BARGHEST.SK_BARGHEST'"
+//#define AnimBP_Address "AnimBlueprint'/Game/Blueprints/Monster/StageTwo/Dog/Blueprints/ABP_Dog.ABP_Dog_C'"
 
 ADog::ADog()
 {
+	SK_Address = L"SkeletalMesh'/Game/Assets/Monster/QuadrapedCreatures/Barghest/Meshes/SK_BARGHEST.SK_BARGHEST'";
+	AnimBP_Address = L"AnimBlueprint'/Game/Blueprints/Monster/StageTwo/Dog/Blueprints/ABP_Dog.ABP_Dog_C'";
 	PrimaryActorTick.bCanEverTick = true;
 	AIControllerClass = ADogAIController::StaticClass();
 
 #pragma region SkeletalMesh Set
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SK_Dog(TEXT(SK_Address));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SK_Dog(SK_Address);
 
 	if (SK_Dog.Succeeded())
 	{
@@ -39,7 +41,7 @@ ADog::ADog()
 
 #pragma region AnimBlueprint Set
 	// 애님블루프린트 찾아 메쉬에 세팅
-	static ConstructorHelpers::FObjectFinder<UClass>ABP_Dog(TEXT(AnimBP_Address));
+	static ConstructorHelpers::FObjectFinder<UClass>ABP_Dog(AnimBP_Address);
 
 	if (ABP_Dog.Succeeded())  //찾는것에 성공햇으면
 	{

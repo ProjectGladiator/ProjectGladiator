@@ -6,6 +6,7 @@
 #include "Client/Monster/Monster.h"
 #include "Client/State/MonsterState/MonsterState.h"
 #include "Client/Monster/StageTwo/HammerBoss/BruteAIController.h"
+#include <string>
 #include "Brute.generated.h"
 
 /**
@@ -48,6 +49,8 @@ private:
 		class UBruteAnimInstance* BruteAnimInstance; //####### AnimInstance 확인할 것 #######
 	UPROPERTY()
 		float MaxHP;
+	//wchar_t* SK_Address;
+	//wchar_t* AnimBP_Address;
 public:
 	EBruteState GetCurrnetState();
 	EBruteAttackState GetCurrentAttackState();

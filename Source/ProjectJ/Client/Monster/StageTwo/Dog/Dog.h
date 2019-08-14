@@ -26,6 +26,9 @@ private:
 		class UDogAnimInstance* DogAnimInstance;
 	UPROPERTY()
 		float MaxHP;
+	wchar_t *SK_Address;
+	wchar_t *AnimBP_Address;
+
 protected:
 	virtual void BeginPlay() override;
 public:
