@@ -21,24 +21,24 @@
 //Some ServerHeader
 #pragma endregion 서버 헤더
 
-#define SK_Address "SkeletalMesh'/Game/Assets/Monster/MixamoBrute/Anim/SK_BruteWR.SK_BruteWR'"
-#define AnimBP_Address "AnimBlueprint'/Game/Assets/Monster/MixamoBrute/Anim/ABP_bruteWR.ABP_bruteWR_C'"
+//#define SK_Address "SkeletalMesh'/Game/Assets/Monster/MixamoBrute/Anim/SK_BruteWR.SK_BruteWR'"
+//#define AnimBP_Address "AnimBlueprint'/Game/Blueprints/Monster/StageTwo/HamerBoss/Blueprint/ABP_bruteWR.ABP_bruteWR_C'";
 
 ABrute::ABrute()
 {
-	/*SK_Address =L"SkeletalMesh'/Game/Assets/Monster/MixamoBrute/Anim/SK_BruteWR.SK_BruteWR'";
-	AnimBP_Address = L"Blueprint'/Game/Blueprints/Monster/StageTwo/HamerBoss/Blueprint/BP_bruteWR.BP_bruteWR_C'";
-*/
+	//SK_Address =L"SkeletalMesh'/Game/Assets/Monster/MixamoBrute/Anim/SK_BruteWR.SK_BruteWR'";
+	//AnimBP_Address = L"AnimBlueprint'/Game/Blueprints/Monster/StageTwo/HamerBoss/Blueprint/ABP_bruteWR.ABP_bruteWR_C'";
+
 	PrimaryActorTick.bCanEverTick = true;
 	AIControllerClass = ABruteAIController::StaticClass();
 
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SK_Brute(TEXT(SK_Address));
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SK_Brute(TEXT("SkeletalMesh'/Game/Assets/Monster/MixamoBrute/Anim/SK_BruteWR.SK_BruteWR'"));
 	if (SK_Brute.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(SK_Brute.Object);
 	}
 
-	static ConstructorHelpers::FObjectFinder<UClass>ABP_Brute(TEXT(AnimBP_Address));
+	static ConstructorHelpers::FObjectFinder<UClass>ABP_Brute(TEXT("AnimBlueprint'/Game/Blueprints/Monster/StageTwo/HamerBoss/Blueprint/ABP_bruteWR.ABP_bruteWR_C'"));
 	if (ABP_Brute.Succeeded())
 	{
 		UClass* BruteAnimBlueprint = ABP_Brute.Object;

@@ -50,7 +50,7 @@ private:
 	UPROPERTY()
 		float MaxHP;
 	//wchar_t* SK_Address;
-	//wchar_t* AnimBP_Address;
+	/*wchar_t* AnimBP_Address;*/
 public:
 	EBruteState GetCurrnetState();
 	EBruteAttackState GetCurrentAttackState();
