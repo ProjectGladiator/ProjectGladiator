@@ -8,7 +8,7 @@
 #include "BruteAnimInstance.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class PROJECTJ_API UBruteAnimInstance : public UMonsterAnimInstance
@@ -17,23 +17,20 @@ class PROJECTJ_API UBruteAnimInstance : public UMonsterAnimInstance
 public:
 	UBruteAnimInstance();
 	UFUNCTION()
-	virtual void NativeUpdateAnimation(float DeltaSecnds)override;
-	virtual void PlayAttackMontage(int32 MontageSequence) override;
-	virtual void JumpAttackMontageSection(int32 MontageSequence, int32 NewSection)override;
+		virtual void NativeUpdateAnimation(float DeltaSecnds)override;
 private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
 		EBruteState CurrentState;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = State, Meta = (AllowPrivateAccess = true))
+	UPROPERTY(VisibleAnywhere, BlueprintType, Category = State, Meta = (AllowPrivateAccess = true))
 		EBruteAttackState CurrentAttackState;
-	/*UFUNCTION()
-		void AnimNotify_MonsterAttackHit(UAnimNotify* Notify);
+
 	UFUNCTION()
-		void AnimNotify_MonsterSaveAttack(UAnimNotify* Notify);
+		void AnimNotify_NomalAttackHit(UAnimNotify* Notify);
 	UFUNCTION()
-		void AnimNotify_MonsterAttackEnded(UAnimNotify* Notify);
+		void AnimNotify_KickAttackHit(UAnimNotify* Notify);
 	UFUNCTION()
-		void AnimNotify_MonsterAttackChanged();
+		void AnimNotify_JumpAttackHit(UAnimNotify* Notify);
 	UFUNCTION()
-		void AnimNotify_Death(UAnimNotify* Notify);*/
-	
+		void AnimNotify_Death(UAnimNotify* Notify);
+
 };

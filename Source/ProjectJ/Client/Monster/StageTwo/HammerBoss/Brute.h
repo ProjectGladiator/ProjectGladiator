@@ -22,8 +22,8 @@ public :
 
 	void SetAIController(class AMonsterAIController* NewAIController);
 
-	EBruteState GetCurrnetState();
-	EBruteAttackState GetCurrentAttackState();
+	//EBruteState GetCurrnetState();
+	//EBruteAttackState GetCurrentAttackState();
 
 	//UFUNCTION()
 	//	virtual void AttackHit() override;
@@ -48,4 +48,7 @@ private:
 		class UBruteAnimInstance* BruteAnimInstance; //####### AnimInstance 확인할 것 #######
 	UPROPERTY()
 		float MaxHP;
+public:
+	EBruteState GetCurrnetState();
+	EBruteAttackState GetCurrentAttackState();
 };

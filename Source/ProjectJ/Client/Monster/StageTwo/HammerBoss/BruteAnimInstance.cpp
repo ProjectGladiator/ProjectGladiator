@@ -4,36 +4,10 @@
 #include "Brute.h"
 #include "UObject/ConstructorHelpers.h" 
 
-//#define Anim_Default_Attack "AnimMontage'/Game/Blueprints/Monster/StageOne/Spider/Animations/SpiderDefaultAttackMontage.SpiderDefaultAttackMontage'"
-//#define Anim_Twice_Attack "AnimSequence'/Game/Assets/Monster/MixamoBrute/Anim/AttackTwice.AttackTwice'"
-//#define Anim_Jump_Attack "AnimSequence'/Game/Assets/Monster/MixamoBrute/Anim/RootFallowJumpAttack.RootFallowJumpAttack'"
-//#define Anim_Kick_Attack "AnimSequence'/Game/Assets/Monster/MixamoBrute/Anim/KickBrute.KickBrute'"
 
 UBruteAnimInstance::UBruteAnimInstance()
 {
-	/*static ConstructorHelpers::FObjectFinder<UAnimMontage>BruteDefaultAttack_Montage(TEXT(Anim_Default_Attack));
-	if (BruteDefaultAttack_Montage.Succeeded())
-	{
-		AttackMontages.Add(BruteDefaultAttack_Montage.Object);
-	}
 
-	static ConstructorHelpers::FObjectFinder<UAnimMontage>BruteJumpAttack_Montage(TEXT(Anim_Jump_Attack));
-	if (BruteJumpAttack_Montage.Succeeded())
-	{
-		AttackMontages.Add(BruteJumpAttack_Montage.Object);
-	}
-
-	static ConstructorHelpers::FObjectFinder<UAnimMontage>BruteKickAttack_Montage(TEXT(Anim_Kick_Attack));
-	if (BruteJumpAttack_Montage.Succeeded())
-	{
-		AttackMontages.Add(BruteKickAttack_Montage.Object);
-	}
-
-	static ConstructorHelpers::FObjectFinder<UAnimMontage>BruteTwiceAttack_Montage(TEXT(Anim_Twice_Attack));
-	if (BruteTwiceAttack_Montage.Succeeded())
-	{
-		AttackMontages.Add(BruteTwiceAttack_Montage.Object);
-	}*/
 }
 
 void UBruteAnimInstance::NativeUpdateAnimation(float DeltaSecnds)
@@ -49,12 +23,23 @@ void UBruteAnimInstance::NativeUpdateAnimation(float DeltaSecnds)
 	}
 }
 
-void UBruteAnimInstance::PlayAttackMontage(int32 MontageSequence)
+void UBruteAnimInstance::AnimNotify_NomalAttackHit(UAnimNotify * Notify)
 {
-	Super::PlayAttackMontage(MontageSequence);
+	OnMonsterAttackHit.Broadcast();
 }
 
-void UBruteAnimInstance::JumpAttackMontageSection(int32 MontageSequence, int32 NewSection)
+void UBruteAnimInstance::AnimNotify_KickAttackHit(UAnimNotify * Notify)
 {
-	Super::JumpAttackMontageSection(MontageSequence, NewSection);
+	OnKickAttack.Broadcast();
 }
+
+void UBruteAnimInstance::AnimNotify_JumpAttackHit(UAnimNotify * Notify)
+{
+	OnEarthQuake.Broadcast();
+}
+
+void UBruteAnimInstance::AnimNotify_Death(UAnimNotify * Notify)
+{
+	OnDeath.Broadcast();
+}
+
