@@ -801,9 +801,10 @@ void AMainMapGameMode::Tick(float DeltaTime)
 					}
 				}
 
-				//파티장 게임시작 버튼 활성화
+				//파티장 게임시작 버튼 활성화 몬스터 정보 0.2s초마다 서버로 보냄
 				if (MyCharacter->GetPartyLeader())
 				{
+					MyCharacter->SetC2SMonsterInfoAssemble(); //스테이지 클리어하면 꺼주는 작업 필요
 					MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeaderGameStartWidgetToggle();
 				}
 			}
