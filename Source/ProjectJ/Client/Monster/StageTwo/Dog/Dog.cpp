@@ -25,13 +25,13 @@
 
 ADog::ADog()
 {
-	SK_Address = L"SkeletalMesh'/Game/Assets/Monster/QuadrapedCreatures/Barghest/Meshes/SK_BARGHEST.SK_BARGHEST'";
-	AnimBP_Address = L"AnimBlueprint'/Game/Blueprints/Monster/StageTwo/Dog/Blueprints/ABP_Dog.ABP_Dog_C'";
+	/*SK_Address = L"SkeletalMesh'/Game/Assets/Monster/QuadrapedCreatures/Barghest/Meshes/SK_BARGHEST.SK_BARGHEST'";
+	AnimBP_Address = L"AnimBlueprint'/Game/Blueprints/Monster/StageTwo/Dog/Blueprints/ABP_Dog.ABP_Dog_C'";*/
 	PrimaryActorTick.bCanEverTick = true;
 	AIControllerClass = ADogAIController::StaticClass();
 
 #pragma region SkeletalMesh Set
-	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SK_Dog(SK_Address);
+	static ConstructorHelpers::FObjectFinder<USkeletalMesh>SK_Dog(TEXT("SkeletalMesh'/Game/Assets/Monster/QuadrapedCreatures/Barghest/Meshes/SK_BARGHEST.SK_BARGHEST'"));
 
 	if (SK_Dog.Succeeded())
 	{
@@ -41,7 +41,7 @@ ADog::ADog()
 
 #pragma region AnimBlueprint Set
 	// 애님블루프린트 찾아 메쉬에 세팅
-	static ConstructorHelpers::FObjectFinder<UClass>ABP_Dog(AnimBP_Address);
+	static ConstructorHelpers::FObjectFinder<UClass>ABP_Dog(TEXT("AnimBlueprint'/Game/Blueprints/Monster/StageTwo/Dog/Blueprints/ABP_Dog.ABP_Dog_C'"));
 
 	if (ABP_Dog.Succeeded())  //찾는것에 성공햇으면
 	{
