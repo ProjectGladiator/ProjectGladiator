@@ -85,6 +85,8 @@ private:
 	void InGame_Recv_UnderAttack(char* _buf);
 	// 다른 유저 피격정보
 	void InGame_Recv_Other_UnderAttack(char* _buf);
+	// 몬스터 타겟 정보
+	void InGame_Recv_Monster_Target(char* _buf);
 
 	// 몬스터 공격 애니메이션
 	//void InGame_Recv_Monster_Attack_Animation(char* _buf);
@@ -159,6 +161,10 @@ public:
 	void InGame_Req_Monster_Move_Info(int _code, int _num, float _px, float _py, float _pz);
 	// 피격받은 유저가 몬스터 공격 정보 보냄(캐릭터코드, 몬스터코드, 몬스터번호, 공격번호, 공격사거리좌표)
 	void InGame_Req_Monster_Attack(int _monstercode, int _monsternum, int _attacknum, float _x, float _y, float _z);
+	// 보스 몬스터 이동 패킷
+	void InGame_Req_BossMonster_Move_Info(int _code, float _px, float _py, float _pz, float _rx, float _ry, float _rz);
+	// 보스 몬스터 공격 패킷
+	/*void InGame_Req_BossMonster_Attack(int _monstercode, int _monsternum, int _attacknum, float _x, float _y, float _z);*/
 
 	RESULT InGameInitRecvResult(User* _user);			// 인게임 
 };

@@ -1718,6 +1718,53 @@ void InGameManager::InGame_Recv_Other_UnderAttack(char * _buf)
 	StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_ATTACKED_THE_OTHERUSER, data, size);
 }
 
+// 몬스터 타겟 정보
+void InGameManager::InGame_Recv_Monster_Target(char * _buf)
+{
+	char* ptr_buf = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(data));
+	char* ptr_data = data;
+	int size = 0;
+
+	int monstercode = 0;
+	int monsternum = 0;
+	char code[CHARACTERCODESIZE];
+	int len = 0;
+	memset(code, 0, sizeof(code));
+
+	// 몬스터 코드
+	memcpy(&monstercode, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	memcpy(ptr_data, &monstercode, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
+
+	// 몬스터 번호
+	memcpy(&monsternum, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	memcpy(ptr_data, &monsternum, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
+
+	// 코드 길이
+	memcpy(&len, ptr_buf, sizeof(int));
+	ptr_buf += sizeof(int);
+	memcpy(ptr_data, &len, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
+
+	// 코드
+	memcpy(code, ptr_buf, len);
+	ptr_buf += len;
+	memcpy(ptr_data, code, len);
+	ptr_data += len;
+	size += len;
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_MONSTER_TARGET_INFO, data, size);
+}
+
 //// 몬스터 공격 애니메이션
 //void InGameManager::InGame_Recv_Monster_Attack_Animation(char * _buf)
 //{
@@ -1938,6 +1985,58 @@ void InGameManager::InGame_Req_Monster_Attack(int _monstercode, int _monsternum,
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
 }
 
+// 보스 몬스터 이동 패킷
+void InGameManager::InGame_Req_BossMonster_Move_Info(int _code, float _px, float _py, float _pz, float _rx, float _ry, float _rz)
+{
+	UINT64 protocol = 0;
+	char buf[BUFSIZE];
+	char* ptr = buf;
+	int datasize = 0;
+	int monsternum = 0;
+	memset(buf, 0, sizeof(buf));
+
+	// 몬스터 코드
+	memcpy(ptr, &_code, sizeof(int));
+	datasize += sizeof(int);
+	ptr += sizeof(int);
+
+	// 몬스터 번호
+	memcpy(ptr, &monsternum, sizeof(int));
+	datasize += sizeof(int);
+	ptr += sizeof(int);
+
+	// 위치값
+	memcpy(ptr, &_px, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	memcpy(ptr, &_py, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	memcpy(ptr, &_pz, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+	
+	// 방향 값
+	memcpy(ptr, &_rx, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	memcpy(ptr, &_ry, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	memcpy(ptr, &_rz, sizeof(float));
+	datasize += sizeof(float);
+	ptr += sizeof(float);
+
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGMAE_MONSTER, PROTOCOL_BOSS_MONSTER_MOVE);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
+
+}
+
 //// 파티리더가 몬스터 공격 정보 보냄(캐릭터코드, 몬스터코드, 몬스터번호, 공격번호)
 //void InGameManager::InGame_Req_Monster_Attack(int _monstercode, int _monsternum, int _attacknum)
 //{
@@ -2081,6 +2180,24 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 				// 어떤유저,데미지,생존여부
 				InGame_Recv_Other_UnderAttack(buf);
 				result = RT_INGAME_OTHERUSER_UNDERATTACK_RESULT;
+				break;
+			}
+			case PROTOCOL_INGAME_BOSS_MONSTER_MOVE:
+			{
+				break;
+			}
+			case PROTOCOL_INGAME_BOSS_MONSTER_ATTACK_INFO:
+			{
+				break;
+			}
+			case PROTOCOL_INGAME_BOSS_MONSTER_ATTACK_RESULT:
+			{
+				break;
+			}
+			case PROTOCOL_INGAME_MONSTER_SET_TARGET: // 몬스터 대상지정
+			{
+				InGame_Recv_Monster_Target(buf);
+				result = RT_INGAME_MONSTER_TARGET_RESULT;
 				break;
 			}
 			default:
