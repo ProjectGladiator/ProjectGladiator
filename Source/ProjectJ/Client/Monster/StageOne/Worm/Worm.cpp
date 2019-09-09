@@ -115,6 +115,7 @@ void AWorm::Tick(float DeltaTime)
 		break;
 		case EWormState::Attack:
 		{
+			m_MonsterAttackCode = MONSTER_ATTACK_CODE::WORM_FIRST_ATTACK;
 			AIManager->AttackMeleeHitCreate(this, AttackInfo,true);
 			WormAnimInstance->PlayAttackMontage(0);
 			CurrentHP = 0;

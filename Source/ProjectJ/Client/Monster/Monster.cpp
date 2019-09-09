@@ -214,6 +214,11 @@ void AMonster::S2C_LocationUpdate(const FVector& _NewLocation)
 	CurrentLocation = _NewLocation;
 }
 
+MONSTER_ATTACK_CODE AMonster::GetMonsterAttackCode()
+{
+	return m_MonsterAttackCode;
+}
+
 MONSTER_CODE AMonster::GetMonsterCode()
 {
 	return m_MonsterCode;

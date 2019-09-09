@@ -147,6 +147,7 @@ void ADog::Tick(float DeltaTime)
 			//공격 상태
 		case EDogState::Attack:
 		{
+			m_MonsterAttackCode = MONSTER_ATTACK_CODE::DOG_FIRST_ATTACK;
 #pragma region  RotateToTarget
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
 
