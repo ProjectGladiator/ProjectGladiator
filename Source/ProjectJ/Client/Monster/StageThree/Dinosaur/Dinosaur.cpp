@@ -124,6 +124,7 @@ void ADinosaur::Tick(float DeltaTime)
 			break;
 		case EDinosaurState::Attack:
 		{
+			m_MonsterAttackCode = MONSTER_ATTACK_CODE::DINOSAUR_FIRST_ATTACK;
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
 			//GLog->Log(FString::Printf(TEXT("Pitch : %f Yaw : %f"), LooAtRotation.Pitch, LooAtRotation.Yaw));
 			SetActorRotation(LooAtRotation);

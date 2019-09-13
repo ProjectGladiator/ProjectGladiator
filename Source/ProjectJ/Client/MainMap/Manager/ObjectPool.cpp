@@ -4,7 +4,7 @@
 //클라 헤더
 #include "Engine/World.h"
 #include "Kismet/KismetMathLibrary.h"
-#include "NetWork/DataProtocol.h"
+#include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/Monster/StageThree/Bear/Bear.h"
 #include "Client/Monster/StageThree/Dinosaur/Dinosaur.h"
 #include "Client/Monster/StageTwo/Dog/Dog.h"
@@ -21,6 +21,7 @@
 
 //서버 헤더
 #include "NetWork/StorageManager.h"
+#include "NetWork/DataProtocol.h"
 
 // Sets default values
 AObjectPool::AObjectPool()
@@ -95,12 +96,27 @@ void AObjectPool::Tick(float DeltaTime)
 	int Take_Damage = 0;
 	bool isAttack_Result = false;
 	bool isAlive_Monster = false;
-
+	char* UsercharacterCode = nullptr;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
 		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
 		{
+		case PGAMEDATA_MONSTER_TARGET_INFO:// 몬스터의 타겟(캐릭터)정보 - ([int] 몬스터코드, [int] 몬스터번호, [char] 유저캐릭터코드)
+			
+			StorageManager::GetInstance()->ChangeData(Data->data,Monster_Code,Monster_Num, UsercharacterCode);
+			StorageManager::GetInstance()->PopData();
+			//몬스터 배열 사용
+			for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
+			{
+				//몬스터 코드와 번호 가 일치하는 원소를 찾음
+				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
+				{
+					//Target(MyCharacter) 의 케릭터 코드를 설정
+					ActiveMonster_Array[i_Num].Monster->Target->SetCharacterCode(UsercharacterCode);
+				}
+			}
+			break;
 		case PGAMEDATA_STAGE_MONSTER_TPYES_COUNT: // 스테이지 몬스터 종류가 몇개인지 - (종류 숫자)
 			//StorageManager::GetInstance()->ChangeData(SpawnMonster_Num);
 			StorageManager::GetInstance()->PopData();
@@ -118,7 +134,6 @@ void AObjectPool::Tick(float DeltaTime)
 		case PGAMEDATA_USER_ATTACKED_THE_MONSTER_RESULT:// 유저가 몬스터를 공격한 결과 - ([bool] 성공실패결과, [int] 몬스터 코드, [int] 몬스터 번호, [int] 데미지, [bool] 죽었는지살았는지)	
 			StorageManager::GetInstance()->ChangeData(Data->data, isAttack_Result, Monster_Code, Monster_Num, Take_Damage, isAlive_Monster);
 			StorageManager::GetInstance()->PopData();
-
 			//공격결과가 True이면
 			if (isAttack_Result)
 			{
@@ -159,7 +174,6 @@ void AObjectPool::Tick(float DeltaTime)
 				GLog->Log(FString::Printf(TEXT("공격 결과가 실패로 들어왔습니다.")));
 			}
 			break;		
-			
 		case PGAMEDATA_OTHERUSER_ATTACKED_THE_MONSTER:// 다른 유저가 몬스터를 공격한 결과 - ([int] 몬스터 코드, [int] 몬스터 번호, [int] 데미지, [bool] 죽었는지살았는지)
 			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage, isAlive_Monster);
 			StorageManager::GetInstance()->PopData();
@@ -368,7 +382,7 @@ void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, FVector _MonsterPostio
 			SpawnObject_SetActive(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster], true);
 
 			//Setting Target
-			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->FirstTarget();
+			//DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->FirstTarget();
 
 			//Temporary Struct to Put in ActvieMonster_Array
 			FActiveMonsterInfo TempActiveMonsterInfo;

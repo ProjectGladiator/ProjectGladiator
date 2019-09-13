@@ -168,6 +168,7 @@ public:
 	char* GetCharacterCode();
 
 	void SetCharacterCode(char* _NewCharacterCode, char* _NewNickName);
+	void SetCharacterCode(char* _NewCharacterCode);
 
 	void C2S_MoveConfirm();
 

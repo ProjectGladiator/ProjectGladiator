@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "NetWork/MonsterInfo.h"
+#include "Client/State/MonsterState/MonsterState.h"
 #include "GameFramework/Character.h"
 #include "Client/Monster/Struct/MonsterAttackInfo.h"
 #include "Monster.generated.h"
@@ -16,6 +17,7 @@ class PROJECTJ_API AMonster : public ACharacter
 public:
 	AMonster();
 protected:
+	MONSTER_ATTACK_CODE m_MonsterAttackCode;
 	//나 자신의 몬스터 코드
 		MONSTER_CODE m_MonsterCode;
 	//나의 몬스터 번호
@@ -29,8 +31,6 @@ protected:
 		float CurrentHP;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = AI)
 		class UAIManager* AIManager;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Target)
-		class AMyCharacter* Target;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AI)
 		float DeathInVisibleValue;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
@@ -80,7 +80,8 @@ public:
 	void SetHP(float _currentHP);
 
 	int SetMonsterNum(int);
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Target)
+	class AMyCharacter* Target;
 	/** Actor Hidden 확인여부 */
 	UPROPERTY(VisibleInstanceOnly, Category = isSpawn)
 	bool bisActive;
@@ -93,6 +94,7 @@ public:
 
 	void S2C_LocationUpdate(const FVector& _NewLocation);
 
+	MONSTER_ATTACK_CODE GetMonsterAttackCode();
 	MONSTER_CODE GetMonsterCode();
 	int GetMonsterNum();
 };
@@ -101,9 +103,7 @@ USTRUCT()
 struct FActiveMonsterInfo
 {
 	GENERATED_USTRUCT_BODY()
-
 	int MonsterNum;
 	MONSTER_CODE MonsterCode;
 	AMonster* Monster;
-
 };
