@@ -3,6 +3,7 @@
 #include "Monster.h"
 //클라 헤더
 #include "MonsterAIController.h"
+#include "Client/State/MonsterState/MonsterState.h"
 #include "Client/MainMap/Manager/ObjectPool.h"
 #include "Client/Monster/Manager/AIManager.h"
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
@@ -45,6 +46,8 @@ AMonster::AMonster()
 	{
 		SpawnEffect = PT_SpawnEffect.Object;
 	}
+
+	m_MonsterAttackCode = MONSTER_ATTACK_CODE::DEFAULT_ATTACK_CODE;
 
 	//활성화 확인용 bool은 처음엔 true로 설정 
 	bisActive = true;
