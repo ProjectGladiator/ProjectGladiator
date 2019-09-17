@@ -3,6 +3,7 @@
 #include "Monster.h"
 //클라 헤더
 #include "MonsterAIController.h"
+#include "Client/State/MonsterState/MonsterState.h"
 #include "Client/MainMap/Manager/ObjectPool.h"
 #include "Client/Monster/Manager/AIManager.h"
 #include "Components/SkeletalMeshComponent.h" //스켈레탈 메쉬 헤더
@@ -45,6 +46,8 @@ AMonster::AMonster()
 	{
 		SpawnEffect = PT_SpawnEffect.Object;
 	}
+
+	m_MonsterAttackCode = MONSTER_ATTACK_CODE::DEFAULT_ATTACK_CODE;
 
 	//활성화 확인용 bool은 처음엔 true로 설정 
 	bisActive = true;
@@ -209,9 +212,35 @@ void AMonster::FirstTarget()
 	}
 }
 
+void AMonster::Targeting(char* _CharacterCode)
+{
+	auto MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	if (MyCharacter)
+	{
+		for (int i = 0; i < MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySize(); i++)
+		{
+			FPartySlot PartySlot = MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySlot(i);
+
+			if (PartySlot.PartyUser)
+			{
+				if (PartySlot.PartyUser->GetCharacterCode() == _CharacterCode)
+				{
+					Target = PartySlot.PartyUser;
+				}
+			}
+		}
+	}
+}
+
 void AMonster::S2C_LocationUpdate(const FVector& _NewLocation)
 {
 	CurrentLocation = _NewLocation;
+}
+
+MONSTER_ATTACK_CODE AMonster::GetMonsterAttackCode()
+{
+	return m_MonsterAttackCode;
 }
 
 MONSTER_CODE AMonster::GetMonsterCode()

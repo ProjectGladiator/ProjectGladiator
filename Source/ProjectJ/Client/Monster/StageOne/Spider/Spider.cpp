@@ -120,6 +120,7 @@ void ASpider::Tick(float DeltaTime)
 			switch (CurrentAttackState)
 			{
 			case ESpiderAttackState::DefaultAttack:
+				m_MonsterAttackCode = MONSTER_ATTACK_CODE::SPIDER_FIRST_ATTACK;
 				if (IsAttack)
 				{
 					IsCombo = true;
@@ -137,6 +138,7 @@ void ASpider::Tick(float DeltaTime)
 				}
 				break;
 			case ESpiderAttackState::ChargeAttack:
+				m_MonsterAttackCode = MONSTER_ATTACK_CODE::SPIDER_SECOND_ATTACK;
 				if (!IsAttack)
 				{
 					IsAttack = true;

@@ -120,6 +120,7 @@ void ABear::Tick(float DeltaTime)
 		break;
 		case EBearState::Attack:
 		{
+			m_MonsterAttackCode = MONSTER_ATTACK_CODE::BEAR_FIRST_ATTACK;
 			if (IsAttack)
 			{
 				IsCombo = true;

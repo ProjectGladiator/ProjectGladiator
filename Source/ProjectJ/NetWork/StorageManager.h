@@ -102,6 +102,8 @@ public:
 	void ChangeData(void* data, bool& _result, int& _damage, bool& _is_live);
 	// 몬스터가 다른 유저를 공격한 정보(캐릭터코드,데미지,살아있는지)
 	void ChangeData(void* data, char* _code, int& _damage, bool& _is_live);
+	// 몬스터의 타겟(캐릭터)정보 ([int] 몬스터코드, [int] 몬스터번호, [char] 유저캐릭터코드)
+	void ChangeData(void* data, int& _monstercode, int& _monsternum, char* _code);
 
 
 	bool PopData();

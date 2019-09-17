@@ -584,6 +584,25 @@ void StorageManager::ChangeData(void * data, char * _code, int & _damage, bool &
 	ptr += sizeof(bool);
 }
 
+// 몬스터의 타겟(캐릭터)정보 ([int] 몬스터코드, [int] 몬스터번호, [char] 유저캐릭터코드)
+void StorageManager::ChangeData(void * data, int & _monstercode, int & _monsternum, char * _code)
+{
+	int len = 0;
+	char* ptr = (char*)data;
+	
+	memcpy(&_monstercode, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&_monsternum, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(&len, ptr, sizeof(int));
+	ptr += sizeof(int);
+
+	memcpy(_code, ptr, len);
+	ptr += len;
+}
+
 // Front 삭제
 bool StorageManager::PopData()
 {	
