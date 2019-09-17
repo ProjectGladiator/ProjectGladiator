@@ -105,7 +105,7 @@ void AObjectPool::Tick(float DeltaTime)
 		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
 		{
 		case PGAMEDATA_MONSTER_TARGET_INFO:// 몬스터의 타겟(캐릭터)정보 - ([int] 몬스터코드, [int] 몬스터번호, [char] 유저캐릭터코드)
-			
+			memset(TempPartyReqCharacterCode, 0, sizeof(TempPartyReqCharacterCode));
 			StorageManager::GetInstance()->ChangeData(Data->data,Monster_Code,Monster_Num, PartyReqCharacterCode);
 			StorageManager::GetInstance()->PopData();
 			//몬스터 배열 사용
