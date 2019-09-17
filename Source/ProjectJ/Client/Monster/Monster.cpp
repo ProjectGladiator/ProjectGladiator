@@ -224,7 +224,7 @@ void AMonster::Targeting(char* _CharacterCode)
 
 			if (PartySlot.PartyUser)
 			{
-				if (PartySlot.PartyUser->GetCharacterCode == _CharacterCode)
+				if (PartySlot.PartyUser->GetCharacterCode() == _CharacterCode)
 				{
 					Target = PartySlot.PartyUser;
 				}
