@@ -106,7 +106,7 @@ void ASpiderBoss::Tick(float DeltaTime)
 			{
 			case EPathFollowingRequestResult::AlreadyAtGoal:
 				CurrentState = ESpiderBossState::Attack;
-				CurrentAttackState = ESpiderBossAttackState::DefaultAttack;
+				CurrentAttackState = ESpiderBossAttackState::ChargeAttack;
 				break;
 			case EPathFollowingRequestResult::Failed:
 				//GLog->Log(FString::Printf(TEXT("요청 실패")));
