@@ -92,6 +92,8 @@ public:
 
 	void FirstTarget();
 
+	void Targeting(char* _CharacterCode);
+
 	void S2C_LocationUpdate(const FVector& _NewLocation);
 
 	MONSTER_ATTACK_CODE GetMonsterAttackCode();

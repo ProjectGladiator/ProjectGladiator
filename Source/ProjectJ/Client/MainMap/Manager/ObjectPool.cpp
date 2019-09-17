@@ -96,7 +96,9 @@ void AObjectPool::Tick(float DeltaTime)
 	int Take_Damage = 0;
 	bool isAttack_Result = false;
 	bool isAlive_Monster = false;
-	char* UsercharacterCode = nullptr;
+
+	char TempPartyReqCharacterCode[30];
+	char* PartyReqCharacterCode = TempPartyReqCharacterCode;
 
 	if (StorageManager::GetInstance()->GetFront(Data)) //창고매니저 큐에 들어있는 데이터를 가져와서 Data에 담는다.
 	{
@@ -104,7 +106,7 @@ void AObjectPool::Tick(float DeltaTime)
 		{
 		case PGAMEDATA_MONSTER_TARGET_INFO:// 몬스터의 타겟(캐릭터)정보 - ([int] 몬스터코드, [int] 몬스터번호, [char] 유저캐릭터코드)
 			
-			StorageManager::GetInstance()->ChangeData(Data->data,Monster_Code,Monster_Num, UsercharacterCode);
+			StorageManager::GetInstance()->ChangeData(Data->data,Monster_Code,Monster_Num, PartyReqCharacterCode);
 			StorageManager::GetInstance()->PopData();
 			//몬스터 배열 사용
 			for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
@@ -112,8 +114,11 @@ void AObjectPool::Tick(float DeltaTime)
 				//몬스터 코드와 번호 가 일치하는 원소를 찾음
 				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
 				{
+					
 					//Target(MyCharacter) 의 케릭터 코드를 설정
-					ActiveMonster_Array[i_Num].Monster->Target->SetCharacterCode(UsercharacterCode);
+					ActiveMonster_Array[i_Num].Monster->Targeting(PartyReqCharacterCode);
+					
+					//ActiveMonster_Array[i_Num].Monster->Target->SetCharacterCode(PartyReqCharacterCode);
 				}
 			}
 			break;

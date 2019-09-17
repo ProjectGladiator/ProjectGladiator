@@ -212,6 +212,27 @@ void AMonster::FirstTarget()
 	}
 }
 
+void AMonster::Targeting(char* _CharacterCode)
+{
+	auto MyCharacter = Cast<AMyCharacter>(UGameplayStatics::GetPlayerCharacter(GetWorld(), 0));
+
+	if (MyCharacter)
+	{
+		for (int i = 0; i < MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySize(); i++)
+		{
+			FPartySlot PartySlot = MyCharacter->GetMyCharacterUI()->GetMainWidget()->GetPartySlot(i);
+
+			if (PartySlot.PartyUser)
+			{
+				if (PartySlot.PartyUser->GetCharacterCode == _CharacterCode)
+				{
+					Target = PartySlot.PartyUser;
+				}
+			}
+		}
+	}
+}
+
 void AMonster::S2C_LocationUpdate(const FVector& _NewLocation)
 {
 	CurrentLocation = _NewLocation;
