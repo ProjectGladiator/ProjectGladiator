@@ -105,7 +105,9 @@ void AObjectPool::Tick(float DeltaTime)
 		switch (Data->protocol) //담아온 Data의 프로토콜을 확인한다.
 		{
 		case PGAMEDATA_MONSTER_TARGET_INFO:// 몬스터의 타겟(캐릭터)정보 - ([int] 몬스터코드, [int] 몬스터번호, [char] 유저캐릭터코드)
+
 			memset(TempPartyReqCharacterCode, 0, sizeof(TempPartyReqCharacterCode));
+
 			StorageManager::GetInstance()->ChangeData(Data->data,Monster_Code,Monster_Num, PartyReqCharacterCode);
 			StorageManager::GetInstance()->PopData();
 			//몬스터 배열 사용
@@ -114,11 +116,8 @@ void AObjectPool::Tick(float DeltaTime)
 				//몬스터 코드와 번호 가 일치하는 원소를 찾음
 				if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
 				{
-					
 					//Target(MyCharacter) 의 케릭터 코드를 설정
 					ActiveMonster_Array[i_Num].Monster->Targeting(PartyReqCharacterCode);
-					
-					//ActiveMonster_Array[i_Num].Monster->Target->SetCharacterCode(PartyReqCharacterCode);
 				}
 			}
 			break;
@@ -182,7 +181,6 @@ void AObjectPool::Tick(float DeltaTime)
 		case PGAMEDATA_OTHERUSER_ATTACKED_THE_MONSTER:// 다른 유저가 몬스터를 공격한 결과 - ([int] 몬스터 코드, [int] 몬스터 번호, [int] 데미지, [bool] 죽었는지살았는지)
 			StorageManager::GetInstance()->ChangeData(Data->data, Monster_Code, Monster_Num, Take_Damage, isAlive_Monster);
 			StorageManager::GetInstance()->PopData();
-			
 			GLog->Log(FString::Printf(TEXT("공격 성공 메소드 실행.")));
 			if (isAlive_Monster)
 			{
@@ -203,7 +201,6 @@ void AObjectPool::Tick(float DeltaTime)
 			}
 			else if (isAlive_Monster == false)
 			{
-
 				for (int i_Num = 0; i_Num < ActiveMonster_Array.Num(); i_Num++)
 				{
 					//몬스터 코드와 번호 가 일치하는 원소를 찾음
@@ -371,7 +368,7 @@ void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, FVector _MonsterPostio
 
 			/*##############################################
 			################################################*/
-			//DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->CurrentStat를 변경해야함
+			//DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->CurrentStat는 Init에서 Idle로 만들어줌!
 			/*##############################################
 			################################################*/
 

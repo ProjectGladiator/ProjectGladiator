@@ -103,7 +103,9 @@ void ASpider::Tick(float DeltaTime)
 			switch (GoalResult)
 			{
 			case EPathFollowingRequestResult::AlreadyAtGoal:
-				RandomAttack();
+				//RandomAttack();
+				CurrentAttackState = ESpiderAttackState::DefaultAttack;
+				CurrentState = ESpiderState::Attack;
 				break;
 			case EPathFollowingRequestResult::Failed:
 				//GLog->Log(FString::Printf(TEXT("요청 실패")));
