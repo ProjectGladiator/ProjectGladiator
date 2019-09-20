@@ -197,7 +197,12 @@ void ATanker::OnAttackHit()
 			{
 				if (MainMapPlayerController)
 				{
-					MainMapPlayerController->C2S_MyCharacterHitInfo(Monster->GetMonsterCode(), Monster->GetMonsterNum(), 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
+					AMyCharacter* MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
+					
+					if (strcmp(GetCharacterCode(), MyCharacter->GetCharacterCode())==0)
+					{
+						MainMapPlayerController->C2S_MyCharacterHitInfo(Monster->GetMonsterCode(), Monster->GetMonsterNum(), 1, CircleCollision.X, CircleCollision.Y, CircleCollision.Z);
+					}				
 
 					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitEffectMonster, HitResults[i].ImpactPoint);
 				}
