@@ -169,6 +169,7 @@ void AObjectPool::Tick(float DeltaTime)
 							//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
 							ActiveMonster_Array[i_Num].Monster->Death();
 							Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+							break;
 						}
 					}
 				}
@@ -209,6 +210,7 @@ void AObjectPool::Tick(float DeltaTime)
 						//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
 						ActiveMonster_Array[i_Num].Monster->Death();
 						Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
+						break;
 					}
 				}
 			}
