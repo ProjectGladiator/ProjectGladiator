@@ -54,6 +54,8 @@ public:
 	TMap<MONSTER_CODE, FMonsterstruct> Get_SpawnMoster_Map();
 	/** Get ActvieMonster_Array*/
 	TArray<FActiveMonsterInfo> Get_ActiveMonster_Array();
+	/** Pool Position*/
+	FVector SpawnPos_Vector;
 
 private:
 	/** This Data Structure is Monster's Type and list of Array*/
@@ -93,9 +95,6 @@ private:
 
 	/** Monster Set useful*/
 	bool check_RecycleObject(AMonster*);
-
-	//Get Spawn Info
-	void Recive_SpawnObject_Info();
 
 	//Check Non-Active Monster
 	void ReadyMonster(MONSTER_CODE,FVector);

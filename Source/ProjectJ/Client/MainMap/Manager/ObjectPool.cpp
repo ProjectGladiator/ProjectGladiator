@@ -55,7 +55,6 @@ AObjectPool::AObjectPool()
 	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::BOSS_SPIDER, MonsterArray);
 	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::DOG, MonsterArray);
 	//DefaultSpawnArea_Map.Emplace(MONSTER_CODE::ORCCANNONSOLDIER, MonsterArray);
-	//DefaultSpawnArea_Map.Emplace(MONSTER_CODE::KING_OF_THEAXE, MonsterArray);
 	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::BEAR, MonsterArray);
 	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::DINOSAUR, MonsterArray);
 	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::KING_OF_THEAXE, MonsterArray);
@@ -128,8 +127,9 @@ void AObjectPool::Tick(float DeltaTime)
 		case PGAMEDATA_STAGE_MONSTER_INFO: // 스테이지 몬스터 정보 - (몬스터코드,몬스터숫자,좌표)
 			StorageManager::GetInstance()->ChangeData(Data->data, KindMonster, SpawnMonster_Num, SpawnPos.X, SpawnPos.Y, SpawnPos.Z);
 			StorageManager::GetInstance()->PopData();
+
 			ReadyMonster(static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
-			//Timer();
+
 			break;
 		case PGAMEDATA_STAGE_MONSTER_SPAWN_TIME: // 스테이지 몬스터 스폰 시간 - ([float] 몬스터 스폰시간)
 			StorageManager::GetInstance()->ChangeData(Data->data, SpawnTime);
@@ -310,7 +310,7 @@ void AObjectPool::SpawnObject_SetActive(AMonster* SpawnObject, bool _bActive)
 			// Hides visible components
 			SpawnObject->SetActorHiddenInGame(true);
 			// Disables collision components
-			SpawnObject->SetActorEnableCollision(true);
+			SpawnObject->SetActorEnableCollision(false);
 			// Stops the Actor from ticking
 			SpawnObject->SetActorTickEnabled(false);
 		}
@@ -332,32 +332,6 @@ bool AObjectPool::check_RecycleObject(AMonster* _spawnMonster)
 		return false;
 }
 
-void AObjectPool::Recive_SpawnObject_Info()
-{
-	//Timer()에서 이 함수를 SpawnTimer마다 호출되도록함.
-
-	//Get SpawnMonster's type Array
-	//Get The Array's Num
-	//Get SpawnPosition
-	//Last,Find Non_Active Monster 
-
-	/*
-	//SpawnMonster 카운터가 Num과 일치했을때.
-	if (SpawnMonsterCounter == SpawnMonster_Num)
-	{
-		//SpawnCounter Reset
-		SpawnMonsterCounter = 0;
-		//Timer Kill
-		GetWorld()->GetTimerManager().ClearTimer(SpawnUpdateTimer);
-	}
-	else
-	{}
-	//비활성화인 몬스터를 준비단계로 넘어가게 해주는 함수(몬스터 배열에서 순차적으로 비활성화 인것 부터 찾아서 사용한다)
-	ReadyMonster(static_cast<MONSTER_CODE>(KindMonster), SpawnPos);
-	//Counter Update SpawnMonster_Num의 카운터임
-	++SpawnMonsterCounter;
-	//*/
-}
 
 void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, FVector _MonsterPostion)
 {
@@ -368,11 +342,7 @@ void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, FVector _MonsterPostio
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Monster Recycle"));
 
-			/*##############################################
-			################################################*/
 			//DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->CurrentStat는 Init에서 Idle로 만들어줌!
-			/*##############################################
-			################################################*/
 
 			//Active Actor to bisActive make true;
 			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->bisActive = true;
@@ -413,9 +383,7 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 	//Use SpawnActorOption, ESpawnActorCollisionHandlingMethod::[ AlwaysSpawn OR AdjustIfPossibleButAlwaysSpawn ]
 	SpawnActorOption.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
 
-	//Object Position
-	FVector SpawnPos_Vector;
-	//Default SpawnVector Pos
+	//Object Position Default SpawnVector Pos
 	SpawnPos_Vector = ReadySpawnArea->Bounds.Origin;
 
 	for (int i_spawnObject = 0; i_spawnObject < _MaximumSize; i_spawnObject++)
@@ -454,10 +422,11 @@ void AObjectPool::Set_MonsterVolume_With_Array(TArray<class AMonster*>& _Monster
 	}
 }
 
+//사용안함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 void AObjectPool::Timer()
 {
 	//Timer에 Handle, 사용하는객체(클래스), 반복할 메소드, 반복시간
-	GetWorld()->GetTimerManager().SetTimer(SpawnUpdateTimer, this, &AObjectPool::Recive_SpawnObject_Info, SpawnTime, true, 0);
+	//GetWorld()->GetTimerManager().SetTimer(SpawnUpdateTimer, this, &AObjectPool::Recive_SpawnObject_Info, SpawnTime, true, 0);
 
 }
 
@@ -469,7 +438,6 @@ void AObjectPool::Remove_ActiveMonsterArry(int _MonsterCode, int _MonsterNum)
 		if (ActiveMonster_Array[i_Num].MonsterCode == _MonsterCode && ActiveMonster_Array[i_Num].MonsterNum == _MonsterNum)
 		{
 			ActiveMonster_Array.RemoveAt(i_Num);
-			//TempArray.Sort();
 		}
 	}
 }

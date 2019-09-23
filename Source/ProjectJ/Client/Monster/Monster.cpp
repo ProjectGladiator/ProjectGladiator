@@ -11,6 +11,7 @@
 #include "UObject/ConstructorHelpers.h" // 경로 탐색 헤더
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 #include "Kismet/GameplayStatics.h"
+#include "Client/MainMap/Manager/ObjectPool.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MyCharacter/PC/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/PC/Widget/MainWidget.h"
@@ -48,6 +49,8 @@ AMonster::AMonster()
 	}
 
 	m_MonsterAttackCode = MONSTER_ATTACK_CODE::DEFAULT_ATTACK_CODE;
+	
+	m_PoolPos = GetWorld()->SpawnActor<AObjectPool>()->SpawnPos_Vector;
 
 	//활성화 확인용 bool은 처음엔 true로 설정 
 	bisActive = true;
@@ -96,7 +99,6 @@ void AMonster::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
 	//PGAMEDATA_MONSTER_ATTACK_SUCCESS,				// 몬스터 공격받음(공격성공 살아있음) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
 	
 	//	PGAMEDATA_MONSTER_ATTACK_FAIL,					// 몬스터 공격받음(공격실패) - (프로토콜만)
@@ -115,7 +117,6 @@ void AMonster::Tick(float DeltaTime)
 void AMonster::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 }
 
 void AMonster::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)

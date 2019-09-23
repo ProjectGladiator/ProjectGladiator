@@ -17,12 +17,15 @@ class PROJECTJ_API AMonster : public ACharacter
 public:
 	AMonster();
 protected:
+	AObjectPool* m_objectPool;
 	MONSTER_ATTACK_CODE m_MonsterAttackCode;
 	//나 자신의 몬스터 코드
 		MONSTER_CODE m_MonsterCode;
 	//나의 몬스터 번호
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MonsterCode)
 		int m_MonsterNum;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ResetPosition)
+		FVector m_PoolPos;
 	UPROPERTY()
 		FVector CurrentLocation;
 	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
@@ -84,7 +87,7 @@ public:
 	class AMyCharacter* Target;
 	/** Actor Hidden 확인여부 */
 	UPROPERTY(VisibleInstanceOnly, Category = isSpawn)
-	bool bisActive;
+	bool bisActive ;
 
 	MONSTER_CODE SetMonsterCode(MONSTER_CODE);
 

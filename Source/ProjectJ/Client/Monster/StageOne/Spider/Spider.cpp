@@ -166,7 +166,7 @@ void ASpider::Tick(float DeltaTime)
 			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
 			//GLog->Log(FString::Printf(TEXT("몬스터 사망")));
-			if (DeathInVisibleValue >= 0)
+			if (DeathInVisibleValue == 0)
 			{
 				GLog->Log(FString::Printf(TEXT("재배치 준비")));
 				//We Not Use Destroy Function
@@ -177,12 +177,13 @@ void ASpider::Tick(float DeltaTime)
 				// Hides visible components
 				this->SetActorHiddenInGame(true);
 				// Disables collision components
-				this->SetActorEnableCollision(true);
+				this->SetActorEnableCollision(false);
 				// Stops the Actor from ticking
 				this->SetActorTickEnabled(false);
 
 				DeathInVisibleValue = 0;
 
+				this->SetActorLocation(m_PoolPos);
 				//몬스터 상태는 Ready로 변경
 				CurrentState = ESpiderState::Ready;
 				DeathFlag = true;
