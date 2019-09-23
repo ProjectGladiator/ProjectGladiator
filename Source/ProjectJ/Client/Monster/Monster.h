@@ -17,7 +17,6 @@ class PROJECTJ_API AMonster : public ACharacter
 public:
 	AMonster();
 protected:
-	AObjectPool* m_objectPool;
 	MONSTER_ATTACK_CODE m_MonsterAttackCode;
 	//나 자신의 몬스터 코드
 		MONSTER_CODE m_MonsterCode;

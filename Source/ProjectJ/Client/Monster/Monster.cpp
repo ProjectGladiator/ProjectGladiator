@@ -11,7 +11,6 @@
 #include "UObject/ConstructorHelpers.h" // 경로 탐색 헤더
 #include "Particles/ParticleSystem.h"  //파티클 관련 헤더 파일
 #include "Kismet/GameplayStatics.h"
-#include "Client/MainMap/Manager/ObjectPool.h"
 #include "Client/MyCharacter/PC/MyCharacter.h"
 #include "Client/MyCharacter/PC/Widget/MyCharacterUI.h"
 #include "Client/MyCharacter/PC/Widget/MainWidget.h"
@@ -49,8 +48,8 @@ AMonster::AMonster()
 	}
 
 	m_MonsterAttackCode = MONSTER_ATTACK_CODE::DEFAULT_ATTACK_CODE;
-	
-	m_PoolPos = GetWorld()->SpawnActor<AObjectPool>()->SpawnPos_Vector;
+
+	m_PoolPos = FVector(4700.0, 18000.0, 4150.0);
 
 	//활성화 확인용 bool은 처음엔 true로 설정 
 	bisActive = true;
