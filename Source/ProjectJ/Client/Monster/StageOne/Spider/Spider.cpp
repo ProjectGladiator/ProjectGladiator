@@ -171,7 +171,7 @@ void ASpider::Tick(float DeltaTime)
 			// Disables collision components
 			this->SetActorEnableCollision(false);
 			// Stops the Actor from ticking
-			this->SetActorTickEnabled(false);
+			this->SetActorTickEnabled(true);
 
 			DeathInVisibleValue = 0;
 
