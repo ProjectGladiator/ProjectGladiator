@@ -77,7 +77,7 @@ void ASpider::BeginPlay()
 }
 
 void ASpider::Tick(float DeltaTime)
-{
+{	
 	if (Target)
 	{
 		float Distance = AIManager->DistanceCalculate(this, Target);
@@ -104,7 +104,7 @@ void ASpider::Tick(float DeltaTime)
 			{
 			case EPathFollowingRequestResult::AlreadyAtGoal:
 				//RandomAttack();
-				CurrentAttackState = ESpiderAttackState::DefaultAttack;
+				CurrentAttackState = ESpiderAttackState::DefaultAttack;				
 				CurrentState = ESpiderState::Attack;
 				break;
 			case EPathFollowingRequestResult::Failed:
@@ -252,13 +252,14 @@ void ASpider::OnMonsterAttackEnded()
 
 void ASpider::OnMonsterAttackChanged()
 {
-	RandomAttack();
+	//RandomAttack();
 }
 
 void ASpider::Death()
 {
 	Super::Death();
 	CurrentState = ESpiderState::Death;
+	GLog->Log(FString::Printf(TEXT("Spider Death Call")));
 }
 
 void ASpider::RandomAttack()
