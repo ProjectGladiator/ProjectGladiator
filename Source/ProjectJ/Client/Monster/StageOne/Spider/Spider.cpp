@@ -179,6 +179,9 @@ void ASpider::Tick(float DeltaTime)
 			//몬스터 상태는 Ready로 변경
 			CurrentState = ESpiderState::Ready;
 			DeathFlag = true;
+
+			Target = nullptr;
+
 			//DeathInVisibleValue += 0.01;
 			//GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
