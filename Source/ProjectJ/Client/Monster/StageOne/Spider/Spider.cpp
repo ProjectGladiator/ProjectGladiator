@@ -161,33 +161,32 @@ void ASpider::Tick(float DeltaTime)
 		}
 		break;
 		case ESpiderState::Death:
+			GLog->Log(FString::Printf(TEXT("재배치 준비")));
+			//Destroy();
 
-			DeathInVisibleValue += 0.01;
-			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
+			//bisActive  true -> false 재배치 준비를 위해.
+			bisActive = false;
+			// Hides visible components
+			this->SetActorHiddenInGame(true);
+			// Disables collision components
+			this->SetActorEnableCollision(false);
+			// Stops the Actor from ticking
+			this->SetActorTickEnabled(false);
 
-			//GLog->Log(FString::Printf(TEXT("몬스터 사망")));
-			if (DeathInVisibleValue == 0)
-			{
-				GLog->Log(FString::Printf(TEXT("재배치 준비")));
-				//We Not Use Destroy Function
-				//Destroy();
+			DeathInVisibleValue = 0;
 
-				//bisActive  true -> false 재배치 준비를 위해.
-				bisActive = false;
-				// Hides visible components
-				this->SetActorHiddenInGame(true);
-				// Disables collision components
-				this->SetActorEnableCollision(false);
-				// Stops the Actor from ticking
-				this->SetActorTickEnabled(false);
+			this->SetActorLocation(m_PoolPos);
+			//몬스터 상태는 Ready로 변경
+			CurrentState = ESpiderState::Ready;
+			DeathFlag = true;
+			//DeathInVisibleValue += 0.01;
+			//GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-				DeathInVisibleValue = 0;
-
-				this->SetActorLocation(m_PoolPos);
-				//몬스터 상태는 Ready로 변경
-				CurrentState = ESpiderState::Ready;
-				DeathFlag = true;
-			}
+			////GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			//if (DeathInVisibleValue == 0)
+			//{
+			//	
+			//}
 			break;
 		}
 	}
