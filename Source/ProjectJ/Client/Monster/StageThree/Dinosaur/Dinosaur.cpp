@@ -57,7 +57,6 @@ ADinosaur::ADinosaur()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 400.0f;
-	DeathFlag = false;
 	MaxHP = 100;
 }
 
@@ -91,13 +90,9 @@ void ADinosaur::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case EDinosaurState::Ready:
-			if (DeathFlag)
-			{
-				//init으로 초기화  CurrentHP = MaxHP;
-			}
 			break;
 		case EDinosaurState::Idle:
-			if (!DeathFlag)
+			if (Target)
 			{
 				CurrentState = EDinosaurState::Chase;
 			}
@@ -140,22 +135,11 @@ void ADinosaur::Tick(float DeltaTime)
 		}
 			break;
 		case EDinosaurState::Death:
-			DeathInVisibleValue += 0.01;
-			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
-
-			//GLog->Log(FString::Printf(TEXT("몬스터 사망")));
-			if (DeathInVisibleValue == 0)
+			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 1)
 			{
-				GLog->Log(FString::Printf(TEXT("재배치 준비")));
-				//We Not Use Destroy Function
-				//Destroy();
-
-				//bisActive  true -> false 재배치 준비를 위해.
-				bisActive = false;
-
 				//몬스터 상태는 Ready로 변경
 				CurrentState = EDinosaurState::Ready;
-				DeathFlag = true;
 			}
 			break;
 		}

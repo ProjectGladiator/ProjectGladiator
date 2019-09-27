@@ -46,8 +46,6 @@ ASpiderBoss::ASpiderBoss()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
-
-	DeathFlag = false;
 	MaxHP = 100;
 }
 
@@ -87,13 +85,10 @@ void ASpiderBoss::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case ESpiderBossState::Ready:
-			if(DeathFlag)
-			{
-				//init으로 초기화
-			}
+			
 			break;
 		case ESpiderBossState::Idle:
-			if (!DeathFlag)
+			if (Target)
 			{
 				CurrentState = ESpiderBossState::Chase;
 			}
@@ -163,22 +158,11 @@ void ASpiderBoss::Tick(float DeltaTime)
 		}
 			break;
 		case ESpiderBossState::Death:
-			DeathInVisibleValue += 0.01;
-			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
-
-			//GLog->Log(FString::Printf(TEXT("몬스터 사망")));
-			if (DeathInVisibleValue == 0)
+			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 1)
 			{
-				GLog->Log(FString::Printf(TEXT("재배치 준비")));
-				//We Not Use Destroy Function
-				//Destroy();
-
-				//bisActive  true -> false 재배치 준비를 위해.
-				bisActive = false;
-
 				//몬스터 상태는 Ready로 변경
 				CurrentState = ESpiderBossState::Ready;
-				DeathFlag = true;
 			}
 			break;
 		}

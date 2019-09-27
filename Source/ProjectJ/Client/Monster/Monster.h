@@ -19,35 +19,46 @@ public:
 protected:
 	MONSTER_ATTACK_CODE m_MonsterAttackCode;
 	//나 자신의 몬스터 코드
-		MONSTER_CODE m_MonsterCode;
+	MONSTER_CODE m_MonsterCode;
 	//나의 몬스터 번호
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = MonsterCode)
 		int m_MonsterNum;
+
+	//Pool의 위치
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ResetPosition)
 		FVector m_PoolPos;
-	UPROPERTY()
+	//현재 위치
+	UPROPERTY(VisibleAnywhere, Category = LocatPosition)
 		FVector CurrentLocation;
-	//UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
-	//	float MaxHP;
+
+	//현재 상태
+	UPROPERTY(VisibleAnywhere, Category = stat)
+		COMMON_MONSTER_STATE Current_Common_State;
+	//현재 체력
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Stat)
 		float CurrentHP;
+
+	//AI Property
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly,Category = AI)
 		class UAIManager* AIManager;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = AI)
 		float DeathInVisibleValue;
+
+	//AttackProperty
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
 		float TargetLimitDistance;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Attack)
 		FMonsterAttackInfo AttackInfo;
+
+	//EffectProperty
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect)
 		class UParticleSystem* HitEffectTarget;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Effect, Meta = (AllowPrivateAccess = true))
 		class UParticleSystem* SpawnEffect;
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-	UPROPERTY(VisibleInstanceOnly, Category = isDead)
-		bool DeathFlag;
+	////제거해도 될지 않될지 모를값
+	//UPROPERTY(VisibleInstanceOnly, Category = isDead)
+	//	bool DeathFlag;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ComboAttack)
 		bool IsAttack; //공격중인지 아닌지
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = ComboAttack)
@@ -65,6 +76,9 @@ protected:
 		virtual void OnMonsterAttackChanged();
 	UFUNCTION()
 		virtual void Death();
+
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -80,7 +94,6 @@ public:
 	float GetHP();
 	UFUNCTION()
 	void SetHP(float _currentHP);
-
 	int SetMonsterNum(int);
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Target)
 	class AMyCharacter* Target;
@@ -101,6 +114,7 @@ public:
 	MONSTER_ATTACK_CODE GetMonsterAttackCode();
 	MONSTER_CODE GetMonsterCode();
 	int GetMonsterNum();
+
 };
 
 USTRUCT()

@@ -63,7 +63,6 @@ ADog::ADog()
 #pragma endregion 매쉬를 월드에 적용하기 위한 위치값
 
 	GetCharacterMovement()->MaxWalkSpeed = 700.0f;
-	DeathFlag = false;
 	MaxHP = 100;
 }
 
@@ -106,18 +105,14 @@ void ADog::Tick(float DeltaTime)
 		{
 			//대기 상태
 		case EDogState::Ready:
-			if (DeathFlag)
-			{
-				//초기화 init()
-			}
 			break;
 		case EDogState::Idle:
-		{
-			if (!DeathFlag)
+
+			if (Target)
 			{
 				CurrentState = EDogState::Chase;
 			}
-		}
+
 			break;
 			//추적 상태	
 		case EDogState::Chase:
@@ -141,7 +136,6 @@ void ADog::Tick(float DeltaTime)
 				CurrentState = EDogState::Chase;
 				break;
 			}
-
 		}
 			break;
 			//공격 상태
@@ -155,7 +149,7 @@ void ADog::Tick(float DeltaTime)
 
 			SetActorRotation(LooAtRotation);
 
-			
+
 			if (Distance > TargetLimitDistance*1.5f)
 			{
 				CurrentState = EDogState::Chase;
@@ -169,25 +163,12 @@ void ADog::Tick(float DeltaTime)
 			break;
 			//죽은 상태
 		case EDogState::Death:
-		{
-			DeathInVisibleValue += 0.01;
-			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
-
-			if (DeathInVisibleValue == 0)
+			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 1)
 			{
-				GLog->Log(FString::Printf(TEXT("재배치 준비")));
-				//We Not Use Destroy Function
-				//Destroy();
-
-				//bisActive  true -> false 재배치 준비를 위해.
-				bisActive = false;
-
 				//몬스터 상태는 Ready로 변경
 				CurrentState = EDogState::Ready;
-				DeathFlag = true;
 			}
-			//Monster_SetActive(this, bisActive);
-		}
 			break;
 		}
 #pragma endregion FMS (상태에 따라 행동변화)
@@ -231,7 +212,7 @@ void ADog::AttackHit()
 
 void ADog::Death()
 {
-	DeathFlag = true;
+	Super::Death();
 	CurrentState = EDogState::Death;
 }
 

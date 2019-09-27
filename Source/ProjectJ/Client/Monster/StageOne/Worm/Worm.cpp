@@ -53,8 +53,6 @@ AWorm::AWorm()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 320.0f;
-
-	DeathFlag = false;
 	MaxHP = 100;
 }
 
@@ -85,10 +83,7 @@ void AWorm::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case EWormState::Ready:
-			if (DeathFlag == true)
-			{
-				CurrentHP = MaxHP;
-			}
+		
 			break;
 		case EWormState::Idle:
 			if (Target)
@@ -123,22 +118,11 @@ void AWorm::Tick(float DeltaTime)
 		}
 		break;
 		case EWormState::Death:
-			DeathInVisibleValue += 0.01;
-			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
-
-			//GLog->Log(FString::Printf(TEXT("몬스터 사망")));
-			if (DeathInVisibleValue == 0)
+			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 1)
 			{
-				GLog->Log(FString::Printf(TEXT("재배치 준비")));
-				//We Not Use Destroy Function
-				//Destroy();
-
-				//bisActive  true -> false 재배치 준비를 위해.
-				bisActive = false;
-
 				//몬스터 상태는 Ready로 변경
 				CurrentState = EWormState::Ready;
-				DeathFlag = true;
 			}
 			break;
 		}

@@ -51,6 +51,8 @@ AMonster::AMonster()
 
 	m_PoolPos = FVector(4700.0, 18000.0, 4150.0);
 
+	Current_Common_State = COMMON_MONSTER_STATE::DEFAULT_STATE;
+
 	//활성화 확인용 bool은 처음엔 true로 설정 
 	bisActive = true;
 }
@@ -80,9 +82,8 @@ void AMonster::OnMonsterAttackChanged()
 
 void AMonster::Death()
 {
-	//사망표식
-	DeathFlag = true;
 	CurrentHP = 0;
+	Current_Common_State = COMMON_MONSTER_STATE::DIE;
 }
 
 // Called when the game starts or when spawned
@@ -103,13 +104,50 @@ void AMonster::Tick(float DeltaTime)
 	//	PGAMEDATA_MONSTER_ATTACK_FAIL,					// 몬스터 공격받음(공격실패) - (프로토콜만)
 	//	PGAMEDATA_MONSTER_ATTACK_DIE,					// 몬스터 공격받음(죽어버림) - ([int] 몬스터코드, [int] 몬스터번호, [int] 입힌데미지)
 
-	FVector UpdateLocation = FMath::VInterpTo(GetActorLocation(), CurrentLocation, DeltaTime, 1.0f);
+	//FVector UpdateLocation = FMath::VInterpTo(GetActorLocation(), CurrentLocation, DeltaTime, 1.0f);
 
 	/*GLog->Log(FString::Printf(TEXT("AMonster Tick GetActorLocation X : %f Y : %f Z : %f\n"), GetActorLocation().X, GetActorLocation().Y, GetActorLocation().Z));
 	GLog->Log(FString::Printf(TEXT("AMonster Tick ServerLocation   X : %f Y : %f Z : %f\n"), CurrentLocation.X, CurrentLocation.Y, CurrentLocation.Z));
 	GLog->Log(FString::Printf(TEXT("AMonster Tick UpdateLocation   X : %f Y : %f Z : %f\n"), UpdateLocation.X, UpdateLocation.Y, UpdateLocation.Z));*/
 
-	SetActorLocation(UpdateLocation);
+	switch (Current_Common_State)
+	{
+	case COMMON_MONSTER_STATE::ALIVE:
+	{
+		FVector UpdateLocation = FMath::VInterpTo(GetActorLocation(), CurrentLocation, DeltaTime, 1.0f);
+		SetActorLocation(UpdateLocation);
+	}
+		break;
+	case COMMON_MONSTER_STATE::DIE:
+		GLog->Log(FString::Printf(TEXT("몬스터 사망 후 재배치 준비")));
+
+		//Destroy(); <- 쓰지않음!
+
+		DeathInVisibleValue += 0.01;
+		GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
+		if (DeathInVisibleValue == 1)
+		{
+			this->SetActorLocation(m_PoolPos);
+			Target = nullptr;
+
+			Current_Common_State = COMMON_MONSTER_STATE::DEFAULT_STATE;
+			//bisActive  true -> false 재배치 준비를 위해.
+			bisActive = false;
+
+			// Hides visible components
+			this->SetActorHiddenInGame(true);
+			// Disables collision components
+			this->SetActorEnableCollision(false);
+			// Stops the Actor from ticking
+			this->SetActorTickEnabled(true);
+
+			DeathInVisibleValue = 0;
+		}
+		break;
+	default:
+		break;
+	}
+
 }
 
 // Called to bind functionality to input
@@ -121,18 +159,18 @@ void AMonster::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AMonster::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
 {
 	//Init For Monster's type
-	//MaxHP = 100.0f;
-	//CurrentHP = MaxHP;
 
 	//init Code & Num
 	m_MonsterCode = _MyMonsterCode;
 	m_MonsterNum = _MyMonsterNum;
 
+	//몬스터 공통상태 살아있음으로 설정
+	Current_Common_State = COMMON_MONSTER_STATE::ALIVE;
+
 	if (SpawnEffect)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnEffect, GetActorLocation(), FRotator::ZeroRotator, true);
 	}
-	//bisActive = false;
 }
 
 //void AMonster::Firstinit(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)

@@ -49,7 +49,6 @@ ASpider::ASpider()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 500.0f;
-	DeathFlag = false;
 	MaxHP = 100;
 }
 
@@ -85,13 +84,10 @@ void ASpider::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case ESpiderState::Ready:
-			if (DeathFlag)
-			{
-				//init으로 초기화 CurrentHP = MaxHP;
-			}
+			
 			break;
 		case ESpiderState::Idle:
-			if (!DeathFlag)
+			if (Target)
 			{
 				CurrentState = ESpiderState::Chase;
 			}
@@ -103,7 +99,6 @@ void ASpider::Tick(float DeltaTime)
 			switch (GoalResult)
 			{
 			case EPathFollowingRequestResult::AlreadyAtGoal:
-				//RandomAttack();
 				CurrentAttackState = ESpiderAttackState::DefaultAttack;				
 				CurrentState = ESpiderState::Attack;
 				break;
@@ -161,35 +156,12 @@ void ASpider::Tick(float DeltaTime)
 		}
 		break;
 		case ESpiderState::Death:
-			GLog->Log(FString::Printf(TEXT("재배치 준비")));
-			//Destroy();
-
-			//bisActive  true -> false 재배치 준비를 위해.
-			bisActive = false;
-			// Hides visible components
-			this->SetActorHiddenInGame(true);
-			// Disables collision components
-			this->SetActorEnableCollision(false);
-			// Stops the Actor from ticking
-			this->SetActorTickEnabled(true);
-
-			DeathInVisibleValue = 0;
-
-			this->SetActorLocation(m_PoolPos);
-			//몬스터 상태는 Ready로 변경
-			CurrentState = ESpiderState::Ready;
-			DeathFlag = true;
-
-			Target = nullptr;
-
-			//DeathInVisibleValue += 0.01;
-			//GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
-
-			////GLog->Log(FString::Printf(TEXT("몬스터 사망")));
-			//if (DeathInVisibleValue == 0)
-			//{
-			//	
-			//}
+			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 1)
+			{
+				//몬스터 상태는 Ready로 변경
+				CurrentState = ESpiderState::Ready;
+			}
 			break;
 		}
 	}

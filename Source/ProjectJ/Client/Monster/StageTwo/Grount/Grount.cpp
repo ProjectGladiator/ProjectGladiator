@@ -52,7 +52,6 @@ AGrount::AGrount()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 
-	DeathFlag = false;
 	MaxHP = 300;
 }
 
@@ -88,12 +87,9 @@ void AGrount::Tick(float DeltaTime)
 		switch (CurrentState)
 		{
 		case EGrountState::Ready:
-			if (DeathFlag)
-			{
-			}
 			break;
 		case EGrountState::Idle:
-			if (!DeathFlag)
+			if (Target)
 			{
 				CurrentState = EGrountState::Chase;
 			}
@@ -120,7 +116,7 @@ void AGrount::Tick(float DeltaTime)
 			}
 		}
 			break;
-		//공격 상태
+			//공격 상태
 		case EGrountState::Attack:
 		{
 			FRotator LooAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Target->GetActorLocation());
@@ -128,7 +124,6 @@ void AGrount::Tick(float DeltaTime)
 			FRotator ToCharacterRotator = UKismetMathLibrary::NormalizedDeltaRotator(LooAtRotation, GetActorRotation());
 
 			SetActorRotation(LooAtRotation);
-
 
 			if (Distance > TargetLimitDistance*1.5f)
 			{
@@ -140,26 +135,16 @@ void AGrount::Tick(float DeltaTime)
 			}
 		}
 			break;
-		//죽은 상태
+			//죽은 상태
 		case EGrountState::Death:
-		{
-			DeathInVisibleValue += 0.01;
-			GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
 
-			if (DeathInVisibleValue == 0)
+			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
+			if (DeathInVisibleValue == 1)
 			{
-				GLog->Log(FString::Printf(TEXT("재배치 준비")));
-				//We Not Use Destroy Function
-				//Destroy();
-
-				//bisActive  true -> false 재배치 준비를 위해.
-				bisActive = false;
-
 				//몬스터 상태는 Ready로 변경
 				CurrentState = EGrountState::Ready;
-				DeathFlag = true;
 			}
-		}
+
 			break;
 		}
 	}
@@ -198,5 +183,6 @@ void AGrount::AttackHit()
 
 void AGrount::Death()
 {
-	DeathFlag = true;
+	Super::Death();
+	CurrentState = EGrountState::Death;
 }

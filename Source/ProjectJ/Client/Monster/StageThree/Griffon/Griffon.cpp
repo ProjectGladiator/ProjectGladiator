@@ -41,7 +41,6 @@ AGriffon::AGriffon()
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
 	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
-	DeathFlag = false;
 	MaxHP = 100.0f;
 }
 
