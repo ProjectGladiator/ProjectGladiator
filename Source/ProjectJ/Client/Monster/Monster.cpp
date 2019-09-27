@@ -125,7 +125,7 @@ void AMonster::Tick(float DeltaTime)
 
 		DeathInVisibleValue += 0.01;
 		GetMesh()->SetScalarParameterValueOnMaterials(TEXT("Amount"), DeathInVisibleValue);
-		if (DeathInVisibleValue == 1)
+		if (DeathInVisibleValue >= 1)
 		{
 			this->SetActorLocation(m_PoolPos);
 			Target = nullptr;
