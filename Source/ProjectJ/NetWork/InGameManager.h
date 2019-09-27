@@ -76,7 +76,7 @@ private:
 	// 스테이지 입장후 받는 몬스터정보(초기화정보)
 	void InGame_Recv_Stage_MonsterInfo(char* _buf);
 	// 몬스터 이동정보
-	void InGame_Recv_Monster_MoveInfo(char* _buf);
+	void InGame_Recv_Monster_MoveInfo(char*& _buf);
 	// 몬스터 피격정보
 	void InGame_Recv_Monster_has_been_Attacked(char* _buf);
 	// 다른 유저 몬스터 피격정보
@@ -86,7 +86,7 @@ private:
 	// 다른 유저 피격정보
 	void InGame_Recv_Other_UnderAttack(char* _buf);
 	// 몬스터 타겟 정보
-	void InGame_Recv_Monster_Target(char* _buf);
+	void InGame_Recv_Monster_Target(char*& _buf);
 
 	// 몬스터 공격 애니메이션
 	//void InGame_Recv_Monster_Attack_Animation(char* _buf);
