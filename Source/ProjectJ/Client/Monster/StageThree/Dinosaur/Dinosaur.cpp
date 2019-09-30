@@ -83,6 +83,7 @@ void ADinosaur::BeginPlay()
 
 void ADinosaur::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
 	if (Target)
 	{
 		float Distance = AIManager->DistanceCalculate(this, Target);

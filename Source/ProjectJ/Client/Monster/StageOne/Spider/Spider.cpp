@@ -77,6 +77,7 @@ void ASpider::BeginPlay()
 
 void ASpider::Tick(float DeltaTime)
 {	
+	Super::Tick(DeltaTime);
 	if (Target)
 	{
 		float Distance = AIManager->DistanceCalculate(this, Target);
@@ -157,7 +158,7 @@ void ASpider::Tick(float DeltaTime)
 		break;
 		case ESpiderState::Death:
 			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
-			if (DeathInVisibleValue == 1)
+			if (DeathInVisibleValue >= 1)
 			{
 				//몬스터 상태는 Ready로 변경
 				CurrentState = ESpiderState::Ready;

@@ -76,6 +76,8 @@ void AWorm::BeginPlay()
 
 void AWorm::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
+
 	float Distance = AIManager->DistanceCalculate(this, Target);
 
 	if (WormAIController)

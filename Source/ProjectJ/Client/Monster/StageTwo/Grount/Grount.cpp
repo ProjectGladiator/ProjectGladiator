@@ -80,6 +80,7 @@ void AGrount::BeginPlay()
 
 void AGrount::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
 	if (Target)
 	{
 		float Distance = AIManager->DistanceCalculate(this, Target);

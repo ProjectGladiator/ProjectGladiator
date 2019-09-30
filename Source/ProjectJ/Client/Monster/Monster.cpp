@@ -128,9 +128,7 @@ void AMonster::Tick(float DeltaTime)
 		if (DeathInVisibleValue >= 1)
 		{
 			this->SetActorLocation(m_PoolPos);
-			Target = nullptr;
-
-			Current_Common_State = COMMON_MONSTER_STATE::DEFAULT_STATE;
+			
 			//bisActive  true -> false 재배치 준비를 위해.
 			bisActive = false;
 
@@ -141,7 +139,9 @@ void AMonster::Tick(float DeltaTime)
 			// Stops the Actor from ticking
 			this->SetActorTickEnabled(true);
 
+			Target = nullptr;
 			DeathInVisibleValue = 0;
+			Current_Common_State = COMMON_MONSTER_STATE::DEFAULT_STATE;
 		}
 		break;
 	default:

@@ -78,6 +78,7 @@ void ASpiderBoss::BeginPlay()
 
 void ASpiderBoss::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
 	if (Target)
 	{
 		float Distance = AIManager->DistanceCalculate(this, Target);

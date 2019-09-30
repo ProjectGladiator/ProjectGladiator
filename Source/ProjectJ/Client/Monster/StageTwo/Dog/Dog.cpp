@@ -93,6 +93,7 @@ void ADog::BeginPlay()
 
 void ADog::Tick(float DeltaTime)
 {
+	Super::Tick(DeltaTime);
 	//타겟이 존재하면
 	if (Target)
 	{

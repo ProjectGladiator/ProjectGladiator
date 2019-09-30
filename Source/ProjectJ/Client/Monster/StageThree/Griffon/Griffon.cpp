@@ -51,7 +51,7 @@ void AGriffon::BeginPlay()
 
 void AGriffon::Tick(float DeltaTime)
 {
-
+	Super::Tick(DeltaTime);
 }
 
 void AGriffon::Init(MONSTER_CODE _MyMonsterCode, int _MyMonsterNum)
