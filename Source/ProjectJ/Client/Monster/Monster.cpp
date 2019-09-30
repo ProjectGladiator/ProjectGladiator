@@ -131,16 +131,6 @@ void AMonster::Tick(float DeltaTime)
 			
 			//bisActive  true -> false 재배치 준비를 위해.
 			bisActive = false;
-
-			// Hides visible components
-			this->SetActorHiddenInGame(true);
-			// Disables collision components
-			this->SetActorEnableCollision(false);
-			// Stops the Actor from ticking
-			this->SetActorTickEnabled(true);
-
-			Target = nullptr;
-			DeathInVisibleValue = 0;
 			Current_Common_State = COMMON_MONSTER_STATE::DEFAULT_STATE;
 		}
 		break;

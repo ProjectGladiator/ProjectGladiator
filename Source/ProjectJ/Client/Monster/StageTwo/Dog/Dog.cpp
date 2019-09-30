@@ -165,8 +165,17 @@ void ADog::Tick(float DeltaTime)
 			//죽은 상태
 		case EDogState::Death:
 			GLog->Log(FString::Printf(TEXT("몬스터 사망")));
-			if (DeathInVisibleValue == 1)
+			if (DeathInVisibleValue >= 1)
 			{
+				// Hides visible components
+				this->SetActorHiddenInGame(true);
+				// Disables collision components
+				this->SetActorEnableCollision(false);
+				// Stops the Actor from ticking
+				this->SetActorTickEnabled(false);
+
+				Target = nullptr;
+				DeathInVisibleValue = 0;
 				//몬스터 상태는 Ready로 변경
 				CurrentState = EDogState::Ready;
 			}
