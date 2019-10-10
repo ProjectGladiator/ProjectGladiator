@@ -24,12 +24,16 @@ struct FMonsterstruct
 //	//Stage 2
 //	Dog, Grount
 //};
+
+UENUM()
+enum class EMonsterStage : uint8
+{
+	DEFAULT,STAGE1,STAGE2,STAGE3
+};
 UCLASS()
 class PROJECTJ_API AObjectPool : public AActor
 {
-	
 	GENERATED_BODY()
-
 public:	
 	// Sets default values for this actor's properties
 	AObjectPool();
@@ -37,15 +41,15 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 public:	
-	// Called every frame
+	// Called every frame	
 	virtual void Tick(float DeltaTime) override;
 	
 	/** Find a random point with in the BoxComponent*/
 	UFUNCTION(BlueprintPure, Category = "Spawning")
-		FVector GetRandomPointInVolume();
+	FVector GetRandomPointInVolume();
 
 	/** ObjectPool init function*/
-	void PoolSetting();
+	void PoolSetting(int _EStage);
 
 	/** ObjectPool Pooling*/
 	void Pooling(int);
@@ -58,8 +62,10 @@ public:
 	FVector SpawnPos_Vector;
 
 private:
+	EMonsterStage EStage;
+
 	/** This Data Structure is Monster's Type and list of Array*/
-	TMap<MONSTER_CODE, FMonsterstruct> DefaultSpawnArea_Map;
+	TMap<MONSTER_CODE, FMonsterstruct> Monsterinfo_Map;
 
 	/** This Array is Activing Monster's Struct*/
 	TArray<FActiveMonsterInfo> ActiveMonster_Array;
@@ -67,10 +73,6 @@ private:
 	/** Box Component to specify where pickups should be spawned(First Spawn And ReadyArea)*/
 	UPROPERTY(VisibleAnywhere, Category = "Spawning", meta = (AllowPrivateAccess = "true"))
 	class UBoxComponent* ReadySpawnArea;
-
-	/** if you want to use this, check to attribute*/
-	UPROPERTY(EditAnywhere, Category = "Spawning")
-		bool bis_Testpool_Set;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Data, Meta = (AllowPrivateAccess = true))
 		class UParticleSystem* SpawnEffect;
