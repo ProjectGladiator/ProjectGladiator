@@ -490,8 +490,8 @@ enum RESULT {
 //#define SERVERIP "192.168.43.58"	// »£ø¨«÷Ω∫∆Ã »£ø¨≥Î∆Æ∫œ
 //#define SERVERIP "172.30.35.30"	// KT Free Wifi »£ø¨≥Î∆Æ∫œ
 //#define SERVERIP "192.168.43.180"	// »£ø¨«÷Ω∫∆Ã øµ¡ÿ±◊∑•≥Î∆Æ∫œ
-#define SERVERIP "192.168.7.15"	// consult room »£ø¨≥Î∆Æ∫œ
-//#define SERVERIP "192.168.0.192"	// 404 »£ø¨≥Î∆Æ∫œ
+//#define SERVERIP "192.168.7.15"	// consult room »£ø¨≥Î∆Æ∫œ
+#define SERVERIP "192.168.0.192"	// 404 »£ø¨≥Î∆Æ∫œ
 //#define SERVERIP "127.0.43.180"
 //#define SERVERIP "192.168.123.181"
 //#define SERVERIP "182.227.211.86"
