@@ -90,7 +90,7 @@ void AMainMapPlayerController::ToCharacterCreate()
 		MyCharacter->SetIsClick(true); //캐릭터들을 선택할수 있는 상태로 변경
 	}
 
-	SetViewTargetWithBlend(CharacterCreateCamera, 2.0f, EViewTargetBlendFunction::VTBlend_EaseIn, 0, false);
+	SetViewTargetWithBlend(CharacterCreateCamera, 1.0f, EViewTargetBlendFunction::VTBlend_EaseIn, 0, false);
 }
 
 void AMainMapPlayerController::ToCharacterSelect()
@@ -102,7 +102,7 @@ void AMainMapPlayerController::ToCharacterSelect()
 		MyCharacter->SetIsClick(false); //캐릭터들을 선택할수 없는 상태로 변경
 	}
 
-	SetViewTargetWithBlend(CharacterSelectCamera, 2.0f, EViewTargetBlendFunction::VTBlend_EaseIn, 0, false);
+	SetViewTargetWithBlend(CharacterSelectCamera, 1.0f, EViewTargetBlendFunction::VTBlend_Linear, 0, false);
 }
 
 void AMainMapPlayerController::ToCharacterZoomInCamera()
