@@ -189,7 +189,7 @@ RESULT LoginManager::TitleRecvResult()
 	switch (tempprotocol)
 	{
 	case PROTOCOL_CHARACER_MENU: // 중간틀 로그인이면
-		tempprotocol = protocol & PROTOCOL_SERVER_LOGIN_MENU_COMPART;
+		tempprotocol = protocol & PROTOCOL_SERVER_LOGIN_MENU_COMPARE;
 		switch (tempprotocol)
 		{
 		case PROTOCOL_ID_OVERLAP_CHECK: // 아이디 중복확인

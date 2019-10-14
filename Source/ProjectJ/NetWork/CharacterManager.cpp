@@ -403,7 +403,7 @@ RESULT CharacterManager::CharacterInitRecvResult()
 	switch (tempprotocol)
 	{
 	case PROTOCOL_CHARACER_MENU: // 중간틀 로그인이면
-		tempprotocol = protocol & PROTOCOL_SERVER_CHARACTER_MENU_COMPART;
+		tempprotocol = protocol & PROTOCOL_SERVER_CHARACTER_MENU_COMPARE;
 		switch (tempprotocol)
 		{
 		case PROTOCOL_CHARACTER_RESULT: // 캐릭터 생성요청 결과

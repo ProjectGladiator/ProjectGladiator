@@ -50,17 +50,17 @@ AObjectPool::AObjectPool()
 	//	BEAR = 30001,
 	//	DINOSAUR = 30002,
 	//	DRAGON = 30003
-	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::SPIDER, MonsterArray);
-	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::WORM, MonsterArray);
-	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::BOSS_SPIDER, MonsterArray);
-	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::DOG, MonsterArray);
+	Monsterinfo_Map.Emplace(MONSTER_CODE::SPIDER, MonsterArray);
+	Monsterinfo_Map.Emplace(MONSTER_CODE::WORM, MonsterArray);
+	Monsterinfo_Map.Emplace(MONSTER_CODE::BOSS_SPIDER, MonsterArray);
+	Monsterinfo_Map.Emplace(MONSTER_CODE::DOG, MonsterArray);
 	//DefaultSpawnArea_Map.Emplace(MONSTER_CODE::ORCCANNONSOLDIER, MonsterArray);
-	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::BEAR, MonsterArray);
-	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::DINOSAUR, MonsterArray);
-	DefaultSpawnArea_Map.Emplace(MONSTER_CODE::KING_OF_THEAXE, MonsterArray);
+	Monsterinfo_Map.Emplace(MONSTER_CODE::BEAR, MonsterArray);
+	Monsterinfo_Map.Emplace(MONSTER_CODE::DINOSAUR, MonsterArray);
+	Monsterinfo_Map.Emplace(MONSTER_CODE::KING_OF_THEAXE, MonsterArray);
 
 	////Test to Use this pool check
-	bis_Testpool_Set = false;
+	//bis_Testpool_Set = false;
 
 	//Set Ready SpawnMonsterCounter Zero
 	SpawnMonsterCounter = 0;
@@ -80,7 +80,7 @@ void AObjectPool::BeginPlay()
 
 	GLog->Log(FString::Printf(TEXT("AObjectPool BeginPlay")));
 	//Set Pool volume to BeginPlay
-	PoolSetting();
+	PoolSetting(0);
 }
 
 // Called every frame
@@ -207,7 +207,7 @@ void AObjectPool::Tick(float DeltaTime)
 					//몬스터 코드와 번호 가 일치하는 원소를 찾음
 					if (ActiveMonster_Array[i_Num].MonsterCode == Monster_Code && ActiveMonster_Array[i_Num].MonsterNum == Monster_Num)
 					{
-						//Deat()안에서 CurrentHP 강제로 0으로 만들어줌
+						//Death()안에서 CurrentHP 강제로 0으로 만들어줌
 						ActiveMonster_Array[i_Num].Monster->Death();
 						Remove_ActiveMonsterArry(Monster_Code, Monster_Num);
 						break;
@@ -229,38 +229,45 @@ FVector AObjectPool::GetRandomPointInVolume()
 	return UKismetMathLibrary::RandomPointInBoundingBox(SpawnOrigin, SpawnExtent);
 }
 
-void AObjectPool::PoolSetting()
+void AObjectPool::PoolSetting(int _EStage)
 {
-	//Set To PoolObject
-	try
+	switch ((EMonsterStage)_EStage)
 	{
-		//throw Error FullPoolVolume
-		if (bis_Testpool_Set == true)
-		{
-			throw bis_Testpool_Set;
-		}
-
+	case EMonsterStage::STAGE1:
 		////kind of Monster AND Monster's Maximum size (예비로 최대량을 정해놓고 만들어둠)
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 15, ASpider::StaticClass());
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM,20, AWorm::StaticClass());
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::BOSS_SPIDER].Monster_Volum_Array, MONSTER_CODE::BOSS_SPIDER, 1, ASpiderBoss::StaticClass());
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::DOG].Monster_Volum_Array, MONSTER_CODE::DOG, 10, ADog::StaticClass());
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::BEAR].Monster_Volum_Array, MONSTER_CODE::BEAR, 10, ABear::StaticClass());
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::DINOSAUR].Monster_Volum_Array, MONSTER_CODE::DINOSAUR, 10, ADinosaur::StaticClass());
-		Set_MonsterVolume_With_Array(DefaultSpawnArea_Map[MONSTER_CODE::KING_OF_THEAXE].Monster_Volum_Array, MONSTER_CODE::KING_OF_THEAXE, 1, ABrute::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 15, ASpider::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM, 20, AWorm::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::BOSS_SPIDER].Monster_Volum_Array, MONSTER_CODE::BOSS_SPIDER, 1, ASpiderBoss::StaticClass());
+		break;
+	case EMonsterStage::STAGE2:
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::DOG].Monster_Volum_Array, MONSTER_CODE::DOG, 10, ADog::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::BEAR].Monster_Volum_Array, MONSTER_CODE::BEAR, 10, ABear::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::DINOSAUR].Monster_Volum_Array, MONSTER_CODE::DINOSAUR, 10, ADinosaur::StaticClass());
 
-	
+		break;
+	case EMonsterStage::STAGE3:
+		break;
+	case EMonsterStage::DEFAULT:
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 15, ASpider::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM, 20, AWorm::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::BOSS_SPIDER].Monster_Volum_Array, MONSTER_CODE::BOSS_SPIDER, 1, ASpiderBoss::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::DOG].Monster_Volum_Array, MONSTER_CODE::DOG, 10, ADog::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::BEAR].Monster_Volum_Array, MONSTER_CODE::BEAR, 10, ABear::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::DINOSAUR].Monster_Volum_Array, MONSTER_CODE::DINOSAUR, 10, ADinosaur::StaticClass());
+		Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::KING_OF_THEAXE].Monster_Volum_Array, MONSTER_CODE::KING_OF_THEAXE, 1, ABrute::StaticClass());
+		break;
+	default:
+		UE_LOG(LogTemp, Warning, TEXT("(스테이지 정보 누락)준비된 몬스터가 없다!"));
+		break;
 	}
-	catch (bool) {
-		if (bis_Testpool_Set == true)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Pool DisActive"));
-		}
-	}
-	catch (AMonster*)
-	{
-		GLog->Log(FString::Printf(TEXT("SpawnActor Error")));
-	}
+	//////kind of Monster AND Monster's Maximum size (예비로 최대량을 정해놓고 만들어둠)
+	//Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::SPIDER].Monster_Volum_Array, MONSTER_CODE::SPIDER, 15, ASpider::StaticClass());
+	//Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::WORM].Monster_Volum_Array, MONSTER_CODE::WORM,20, AWorm::StaticClass());
+	//Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::BOSS_SPIDER].Monster_Volum_Array, MONSTER_CODE::BOSS_SPIDER, 1, ASpiderBoss::StaticClass());
+	//Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::DOG].Monster_Volum_Array, MONSTER_CODE::DOG, 10, ADog::StaticClass());
+	//Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::BEAR].Monster_Volum_Array, MONSTER_CODE::BEAR, 10, ABear::StaticClass());
+	//Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::DINOSAUR].Monster_Volum_Array, MONSTER_CODE::DINOSAUR, 10, ADinosaur::StaticClass());
+	//Set_MonsterVolume_With_Array(Monsterinfo_Map[MONSTER_CODE::KING_OF_THEAXE].Monster_Volum_Array, MONSTER_CODE::KING_OF_THEAXE, 1, ABrute::StaticClass());
 }
 
 void AObjectPool::Pooling(int _counter)
@@ -287,7 +294,7 @@ void AObjectPool::Pooling(int _counter)
 
 TMap<MONSTER_CODE, FMonsterstruct> AObjectPool::Get_SpawnMoster_Map()
 {
-	return DefaultSpawnArea_Map;
+	return Monsterinfo_Map;
 }
 
 TArray<FActiveMonsterInfo> AObjectPool::Get_ActiveMonster_Array()
@@ -335,24 +342,24 @@ bool AObjectPool::check_RecycleObject(AMonster* _spawnMonster)
 
 void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, FVector _MonsterPostion)
 {
-	for (int i_Monster = 0; i_Monster < DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array.Num(); i_Monster++)
+	for (int i_Monster = 0; i_Monster < Monsterinfo_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array.Num(); i_Monster++)
 	{
 		//bisActive가 false인지 판별 후 넘어감
-		if (check_RecycleObject(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]))
+		if (check_RecycleObject(Monsterinfo_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Monster Recycle"));
 
 			//Active Actor to bisActive make true;
-			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->bisActive = true;
+			Monsterinfo_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->bisActive = true;
 
 			//Get Monster's init
 			//DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->CurrentState는 Init에서 Idle로 만들어줌!
-			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->Init(_MonsterCode, i_Monster);
-			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->SetActorLocation(_MonsterPostion);
-			DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->S2C_LocationUpdate(_MonsterPostion);
+			Monsterinfo_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->Init(_MonsterCode, i_Monster);
+			Monsterinfo_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->SetActorLocation(_MonsterPostion);
+			Monsterinfo_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->S2C_LocationUpdate(_MonsterPostion);
 
 			//Monster
-			SpawnObject_SetActive(DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster], true);
+			SpawnObject_SetActive(Monsterinfo_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster], true);
 
 			//Setting Target
 			//DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster]->FirstTarget();
@@ -361,7 +368,7 @@ void AObjectPool::ReadyMonster(MONSTER_CODE _MonsterCode, FVector _MonsterPostio
 			FActiveMonsterInfo TempActiveMonsterInfo;
 			TempActiveMonsterInfo.MonsterCode = _MonsterCode;
 			TempActiveMonsterInfo.MonsterNum = i_Monster;
-			TempActiveMonsterInfo.Monster = DefaultSpawnArea_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster];
+			TempActiveMonsterInfo.Monster = Monsterinfo_Map[(MONSTER_CODE)_MonsterCode].Monster_Volum_Array[i_Monster];
 
 			//ActiveMonster's Array is Send To Server MonsterInfo
 			ActiveMonster_Array.Emplace(TempActiveMonsterInfo);
