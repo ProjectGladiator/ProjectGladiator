@@ -16,7 +16,7 @@ void UPartyLeaderGameStartWidget::NativeConstruct()
 	PartyLeaderGameStartButton = Cast<UButton>(GetWidgetFromName(TEXT("PartyLeaderGameStartButton")));
 
 	if (PartyLeaderGameStartButton)
-	{
+	{			
 		PartyLeaderGameStartButton->OnClicked.AddDynamic(this, &UPartyLeaderGameStartWidget::PartyLeaderGameStartButtonClick);
 	}
 }
@@ -33,7 +33,7 @@ void UPartyLeaderGameStartWidget::PartyLeaderGameStartButtonClick()
 		{
 			if (MyCharacter->GetPartyLeader())
 			{
-
+				MainMapPlayerController->C2S_ReqGameStageStart();
 			}
 		}
 	}

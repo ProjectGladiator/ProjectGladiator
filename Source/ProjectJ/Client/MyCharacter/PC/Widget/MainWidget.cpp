@@ -72,10 +72,10 @@ void UMainWidget::NativeConstruct()
 		PartyAcceptRejectWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
-	PartyLeaderGameStartWidget = Cast<UPartyLeaderGameStartWidget>(GetWidgetFromName(TEXT("")));
+	PartyLeaderGameStartWidget = Cast<UPartyLeaderGameStartWidget>(GetWidgetFromName(TEXT("PartyLeaderWidget")));
 
 	if (PartyLeaderGameStartWidget)
-	{
+	{		
 		PartyLeaderGameStartWidget->SetVisibility(ESlateVisibility::Hidden);
 	}
 
@@ -380,6 +380,22 @@ void UMainWidget::PartyAcceptRejectWidgetHidden()
 	}
 }
 
+void UMainWidget::PartyLeaderGameStartWidgetVisible()
+{
+	if (PartyLeaderGameStartWidget)
+	{
+		PartyLeaderGameStartWidget->SetVisibility(ESlateVisibility::Visible);
+	}
+}
+
+void UMainWidget::PartyLeaderGameStartWidgetHidden()
+{
+	if (PartyLeaderGameStartWidget)
+	{
+		PartyLeaderGameStartWidget->SetVisibility(ESlateVisibility::Hidden);
+	}
+}
+
 UPartyWidget * UMainWidget::GetPartyWidget()
 {
 	return PartyWidget;
@@ -490,21 +506,6 @@ int32 UMainWidget::GetPartySize()
 FPartySlot UMainWidget::GetPartySlot(int32 _Index)
 {
 	return PartySlots[_Index];
-}
-
-void UMainWidget::PartyLeaderGameStartWidgetToggle()
-{
-	if (PartyLeaderGameStartWidget)
-	{
-		if (PartyLeaderGameStartWidget->GetVisibility() == ESlateVisibility::Hidden)
-		{
-			PartyLeaderGameStartWidget->SetVisibility(ESlateVisibility::Visible);
-		}
-		else
-		{
-			PartyLeaderGameStartWidget->SetVisibility(ESlateVisibility::Hidden);
-		}
-	}
 }
 
 void UMainWidget::MapLoadComplete()

@@ -737,9 +737,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 			StorageManager::GetInstance()->ChangeData(Data->data, UserCount); 
 			StorageManager::GetInstance()->PopData();
 
-			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());
-
-			MyCharacter->GetMyCharacterUI()->GetMainWidget()->SetGameStageStartCountInit(10);
+			MyCharacter = Cast<AMyCharacter>(MainMapPlayerController->GetPawn());			
 
 			DungeonIn();
 			break;
@@ -762,6 +760,11 @@ void AMainMapGameMode::Tick(float DeltaTime)
 						PartySlot.PartyUser->SetActorLocation(FVector(x, y, z));
 					}
 				}
+
+				if (MyCharacter->GetPartyLeader())
+				{
+					MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeaderGameStartWidgetVisible();
+				}				
 			}
 			break;
 		case PGAMEDATA_MONSTER_MOVE_INFO: // 몬스터 이동정보 - ([int] 몬스터코드, [int] 몬스터숫자, [float*3] 좌표)
@@ -804,7 +807,7 @@ void AMainMapGameMode::Tick(float DeltaTime)
 				if (MyCharacter->GetPartyLeader())
 				{
 					MyCharacter->SetC2SMonsterInfoAssemble(); //스테이지 클리어하면 꺼주는 작업 필요
-					MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeaderGameStartWidgetToggle();
+					MyCharacter->GetMyCharacterUI()->GetMainWidget()->PartyLeaderGameStartWidgetHidden();
 				}
 			}
 			break;

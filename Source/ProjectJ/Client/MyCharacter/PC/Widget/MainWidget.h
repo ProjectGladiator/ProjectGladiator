@@ -93,6 +93,10 @@ public:
 	void PartyAcceptRejectWidgetVisible();
 	void PartyAcceptRejectWidgetHidden();
 
+	//파티장 게임시작 버튼 활성,비활성화
+	void PartyLeaderGameStartWidgetVisible();
+	void PartyLeaderGameStartWidgetHidden();
+
 	UPartyWidget* GetPartyWidget();
 	UPartyAcceptRejectWidget* GetPartyAcceptRejectWidget();
 
@@ -105,10 +109,6 @@ public:
 	bool IsPartyJoin();
 	int32 GetPartySize();
 	FPartySlot GetPartySlot(int32 _Index);
-
-	//파티장 게임 시작 버튼 토글함수
-	void PartyLeaderGameStartWidgetToggle();
-
 
 	UFUNCTION()
 		void MapLoadComplete(); //스트리밍 레벨 로드 완료시 호출하는 함수	
