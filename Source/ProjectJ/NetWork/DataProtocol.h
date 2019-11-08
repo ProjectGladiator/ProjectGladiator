@@ -60,6 +60,7 @@ namespace DataProtocol {
 		PGAMEDATA_MONSTER_ATTACKED_THE_USER_RESULT,		// 몬스터가 유저를 공격한 결과 - ([bool] 공격결과(성공시 뒤에 값이들어옴), [int] 데미지, [bool] 죽었는지살았는지(true = 생존,false = 사망))
 		PGAMEDATA_MONSTER_ATTACKED_THE_OTHERUSER,		// 몬스터가 다른 유저를 공격함 - ([char] 유저 캐릭터 코드, [int] 데미지, [bool] 죽었는지살았는지(true = 생존,false = 사망))
 		PGAMEDATA_MONSTER_TARGET_INFO,					// 몬스터의 타겟(캐릭터)정보 - ([int] 몬스터코드, [int] 몬스터번호, [char] 유저캐릭터코드)
+		PGAMEDATA_PARTY_DUNGEON_STAGE_READY_USER_INFO,	// 스테이지 입장 준비한 유저 정보 - (캐릭터코드)
 	};
 	// 공통 프로토콜
 	enum PGLOBAL {

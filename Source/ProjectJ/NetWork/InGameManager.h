@@ -70,6 +70,8 @@ private:
 	// 던정 퇴장 결과
 	void InGame_Recv_Leave_Dungeon_Leave_Result(char* _buf);
 
+	// 스테이지 준비 결과(파티원이 보냄)
+	void InGame_Recv_Stage_Ready_Result(char* _buf);
 	// 스테이지 입장 결과
 	void InGame_Recv_Stage_Enter_Result(char* _buf);
 
@@ -146,10 +148,12 @@ public:
 	void InGame_Req_Dungeon_Enter();
 	// 던전 퇴장 요청
 	void InGame_Req_Dungeon_Leave();
-	// 스테이지 입장
+	// 스테이지 입장 요청(파티리더)
 	void InGame_Req_Dungeon_Stage_Enter();
-	// 다음 스테이지 입장 요청
-
+	// 스테이지 입장 준비(파티원)
+	void InGame_Req_Dungeon_Stage_Ready();
+	// 스테이지 클리어 이후 메뉴 선택(1번 : 다음 스테이지 준비, 2번 : 던전 나가기)
+	void InGame_Req_Stage_Ready(int _num);
 	// 현재 스테이지가 무엇인지
 
 	//

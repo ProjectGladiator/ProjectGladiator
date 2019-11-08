@@ -1367,6 +1367,40 @@ void InGameManager::InGame_Recv_Leave_Dungeon_Leave_Result(char * _buf)
 	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_LEAVE_RESULT, data, size);
 }
 
+// 스테이지 준비 결과(파티원이 보냄)
+void InGameManager::InGame_Recv_Stage_Ready_Result(char * _buf)
+{
+	char* ptr = _buf;
+
+	char data[BUFSIZE];
+	memset(data, 0, sizeof(BUFSIZE));
+	char* ptr_data = data;
+	int size = 0;
+
+	char code[CHARACTERCODESIZE];
+	int codelen = 0;
+
+	memset(code, 0, CHARACTERCODESIZE);
+
+	// 코드길이
+	memcpy(&codelen, ptr, sizeof(int));
+	ptr += sizeof(int);
+	// 코드
+	memcpy(code, ptr, codelen);
+	ptr += codelen;
+
+	// data에 코드길이 패킹
+	memcpy(ptr_data, &codelen, sizeof(int));
+	ptr_data += sizeof(int);
+	size += sizeof(int);
+	// data에 코드 패킹
+	memcpy(ptr_data, code, codelen);
+	ptr_data += codelen;
+	size += codelen;
+
+	StorageManager::GetInstance()->PushData(PGAMEDATA_PARTY_DUNGEON_STAGE_READY_USER_INFO, data, size);
+}
+
 // 스테이지 입장 결과
 void InGameManager::InGame_Recv_Stage_Enter_Result(char * _buf)
 {
@@ -1911,6 +1945,36 @@ void InGameManager::InGame_Req_Dungeon_Stage_Enter()
 	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
 }
 
+// 스테이지 입장 준비(파티원)
+void InGameManager::InGame_Req_Dungeon_Stage_Ready()
+{
+	UINT64 protocol = 0;
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_DUNGEON, PROTOCOL_DUNGEON_STAGE_READY_INFO);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, 0);
+}
+
+// 스테이지 클리어 이후 메뉴 선택(1번 : 다음 스테이지 준비, 2번 : 던전 나가기)
+void InGameManager::InGame_Req_Stage_Ready(int _num)
+{
+	UINT64 protocol = 0;
+	char buf[BUFSIZE];
+	memset(buf, 0, sizeof(buf));
+	char* ptr = buf;
+	int datasize = 0;
+
+	protocol = NetworkClient_main::NetworkManager::GetInstance()->GetUser()->BitPackProtocol(protocol, PROTOCOL_INGAME, PROTOCOL_INGAME_DUNGEON, PROTOCOL_DUNGEON_STAGE_READY_INFO);
+
+	memcpy(ptr, &_num, sizeof(int));
+	ptr += sizeof(int);
+	datasize += sizeof(int);
+
+	NetworkClient_main::NetworkManager::GetInstance()->GetUser()->pack(protocol, buf, datasize);
+}
+
 // 몬스터 정보 요청
 void InGameManager::InGame_Req_Monster_Info()
 {
@@ -2398,26 +2462,26 @@ RESULT InGameManager::InGameInitRecvResult(User * _user)
 				switch (tempprotocol)
 				{
 				case PROTOCOL_DUNGEON_ENTER_RESULT: // 던전 입장 결과
-				{
 					// 던전 스폰 위치 옴(Vector3)
 					InGame_Recv_Leave_Dungeon_Enter_Result(buf);
 					result = RT_INGAME_DUNGEON_ENTER_RESULT;
 					break;
-				}
 				case PROTOCOL_DUNGEON_LEAVE_RESULT: // 던전 퇴장 결과
-				{
 					// 채널번호옴
 					InGame_Recv_Leave_Dungeon_Leave_Result(buf);
 					result = RT_INGAME_DUNGEON_LEAVE_RESULT;
 					break;
-				}
+				case PROTOCOL_DUNGEON_STAGE_READY_RESULT: // 스테이지에 입장 준비 결과
+					InGame_Recv_Stage_Ready_Result(buf);
+					result = RT_INGAME_DUNGEON_STAGE_READY_RESULT;
+					break;
 				case PROTOCOL_DUNGEON_STAGE_IN_RESULT: // 스테이지 입장 결과
-				{
 					// 스테이지 입장 결과옴(Vector3)
 					InGame_Recv_Stage_Enter_Result(buf);
 					result = RT_INGAME_DUNGEON_STAGE_ENTER_RESULT;
 					break;
-				}
+				case PROTOCOL_DUNGEON_STAGE_CLEAR_INFO: // 스테이지 클리어 정보
+					break;
 				default:
 					break;
 				}
